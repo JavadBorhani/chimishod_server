@@ -15,7 +15,18 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Falcon.Web.Api", "Falcon.We
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Falcon.Web.Site", "Falcon.Web.Site\Falcon.Web.Site.csproj", "{C84F4BBA-969F-429D-9DF2-CD273F930220}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{CE65EC65-CFA1-4024-AF91-BBC4519DDD58}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Falcon.Web.Api.Test", "Falcon.Web.Api.Test\Falcon.Web.Api.Test.csproj", "{48EE9590-3BF9-4A12-9C9A-88E8CF13DAEB}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Falcon.Web.Shared", "Falcon.Web.Shared\Falcon.Web.Shared.shproj", "{91A5BF2B-AF2C-4E80-B0AD-655ABA6E0267}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Falcon.Web.Models", "Falcon.Web.Models\Falcon.Web.Models.csproj", "{E4A55063-CBC8-4B7F-A1A6-C4F70F789DF0}"
+EndProject
 Global
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		Falcon.Web.Shared\Falcon.Web.Shared.projitems*{91a5bf2b-af2c-4e80-b0ad-655aba6e0267}*SharedItemsImports = 13
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
@@ -45,8 +56,19 @@ Global
 		{C84F4BBA-969F-429D-9DF2-CD273F930220}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C84F4BBA-969F-429D-9DF2-CD273F930220}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C84F4BBA-969F-429D-9DF2-CD273F930220}.Release|Any CPU.Build.0 = Release|Any CPU
+		{48EE9590-3BF9-4A12-9C9A-88E8CF13DAEB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{48EE9590-3BF9-4A12-9C9A-88E8CF13DAEB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{48EE9590-3BF9-4A12-9C9A-88E8CF13DAEB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{48EE9590-3BF9-4A12-9C9A-88E8CF13DAEB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E4A55063-CBC8-4B7F-A1A6-C4F70F789DF0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E4A55063-CBC8-4B7F-A1A6-C4F70F789DF0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E4A55063-CBC8-4B7F-A1A6-C4F70F789DF0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E4A55063-CBC8-4B7F-A1A6-C4F70F789DF0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{48EE9590-3BF9-4A12-9C9A-88E8CF13DAEB} = {CE65EC65-CFA1-4024-AF91-BBC4519DDD58}
 	EndGlobalSection
 EndGlobal

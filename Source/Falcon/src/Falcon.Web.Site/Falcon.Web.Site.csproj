@@ -135,6 +135,28 @@
     <Folder Include="Controllers\" />
     <Folder Include="Models\" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Falcon.Common\Falcon.Common.csproj">
+      <Project>{812a4275-7afa-43df-b581-74d68445db94}</Project>
+      <Name>Falcon.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Falcon.Database\Falcon.Database.csproj">
+      <Project>{a47d42ff-160b-4667-8a3e-4ebf025cab6a}</Project>
+      <Name>Falcon.Database</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Falcon.Data\Falcon.Data.csproj">
+      <Project>{551add74-592a-4b33-b629-2f35886d6e1d}</Project>
+      <Name>Falcon.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Falcon.Web.Common\Falcon.Web.Common.csproj">
+      <Project>{749d066b-57a0-49e7-8107-4db2d1cff935}</Project>
+      <Name>Falcon.Web.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Falcon.Web.Models\Falcon.Web.Models.csproj">
+      <Project>{e4a55063-cbc8-4b7f-a1a6-c4f70f789df0}</Project>
+      <Name>Falcon.Web.Models</Name>
+    </ProjectReference>
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
