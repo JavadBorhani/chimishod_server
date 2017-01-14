@@ -1,0 +1,2290 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="WhatItModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="AchievedGifts">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="GiftID" Type="int" Nullable="false" />
+          <Property Name="AchievedDate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="AchievedPosession">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="QuestID" Type="int" Nullable="false" />
+          <Property Name="AchievedDate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Achievement">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Description" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Star" Type="int" Nullable="false" />
+          <Property Name="Icon" Type="varchar" MaxLength="150" Nullable="false" />
+          <Property Name="RectangleColor" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="AchieveStateID" Type="int" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+          <Property Name="UpdatedDate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="AchieveStateType">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Description" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Answer">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="QuestionID" Type="int" Nullable="false" />
+          <Property Name="Liked" Type="bit" />
+          <Property Name="Dislike" Type="bit" />
+          <Property Name="YesNoState" Type="bit" Nullable="false" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="AppTheme">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="ShortDesciption" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="LongDescription" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="SquareColor" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="CircleColor" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="Price" Type="int" Nullable="false" />
+          <Property Name="Style" Type="text" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+          <Property Name="UpdatedDate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Category">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="ShortDescription" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="LongDescription" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="SquareColor" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="CircleColor" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="RectangleColor" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="Price" Type="int" Nullable="false" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+          <Property Name="UpdatedDate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Comment">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="QuestionID" Type="int" Nullable="false" />
+          <Property Name="Comment" Type="nvarchar" MaxLength="400" Nullable="false" />
+          <Property Name="Answer" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="IsVerified" Type="bit" Nullable="false" />
+          <Property Name="InsertDate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CreatedQuestions">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="What_if" Type="nvarchar" MaxLength="250" Nullable="false" />
+          <Property Name="But" Type="nvarchar" MaxLength="250" Nullable="false" />
+          <Property Name="RegisterDateTime" Type="datetime" Nullable="false" />
+          <Property Name="VerifyStateID" Type="int" Nullable="false" />
+          <Property Name="CategoryID" Type="int" />
+        </EntityType>
+        <EntityType Name="CreatedQuestionsVerifyType">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="VerifyName" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Description" Type="varbinary" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Favorite">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="QuestionID" Type="int" Nullable="false" />
+          <Property Name="SelectedDate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Gift">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Description" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Star" Type="int" Nullable="false" />
+          <Property Name="Icon" Type="varchar" MaxLength="150" Nullable="false" />
+          <Property Name="RectangleColor" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+          <Property Name="UpdatedDate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Level">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="Star" Type="int" Nullable="false" />
+          <Property Name="TotalQuestion" Type="int" Nullable="false" />
+          <Property Name="Avatar" Type="varchar" MaxLength="150" Nullable="false" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+          <Property Name="UpdatedDate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Manufacture">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="QuestionID" Type="int" Nullable="false" />
+          <Property Name="InsertedDate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Order">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="StoreItemID" Type="int" Nullable="false" />
+          <Property Name="OrderDate" Type="datetime" Nullable="false" />
+          <Property Name="OrderKey" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="OurAdvertisements">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="ShortDescription" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="LongDescription" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="RectangleColor" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="AppStoresLink" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+          <Property Name="UpdatedDate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PurchaseCategory">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="CategoryID" Type="int" Nullable="false" />
+          <Property Name="PurchaseDate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PurchaseTheme">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="ThemeID" Type="int" Nullable="false" />
+          <Property Name="PurchaseDate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Question">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="What_if" Type="nvarchar" MaxLength="250" Nullable="false" />
+          <Property Name="But" Type="nvarchar" MaxLength="250" Nullable="false" />
+          <Property Name="Catgory_ID" Type="int" Nullable="false" />
+          <Property Name="Yes_Count" Type="int" Nullable="false" />
+          <Property Name="No_Count" Type="int" Nullable="false" />
+          <Property Name="Like_Count" Type="int" Nullable="false" />
+          <Property Name="Dislike_Count" Type="int" Nullable="false" />
+          <Property Name="Weight" Type="float" Nullable="false" />
+          <Property Name="CreatorID" Type="varchar" MaxLength="20" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+          <Property Name="UpdateDate" Type="datetime" Nullable="false" />
+          <Property Name="Banned" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ReportedQuestions">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="QuestionID" Type="int" Nullable="false" />
+          <Property Name="ReportTypeID" Type="int" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ReportType">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="Description" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="SelectedCategory">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="CategoryID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SelectedTheme">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="AppThemeID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Store">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Description" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Star" Type="int" Nullable="false" />
+          <Property Name="Price" Type="int" Nullable="false" />
+          <Property Name="Icon" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="RectangleColor" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+          <Property Name="UpdatedDate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UUID" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="UserName" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="UserTypeID" Type="int" />
+          <Property Name="TotalStars" Type="int" Nullable="false" />
+          <Property Name="LastSceneDateTime" Type="datetime" Nullable="false" />
+          <Property Name="LevelAnsweredNumber" Type="int" Nullable="false" />
+          <Property Name="CurrentLevelID" Type="int" Nullable="false" />
+          <Property Name="IsAbleToWriteComment" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="UserInfo">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="FirstName" Type="nvarchar" MaxLength="20" />
+          <Property Name="LastName" Type="nvarchar" MaxLength="30" />
+          <Property Name="Email" Type="varchar" MaxLength="50" />
+          <Property Name="PhoneNumber" Type="varchar" MaxLength="20" />
+          <Property Name="GoogleID" Type="varchar" MaxLength="40" />
+          <Property Name="IsVerified" Type="bit" Nullable="false" />
+          <Property Name="IsBanned" Type="bit" Nullable="false" />
+          <Property Name="RegisterDateTime" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="UserType">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Description" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <Association Name="FK_AchievedGifts_Gift">
+          <End Role="Gift" Type="Self.Gift" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="AchievedGifts" Type="Self.AchievedGifts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Gift">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="AchievedGifts">
+              <PropertyRef Name="GiftID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AchievedGifts_User">
+          <End Role="User" Type="Self.User" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="AchievedGifts" Type="Self.AchievedGifts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="AchievedGifts">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AchievedQuests_Quest">
+          <End Role="Achievement" Type="Self.Achievement" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="AchievedPosession" Type="Self.AchievedPosession" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Achievement">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="AchievedPosession">
+              <PropertyRef Name="QuestID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AchievedQuests_User">
+          <End Role="User" Type="Self.User" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="AchievedPosession" Type="Self.AchievedPosession" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="AchievedPosession">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Achievement_AchieveStateType">
+          <End Role="AchieveStateType" Type="Self.AchieveStateType" Multiplicity="0..1" />
+          <End Role="Achievement" Type="Self.Achievement" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AchieveStateType">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Achievement">
+              <PropertyRef Name="AchieveStateID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Answer_Question">
+          <End Role="Question" Type="Self.Question" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Answer" Type="Self.Answer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Question">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Answer">
+              <PropertyRef Name="QuestionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Answer_User">
+          <End Role="User" Type="Self.User" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Answer" Type="Self.Answer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Answer">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Comment_Question">
+          <End Role="Question" Type="Self.Question" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Comment" Type="Self.Comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Question">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Comment">
+              <PropertyRef Name="QuestionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Comment_User">
+          <End Role="User" Type="Self.User" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Comment" Type="Self.Comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Comment">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CreatedQuestions_Category">
+          <End Role="Category" Type="Self.Category" Multiplicity="0..1" />
+          <End Role="CreatedQuestions" Type="Self.CreatedQuestions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Category">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="CreatedQuestions">
+              <PropertyRef Name="CategoryID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CreatedQuestions_CreatedQuestionsVerifyType">
+          <End Role="CreatedQuestionsVerifyType" Type="Self.CreatedQuestionsVerifyType" Multiplicity="1" />
+          <End Role="CreatedQuestions" Type="Self.CreatedQuestions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CreatedQuestionsVerifyType">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="CreatedQuestions">
+              <PropertyRef Name="VerifyStateID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CreatedQuestions_User">
+          <End Role="User" Type="Self.User" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CreatedQuestions" Type="Self.CreatedQuestions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="CreatedQuestions">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Favorite_Question">
+          <End Role="Question" Type="Self.Question" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Favorite" Type="Self.Favorite" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Question">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Favorite">
+              <PropertyRef Name="QuestionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Favorite_User">
+          <End Role="User" Type="Self.User" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Favorite" Type="Self.Favorite" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Favorite">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Manufacture_Question">
+          <End Role="Question" Type="Self.Question" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Manufacture" Type="Self.Manufacture" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Question">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Manufacture">
+              <PropertyRef Name="QuestionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Manufacture_User">
+          <End Role="User" Type="Self.User" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Manufacture" Type="Self.Manufacture" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Manufacture">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Order_Store">
+          <End Role="Store" Type="Self.Store" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Order" Type="Self.Order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Store">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Order">
+              <PropertyRef Name="StoreItemID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Order_User">
+          <End Role="User" Type="Self.User" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Order" Type="Self.Order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Order">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PurchaseCategory_Category">
+          <End Role="Category" Type="Self.Category" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="PurchaseCategory" Type="Self.PurchaseCategory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Category">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="PurchaseCategory">
+              <PropertyRef Name="CategoryID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PurchaseCategory_User">
+          <End Role="User" Type="Self.User" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="PurchaseCategory" Type="Self.PurchaseCategory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="PurchaseCategory">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PurchaseTheme_AppTheme">
+          <End Role="AppTheme" Type="Self.AppTheme" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="PurchaseTheme" Type="Self.PurchaseTheme" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AppTheme">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="PurchaseTheme">
+              <PropertyRef Name="ThemeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PurchaseTheme_User">
+          <End Role="User" Type="Self.User" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="PurchaseTheme" Type="Self.PurchaseTheme" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="PurchaseTheme">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Question_Category">
+          <End Role="Category" Type="Self.Category" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Question" Type="Self.Question" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Category">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Question">
+              <PropertyRef Name="Catgory_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ReportedQuestions_Question">
+          <End Role="Question" Type="Self.Question" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ReportedQuestions" Type="Self.ReportedQuestions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Question">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="ReportedQuestions">
+              <PropertyRef Name="QuestionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ReportedQuestions_ReportType">
+          <End Role="ReportType" Type="Self.ReportType" Multiplicity="0..1" />
+          <End Role="ReportedQuestions" Type="Self.ReportedQuestions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ReportType">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="ReportedQuestions">
+              <PropertyRef Name="ReportTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ReportedQuestions_User">
+          <End Role="User" Type="Self.User" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ReportedQuestions" Type="Self.ReportedQuestions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="ReportedQuestions">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SelectedCategory_Category">
+          <End Role="Category" Type="Self.Category" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="SelectedCategory" Type="Self.SelectedCategory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Category">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="SelectedCategory">
+              <PropertyRef Name="CategoryID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SelectedCategory_User">
+          <End Role="User" Type="Self.User" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="SelectedCategory" Type="Self.SelectedCategory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="SelectedCategory">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SelectedTheme_AppTheme">
+          <End Role="AppTheme" Type="Self.AppTheme" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="SelectedTheme" Type="Self.SelectedTheme" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AppTheme">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="SelectedTheme">
+              <PropertyRef Name="AppThemeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SelectedTheme_User">
+          <End Role="User" Type="Self.User" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="SelectedTheme" Type="Self.SelectedTheme" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="SelectedTheme">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_User_Level">
+          <End Role="Level" Type="Self.Level" Multiplicity="1" />
+          <End Role="User" Type="Self.User" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Level">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="User">
+              <PropertyRef Name="CurrentLevelID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_User_UserType">
+          <End Role="UserType" Type="Self.UserType" Multiplicity="0..1" />
+          <End Role="User" Type="Self.User" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserType">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="User">
+              <PropertyRef Name="UserTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserInfo_User">
+          <End Role="User" Type="Self.User" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="UserInfo" Type="Self.UserInfo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="UserInfo">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="WhatItModelStoreContainer">
+          <EntitySet Name="AchievedGifts" EntityType="Self.AchievedGifts" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AchievedPosession" EntityType="Self.AchievedPosession" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Achievement" EntityType="Self.Achievement" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AchieveStateType" EntityType="Self.AchieveStateType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Answer" EntityType="Self.Answer" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AppTheme" EntityType="Self.AppTheme" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Category" EntityType="Self.Category" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Comment" EntityType="Self.Comment" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CreatedQuestions" EntityType="Self.CreatedQuestions" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CreatedQuestionsVerifyType" EntityType="Self.CreatedQuestionsVerifyType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Favorite" EntityType="Self.Favorite" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Gift" EntityType="Self.Gift" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Level" EntityType="Self.Level" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Manufacture" EntityType="Self.Manufacture" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Order" EntityType="Self.Order" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="OurAdvertisements" EntityType="Self.OurAdvertisements" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PurchaseCategory" EntityType="Self.PurchaseCategory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PurchaseTheme" EntityType="Self.PurchaseTheme" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Question" EntityType="Self.Question" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ReportedQuestions" EntityType="Self.ReportedQuestions" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ReportType" EntityType="Self.ReportType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SelectedCategory" EntityType="Self.SelectedCategory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SelectedTheme" EntityType="Self.SelectedTheme" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Store" EntityType="Self.Store" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserInfo" EntityType="Self.UserInfo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserType" EntityType="Self.UserType" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_AchievedGifts_Gift" Association="Self.FK_AchievedGifts_Gift">
+            <End Role="Gift" EntitySet="Gift" />
+            <End Role="AchievedGifts" EntitySet="AchievedGifts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AchievedGifts_User" Association="Self.FK_AchievedGifts_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="AchievedGifts" EntitySet="AchievedGifts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AchievedQuests_Quest" Association="Self.FK_AchievedQuests_Quest">
+            <End Role="Achievement" EntitySet="Achievement" />
+            <End Role="AchievedPosession" EntitySet="AchievedPosession" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AchievedQuests_User" Association="Self.FK_AchievedQuests_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="AchievedPosession" EntitySet="AchievedPosession" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Achievement_AchieveStateType" Association="Self.FK_Achievement_AchieveStateType">
+            <End Role="AchieveStateType" EntitySet="AchieveStateType" />
+            <End Role="Achievement" EntitySet="Achievement" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Answer_Question" Association="Self.FK_Answer_Question">
+            <End Role="Question" EntitySet="Question" />
+            <End Role="Answer" EntitySet="Answer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Answer_User" Association="Self.FK_Answer_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="Answer" EntitySet="Answer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Comment_Question" Association="Self.FK_Comment_Question">
+            <End Role="Question" EntitySet="Question" />
+            <End Role="Comment" EntitySet="Comment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Comment_User" Association="Self.FK_Comment_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="Comment" EntitySet="Comment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CreatedQuestions_Category" Association="Self.FK_CreatedQuestions_Category">
+            <End Role="Category" EntitySet="Category" />
+            <End Role="CreatedQuestions" EntitySet="CreatedQuestions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CreatedQuestions_CreatedQuestionsVerifyType" Association="Self.FK_CreatedQuestions_CreatedQuestionsVerifyType">
+            <End Role="CreatedQuestionsVerifyType" EntitySet="CreatedQuestionsVerifyType" />
+            <End Role="CreatedQuestions" EntitySet="CreatedQuestions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CreatedQuestions_User" Association="Self.FK_CreatedQuestions_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="CreatedQuestions" EntitySet="CreatedQuestions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Favorite_Question" Association="Self.FK_Favorite_Question">
+            <End Role="Question" EntitySet="Question" />
+            <End Role="Favorite" EntitySet="Favorite" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Favorite_User" Association="Self.FK_Favorite_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="Favorite" EntitySet="Favorite" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Manufacture_Question" Association="Self.FK_Manufacture_Question">
+            <End Role="Question" EntitySet="Question" />
+            <End Role="Manufacture" EntitySet="Manufacture" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Manufacture_User" Association="Self.FK_Manufacture_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="Manufacture" EntitySet="Manufacture" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Order_Store" Association="Self.FK_Order_Store">
+            <End Role="Store" EntitySet="Store" />
+            <End Role="Order" EntitySet="Order" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Order_User" Association="Self.FK_Order_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="Order" EntitySet="Order" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PurchaseCategory_Category" Association="Self.FK_PurchaseCategory_Category">
+            <End Role="Category" EntitySet="Category" />
+            <End Role="PurchaseCategory" EntitySet="PurchaseCategory" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PurchaseCategory_User" Association="Self.FK_PurchaseCategory_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="PurchaseCategory" EntitySet="PurchaseCategory" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PurchaseTheme_AppTheme" Association="Self.FK_PurchaseTheme_AppTheme">
+            <End Role="AppTheme" EntitySet="AppTheme" />
+            <End Role="PurchaseTheme" EntitySet="PurchaseTheme" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PurchaseTheme_User" Association="Self.FK_PurchaseTheme_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="PurchaseTheme" EntitySet="PurchaseTheme" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Question_Category" Association="Self.FK_Question_Category">
+            <End Role="Category" EntitySet="Category" />
+            <End Role="Question" EntitySet="Question" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ReportedQuestions_Question" Association="Self.FK_ReportedQuestions_Question">
+            <End Role="Question" EntitySet="Question" />
+            <End Role="ReportedQuestions" EntitySet="ReportedQuestions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ReportedQuestions_ReportType" Association="Self.FK_ReportedQuestions_ReportType">
+            <End Role="ReportType" EntitySet="ReportType" />
+            <End Role="ReportedQuestions" EntitySet="ReportedQuestions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ReportedQuestions_User" Association="Self.FK_ReportedQuestions_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="ReportedQuestions" EntitySet="ReportedQuestions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SelectedCategory_Category" Association="Self.FK_SelectedCategory_Category">
+            <End Role="Category" EntitySet="Category" />
+            <End Role="SelectedCategory" EntitySet="SelectedCategory" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SelectedCategory_User" Association="Self.FK_SelectedCategory_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="SelectedCategory" EntitySet="SelectedCategory" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SelectedTheme_AppTheme" Association="Self.FK_SelectedTheme_AppTheme">
+            <End Role="AppTheme" EntitySet="AppTheme" />
+            <End Role="SelectedTheme" EntitySet="SelectedTheme" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SelectedTheme_User" Association="Self.FK_SelectedTheme_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="SelectedTheme" EntitySet="SelectedTheme" />
+          </AssociationSet>
+          <AssociationSet Name="FK_User_Level" Association="Self.FK_User_Level">
+            <End Role="Level" EntitySet="Level" />
+            <End Role="User" EntitySet="User" />
+          </AssociationSet>
+          <AssociationSet Name="FK_User_UserType" Association="Self.FK_User_UserType">
+            <End Role="UserType" EntitySet="UserType" />
+            <End Role="User" EntitySet="User" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserInfo_User" Association="Self.FK_UserInfo_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="UserInfo" EntitySet="UserInfo" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="WhatItModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="AchievedGift">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="GiftID" Type="Int32" Nullable="false" />
+          <Property Name="AchievedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Gift" Relationship="Self.FK_AchievedGifts_Gift" FromRole="AchievedGifts" ToRole="Gift" />
+          <NavigationProperty Name="User" Relationship="Self.FK_AchievedGifts_User" FromRole="AchievedGifts" ToRole="User" />
+        </EntityType>
+        <EntityType Name="AchievedPosession">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="QuestID" Type="Int32" Nullable="false" />
+          <Property Name="AchievedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Achievement" Relationship="Self.FK_AchievedQuests_Quest" FromRole="AchievedPosession" ToRole="Achievement" />
+          <NavigationProperty Name="User" Relationship="Self.FK_AchievedQuests_User" FromRole="AchievedPosession" ToRole="User" />
+        </EntityType>
+        <EntityType Name="Achievement">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Star" Type="Int32" Nullable="false" />
+          <Property Name="Icon" Type="String" MaxLength="150" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="RectangleColor" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="AchieveStateID" Type="Int32" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UpdatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="AchievedPosessions" Relationship="Self.FK_AchievedQuests_Quest" FromRole="Achievement" ToRole="AchievedPosession" />
+          <NavigationProperty Name="AchieveStateType" Relationship="Self.FK_Achievement_AchieveStateType" FromRole="Achievement" ToRole="AchieveStateType" />
+        </EntityType>
+        <EntityType Name="AchieveStateType">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Achievements" Relationship="Self.FK_Achievement_AchieveStateType" FromRole="AchieveStateType" ToRole="Achievement" />
+        </EntityType>
+        <EntityType Name="Answer">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="QuestionID" Type="Int32" Nullable="false" />
+          <Property Name="Liked" Type="Boolean" />
+          <Property Name="Dislike" Type="Boolean" />
+          <Property Name="YesNoState" Type="Boolean" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Question" Relationship="Self.FK_Answer_Question" FromRole="Answer" ToRole="Question" />
+          <NavigationProperty Name="User" Relationship="Self.FK_Answer_User" FromRole="Answer" ToRole="User" />
+        </EntityType>
+        <EntityType Name="AppTheme">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ShortDesciption" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="LongDescription" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="SquareColor" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CircleColor" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Price" Type="Int32" Nullable="false" />
+          <Property Name="Style" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UpdatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="PurchaseThemes" Relationship="Self.FK_PurchaseTheme_AppTheme" FromRole="AppTheme" ToRole="PurchaseTheme" />
+          <NavigationProperty Name="SelectedThemes" Relationship="Self.FK_SelectedTheme_AppTheme" FromRole="AppTheme" ToRole="SelectedTheme" />
+        </EntityType>
+        <EntityType Name="Category">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ShortDescription" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="LongDescription" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="SquareColor" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CircleColor" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="RectangleColor" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Price" Type="Int32" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UpdatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="CreatedQuestions" Relationship="Self.FK_CreatedQuestions_Category" FromRole="Category" ToRole="CreatedQuestions" />
+          <NavigationProperty Name="PurchaseCategories" Relationship="Self.FK_PurchaseCategory_Category" FromRole="Category" ToRole="PurchaseCategory" />
+          <NavigationProperty Name="Questions" Relationship="Self.FK_Question_Category" FromRole="Category" ToRole="Question" />
+          <NavigationProperty Name="SelectedCategories" Relationship="Self.FK_SelectedCategory_Category" FromRole="Category" ToRole="SelectedCategory" />
+        </EntityType>
+        <EntityType Name="Comment">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="QuestionID" Type="Int32" Nullable="false" />
+          <Property Name="Comment1" Type="String" MaxLength="400" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Answer" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="IsVerified" Type="Boolean" Nullable="false" />
+          <Property Name="InsertDate" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Question" Relationship="Self.FK_Comment_Question" FromRole="Comment" ToRole="Question" />
+          <NavigationProperty Name="User" Relationship="Self.FK_Comment_User" FromRole="Comment" ToRole="User" />
+        </EntityType>
+        <EntityType Name="CreatedQuestion">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="What_if" Type="String" MaxLength="250" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="But" Type="String" MaxLength="250" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="RegisterDateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="VerifyStateID" Type="Int32" Nullable="false" />
+          <Property Name="CategoryID" Type="Int32" />
+          <NavigationProperty Name="Category" Relationship="Self.FK_CreatedQuestions_Category" FromRole="CreatedQuestions" ToRole="Category" />
+          <NavigationProperty Name="CreatedQuestionsVerifyType" Relationship="Self.FK_CreatedQuestions_CreatedQuestionsVerifyType" FromRole="CreatedQuestions" ToRole="CreatedQuestionsVerifyType" />
+          <NavigationProperty Name="User" Relationship="Self.FK_CreatedQuestions_User" FromRole="CreatedQuestions" ToRole="User" />
+        </EntityType>
+        <EntityType Name="CreatedQuestionsVerifyType">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="VerifyName" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Description" Type="Binary" MaxLength="50" FixedLength="false" />
+          <NavigationProperty Name="CreatedQuestions" Relationship="Self.FK_CreatedQuestions_CreatedQuestionsVerifyType" FromRole="CreatedQuestionsVerifyType" ToRole="CreatedQuestions" />
+        </EntityType>
+        <EntityType Name="Favorite">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="QuestionID" Type="Int32" Nullable="false" />
+          <Property Name="SelectedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Question" Relationship="Self.FK_Favorite_Question" FromRole="Favorite" ToRole="Question" />
+          <NavigationProperty Name="User" Relationship="Self.FK_Favorite_User" FromRole="Favorite" ToRole="User" />
+        </EntityType>
+        <EntityType Name="Gift">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Star" Type="Int32" Nullable="false" />
+          <Property Name="Icon" Type="String" MaxLength="150" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="RectangleColor" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UpdatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="AchievedGifts" Relationship="Self.FK_AchievedGifts_Gift" FromRole="Gift" ToRole="AchievedGifts" />
+        </EntityType>
+        <EntityType Name="Level">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="Star" Type="Int32" Nullable="false" />
+          <Property Name="TotalQuestion" Type="Int32" Nullable="false" />
+          <Property Name="Avatar" Type="String" MaxLength="150" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UpdatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Users" Relationship="Self.FK_User_Level" FromRole="Level" ToRole="User" />
+        </EntityType>
+        <EntityType Name="Manufacture">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="QuestionID" Type="Int32" Nullable="false" />
+          <Property Name="InsertedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Question" Relationship="Self.FK_Manufacture_Question" FromRole="Manufacture" ToRole="Question" />
+          <NavigationProperty Name="User" Relationship="Self.FK_Manufacture_User" FromRole="Manufacture" ToRole="User" />
+        </EntityType>
+        <EntityType Name="Order">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="StoreItemID" Type="Int32" Nullable="false" />
+          <Property Name="OrderDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="OrderKey" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Store" Relationship="Self.FK_Order_Store" FromRole="Order" ToRole="Store" />
+          <NavigationProperty Name="User" Relationship="Self.FK_Order_User" FromRole="Order" ToRole="User" />
+        </EntityType>
+        <EntityType Name="OurAdvertisement">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ShortDescription" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="LongDescription" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="RectangleColor" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="AppStoresLink" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UpdatedDate" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="PurchaseCategory">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="CategoryID" Type="Int32" Nullable="false" />
+          <Property Name="PurchaseDate" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Category" Relationship="Self.FK_PurchaseCategory_Category" FromRole="PurchaseCategory" ToRole="Category" />
+          <NavigationProperty Name="User" Relationship="Self.FK_PurchaseCategory_User" FromRole="PurchaseCategory" ToRole="User" />
+        </EntityType>
+        <EntityType Name="PurchaseTheme">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="ThemeID" Type="Int32" Nullable="false" />
+          <Property Name="PurchaseDate" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="AppTheme" Relationship="Self.FK_PurchaseTheme_AppTheme" FromRole="PurchaseTheme" ToRole="AppTheme" />
+          <NavigationProperty Name="User" Relationship="Self.FK_PurchaseTheme_User" FromRole="PurchaseTheme" ToRole="User" />
+        </EntityType>
+        <EntityType Name="Question">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="What_if" Type="String" MaxLength="250" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="But" Type="String" MaxLength="250" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Catgory_ID" Type="Int32" Nullable="false" />
+          <Property Name="Yes_Count" Type="Int32" Nullable="false" />
+          <Property Name="No_Count" Type="Int32" Nullable="false" />
+          <Property Name="Like_Count" Type="Int32" Nullable="false" />
+          <Property Name="Dislike_Count" Type="Int32" Nullable="false" />
+          <Property Name="Weight" Type="Double" Nullable="false" />
+          <Property Name="CreatorID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UpdateDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Banned" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Answers" Relationship="Self.FK_Answer_Question" FromRole="Question" ToRole="Answer" />
+          <NavigationProperty Name="Category" Relationship="Self.FK_Question_Category" FromRole="Question" ToRole="Category" />
+          <NavigationProperty Name="Comments" Relationship="Self.FK_Comment_Question" FromRole="Question" ToRole="Comment" />
+          <NavigationProperty Name="Favorites" Relationship="Self.FK_Favorite_Question" FromRole="Question" ToRole="Favorite" />
+          <NavigationProperty Name="Manufactures" Relationship="Self.FK_Manufacture_Question" FromRole="Question" ToRole="Manufacture" />
+          <NavigationProperty Name="ReportedQuestions" Relationship="Self.FK_ReportedQuestions_Question" FromRole="Question" ToRole="ReportedQuestions" />
+        </EntityType>
+        <EntityType Name="ReportedQuestion">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="QuestionID" Type="Int32" Nullable="false" />
+          <Property Name="ReportTypeID" Type="Int32" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Question" Relationship="Self.FK_ReportedQuestions_Question" FromRole="ReportedQuestions" ToRole="Question" />
+          <NavigationProperty Name="ReportType" Relationship="Self.FK_ReportedQuestions_ReportType" FromRole="ReportedQuestions" ToRole="ReportType" />
+          <NavigationProperty Name="User" Relationship="Self.FK_ReportedQuestions_User" FromRole="ReportedQuestions" ToRole="User" />
+        </EntityType>
+        <EntityType Name="ReportType">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="ReportedQuestions" Relationship="Self.FK_ReportedQuestions_ReportType" FromRole="ReportType" ToRole="ReportedQuestions" />
+        </EntityType>
+        <EntityType Name="SelectedCategory">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="CategoryID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Category" Relationship="Self.FK_SelectedCategory_Category" FromRole="SelectedCategory" ToRole="Category" />
+          <NavigationProperty Name="User" Relationship="Self.FK_SelectedCategory_User" FromRole="SelectedCategory" ToRole="User" />
+        </EntityType>
+        <EntityType Name="SelectedTheme">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="AppThemeID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="AppTheme" Relationship="Self.FK_SelectedTheme_AppTheme" FromRole="SelectedTheme" ToRole="AppTheme" />
+          <NavigationProperty Name="User" Relationship="Self.FK_SelectedTheme_User" FromRole="SelectedTheme" ToRole="User" />
+        </EntityType>
+        <EntityType Name="Store">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Star" Type="Int32" Nullable="false" />
+          <Property Name="Price" Type="Int32" Nullable="false" />
+          <Property Name="Icon" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="RectangleColor" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UpdatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Orders" Relationship="Self.FK_Order_Store" FromRole="Store" ToRole="Order" />
+        </EntityType>
+        <EntityType Name="sysdiagram">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UUID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="UserName" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="UserTypeID" Type="Int32" />
+          <Property Name="TotalStars" Type="Int32" Nullable="false" />
+          <Property Name="LastSceneDateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="LevelAnsweredNumber" Type="Int32" Nullable="false" />
+          <Property Name="CurrentLevelID" Type="Int32" Nullable="false" />
+          <Property Name="IsAbleToWriteComment" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="AchievedGifts" Relationship="Self.FK_AchievedGifts_User" FromRole="User" ToRole="AchievedGifts" />
+          <NavigationProperty Name="AchievedPosessions" Relationship="Self.FK_AchievedQuests_User" FromRole="User" ToRole="AchievedPosession" />
+          <NavigationProperty Name="Answers" Relationship="Self.FK_Answer_User" FromRole="User" ToRole="Answer" />
+          <NavigationProperty Name="Comments" Relationship="Self.FK_Comment_User" FromRole="User" ToRole="Comment" />
+          <NavigationProperty Name="CreatedQuestions" Relationship="Self.FK_CreatedQuestions_User" FromRole="User" ToRole="CreatedQuestions" />
+          <NavigationProperty Name="Favorites" Relationship="Self.FK_Favorite_User" FromRole="User" ToRole="Favorite" />
+          <NavigationProperty Name="Level" Relationship="Self.FK_User_Level" FromRole="User" ToRole="Level" />
+          <NavigationProperty Name="Manufactures" Relationship="Self.FK_Manufacture_User" FromRole="User" ToRole="Manufacture" />
+          <NavigationProperty Name="Orders" Relationship="Self.FK_Order_User" FromRole="User" ToRole="Order" />
+          <NavigationProperty Name="PurchaseCategories" Relationship="Self.FK_PurchaseCategory_User" FromRole="User" ToRole="PurchaseCategory" />
+          <NavigationProperty Name="PurchaseThemes" Relationship="Self.FK_PurchaseTheme_User" FromRole="User" ToRole="PurchaseTheme" />
+          <NavigationProperty Name="ReportedQuestions" Relationship="Self.FK_ReportedQuestions_User" FromRole="User" ToRole="ReportedQuestions" />
+          <NavigationProperty Name="SelectedCategories" Relationship="Self.FK_SelectedCategory_User" FromRole="User" ToRole="SelectedCategory" />
+          <NavigationProperty Name="SelectedThemes" Relationship="Self.FK_SelectedTheme_User" FromRole="User" ToRole="SelectedTheme" />
+          <NavigationProperty Name="UserType" Relationship="Self.FK_User_UserType" FromRole="User" ToRole="UserType" />
+          <NavigationProperty Name="UserInfoes" Relationship="Self.FK_UserInfo_User" FromRole="User" ToRole="UserInfo" />
+        </EntityType>
+        <EntityType Name="UserInfo">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="FirstName" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="LastName" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PhoneNumber" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="GoogleID" Type="String" MaxLength="40" FixedLength="false" Unicode="false" />
+          <Property Name="IsVerified" Type="Boolean" Nullable="false" />
+          <Property Name="IsBanned" Type="Boolean" Nullable="false" />
+          <Property Name="RegisterDateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="User" Relationship="Self.FK_UserInfo_User" FromRole="UserInfo" ToRole="User" />
+        </EntityType>
+        <EntityType Name="UserType">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Users" Relationship="Self.FK_User_UserType" FromRole="UserType" ToRole="User" />
+        </EntityType>
+        <Association Name="FK_AchievedGifts_Gift">
+          <End Role="Gift" Type="Self.Gift" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="AchievedGifts" Type="Self.AchievedGift" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Gift">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="AchievedGifts">
+              <PropertyRef Name="GiftID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AchievedGifts_User">
+          <End Role="User" Type="Self.User" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="AchievedGifts" Type="Self.AchievedGift" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="AchievedGifts">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AchievedQuests_Quest">
+          <End Role="Achievement" Type="Self.Achievement" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="AchievedPosession" Type="Self.AchievedPosession" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Achievement">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="AchievedPosession">
+              <PropertyRef Name="QuestID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AchievedQuests_User">
+          <End Role="User" Type="Self.User" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="AchievedPosession" Type="Self.AchievedPosession" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="AchievedPosession">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Achievement_AchieveStateType">
+          <End Role="AchieveStateType" Type="Self.AchieveStateType" Multiplicity="0..1" />
+          <End Role="Achievement" Type="Self.Achievement" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AchieveStateType">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Achievement">
+              <PropertyRef Name="AchieveStateID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Answer_Question">
+          <End Role="Question" Type="Self.Question" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Answer" Type="Self.Answer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Question">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Answer">
+              <PropertyRef Name="QuestionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Answer_User">
+          <End Role="User" Type="Self.User" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Answer" Type="Self.Answer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Answer">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PurchaseTheme_AppTheme">
+          <End Role="AppTheme" Type="Self.AppTheme" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="PurchaseTheme" Type="Self.PurchaseTheme" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AppTheme">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="PurchaseTheme">
+              <PropertyRef Name="ThemeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SelectedTheme_AppTheme">
+          <End Role="AppTheme" Type="Self.AppTheme" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="SelectedTheme" Type="Self.SelectedTheme" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AppTheme">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="SelectedTheme">
+              <PropertyRef Name="AppThemeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CreatedQuestions_Category">
+          <End Role="Category" Type="Self.Category" Multiplicity="0..1" />
+          <End Role="CreatedQuestions" Type="Self.CreatedQuestion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Category">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="CreatedQuestions">
+              <PropertyRef Name="CategoryID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PurchaseCategory_Category">
+          <End Role="Category" Type="Self.Category" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="PurchaseCategory" Type="Self.PurchaseCategory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Category">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="PurchaseCategory">
+              <PropertyRef Name="CategoryID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Question_Category">
+          <End Role="Category" Type="Self.Category" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Question" Type="Self.Question" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Category">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Question">
+              <PropertyRef Name="Catgory_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SelectedCategory_Category">
+          <End Role="Category" Type="Self.Category" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="SelectedCategory" Type="Self.SelectedCategory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Category">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="SelectedCategory">
+              <PropertyRef Name="CategoryID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Comment_Question">
+          <End Role="Question" Type="Self.Question" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Comment" Type="Self.Comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Question">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Comment">
+              <PropertyRef Name="QuestionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Comment_User">
+          <End Role="User" Type="Self.User" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Comment" Type="Self.Comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Comment">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CreatedQuestions_CreatedQuestionsVerifyType">
+          <End Role="CreatedQuestionsVerifyType" Type="Self.CreatedQuestionsVerifyType" Multiplicity="1" />
+          <End Role="CreatedQuestions" Type="Self.CreatedQuestion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CreatedQuestionsVerifyType">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="CreatedQuestions">
+              <PropertyRef Name="VerifyStateID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CreatedQuestions_User">
+          <End Role="User" Type="Self.User" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CreatedQuestions" Type="Self.CreatedQuestion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="CreatedQuestions">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Favorite_Question">
+          <End Role="Question" Type="Self.Question" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Favorite" Type="Self.Favorite" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Question">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Favorite">
+              <PropertyRef Name="QuestionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Favorite_User">
+          <End Role="User" Type="Self.User" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Favorite" Type="Self.Favorite" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Favorite">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_User_Level">
+          <End Role="Level" Type="Self.Level" Multiplicity="1" />
+          <End Role="User" Type="Self.User" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Level">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="User">
+              <PropertyRef Name="CurrentLevelID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Manufacture_Question">
+          <End Role="Question" Type="Self.Question" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Manufacture" Type="Self.Manufacture" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Question">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Manufacture">
+              <PropertyRef Name="QuestionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Manufacture_User">
+          <End Role="User" Type="Self.User" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Manufacture" Type="Self.Manufacture" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Manufacture">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Order_Store">
+          <End Role="Store" Type="Self.Store" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Order" Type="Self.Order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Store">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Order">
+              <PropertyRef Name="StoreItemID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Order_User">
+          <End Role="User" Type="Self.User" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Order" Type="Self.Order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Order">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PurchaseCategory_User">
+          <End Role="User" Type="Self.User" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="PurchaseCategory" Type="Self.PurchaseCategory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="PurchaseCategory">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PurchaseTheme_User">
+          <End Role="User" Type="Self.User" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="PurchaseTheme" Type="Self.PurchaseTheme" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="PurchaseTheme">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ReportedQuestions_Question">
+          <End Role="Question" Type="Self.Question" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ReportedQuestions" Type="Self.ReportedQuestion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Question">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="ReportedQuestions">
+              <PropertyRef Name="QuestionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ReportedQuestions_ReportType">
+          <End Role="ReportType" Type="Self.ReportType" Multiplicity="0..1" />
+          <End Role="ReportedQuestions" Type="Self.ReportedQuestion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ReportType">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="ReportedQuestions">
+              <PropertyRef Name="ReportTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ReportedQuestions_User">
+          <End Role="User" Type="Self.User" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ReportedQuestions" Type="Self.ReportedQuestion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="ReportedQuestions">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SelectedCategory_User">
+          <End Role="User" Type="Self.User" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="SelectedCategory" Type="Self.SelectedCategory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="SelectedCategory">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SelectedTheme_User">
+          <End Role="User" Type="Self.User" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="SelectedTheme" Type="Self.SelectedTheme" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="SelectedTheme">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_User_UserType">
+          <End Role="UserType" Type="Self.UserType" Multiplicity="0..1" />
+          <End Role="User" Type="Self.User" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserType">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="User">
+              <PropertyRef Name="UserTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserInfo_User">
+          <End Role="User" Type="Self.User" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="UserInfo" Type="Self.UserInfo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="UserInfo">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="what_ifEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="AchievedGifts" EntityType="Self.AchievedGift" />
+          <EntitySet Name="AchievedPosessions" EntityType="Self.AchievedPosession" />
+          <EntitySet Name="Achievements" EntityType="Self.Achievement" />
+          <EntitySet Name="AchieveStateTypes" EntityType="Self.AchieveStateType" />
+          <EntitySet Name="Answers" EntityType="Self.Answer" />
+          <EntitySet Name="AppThemes" EntityType="Self.AppTheme" />
+          <EntitySet Name="Categories" EntityType="Self.Category" />
+          <EntitySet Name="Comments" EntityType="Self.Comment" />
+          <EntitySet Name="CreatedQuestions" EntityType="Self.CreatedQuestion" />
+          <EntitySet Name="CreatedQuestionsVerifyTypes" EntityType="Self.CreatedQuestionsVerifyType" />
+          <EntitySet Name="Favorites" EntityType="Self.Favorite" />
+          <EntitySet Name="Gifts" EntityType="Self.Gift" />
+          <EntitySet Name="Levels" EntityType="Self.Level" />
+          <EntitySet Name="Manufactures" EntityType="Self.Manufacture" />
+          <EntitySet Name="Orders" EntityType="Self.Order" />
+          <EntitySet Name="OurAdvertisements" EntityType="Self.OurAdvertisement" />
+          <EntitySet Name="PurchaseCategories" EntityType="Self.PurchaseCategory" />
+          <EntitySet Name="PurchaseThemes" EntityType="Self.PurchaseTheme" />
+          <EntitySet Name="Questions" EntityType="Self.Question" />
+          <EntitySet Name="ReportedQuestions" EntityType="Self.ReportedQuestion" />
+          <EntitySet Name="ReportTypes" EntityType="Self.ReportType" />
+          <EntitySet Name="SelectedCategories" EntityType="Self.SelectedCategory" />
+          <EntitySet Name="SelectedThemes" EntityType="Self.SelectedTheme" />
+          <EntitySet Name="Stores" EntityType="Self.Store" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+          <EntitySet Name="Users" EntityType="Self.User" />
+          <EntitySet Name="UserInfoes" EntityType="Self.UserInfo" />
+          <EntitySet Name="UserTypes" EntityType="Self.UserType" />
+          <AssociationSet Name="FK_AchievedGifts_Gift" Association="Self.FK_AchievedGifts_Gift">
+            <End Role="Gift" EntitySet="Gifts" />
+            <End Role="AchievedGifts" EntitySet="AchievedGifts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AchievedGifts_User" Association="Self.FK_AchievedGifts_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="AchievedGifts" EntitySet="AchievedGifts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AchievedQuests_Quest" Association="Self.FK_AchievedQuests_Quest">
+            <End Role="Achievement" EntitySet="Achievements" />
+            <End Role="AchievedPosession" EntitySet="AchievedPosessions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AchievedQuests_User" Association="Self.FK_AchievedQuests_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="AchievedPosession" EntitySet="AchievedPosessions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Achievement_AchieveStateType" Association="Self.FK_Achievement_AchieveStateType">
+            <End Role="AchieveStateType" EntitySet="AchieveStateTypes" />
+            <End Role="Achievement" EntitySet="Achievements" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Answer_Question" Association="Self.FK_Answer_Question">
+            <End Role="Question" EntitySet="Questions" />
+            <End Role="Answer" EntitySet="Answers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Answer_User" Association="Self.FK_Answer_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Answer" EntitySet="Answers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PurchaseTheme_AppTheme" Association="Self.FK_PurchaseTheme_AppTheme">
+            <End Role="AppTheme" EntitySet="AppThemes" />
+            <End Role="PurchaseTheme" EntitySet="PurchaseThemes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SelectedTheme_AppTheme" Association="Self.FK_SelectedTheme_AppTheme">
+            <End Role="AppTheme" EntitySet="AppThemes" />
+            <End Role="SelectedTheme" EntitySet="SelectedThemes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CreatedQuestions_Category" Association="Self.FK_CreatedQuestions_Category">
+            <End Role="Category" EntitySet="Categories" />
+            <End Role="CreatedQuestions" EntitySet="CreatedQuestions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PurchaseCategory_Category" Association="Self.FK_PurchaseCategory_Category">
+            <End Role="Category" EntitySet="Categories" />
+            <End Role="PurchaseCategory" EntitySet="PurchaseCategories" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Question_Category" Association="Self.FK_Question_Category">
+            <End Role="Category" EntitySet="Categories" />
+            <End Role="Question" EntitySet="Questions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SelectedCategory_Category" Association="Self.FK_SelectedCategory_Category">
+            <End Role="Category" EntitySet="Categories" />
+            <End Role="SelectedCategory" EntitySet="SelectedCategories" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Comment_Question" Association="Self.FK_Comment_Question">
+            <End Role="Question" EntitySet="Questions" />
+            <End Role="Comment" EntitySet="Comments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Comment_User" Association="Self.FK_Comment_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Comment" EntitySet="Comments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CreatedQuestions_CreatedQuestionsVerifyType" Association="Self.FK_CreatedQuestions_CreatedQuestionsVerifyType">
+            <End Role="CreatedQuestionsVerifyType" EntitySet="CreatedQuestionsVerifyTypes" />
+            <End Role="CreatedQuestions" EntitySet="CreatedQuestions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CreatedQuestions_User" Association="Self.FK_CreatedQuestions_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="CreatedQuestions" EntitySet="CreatedQuestions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Favorite_Question" Association="Self.FK_Favorite_Question">
+            <End Role="Question" EntitySet="Questions" />
+            <End Role="Favorite" EntitySet="Favorites" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Favorite_User" Association="Self.FK_Favorite_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Favorite" EntitySet="Favorites" />
+          </AssociationSet>
+          <AssociationSet Name="FK_User_Level" Association="Self.FK_User_Level">
+            <End Role="Level" EntitySet="Levels" />
+            <End Role="User" EntitySet="Users" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Manufacture_Question" Association="Self.FK_Manufacture_Question">
+            <End Role="Question" EntitySet="Questions" />
+            <End Role="Manufacture" EntitySet="Manufactures" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Manufacture_User" Association="Self.FK_Manufacture_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Manufacture" EntitySet="Manufactures" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Order_Store" Association="Self.FK_Order_Store">
+            <End Role="Store" EntitySet="Stores" />
+            <End Role="Order" EntitySet="Orders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Order_User" Association="Self.FK_Order_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Order" EntitySet="Orders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PurchaseCategory_User" Association="Self.FK_PurchaseCategory_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="PurchaseCategory" EntitySet="PurchaseCategories" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PurchaseTheme_User" Association="Self.FK_PurchaseTheme_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="PurchaseTheme" EntitySet="PurchaseThemes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ReportedQuestions_Question" Association="Self.FK_ReportedQuestions_Question">
+            <End Role="Question" EntitySet="Questions" />
+            <End Role="ReportedQuestions" EntitySet="ReportedQuestions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ReportedQuestions_ReportType" Association="Self.FK_ReportedQuestions_ReportType">
+            <End Role="ReportType" EntitySet="ReportTypes" />
+            <End Role="ReportedQuestions" EntitySet="ReportedQuestions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ReportedQuestions_User" Association="Self.FK_ReportedQuestions_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="ReportedQuestions" EntitySet="ReportedQuestions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SelectedCategory_User" Association="Self.FK_SelectedCategory_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="SelectedCategory" EntitySet="SelectedCategories" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SelectedTheme_User" Association="Self.FK_SelectedTheme_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="SelectedTheme" EntitySet="SelectedThemes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_User_UserType" Association="Self.FK_User_UserType">
+            <End Role="UserType" EntitySet="UserTypes" />
+            <End Role="User" EntitySet="Users" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserInfo_User" Association="Self.FK_UserInfo_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="UserInfo" EntitySet="UserInfoes" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="WhatItModelStoreContainer" CdmEntityContainer="what_ifEntities">
+          <EntitySetMapping Name="AchievedGifts">
+            <EntityTypeMapping TypeName="WhatItModel.AchievedGift">
+              <MappingFragment StoreEntitySet="AchievedGifts">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="GiftID" ColumnName="GiftID" />
+                <ScalarProperty Name="AchievedDate" ColumnName="AchievedDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AchievedPosessions">
+            <EntityTypeMapping TypeName="WhatItModel.AchievedPosession">
+              <MappingFragment StoreEntitySet="AchievedPosession">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="QuestID" ColumnName="QuestID" />
+                <ScalarProperty Name="AchievedDate" ColumnName="AchievedDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Achievements">
+            <EntityTypeMapping TypeName="WhatItModel.Achievement">
+              <MappingFragment StoreEntitySet="Achievement">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Star" ColumnName="Star" />
+                <ScalarProperty Name="Icon" ColumnName="Icon" />
+                <ScalarProperty Name="RectangleColor" ColumnName="RectangleColor" />
+                <ScalarProperty Name="AchieveStateID" ColumnName="AchieveStateID" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AchieveStateTypes">
+            <EntityTypeMapping TypeName="WhatItModel.AchieveStateType">
+              <MappingFragment StoreEntitySet="AchieveStateType">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Answers">
+            <EntityTypeMapping TypeName="WhatItModel.Answer">
+              <MappingFragment StoreEntitySet="Answer">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="QuestionID" ColumnName="QuestionID" />
+                <ScalarProperty Name="Liked" ColumnName="Liked" />
+                <ScalarProperty Name="Dislike" ColumnName="Dislike" />
+                <ScalarProperty Name="YesNoState" ColumnName="YesNoState" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AppThemes">
+            <EntityTypeMapping TypeName="WhatItModel.AppTheme">
+              <MappingFragment StoreEntitySet="AppTheme">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ShortDesciption" ColumnName="ShortDesciption" />
+                <ScalarProperty Name="LongDescription" ColumnName="LongDescription" />
+                <ScalarProperty Name="SquareColor" ColumnName="SquareColor" />
+                <ScalarProperty Name="CircleColor" ColumnName="CircleColor" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="Style" ColumnName="Style" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Categories">
+            <EntityTypeMapping TypeName="WhatItModel.Category">
+              <MappingFragment StoreEntitySet="Category">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ShortDescription" ColumnName="ShortDescription" />
+                <ScalarProperty Name="LongDescription" ColumnName="LongDescription" />
+                <ScalarProperty Name="SquareColor" ColumnName="SquareColor" />
+                <ScalarProperty Name="CircleColor" ColumnName="CircleColor" />
+                <ScalarProperty Name="RectangleColor" ColumnName="RectangleColor" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Comments">
+            <EntityTypeMapping TypeName="WhatItModel.Comment">
+              <MappingFragment StoreEntitySet="Comment">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="QuestionID" ColumnName="QuestionID" />
+                <ScalarProperty Name="Comment1" ColumnName="Comment" />
+                <ScalarProperty Name="Answer" ColumnName="Answer" />
+                <ScalarProperty Name="IsVerified" ColumnName="IsVerified" />
+                <ScalarProperty Name="InsertDate" ColumnName="InsertDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CreatedQuestions">
+            <EntityTypeMapping TypeName="WhatItModel.CreatedQuestion">
+              <MappingFragment StoreEntitySet="CreatedQuestions">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="What_if" ColumnName="What_if" />
+                <ScalarProperty Name="But" ColumnName="But" />
+                <ScalarProperty Name="RegisterDateTime" ColumnName="RegisterDateTime" />
+                <ScalarProperty Name="VerifyStateID" ColumnName="VerifyStateID" />
+                <ScalarProperty Name="CategoryID" ColumnName="CategoryID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CreatedQuestionsVerifyTypes">
+            <EntityTypeMapping TypeName="WhatItModel.CreatedQuestionsVerifyType">
+              <MappingFragment StoreEntitySet="CreatedQuestionsVerifyType">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="VerifyName" ColumnName="VerifyName" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Favorites">
+            <EntityTypeMapping TypeName="WhatItModel.Favorite">
+              <MappingFragment StoreEntitySet="Favorite">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="QuestionID" ColumnName="QuestionID" />
+                <ScalarProperty Name="SelectedDate" ColumnName="SelectedDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Gifts">
+            <EntityTypeMapping TypeName="WhatItModel.Gift">
+              <MappingFragment StoreEntitySet="Gift">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Star" ColumnName="Star" />
+                <ScalarProperty Name="Icon" ColumnName="Icon" />
+                <ScalarProperty Name="RectangleColor" ColumnName="RectangleColor" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Levels">
+            <EntityTypeMapping TypeName="WhatItModel.Level">
+              <MappingFragment StoreEntitySet="Level">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Star" ColumnName="Star" />
+                <ScalarProperty Name="TotalQuestion" ColumnName="TotalQuestion" />
+                <ScalarProperty Name="Avatar" ColumnName="Avatar" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Manufactures">
+            <EntityTypeMapping TypeName="WhatItModel.Manufacture">
+              <MappingFragment StoreEntitySet="Manufacture">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="QuestionID" ColumnName="QuestionID" />
+                <ScalarProperty Name="InsertedDate" ColumnName="InsertedDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Orders">
+            <EntityTypeMapping TypeName="WhatItModel.Order">
+              <MappingFragment StoreEntitySet="Order">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="StoreItemID" ColumnName="StoreItemID" />
+                <ScalarProperty Name="OrderDate" ColumnName="OrderDate" />
+                <ScalarProperty Name="OrderKey" ColumnName="OrderKey" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="OurAdvertisements">
+            <EntityTypeMapping TypeName="WhatItModel.OurAdvertisement">
+              <MappingFragment StoreEntitySet="OurAdvertisements">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ShortDescription" ColumnName="ShortDescription" />
+                <ScalarProperty Name="LongDescription" ColumnName="LongDescription" />
+                <ScalarProperty Name="RectangleColor" ColumnName="RectangleColor" />
+                <ScalarProperty Name="AppStoresLink" ColumnName="AppStoresLink" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PurchaseCategories">
+            <EntityTypeMapping TypeName="WhatItModel.PurchaseCategory">
+              <MappingFragment StoreEntitySet="PurchaseCategory">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="CategoryID" ColumnName="CategoryID" />
+                <ScalarProperty Name="PurchaseDate" ColumnName="PurchaseDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PurchaseThemes">
+            <EntityTypeMapping TypeName="WhatItModel.PurchaseTheme">
+              <MappingFragment StoreEntitySet="PurchaseTheme">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="ThemeID" ColumnName="ThemeID" />
+                <ScalarProperty Name="PurchaseDate" ColumnName="PurchaseDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Questions">
+            <EntityTypeMapping TypeName="WhatItModel.Question">
+              <MappingFragment StoreEntitySet="Question">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="What_if" ColumnName="What_if" />
+                <ScalarProperty Name="But" ColumnName="But" />
+                <ScalarProperty Name="Catgory_ID" ColumnName="Catgory_ID" />
+                <ScalarProperty Name="Yes_Count" ColumnName="Yes_Count" />
+                <ScalarProperty Name="No_Count" ColumnName="No_Count" />
+                <ScalarProperty Name="Like_Count" ColumnName="Like_Count" />
+                <ScalarProperty Name="Dislike_Count" ColumnName="Dislike_Count" />
+                <ScalarProperty Name="Weight" ColumnName="Weight" />
+                <ScalarProperty Name="CreatorID" ColumnName="CreatorID" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
+                <ScalarProperty Name="Banned" ColumnName="Banned" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ReportedQuestions">
+            <EntityTypeMapping TypeName="WhatItModel.ReportedQuestion">
+              <MappingFragment StoreEntitySet="ReportedQuestions">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="QuestionID" ColumnName="QuestionID" />
+                <ScalarProperty Name="ReportTypeID" ColumnName="ReportTypeID" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ReportTypes">
+            <EntityTypeMapping TypeName="WhatItModel.ReportType">
+              <MappingFragment StoreEntitySet="ReportType">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SelectedCategories">
+            <EntityTypeMapping TypeName="WhatItModel.SelectedCategory">
+              <MappingFragment StoreEntitySet="SelectedCategory">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="CategoryID" ColumnName="CategoryID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SelectedThemes">
+            <EntityTypeMapping TypeName="WhatItModel.SelectedTheme">
+              <MappingFragment StoreEntitySet="SelectedTheme">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="AppThemeID" ColumnName="AppThemeID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Stores">
+            <EntityTypeMapping TypeName="WhatItModel.Store">
+              <MappingFragment StoreEntitySet="Store">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Star" ColumnName="Star" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="Icon" ColumnName="Icon" />
+                <ScalarProperty Name="RectangleColor" ColumnName="RectangleColor" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="WhatItModel.sysdiagram">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="WhatItModel.User">
+              <MappingFragment StoreEntitySet="User">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="UUID" ColumnName="UUID" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="UserTypeID" ColumnName="UserTypeID" />
+                <ScalarProperty Name="TotalStars" ColumnName="TotalStars" />
+                <ScalarProperty Name="LastSceneDateTime" ColumnName="LastSceneDateTime" />
+                <ScalarProperty Name="LevelAnsweredNumber" ColumnName="LevelAnsweredNumber" />
+                <ScalarProperty Name="CurrentLevelID" ColumnName="CurrentLevelID" />
+                <ScalarProperty Name="IsAbleToWriteComment" ColumnName="IsAbleToWriteComment" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserInfoes">
+            <EntityTypeMapping TypeName="WhatItModel.UserInfo">
+              <MappingFragment StoreEntitySet="UserInfo">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+                <ScalarProperty Name="GoogleID" ColumnName="GoogleID" />
+                <ScalarProperty Name="IsVerified" ColumnName="IsVerified" />
+                <ScalarProperty Name="IsBanned" ColumnName="IsBanned" />
+                <ScalarProperty Name="RegisterDateTime" ColumnName="RegisterDateTime" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserTypes">
+            <EntityTypeMapping TypeName="WhatItModel.UserType">
+              <MappingFragment StoreEntitySet="UserType">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

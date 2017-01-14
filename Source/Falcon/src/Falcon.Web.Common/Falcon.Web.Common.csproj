@@ -57,6 +57,16 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Falcon.Common\Falcon.Common.csproj">
+      <Project>{812a4275-7afa-43df-b581-74d68445db94}</Project>
+      <Name>Falcon.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Falcon.Data\Falcon.Data.csproj">
+      <Project>{551add74-592a-4b33-b629-2f35886d6e1d}</Project>
+      <Name>Falcon.Data</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

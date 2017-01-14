@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="785b9aa676c04ec19b49d5569f17e8dd" Name="Diagram1">
+        <EntityTypeShape EntityType="WhatItModel.AchievedGift" Width="1.5" PointX="5.25" PointY="23.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="WhatItModel.AchievedPosession" Width="1.5" PointX="5.25" PointY="20.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="WhatItModel.Achievement" Width="1.5" PointX="3" PointY="16" IsExpanded="true" />
+        <EntityTypeShape EntityType="WhatItModel.AchieveStateType" Width="1.5" PointX="0.75" PointY="16.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WhatItModel.Answer" Width="1.5" PointX="8.25" PointY="23.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="WhatItModel.AppTheme" Width="1.5" PointX="9" PointY="38" IsExpanded="true" />
+        <EntityTypeShape EntityType="WhatItModel.Category" Width="1.5" PointX="6.75" PointY="12.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="WhatItModel.Comment" Width="1.5" PointX="5.25" PointY="27.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="WhatItModel.CreatedQuestion" Width="1.5" PointX="8.25" PointY="19.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="WhatItModel.CreatedQuestionsVerifyType" Width="1.5" PointX="6" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WhatItModel.Favorite" Width="1.5" PointX="8.25" PointY="27.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="WhatItModel.Gift" Width="1.5" PointX="3" PointY="29.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="WhatItModel.Level" Width="1.5" PointX="0.75" PointY="23.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="WhatItModel.Manufacture" Width="1.5" PointX="5.25" PointY="17.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="WhatItModel.Order" Width="1.5" PointX="11.25" PointY="23.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="WhatItModel.OurAdvertisement" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WhatItModel.PurchaseCategory" Width="1.5" PointX="11.25" PointY="20.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="WhatItModel.PurchaseTheme" Width="1.5" PointX="11.25" PointY="26.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="WhatItModel.Question" Width="1.5" PointX="9" PointY="12" IsExpanded="true" />
+        <EntityTypeShape EntityType="WhatItModel.ReportedQuestion" Width="1.5" PointX="11.25" PointY="16.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="WhatItModel.ReportType" Width="1.5" PointX="9" PointY="9.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="WhatItModel.SelectedCategory" Width="1.5" PointX="11.25" PointY="29.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="WhatItModel.SelectedTheme" Width="1.5" PointX="8.25" PointY="30.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="WhatItModel.Store" Width="1.5" PointX="9" PointY="34.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="WhatItModel.sysdiagram" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WhatItModel.User" Width="1.5" PointX="3" PointY="21.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WhatItModel.UserInfo" Width="1.5" PointX="5.25" PointY="63.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="WhatItModel.UserType" Width="1.5" PointX="0.75" PointY="20.75" IsExpanded="true" />
+        <AssociationConnector Association="WhatItModel.FK_AchievedGifts_Gift" ManuallyRouted="false" />
+        <AssociationConnector Association="WhatItModel.FK_AchievedGifts_User" ManuallyRouted="false" />
+        <AssociationConnector Association="WhatItModel.FK_AchievedQuests_Quest" ManuallyRouted="false" />
+        <AssociationConnector Association="WhatItModel.FK_AchievedQuests_User" ManuallyRouted="false" />
+        <AssociationConnector Association="WhatItModel.FK_Achievement_AchieveStateType" ManuallyRouted="false" />
+        <AssociationConnector Association="WhatItModel.FK_Answer_Question" ManuallyRouted="false" />
+        <AssociationConnector Association="WhatItModel.FK_Answer_User" ManuallyRouted="false" />
+        <AssociationConnector Association="WhatItModel.FK_PurchaseTheme_AppTheme" ManuallyRouted="false" />
+        <AssociationConnector Association="WhatItModel.FK_SelectedTheme_AppTheme" ManuallyRouted="false" />
+        <AssociationConnector Association="WhatItModel.FK_CreatedQuestions_Category" ManuallyRouted="false" />
+        <AssociationConnector Association="WhatItModel.FK_PurchaseCategory_Category" ManuallyRouted="false" />
+        <AssociationConnector Association="WhatItModel.FK_Question_Category" ManuallyRouted="false" />
+        <AssociationConnector Association="WhatItModel.FK_SelectedCategory_Category" ManuallyRouted="false" />
+        <AssociationConnector Association="WhatItModel.FK_Comment_Question" ManuallyRouted="false" />
+        <AssociationConnector Association="WhatItModel.FK_Comment_User" ManuallyRouted="false" />
+        <AssociationConnector Association="WhatItModel.FK_CreatedQuestions_CreatedQuestionsVerifyType" ManuallyRouted="false" />
+        <AssociationConnector Association="WhatItModel.FK_CreatedQuestions_User" ManuallyRouted="false" />
+        <AssociationConnector Association="WhatItModel.FK_Favorite_Question" ManuallyRouted="false" />
+        <AssociationConnector Association="WhatItModel.FK_Favorite_User" ManuallyRouted="false" />
+        <AssociationConnector Association="WhatItModel.FK_User_Level" ManuallyRouted="false" />
+        <AssociationConnector Association="WhatItModel.FK_Manufacture_Question" ManuallyRouted="false" />
+        <AssociationConnector Association="WhatItModel.FK_Manufacture_User" ManuallyRouted="false" />
+        <AssociationConnector Association="WhatItModel.FK_Order_Store" ManuallyRouted="false" />
+        <AssociationConnector Association="WhatItModel.FK_Order_User" ManuallyRouted="false" />
+        <AssociationConnector Association="WhatItModel.FK_PurchaseCategory_User" ManuallyRouted="false" />
+        <AssociationConnector Association="WhatItModel.FK_PurchaseTheme_User" ManuallyRouted="false" />
+        <AssociationConnector Association="WhatItModel.FK_ReportedQuestions_Question" ManuallyRouted="false" />
+        <AssociationConnector Association="WhatItModel.FK_ReportedQuestions_ReportType" ManuallyRouted="false" />
+        <AssociationConnector Association="WhatItModel.FK_ReportedQuestions_User" ManuallyRouted="false" />
+        <AssociationConnector Association="WhatItModel.FK_SelectedCategory_User" ManuallyRouted="false" />
+        <AssociationConnector Association="WhatItModel.FK_SelectedTheme_User" ManuallyRouted="false" />
+        <AssociationConnector Association="WhatItModel.FK_User_UserType" ManuallyRouted="false" />
+        <AssociationConnector Association="WhatItModel.FK_UserInfo_User" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
