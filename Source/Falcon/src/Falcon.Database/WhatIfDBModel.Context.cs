@@ -13,11 +13,13 @@ namespace Falcon.Database
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class what_ifEntities : DbContext
+    public partial class DBEntity : DbContext
     {
-        public what_ifEntities()
-            : base("name=what_ifEntities")
+        public DBEntity()
+            : base("name=DBEntity")
         {
+            this.Configuration.LazyLoadingEnabled = false;
+            this.Configuration.ProxyCreationEnabled = false; 
         }
     
         protected override void OnModelCreating(DbModelBuilder modelBuilder)

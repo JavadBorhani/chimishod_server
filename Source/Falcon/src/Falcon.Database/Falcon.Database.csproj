@@ -52,104 +52,104 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AchievedGift.cs">
-      <DependentUpon>WhatIfDataModelShared.tt</DependentUpon>
+      <DependentUpon>WhatIfDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="AchievedPosession.cs">
-      <DependentUpon>WhatIfDataModelShared.tt</DependentUpon>
+      <DependentUpon>WhatIfDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Achievement.cs">
-      <DependentUpon>WhatIfDataModelShared.tt</DependentUpon>
+      <DependentUpon>WhatIfDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="AchieveStateType.cs">
-      <DependentUpon>WhatIfDataModelShared.tt</DependentUpon>
+      <DependentUpon>WhatIfDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Answer.cs">
-      <DependentUpon>WhatIfDataModelShared.tt</DependentUpon>
+      <DependentUpon>WhatIfDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="AppTheme.cs">
-      <DependentUpon>WhatIfDataModelShared.tt</DependentUpon>
+      <DependentUpon>WhatIfDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Category.cs">
-      <DependentUpon>WhatIfDataModelShared.tt</DependentUpon>
+      <DependentUpon>WhatIfDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Comment.cs">
-      <DependentUpon>WhatIfDataModelShared.tt</DependentUpon>
+      <DependentUpon>WhatIfDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="CreatedQuestion.cs">
-      <DependentUpon>WhatIfDataModelShared.tt</DependentUpon>
+      <DependentUpon>WhatIfDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="CreatedQuestionsVerifyType.cs">
-      <DependentUpon>WhatIfDataModelShared.tt</DependentUpon>
+      <DependentUpon>WhatIfDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Favorite.cs">
-      <DependentUpon>WhatIfDataModelShared.tt</DependentUpon>
+      <DependentUpon>WhatIfDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Gift.cs">
-      <DependentUpon>WhatIfDataModelShared.tt</DependentUpon>
+      <DependentUpon>WhatIfDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Level.cs">
-      <DependentUpon>WhatIfDataModelShared.tt</DependentUpon>
+      <DependentUpon>WhatIfDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Manufacture.cs">
-      <DependentUpon>WhatIfDataModelShared.tt</DependentUpon>
+      <DependentUpon>WhatIfDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Order.cs">
-      <DependentUpon>WhatIfDataModelShared.tt</DependentUpon>
+      <DependentUpon>WhatIfDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="OurAdvertisement.cs">
-      <DependentUpon>WhatIfDataModelShared.tt</DependentUpon>
+      <DependentUpon>WhatIfDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PurchaseCategory.cs">
-      <DependentUpon>WhatIfDataModelShared.tt</DependentUpon>
+      <DependentUpon>WhatIfDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="PurchaseTheme.cs">
-      <DependentUpon>WhatIfDataModelShared.tt</DependentUpon>
+      <DependentUpon>WhatIfDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Question.cs">
-      <DependentUpon>WhatIfDataModelShared.tt</DependentUpon>
+      <DependentUpon>WhatIfDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="ReportedQuestion.cs">
-      <DependentUpon>WhatIfDataModelShared.tt</DependentUpon>
+      <DependentUpon>WhatIfDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="ReportType.cs">
-      <DependentUpon>WhatIfDataModelShared.tt</DependentUpon>
+      <DependentUpon>WhatIfDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="SelectedCategory.cs">
-      <DependentUpon>WhatIfDataModelShared.tt</DependentUpon>
+      <DependentUpon>WhatIfDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="SelectedTheme.cs">
-      <DependentUpon>WhatIfDataModelShared.tt</DependentUpon>
+      <DependentUpon>WhatIfDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Store.cs">
-      <DependentUpon>WhatIfDataModelShared.tt</DependentUpon>
+      <DependentUpon>WhatIfDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="sysdiagram.cs">
-      <DependentUpon>WhatIfDataModelShared.tt</DependentUpon>
+      <DependentUpon>WhatIfDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="User.cs">
-      <DependentUpon>WhatIfDataModelShared.tt</DependentUpon>
+      <DependentUpon>WhatIfDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="UserInfo.cs">
-      <DependentUpon>WhatIfDataModelShared.tt</DependentUpon>
+      <DependentUpon>WhatIfDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="UserType.cs">
-      <DependentUpon>WhatIfDataModelShared.tt</DependentUpon>
+      <DependentUpon>WhatIfDBModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="WhatIfDataModelShared.Context.cs">
+    <Compile Include="WhatIfDBModel.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>WhatIfDataModelShared.Context.tt</DependentUpon>
+      <DependentUpon>WhatIfDBModel.Context.tt</DependentUpon>
     </Compile>
-    <Compile Include="WhatIfDataModelShared.cs">
+    <Compile Include="WhatIfDBModel.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>WhatIfDataModelShared.tt</DependentUpon>
+      <DependentUpon>WhatIfDBModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="WhatIfDataModelShared.Designer.cs">
+    <Compile Include="WhatIfDBModel.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>WhatIfDataModelShared.edmx</DependentUpon>
+      <DependentUpon>WhatIfDBModel.edmx</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -163,32 +163,30 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EntityDeploy Include="WhatIfDataModelShared.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>WhatIfDataModelShared.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="App.Config" />
     <None Include="packages.config" />
-    <None Include="WhatIfDataModelShared.edmx.diagram">
-      <DependentUpon>WhatIfDataModelShared.edmx</DependentUpon>
+    <EntityDeploy Include="WhatIfDBModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>WhatIfDBModel.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="WhatIfDBModel.edmx.diagram">
+      <DependentUpon>WhatIfDBModel.edmx</DependentUpon>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="WhatIfDataModelShared.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>WhatIfDataModelShared.Context.cs</LastGenOutput>
-      <DependentUpon>WhatIfDataModelShared.edmx</DependentUpon>
-    </Content>
-    <Content Include="WhatIfDataModelShared.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>WhatIfDataModelShared.edmx</DependentUpon>
-      <LastGenOutput>WhatIfDataModelShared.cs</LastGenOutput>
-    </Content>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+    <Content Include="WhatIfDBModel.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>WhatIfDBModel.edmx</DependentUpon>
+      <LastGenOutput>WhatIfDBModel.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="WhatIfDBModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>WhatIfDBModel.edmx</DependentUpon>
+      <LastGenOutput>WhatIfDBModel.cs</LastGenOutput>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

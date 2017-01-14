@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="WhatItModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="DBAllModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="AchievedGifts">
           <Key>
             <PropertyRef Name="ID" />
@@ -765,7 +765,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="WhatItModelStoreContainer">
+        <EntityContainer Name="DBAllModelStoreContainer">
           <EntitySet Name="AchievedGifts" EntityType="Self.AchievedGifts" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AchievedPosession" EntityType="Self.AchievedPosession" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Achievement" EntityType="Self.Achievement" Schema="dbo" store:Type="Tables" />
@@ -931,7 +931,7 @@
     </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
-      <Schema Namespace="WhatItModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+      <Schema Namespace="DBAllModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityType Name="AchievedGift">
           <Key>
             <PropertyRef Name="ID" />
@@ -1758,7 +1758,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="what_ifEntities" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="DBEntity" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="AchievedGifts" EntityType="Self.AchievedGift" />
           <EntitySet Name="AchievedPosessions" EntityType="Self.AchievedPosession" />
           <EntitySet Name="Achievements" EntityType="Self.Achievement" />
@@ -1925,9 +1925,9 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="WhatItModelStoreContainer" CdmEntityContainer="what_ifEntities">
+        <EntityContainerMapping StorageEntityContainer="DBAllModelStoreContainer" CdmEntityContainer="DBEntity">
           <EntitySetMapping Name="AchievedGifts">
-            <EntityTypeMapping TypeName="WhatItModel.AchievedGift">
+            <EntityTypeMapping TypeName="DBAllModel.AchievedGift">
               <MappingFragment StoreEntitySet="AchievedGifts">
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
@@ -1937,7 +1937,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="AchievedPosessions">
-            <EntityTypeMapping TypeName="WhatItModel.AchievedPosession">
+            <EntityTypeMapping TypeName="DBAllModel.AchievedPosession">
               <MappingFragment StoreEntitySet="AchievedPosession">
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
@@ -1947,7 +1947,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Achievements">
-            <EntityTypeMapping TypeName="WhatItModel.Achievement">
+            <EntityTypeMapping TypeName="DBAllModel.Achievement">
               <MappingFragment StoreEntitySet="Achievement">
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
@@ -1962,7 +1962,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="AchieveStateTypes">
-            <EntityTypeMapping TypeName="WhatItModel.AchieveStateType">
+            <EntityTypeMapping TypeName="DBAllModel.AchieveStateType">
               <MappingFragment StoreEntitySet="AchieveStateType">
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
@@ -1971,7 +1971,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Answers">
-            <EntityTypeMapping TypeName="WhatItModel.Answer">
+            <EntityTypeMapping TypeName="DBAllModel.Answer">
               <MappingFragment StoreEntitySet="Answer">
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
@@ -1984,7 +1984,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="AppThemes">
-            <EntityTypeMapping TypeName="WhatItModel.AppTheme">
+            <EntityTypeMapping TypeName="DBAllModel.AppTheme">
               <MappingFragment StoreEntitySet="AppTheme">
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
@@ -2000,7 +2000,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Categories">
-            <EntityTypeMapping TypeName="WhatItModel.Category">
+            <EntityTypeMapping TypeName="DBAllModel.Category">
               <MappingFragment StoreEntitySet="Category">
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
@@ -2016,7 +2016,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Comments">
-            <EntityTypeMapping TypeName="WhatItModel.Comment">
+            <EntityTypeMapping TypeName="DBAllModel.Comment">
               <MappingFragment StoreEntitySet="Comment">
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
@@ -2029,7 +2029,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="CreatedQuestions">
-            <EntityTypeMapping TypeName="WhatItModel.CreatedQuestion">
+            <EntityTypeMapping TypeName="DBAllModel.CreatedQuestion">
               <MappingFragment StoreEntitySet="CreatedQuestions">
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
@@ -2042,7 +2042,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="CreatedQuestionsVerifyTypes">
-            <EntityTypeMapping TypeName="WhatItModel.CreatedQuestionsVerifyType">
+            <EntityTypeMapping TypeName="DBAllModel.CreatedQuestionsVerifyType">
               <MappingFragment StoreEntitySet="CreatedQuestionsVerifyType">
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="VerifyName" ColumnName="VerifyName" />
@@ -2051,7 +2051,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Favorites">
-            <EntityTypeMapping TypeName="WhatItModel.Favorite">
+            <EntityTypeMapping TypeName="DBAllModel.Favorite">
               <MappingFragment StoreEntitySet="Favorite">
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
@@ -2061,7 +2061,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Gifts">
-            <EntityTypeMapping TypeName="WhatItModel.Gift">
+            <EntityTypeMapping TypeName="DBAllModel.Gift">
               <MappingFragment StoreEntitySet="Gift">
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
@@ -2075,7 +2075,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Levels">
-            <EntityTypeMapping TypeName="WhatItModel.Level">
+            <EntityTypeMapping TypeName="DBAllModel.Level">
               <MappingFragment StoreEntitySet="Level">
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="Star" ColumnName="Star" />
@@ -2087,7 +2087,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Manufactures">
-            <EntityTypeMapping TypeName="WhatItModel.Manufacture">
+            <EntityTypeMapping TypeName="DBAllModel.Manufacture">
               <MappingFragment StoreEntitySet="Manufacture">
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
@@ -2097,7 +2097,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Orders">
-            <EntityTypeMapping TypeName="WhatItModel.Order">
+            <EntityTypeMapping TypeName="DBAllModel.Order">
               <MappingFragment StoreEntitySet="Order">
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
@@ -2108,7 +2108,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="OurAdvertisements">
-            <EntityTypeMapping TypeName="WhatItModel.OurAdvertisement">
+            <EntityTypeMapping TypeName="DBAllModel.OurAdvertisement">
               <MappingFragment StoreEntitySet="OurAdvertisements">
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
@@ -2122,7 +2122,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="PurchaseCategories">
-            <EntityTypeMapping TypeName="WhatItModel.PurchaseCategory">
+            <EntityTypeMapping TypeName="DBAllModel.PurchaseCategory">
               <MappingFragment StoreEntitySet="PurchaseCategory">
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
@@ -2132,7 +2132,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="PurchaseThemes">
-            <EntityTypeMapping TypeName="WhatItModel.PurchaseTheme">
+            <EntityTypeMapping TypeName="DBAllModel.PurchaseTheme">
               <MappingFragment StoreEntitySet="PurchaseTheme">
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
@@ -2142,7 +2142,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Questions">
-            <EntityTypeMapping TypeName="WhatItModel.Question">
+            <EntityTypeMapping TypeName="DBAllModel.Question">
               <MappingFragment StoreEntitySet="Question">
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="What_if" ColumnName="What_if" />
@@ -2161,7 +2161,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="ReportedQuestions">
-            <EntityTypeMapping TypeName="WhatItModel.ReportedQuestion">
+            <EntityTypeMapping TypeName="DBAllModel.ReportedQuestion">
               <MappingFragment StoreEntitySet="ReportedQuestions">
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
@@ -2172,7 +2172,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="ReportTypes">
-            <EntityTypeMapping TypeName="WhatItModel.ReportType">
+            <EntityTypeMapping TypeName="DBAllModel.ReportType">
               <MappingFragment StoreEntitySet="ReportType">
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
@@ -2181,7 +2181,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="SelectedCategories">
-            <EntityTypeMapping TypeName="WhatItModel.SelectedCategory">
+            <EntityTypeMapping TypeName="DBAllModel.SelectedCategory">
               <MappingFragment StoreEntitySet="SelectedCategory">
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
@@ -2190,7 +2190,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="SelectedThemes">
-            <EntityTypeMapping TypeName="WhatItModel.SelectedTheme">
+            <EntityTypeMapping TypeName="DBAllModel.SelectedTheme">
               <MappingFragment StoreEntitySet="SelectedTheme">
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
@@ -2199,7 +2199,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Stores">
-            <EntityTypeMapping TypeName="WhatItModel.Store">
+            <EntityTypeMapping TypeName="DBAllModel.Store">
               <MappingFragment StoreEntitySet="Store">
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
@@ -2214,7 +2214,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="sysdiagrams">
-            <EntityTypeMapping TypeName="WhatItModel.sysdiagram">
+            <EntityTypeMapping TypeName="DBAllModel.sysdiagram">
               <MappingFragment StoreEntitySet="sysdiagrams">
                 <ScalarProperty Name="name" ColumnName="name" />
                 <ScalarProperty Name="principal_id" ColumnName="principal_id" />
@@ -2225,7 +2225,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Users">
-            <EntityTypeMapping TypeName="WhatItModel.User">
+            <EntityTypeMapping TypeName="DBAllModel.User">
               <MappingFragment StoreEntitySet="User">
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="UUID" ColumnName="UUID" />
@@ -2240,7 +2240,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="UserInfoes">
-            <EntityTypeMapping TypeName="WhatItModel.UserInfo">
+            <EntityTypeMapping TypeName="DBAllModel.UserInfo">
               <MappingFragment StoreEntitySet="UserInfo">
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
@@ -2256,7 +2256,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="UserTypes">
-            <EntityTypeMapping TypeName="WhatItModel.UserType">
+            <EntityTypeMapping TypeName="DBAllModel.UserType">
               <MappingFragment StoreEntitySet="UserType">
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="Name" ColumnName="Name" />

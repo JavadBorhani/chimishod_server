@@ -6,6 +6,7 @@ using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
 using Falcon.Database;
@@ -14,7 +15,7 @@ namespace Falcon.Web.Api.Controllers
 {
     public class UsersController : ApiController
     {
-        private what_ifEntities db = new what_ifEntities();
+        private DBEntity db = new DBEntity();
 
         // GET: api/Users
         public IQueryable<User> GetUsers()
@@ -24,9 +25,10 @@ namespace Falcon.Web.Api.Controllers
 
         // GET: api/Users/5
         [ResponseType(typeof(User))]
-        public IHttpActionResult GetUser(int id)
+        public async Task<IHttpActionResult> GetUser(int id)
         {
-            User user = db.Users.Find(id);
+
+            User user = await db.Users.FindAsync(id);
             if (user == null)
             {
                 return NotFound();
@@ -37,7 +39,7 @@ namespace Falcon.Web.Api.Controllers
 
         // PUT: api/Users/5
         [ResponseType(typeof(void))]
-        public IHttpActionResult PutUser(int id, User user)
+        public async Task<IHttpActionResult> PutUser(int id, User user)
         {
             if (!ModelState.IsValid)
             {
@@ -53,7 +55,7 @@ namespace Falcon.Web.Api.Controllers
 
             try
             {
-                db.SaveChanges();
+                await db.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -72,7 +74,7 @@ namespace Falcon.Web.Api.Controllers
 
         // POST: api/Users
         [ResponseType(typeof(User))]
-        public IHttpActionResult PostUser(User user)
+        public async Task<IHttpActionResult> PostUser(User user)
         {
             if (!ModelState.IsValid)
             {
@@ -80,23 +82,23 @@ namespace Falcon.Web.Api.Controllers
             }
 
             db.Users.Add(user);
-            db.SaveChanges();
+            await db.SaveChangesAsync();
 
             return CreatedAtRoute("DefaultApi", new { id = user.ID }, user);
         }
 
         // DELETE: api/Users/5
         [ResponseType(typeof(User))]
-        public IHttpActionResult DeleteUser(int id)
+        public async Task<IHttpActionResult> DeleteUser(int id)
         {
-            User user = db.Users.Find(id);
+            User user = await db.Users.FindAsync(id);
             if (user == null)
             {
                 return NotFound();
             }
 
             db.Users.Remove(user);
-            db.SaveChanges();
+            await db.SaveChangesAsync();
 
             return Ok(user);
         }
