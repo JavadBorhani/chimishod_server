@@ -11,6 +11,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Falcon.Database", "Falcon.D
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Falcon.Web.Common", "Falcon.Web.Common\Falcon.Web.Common.csproj", "{749D066B-57A0-49E7-8107-4DB2D1CFF935}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Falcon.Web.Api", "Falcon.Web.Api\Falcon.Web.Api.csproj", "{666308FF-9D44-4422-A902-20DF74CD9BA7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Falcon.Web.Site", "Falcon.Web.Site\Falcon.Web.Site.csproj", "{C84F4BBA-969F-429D-9DF2-CD273F930220}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +37,14 @@ Global
 		{749D066B-57A0-49E7-8107-4DB2D1CFF935}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{749D066B-57A0-49E7-8107-4DB2D1CFF935}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{749D066B-57A0-49E7-8107-4DB2D1CFF935}.Release|Any CPU.Build.0 = Release|Any CPU
+		{666308FF-9D44-4422-A902-20DF74CD9BA7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{666308FF-9D44-4422-A902-20DF74CD9BA7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{666308FF-9D44-4422-A902-20DF74CD9BA7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{666308FF-9D44-4422-A902-20DF74CD9BA7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C84F4BBA-969F-429D-9DF2-CD273F930220}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C84F4BBA-969F-429D-9DF2-CD273F930220}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C84F4BBA-969F-429D-9DF2-CD273F930220}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C84F4BBA-969F-429D-9DF2-CD273F930220}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
