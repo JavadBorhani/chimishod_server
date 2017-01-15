@@ -1,15 +1,17 @@
-[assembly: WebActivatorEx.PreApplicationStartMethod(typeof(Falcon.Web.Api.App_Start.NinjectWebCommon), "Start")]
-[assembly: WebActivatorEx.ApplicationShutdownMethodAttribute(typeof(Falcon.Web.Api.App_Start.NinjectWebCommon), "Stop")]
+using System;
+using System.Web;
+using Microsoft.Web.Infrastructure.DynamicModuleHelper;
+using Ninject;
+using Ninject.Web.Common;
+using BM.Web.Common;
+using System.Web.Http;
 
-namespace Falcon.Web.Api.App_Start
+[assembly: WebActivatorEx.PreApplicationStartMethod(typeof(Falcon.Web.Api.NinjectWebCommon), "Start")]
+[assembly: WebActivatorEx.ApplicationShutdownMethodAttribute(typeof(Falcon.Web.Api.NinjectWebCommon), "Stop")]
+
+namespace Falcon.Web.Api
 {
-    using System;
-    using System.Web;
-
-    using Microsoft.Web.Infrastructure.DynamicModuleHelper;
-
-    using Ninject;
-    using Ninject.Web.Common;
+    
 
     public static class NinjectWebCommon 
     {
@@ -22,7 +24,15 @@ namespace Falcon.Web.Api.App_Start
         {
             DynamicModuleUtility.RegisterModule(typeof(OnePerRequestHttpModule));
             DynamicModuleUtility.RegisterModule(typeof(NinjectHttpModule));
-            bootstrapper.Initialize(CreateKernel);
+
+            IKernel container = null; 
+            bootstrapper.Initialize(() =>
+            {
+                container = CreateKernel();
+                return container;
+            });
+            var resolver = new NinjectDependencyResolver(container);
+            GlobalConfiguration.Configuration.DependencyResolver = resolver;
         }
         
         /// <summary>
@@ -61,6 +71,8 @@ namespace Falcon.Web.Api.App_Start
         /// <param name="kernel">The kernel.</param>
         private static void RegisterServices(IKernel kernel)
         {
+            var containerConfigurator = new NinjectConfigurator();
+            containerConfigurator.Configure(kernel);
         }        
     }
 }
