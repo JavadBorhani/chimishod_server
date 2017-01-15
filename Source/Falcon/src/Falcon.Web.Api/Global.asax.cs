@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Falcon.Common.Logging;
+using Falcon.Web.Common;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -11,11 +13,16 @@ namespace Falcon.Web.Api
     {
         protected void Application_Start()
         {
-            //remove xml reading of files
-            //GlobalConfiguration.Configuration.Formatters.JsonFormatter.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
-            //GlobalConfiguration.Configuration.Formatters.Remove(GlobalConfiguration.Configuration.Formatters.XmlFormatter);
-
             GlobalConfiguration.Configure(WebApiConfig.Register);
+        }
+        protected void Application_Error()
+        {
+            var exception = Server.GetLastError();
+            if(exception != null)
+            {
+                var log = WebContainerManager.Get<ILogManager>().GetLog(typeof(WebApiApplication));
+                log.Error("Unhandled exception.", exception); 
+            }
         }
     }
 }
