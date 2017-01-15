@@ -1,22 +1,22 @@
 ﻿using System;
-using System.Web.Http.Tracing;
 using System.Net.Http;
 using log4net;
+using Falcon.Common.Logging;
+using System.Web.Http.Tracing;
 
-
-namespace BM.Web.Common
+namespace Falcon.Web.Common
 {
     
     public class SimpleTraceWriter : ITraceWriter
     {
         private readonly ILog mLog;
 
-        public SimpleTraceWriter(BM.Common.Logging.ILogManager logMananger)
+        public SimpleTraceWriter(ILogManager logMananger)
         {
             mLog = logMananger.GetLog(typeof(SimpleTraceWriter));
         }
 
-        public void Trace(HttpRequestMessage request, string category, System.Web.Http.Tracing.TraceLevel level, Action<TraceRecord> traceAction)
+        public void Trace(HttpRequestMessage request, string category, TraceLevel level, Action<TraceRecord> traceAction)
         {
             var rec = new TraceRecord(request, category, level);
             traceAction(rec);

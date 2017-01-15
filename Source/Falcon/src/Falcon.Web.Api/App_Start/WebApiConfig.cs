@@ -1,9 +1,12 @@
 ﻿using BM.Web.Common.Routing;
+using Falcon.Common.Logging;
+using Falcon.Web.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
 using System.Web.Http.Routing;
+using System.Web.Http.Tracing;
 
 namespace Falcon.Web.Api
 {
@@ -11,8 +14,10 @@ namespace Falcon.Web.Api
     {
         public static void Register(HttpConfiguration config)
         {
-            config.EnableSystemDiagnosticsTracing();
+            
+
             // Web API configuration and services
+
             config.MapHttpAttributeRoutes();
 
             config.Routes.MapHttpRoute(
@@ -20,6 +25,8 @@ namespace Falcon.Web.Api
                 routeTemplate: "api/v1/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
+
+            config.Services.Replace(typeof(ITraceWriter), new SimpleTraceWriter(WebContainerManager.Get<ILogManager>()));
         }
     }
 }
