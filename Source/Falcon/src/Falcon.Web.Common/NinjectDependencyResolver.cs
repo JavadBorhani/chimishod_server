@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web.Http.Dependencies;
 
-namespace BM.Web.Common
+namespace Falcon.Web.Common
 {
     public class NinjectDependencyResolver : IDependencyResolver
     {

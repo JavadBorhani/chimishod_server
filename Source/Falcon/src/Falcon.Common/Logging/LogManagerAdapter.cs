@@ -1,7 +1,7 @@
 ﻿using System;
 using log4net;
 
-namespace BM.Common.Logging
+namespace Falcon.Common.Logging
 {
     public class LogManagerAdapter : ILogManager
     {

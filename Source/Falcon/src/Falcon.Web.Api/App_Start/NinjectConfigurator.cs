@@ -1,11 +1,9 @@
-﻿using BM.Common.Logging;
+﻿using Falcon.Common.Logging;
 using Falcon.Common;
 using log4net.Config;
 using Ninject;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+using Falcon.Web.Common;
+using Ninject.Web.Common;
 
 namespace Falcon.Web.Api
 {
@@ -30,6 +28,10 @@ namespace Falcon.Web.Api
             var logManager = new LogManagerAdapter();
 
             container.Bind<ILogManager>().ToConstant(logManager);
+        }
+        private void ConfigureEntityFramework(IKernel container)
+        {
+            container.Bind<IActionTransactionHelper>().To<ActionTransactionHelper>().InRequestScope();
         }
 
     }

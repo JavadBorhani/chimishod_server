@@ -11,7 +11,7 @@ using System.Web.Http.Controllers;
 using System.Web.Http.Dispatcher;
 using System.Web.Http.Routing;
 
-namespace BM.Web.Common
+namespace Falcon.Web.Common
 {
     public class NamespaceHttpControllerSelector : IHttpControllerSelector
     {
@@ -67,8 +67,7 @@ namespace BM.Web.Common
             {
                 var segments = controllerType.Namespace.Split(Type.Delimiter);
                 var controllerName =
-                controllerType.Name.Remove(controllerType.Name.Length -
-                DefaultHttpControllerSelector.ControllerSuffix.Length);
+                controllerType.Name.Remove(controllerType.Name.Length - DefaultHttpControllerSelector.ControllerSuffix.Length);
                 var controllerKey = String.Format(CultureInfo.InvariantCulture, "{0}.{1}",
                 segments[segments.Length - 1], controllerName);
 
@@ -98,9 +97,7 @@ namespace BM.Web.Common
             if (subroute == null) return null;
             var dataTokenValue = subroute.Route.DataTokens.First().Value;
             if (dataTokenValue == null) return null;
-            var controllerName =
-            ((HttpActionDescriptor[])dataTokenValue).First()
-            .ControllerDescriptor.ControllerName.Replace("Controller", string.Empty);
+            var controllerName = ((HttpActionDescriptor[])dataTokenValue).First().ControllerDescriptor.ControllerName.Replace("Controller", string.Empty);
             return controllerName;
         }
 

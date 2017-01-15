@@ -2,7 +2,7 @@
 using System;
 
 
-namespace BM.Common.Logging
+namespace Falcon.Common.Logging
 {
     public interface ILogManager
     {
