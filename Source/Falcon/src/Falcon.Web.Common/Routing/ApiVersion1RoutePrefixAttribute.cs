@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Web.Http;
 
-namespace BM.Web.Common.Routing
+namespace Falcon.Web.Common.Routing
 {
     public class ApiVersion1RoutePrefixAttribute : RoutePrefixAttribute
     {

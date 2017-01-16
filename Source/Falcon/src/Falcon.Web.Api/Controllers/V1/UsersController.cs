@@ -10,7 +10,6 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
 using Falcon.Database;
-using BM.Web.Common.Routing;
 
 namespace Falcon.Web.Api.Controllers.V1
 {
@@ -18,10 +17,13 @@ namespace Falcon.Web.Api.Controllers.V1
     {
         private DBEntity db = new DBEntity();
 
+
         // GET: api/Users
         public IQueryable<User> GetUsers()
         {
-            return db.Users;
+            using (db.Database.BeginTransaction())
+
+                return db.Users;
         }
 
         // GET: api/Users/5
