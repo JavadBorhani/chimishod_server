@@ -25,6 +25,13 @@ namespace Falcon.Web.Api
                 defaults: new { id = RouteParameter.Optional }
             );
 
+            config.Routes.MapHttpRoute(
+                name: "UUIDRoute",
+                routeTemplate: "api/v1/{controller}/{UUID}",
+                defaults: new { id = RouteParameter.Optional }
+            );
+
+            //TODO : Comment out in debug mode for error tracing 
             config.Services.Replace(typeof(ITraceWriter), new SimpleTraceWriter(WebContainerManager.Get<ILogManager>()));
             config.Services.Add(typeof(IExceptionLogger), new SimpleExceptionLogger(WebContainerManager.Get<ILogManager>()));
             config.Services.Replace(typeof(IExceptionHandler), new GlobalExceptionHandler());

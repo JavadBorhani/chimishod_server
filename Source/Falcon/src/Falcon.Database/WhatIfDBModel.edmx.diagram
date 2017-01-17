@@ -5,67 +5,67 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="19cc669606c1450c808e88365dfae2a0" Name="Diagram1">
-        <EntityTypeShape EntityType="DBAllModel.AchievedGift" Width="1.5" PointX="5.25" PointY="23.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="DBAllModel.AchievedPosession" Width="1.5" PointX="5.25" PointY="20.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="DBAllModel.Achievement" Width="1.5" PointX="3" PointY="16" IsExpanded="true" />
-        <EntityTypeShape EntityType="DBAllModel.AchieveStateType" Width="1.5" PointX="0.75" PointY="16.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="DBAllModel.Answer" Width="1.5" PointX="8.25" PointY="23.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="DBAllModel.AppTheme" Width="1.5" PointX="9" PointY="38" IsExpanded="true" />
-        <EntityTypeShape EntityType="DBAllModel.Category" Width="1.5" PointX="6.75" PointY="12.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="DBAllModel.Comment" Width="1.5" PointX="5.25" PointY="27.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="DBAllModel.CreatedQuestion" Width="1.5" PointX="8.25" PointY="19.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="DBAllModel.CreatedQuestionsVerifyType" Width="1.5" PointX="6" PointY="9.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="DBAllModel.Favorite" Width="1.5" PointX="8.25" PointY="27.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="DBAllModel.Gift" Width="1.5" PointX="3" PointY="29.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="DBAllModel.Level" Width="1.5" PointX="0.75" PointY="23.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="DBAllModel.Manufacture" Width="1.5" PointX="5.25" PointY="17.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="DBAllModel.Order" Width="1.5" PointX="11.25" PointY="23.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="DBAllModel.OurAdvertisement" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="DBAllModel.PurchaseCategory" Width="1.5" PointX="11.25" PointY="20.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="DBAllModel.PurchaseTheme" Width="1.5" PointX="11.25" PointY="26.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="DBAllModel.Question" Width="1.5" PointX="9" PointY="12" IsExpanded="true" />
-        <EntityTypeShape EntityType="DBAllModel.ReportedQuestion" Width="1.5" PointX="11.25" PointY="16.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="DBAllModel.ReportType" Width="1.5" PointX="9" PointY="9.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="DBAllModel.SelectedCategory" Width="1.5" PointX="11.25" PointY="29.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="DBAllModel.SelectedTheme" Width="1.5" PointX="8.25" PointY="30.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="DBAllModel.Store" Width="1.5" PointX="9" PointY="34.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="DBAllModel.sysdiagram" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="DBAllModel.User" Width="1.5" PointX="3" PointY="21.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="DBAllModel.UserInfo" Width="1.5" PointX="5.25" PointY="63.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="DBAllModel.UserType" Width="1.5" PointX="0.75" PointY="20.75" IsExpanded="true" />
-        <AssociationConnector Association="DBAllModel.FK_AchievedGifts_Gift" ManuallyRouted="false" />
-        <AssociationConnector Association="DBAllModel.FK_AchievedGifts_User" ManuallyRouted="false" />
-        <AssociationConnector Association="DBAllModel.FK_AchievedQuests_Quest" ManuallyRouted="false" />
-        <AssociationConnector Association="DBAllModel.FK_AchievedQuests_User" ManuallyRouted="false" />
-        <AssociationConnector Association="DBAllModel.FK_Achievement_AchieveStateType" ManuallyRouted="false" />
-        <AssociationConnector Association="DBAllModel.FK_Answer_Question" ManuallyRouted="false" />
-        <AssociationConnector Association="DBAllModel.FK_Answer_User" ManuallyRouted="false" />
-        <AssociationConnector Association="DBAllModel.FK_PurchaseTheme_AppTheme" ManuallyRouted="false" />
-        <AssociationConnector Association="DBAllModel.FK_SelectedTheme_AppTheme" ManuallyRouted="false" />
-        <AssociationConnector Association="DBAllModel.FK_CreatedQuestions_Category" ManuallyRouted="false" />
-        <AssociationConnector Association="DBAllModel.FK_PurchaseCategory_Category" ManuallyRouted="false" />
-        <AssociationConnector Association="DBAllModel.FK_Question_Category" ManuallyRouted="false" />
-        <AssociationConnector Association="DBAllModel.FK_SelectedCategory_Category" ManuallyRouted="false" />
-        <AssociationConnector Association="DBAllModel.FK_Comment_Question" ManuallyRouted="false" />
-        <AssociationConnector Association="DBAllModel.FK_Comment_User" ManuallyRouted="false" />
-        <AssociationConnector Association="DBAllModel.FK_CreatedQuestions_CreatedQuestionsVerifyType" ManuallyRouted="false" />
-        <AssociationConnector Association="DBAllModel.FK_CreatedQuestions_User" ManuallyRouted="false" />
-        <AssociationConnector Association="DBAllModel.FK_Favorite_Question" ManuallyRouted="false" />
-        <AssociationConnector Association="DBAllModel.FK_Favorite_User" ManuallyRouted="false" />
-        <AssociationConnector Association="DBAllModel.FK_User_Level" ManuallyRouted="false" />
-        <AssociationConnector Association="DBAllModel.FK_Manufacture_Question" ManuallyRouted="false" />
-        <AssociationConnector Association="DBAllModel.FK_Manufacture_User" ManuallyRouted="false" />
-        <AssociationConnector Association="DBAllModel.FK_Order_Store" ManuallyRouted="false" />
-        <AssociationConnector Association="DBAllModel.FK_Order_User" ManuallyRouted="false" />
-        <AssociationConnector Association="DBAllModel.FK_PurchaseCategory_User" ManuallyRouted="false" />
-        <AssociationConnector Association="DBAllModel.FK_PurchaseTheme_User" ManuallyRouted="false" />
-        <AssociationConnector Association="DBAllModel.FK_ReportedQuestions_Question" ManuallyRouted="false" />
-        <AssociationConnector Association="DBAllModel.FK_ReportedQuestions_ReportType" ManuallyRouted="false" />
-        <AssociationConnector Association="DBAllModel.FK_ReportedQuestions_User" ManuallyRouted="false" />
-        <AssociationConnector Association="DBAllModel.FK_SelectedCategory_User" ManuallyRouted="false" />
-        <AssociationConnector Association="DBAllModel.FK_SelectedTheme_User" ManuallyRouted="false" />
-        <AssociationConnector Association="DBAllModel.FK_User_UserType" ManuallyRouted="false" />
-        <AssociationConnector Association="DBAllModel.FK_UserInfo_User" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="DBAllModel.AchievedGift" Width="1.5" PointX="11.25" PointY="16.5" />
+        <EntityTypeShape EntityType="DBAllModel.AchievedPosession" Width="1.5" PointX="11.25" PointY="19.5" />
+        <EntityTypeShape EntityType="DBAllModel.Achievement" Width="1.5" PointX="9" PointY="11" />
+        <EntityTypeShape EntityType="DBAllModel.AchieveStateType" Width="1.5" PointX="6.75" PointY="11.75" />
+        <EntityTypeShape EntityType="DBAllModel.Answer" Width="1.5" PointX="8.25" PointY="23.25" />
+        <EntityTypeShape EntityType="DBAllModel.AppTheme" Width="1.5" PointX="3" PointY="17" />
+        <EntityTypeShape EntityType="DBAllModel.Category" Width="1.5" PointX="6" PointY="6.5" />
+        <EntityTypeShape EntityType="DBAllModel.Comment" Width="1.5" PointX="11.25" PointY="23.25" />
+        <EntityTypeShape EntityType="DBAllModel.CreatedQuestion" Width="1.5" PointX="8.25" PointY="19.125" />
+        <EntityTypeShape EntityType="DBAllModel.CreatedQuestionsVerifyType" Width="1.5" PointX="6" PointY="15" />
+        <EntityTypeShape EntityType="DBAllModel.Favorite" Width="1.5" PointX="11.25" PointY="30.5" />
+        <EntityTypeShape EntityType="DBAllModel.Gift" Width="1.5" PointX="9" PointY="15.25" />
+        <EntityTypeShape EntityType="DBAllModel.Level" Width="1.5" PointX="0.75" PointY="23.375" />
+        <EntityTypeShape EntityType="DBAllModel.Manufacture" Width="1.5" PointX="5.25" PointY="23.5" />
+        <EntityTypeShape EntityType="DBAllModel.Order" Width="1.5" PointX="8.25" PointY="30.375" />
+        <EntityTypeShape EntityType="DBAllModel.OurAdvertisement" Width="1.5" PointX="0.75" PointY="0.75" />
+        <EntityTypeShape EntityType="DBAllModel.PurchaseCategory" Width="1.5" PointX="5.25" PointY="20.5" />
+        <EntityTypeShape EntityType="DBAllModel.PurchaseTheme" Width="1.5" PointX="5.25" PointY="17.5" />
+        <EntityTypeShape EntityType="DBAllModel.Question" Width="1.5" PointX="6" PointY="31.25" />
+        <EntityTypeShape EntityType="DBAllModel.ReportedQuestion" Width="1.5" PointX="5.25" PointY="27.375" />
+        <EntityTypeShape EntityType="DBAllModel.ReportType" Width="1.5" PointX="3" PointY="28.75" />
+        <EntityTypeShape EntityType="DBAllModel.SelectedCategory" Width="1.5" PointX="8.25" PointY="27.625" />
+        <EntityTypeShape EntityType="DBAllModel.SelectedTheme" Width="1.5" PointX="11.25" PointY="27.625" />
+        <EntityTypeShape EntityType="DBAllModel.Store" Width="1.5" PointX="6" PointY="37.125" />
+        <EntityTypeShape EntityType="DBAllModel.sysdiagram" Width="1.5" PointX="2.75" PointY="0.75" />
+        <EntityTypeShape EntityType="DBAllModel.User" Width="1.5" PointX="3" PointY="21.75" />
+        <EntityTypeShape EntityType="DBAllModel.UserInfo" Width="1.5" PointX="5.25" PointY="63.125" />
+        <EntityTypeShape EntityType="DBAllModel.UserType" Width="1.5" PointX="0.75" PointY="20.75" />
+        <AssociationConnector Association="DBAllModel.FK_AchievedGifts_Gift" />
+        <AssociationConnector Association="DBAllModel.FK_AchievedGifts_User" />
+        <AssociationConnector Association="DBAllModel.FK_AchievedQuests_Quest" />
+        <AssociationConnector Association="DBAllModel.FK_AchievedQuests_User" />
+        <AssociationConnector Association="DBAllModel.FK_Achievement_AchieveStateType" />
+        <AssociationConnector Association="DBAllModel.FK_Answer_Question" />
+        <AssociationConnector Association="DBAllModel.FK_Answer_User" />
+        <AssociationConnector Association="DBAllModel.FK_PurchaseTheme_AppTheme" />
+        <AssociationConnector Association="DBAllModel.FK_SelectedTheme_AppTheme" />
+        <AssociationConnector Association="DBAllModel.FK_CreatedQuestions_Category" />
+        <AssociationConnector Association="DBAllModel.FK_PurchaseCategory_Category" />
+        <AssociationConnector Association="DBAllModel.FK_Question_Category" />
+        <AssociationConnector Association="DBAllModel.FK_SelectedCategory_Category" />
+        <AssociationConnector Association="DBAllModel.FK_Comment_Question" />
+        <AssociationConnector Association="DBAllModel.FK_Comment_User" />
+        <AssociationConnector Association="DBAllModel.FK_CreatedQuestions_CreatedQuestionsVerifyType" />
+        <AssociationConnector Association="DBAllModel.FK_CreatedQuestions_User" />
+        <AssociationConnector Association="DBAllModel.FK_Favorite_Question" />
+        <AssociationConnector Association="DBAllModel.FK_Favorite_User" />
+        <AssociationConnector Association="DBAllModel.FK_User_Level" />
+        <AssociationConnector Association="DBAllModel.FK_Manufacture_Question" />
+        <AssociationConnector Association="DBAllModel.FK_Manufacture_User" />
+        <AssociationConnector Association="DBAllModel.FK_Order_Store" />
+        <AssociationConnector Association="DBAllModel.FK_Order_User" />
+        <AssociationConnector Association="DBAllModel.FK_PurchaseCategory_User" />
+        <AssociationConnector Association="DBAllModel.FK_PurchaseTheme_User" />
+        <AssociationConnector Association="DBAllModel.FK_ReportedQuestions_Question" />
+        <AssociationConnector Association="DBAllModel.FK_ReportedQuestions_ReportType" />
+        <AssociationConnector Association="DBAllModel.FK_ReportedQuestions_User" />
+        <AssociationConnector Association="DBAllModel.FK_SelectedCategory_User" />
+        <AssociationConnector Association="DBAllModel.FK_SelectedTheme_User" />
+        <AssociationConnector Association="DBAllModel.FK_User_UserType" />
+        <AssociationConnector Association="DBAllModel.FK_UserInfo_User" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
