@@ -40,7 +40,16 @@ namespace Falcon.Web.Api.Controllers.V1
                 return NotFound();
             }
 
-            return Ok(answer);
+            var result = new Models.Api.Answer
+            {
+                UserID = answer.UserID,
+                QuestionID = answer.QuestionID,
+                Dislike = answer.Dislike,
+                Liked = answer.Liked,
+                YesNoState = answer.YesNoState,
+                CreatedDate = answer.CreatedDate,
+            };
+            return Ok(result);
         }
 
         // PUT: api/Answers/5
@@ -91,6 +100,11 @@ namespace Falcon.Web.Api.Controllers.V1
                     return BadRequest(ModelState);
                 }
 
+                if(AnswerExists(user.ID , answer.QuestionID))
+                {
+                    return ResponseMessage(Request.CreateResponse(HttpStatusCode.BadRequest));
+                }
+
                 var newAnswer = new Answer
                 {
                     QuestionID = answer.QuestionID,
@@ -102,7 +116,7 @@ namespace Falcon.Web.Api.Controllers.V1
                 };
 
                 db.Answers.Add(newAnswer);
-                
+                await db.SaveChangesAsync();
 
                 var questionToUpdate = db.Questions.Find(answer.QuestionID);
                 if(questionToUpdate != null)
@@ -123,10 +137,9 @@ namespace Falcon.Web.Api.Controllers.V1
                     {
                         ++questionToUpdate.Dislike_Count;
                     }
-                    
+                    await db.SaveChangesAsync();
                 }
-                await db.SaveChangesAsync();
-                return CreatedAtRoute("DefaultApi", new { id = answer.ID }, answer);
+                return Ok();
             }
             return NotFound();
         }
@@ -160,5 +173,10 @@ namespace Falcon.Web.Api.Controllers.V1
         {
             return db.Answers.Count(e => e.ID == id) > 0;
         }
+        private bool AnswerExists(int userID , int questionID)
+        {
+            return db.Answers.Count(e => e.UserID == userID && e.QuestionID == questionID) > 0;
+        }
+
     }
 }
