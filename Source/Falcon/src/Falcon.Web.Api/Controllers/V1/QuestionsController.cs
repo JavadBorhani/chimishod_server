@@ -11,6 +11,7 @@ using System.Web.Http;
 using System.Web.Http.Description;
 using Falcon.Database;
 
+
 namespace Falcon.Web.Api.Controllers.V1
 {
     public class QuestionsController : ApiController
@@ -18,62 +19,99 @@ namespace Falcon.Web.Api.Controllers.V1
         private DBEntity db = new DBEntity();
 
 
-        // GET: api/Questions/5
-        [ResponseType(typeof(Models.Question))]
+        [ResponseType(typeof(Models.Api.Question))]
         [Route("Questions/Question/{UUID}")]
         [HttpGet]
         public  IHttpActionResult GettingQuestion(string uuid)
         {
-            var userID = db.Users.SingleOrDefault(u => u.UUID == uuid).ID;            
-            var result = db.Questions.Where(question => !db.Answers
-                                    .Where( answer => answer.UserID == userID)
-                                    .Select(y => y.ID)
-                                    .ToList().Contains(question.ID))
-                                    .Where(question => question.Banned == false)
-                                    .OrderByDescending(question => question.Weight).Take(1).ToList();
+            var user = db.Users.SingleOrDefault(u => u.UUID == uuid);            
             
+            if(user != null)
+            { 
+                var result = db.Questions.Where(question => question.Banned == false && !db.Answers 
+                                        .Where( answer => answer.UserID == user.ID)
+                                        .Select(y => y.ID)
+                                        .ToList().Contains(question.ID))
+                                        .OrderByDescending(question => question.Weight).Take(1).SingleOrDefault();
 
-            return Ok(result);
+
+
+                var questionModel = new Models.Api.Question
+                {
+                    ID = result.ID,
+                    What_if = result.What_if,
+                    But = result.But,
+                    Catgory_ID = result.Catgory_ID,
+                    Yes_Count = result.Yes_Count ,
+                    No_Count = result.No_Count,
+                    Like_Count = result.Like_Count,
+                    Dislike_Count = result.Dislike_Count,
+                    Weight = result.Weight,
+                    CreatorID = result.CreatorID,
+                    CreatedDate = result.CreatedDate,
+                    UpdateDate = result.UpdateDate,
+                    Banned = result.Banned
+                };
+                return Ok(questionModel);
+            }
+            return NotFound();
+        }
+
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                db.Dispose();
+            }
+            base.Dispose(disposing);
         }
 
         // PUT: api/Questions/5
-        [ResponseType(typeof(void))]
-        public async Task<IHttpActionResult> PutQuestion(int id, Models.Question question)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+        //[ResponseType(typeof(void))]
+        //public async Task<IHttpActionResult> PutQuestion(int id, Models.Api.Question question)
+        //{
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return BadRequest(ModelState);
+        //    }
 
-            if (id != question.ID)
-            {
-                return BadRequest();
-            }
+        //    if (id != question.ID)
+        //    {
+        //        return BadRequest();
+        //    }
 
-            db.Entry(question).State = EntityState.Modified;
+        //    db.Entry(question).State = EntityState.Modified;
 
-            try
-            {
-                await db.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!QuestionExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+        //    try
+        //    {
+        //        await db.SaveChangesAsync();
+        //    }
+        //    catch (DbUpdateConcurrencyException)
+        //    {
+        //        if (!QuestionExists(id))
+        //        {
+        //            return NotFound();
+        //        }
+        //        else
+        //        {
+        //            throw;
+        //        }
+        //    }
 
-            return StatusCode(HttpStatusCode.NoContent);
-        }
+        //    return StatusCode(HttpStatusCode.NoContent);
+        //}
 
-        // POST: api/Questions
+
+
+        //private bool QuestionExists(int id)
+        //{
+        //    return db.Questions.Count(e => e.ID == id) > 0;
+        //}
+
+        //// POST: api/Questions
         //[ResponseType(typeof(Question))]
-        //public async Task<IHttpActionResult> PostQuestion(Models.Question question)
+        //public async Task<IHttpActionResult> PostQuestion(Models.Api.Question question)
         //{
         //    if (!ModelState.IsValid)
         //    {
@@ -93,7 +131,7 @@ namespace Falcon.Web.Api.Controllers.V1
         //            return Conflict();
         //        }
         //        else
-        //        {
+        //        { 
         //            throw;
         //        }
         //    }
@@ -101,34 +139,21 @@ namespace Falcon.Web.Api.Controllers.V1
         //    return CreatedAtRoute("DefaultApi", new { id = question.ID }, question);
         //}
 
-        // DELETE: api/Questions/5
-        [ResponseType(typeof(Models.Question))]
-        public async Task<IHttpActionResult> DeleteQuestion(int id)
-        {
-            Question question = await db.Questions.FindAsync(id);
-            if (question == null)
-            {
-                return NotFound();
-            }
+        //// DELETE: api/Questions/5
+        //[ResponseType(typeof(Models.Api.Question))]
+        //public async Task<IHttpActionResult> DeleteQuestion(int id)
+        //{
+        //    Question question = await db.Questions.FindAsync(id);
+        //    if (question == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            db.Questions.Remove(question);
-            await db.SaveChangesAsync();
+        //    db.Questions.Remove(question);
+        //    await db.SaveChangesAsync();
 
-            return Ok(question);
-        }
+        //    return Ok(question);
+        //}
 
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
-        }
-
-        private bool QuestionExists(int id)
-        {
-            return db.Questions.Count(e => e.ID == id) > 0;
-        }
     }
 }

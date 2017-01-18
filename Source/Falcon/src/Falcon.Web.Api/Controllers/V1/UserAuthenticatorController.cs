@@ -23,14 +23,14 @@ namespace Falcon.Web.Api.Controllers.V1
         }
 
 
-        [ResponseType(typeof(Models.User))]
+        [ResponseType(typeof(Models.Api.User))]
         [Route("UserAuthenticator/UUID/{UUID}")]
         public async Task<IHttpActionResult> GetUser(string UUID)
         {
             var result = db.Users.SingleOrDefault(c => c.UUID == UUID);
             if (result != null)
             {
-                var userModel = new Models.User
+                var userModel = new Models.Api.User
                 {
                     ID = result.ID,
                     UUID = result.UUID,
@@ -58,7 +58,7 @@ namespace Falcon.Web.Api.Controllers.V1
                 UserName = Constants.DefaulUser.UserName,
                 UserTypeID = Constants.DefaulUser.UserTypeID,
                 TotalStars = Constants.DefaulUser.TotalStar,
-                LastSceneDateTime = mDateTime.UtcNow,
+                LastSceneDateTime = mDateTime.Now,
                 LevelAnsweredNumber = Constants.DefaulUser.LevelAnswerdNumber,
                 CurrentLevelID = Constants.DefaulUser.CurrentLevelID,
                 IsAbleToWriteComment = Constants.DefaulUser.IsAbleToWriteComment
@@ -89,7 +89,7 @@ namespace Falcon.Web.Api.Controllers.V1
                 GoogleID = Constants.DefaulUser.GoogleID,
                 IsVerified = Constants.DefaulUser.IsVerified,
                 IsBanned = Constants.DefaulUser.IsBanned,
-                RegisterDateTime = mDateTime.UtcNow
+                RegisterDateTime = mDateTime.Now
             };
 
             db.SelectedThemes.Add(selecetedTheme);
@@ -97,7 +97,7 @@ namespace Falcon.Web.Api.Controllers.V1
             db.UserInfoes.Add(userInfo);
             await db.SaveChangesAsync();
 
-            var userModel = new Models.User
+            var userModel = new Models.Api.User
             {
                 ID = user.ID,
                 UUID = user.UUID,

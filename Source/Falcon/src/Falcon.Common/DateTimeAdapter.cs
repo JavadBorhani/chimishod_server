@@ -8,6 +8,14 @@ namespace Falcon.Common
 {
     public class DateTimeAdapter : IDateTime
     {
+        public DateTime Now
+        {
+            get
+            {
+                return DateTime.Now;
+            }
+        }
+
         public DateTime UtcNow
         {
             get

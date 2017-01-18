@@ -78,7 +78,7 @@ namespace Falcon.Web.Api.Controllers.V1
             return StatusCode(HttpStatusCode.NoContent);
         }
 
-        [Route("/Answers/Answer/{UUID}")]
+        [Route("Answers/Answer/{UUID}")]
         [ResponseType(typeof(Models.Api.Answer))]
         [HttpPost]
         public async Task<IHttpActionResult> PostingAnswer(string UUID, [FromBody] Models.Api.Answer answer)

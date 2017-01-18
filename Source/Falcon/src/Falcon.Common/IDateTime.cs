@@ -9,5 +9,6 @@ namespace Falcon.Common
     public interface IDateTime
     {
         DateTime UtcNow { get; }
+        DateTime Now { get; }
     }
 }

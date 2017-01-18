@@ -124,6 +124,7 @@
     <Compile Include="App_Start\NinjectConfigurator.cs" />
     <Compile Include="App_Start\NinjectWebCommon.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\V1\AnswersController.cs" />
     <Compile Include="Controllers\V1\QuestionsController.cs" />
     <Compile Include="Controllers\V1\UserAuthenticatorController.cs" />
     <Compile Include="Controllers\V1\UsersController.cs" />
