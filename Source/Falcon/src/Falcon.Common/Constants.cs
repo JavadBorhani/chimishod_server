@@ -69,6 +69,17 @@ namespace Falcon.Common
             public const string SeniorWorker = "SeniorWorker";
             public const string JuniorWorker = "JuniorWorker";
         }
-        public const string DefaultLegacyNamespaces = "http://tempuri.org/";
+        public static class DefaultReturnAmounts
+        {
+            public const int Comment = 20;
+            public const int Question = 5;
+            public const int QuestionsToSkip = 2;  
+        }
+        public static class DefaultCommentValues
+        {
+            public const bool DefaultVerify = true;
+            public const string DefaultReponseMessage = null;
+        }
+        public const string DefaultLegacyNamespaces = "http://vglr.ir";
     }
 }

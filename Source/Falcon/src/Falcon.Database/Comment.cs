@@ -18,7 +18,7 @@ namespace Falcon.Database
         public int UserID { get; set; }
         public int QuestionID { get; set; }
         public string Comment1 { get; set; }
-        public string Answer { get; set; }
+        public string Response { get; set; }
         public bool IsVerified { get; set; }
         public System.DateTime InsertDate { get; set; }
     

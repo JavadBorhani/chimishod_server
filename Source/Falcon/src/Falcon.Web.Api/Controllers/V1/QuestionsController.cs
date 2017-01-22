@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
 using Falcon.Database;
-
+using Falcon.Common;
 
 namespace Falcon.Web.Api.Controllers.V1
 {
@@ -32,8 +32,7 @@ namespace Falcon.Web.Api.Controllers.V1
                                         .Where( answer => answer.UserID == user.ID)
                                         .Select(y => y.ID)
                                         .ToList().Contains(question.ID))
-                                        .OrderByDescending(question => question.Weight).Take(1).SingleOrDefault();
-
+                                        .OrderByDescending(question => question.Weight).Take(Constants.DefaultReturnAmounts.Question).SingleOrDefault();
 
 
                 var questionModel = new Models.Api.Question
