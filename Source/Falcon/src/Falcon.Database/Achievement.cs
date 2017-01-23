@@ -26,12 +26,10 @@ namespace Falcon.Database
         public int Star { get; set; }
         public string Icon { get; set; }
         public string RectangleColor { get; set; }
-        public Nullable<int> AchieveStateID { get; set; }
         public System.DateTime CreatedDate { get; set; }
         public System.DateTime UpdatedDate { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<AchievedPosession> AchievedPosessions { get; set; }
-        public virtual AchieveStateType AchieveStateType { get; set; }
     }
 }

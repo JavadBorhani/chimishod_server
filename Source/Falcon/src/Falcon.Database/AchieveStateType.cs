@@ -17,7 +17,7 @@ namespace Falcon.Database
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public AchieveStateType()
         {
-            this.Achievements = new HashSet<Achievement>();
+            this.AchievedPosessions = new HashSet<AchievedPosession>();
         }
     
         public int ID { get; set; }
@@ -25,6 +25,6 @@ namespace Falcon.Database
         public string Description { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Achievement> Achievements { get; set; }
+        public virtual ICollection<AchievedPosession> AchievedPosessions { get; set; }
     }
 }

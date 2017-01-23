@@ -43,7 +43,7 @@ namespace Falcon.Web.Api.Controllers.V1
                     commentList[i] = new Models.Api.Comment
                     {
                         UserName = result[i].User.UserName,
-                        Content = result[i].Comment1,
+                        Content = result[i].CommentContent,
                         Response = result[i].Response,
                         InsertDate = result[i].InsertDate
                     };
@@ -75,7 +75,7 @@ namespace Falcon.Web.Api.Controllers.V1
                 {
                    UserID = user.ID,
                    QuestionID = question.ID,
-                   Comment1 = NewComment.Content,
+                   CommentContent = NewComment.Content,
                    Response = null,
                    IsVerified = false,
                    InsertDate = mDateTime.Now

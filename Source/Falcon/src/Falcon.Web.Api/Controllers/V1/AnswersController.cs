@@ -28,7 +28,7 @@ namespace Falcon.Web.Api.Controllers.V1
         }
 
         // GET: api/Answers/5
-        [ResponseType(typeof(Answer))]
+        [ResponseType(typeof(Models.Api.Answer))]
         public async Task<IHttpActionResult> GetAnswer(int id)
         {
             Answer answer = await db.Answers.FindAsync(id);
@@ -45,6 +45,7 @@ namespace Falcon.Web.Api.Controllers.V1
                 Liked = answer.Liked,
                 YesNoState = answer.YesNoState,
                 CreatedDate = answer.CreatedDate,
+                IsFavorited = true
             };
             return Ok(result);
         }

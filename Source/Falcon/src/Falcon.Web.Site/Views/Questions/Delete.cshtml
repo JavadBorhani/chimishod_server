@@ -1,0 +1,128 @@
+﻿@model Falcon.Database.Question
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Delete</title>
+</head>
+<body>
+    <h3>Are you sure you want to delete this?</h3>
+    <div>
+        <h4>Question</h4>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.What_if)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.What_if)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.But)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.But)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.Yes_Count)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.Yes_Count)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.No_Count)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.No_Count)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.Like_Count)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.Like_Count)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.Dislike_Count)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.Dislike_Count)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.Weight)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.Weight)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.CreatorID)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.CreatorID)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.CreatedDate)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.CreatedDate)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.UpdateDate)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.UpdateDate)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.Banned)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.Banned)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.Category.Name)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.Category.Name)
+            </dd>
+    
+        </dl>
+    
+        @using (Html.BeginForm()) {
+            @Html.AntiForgeryToken()
+    
+            <div class="form-actions no-color">
+                <input type="submit" value="Delete" class="btn btn-default" /> |
+                @Html.ActionLink("Back to List", "Index")
+            </div>
+        }
+    </div>
+</body>
+</html>

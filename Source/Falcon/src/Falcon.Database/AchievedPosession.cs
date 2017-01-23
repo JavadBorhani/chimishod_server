@@ -17,8 +17,10 @@ namespace Falcon.Database
         public int ID { get; set; }
         public int UserID { get; set; }
         public int QuestID { get; set; }
+        public int AchieveStateID { get; set; }
         public System.DateTime AchievedDate { get; set; }
     
+        public virtual AchieveStateType AchieveStateType { get; set; }
         public virtual Achievement Achievement { get; set; }
         public virtual User User { get; set; }
     }

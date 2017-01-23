@@ -81,6 +81,9 @@ namespace Falcon.Common
             public const string CommentDefaultReponseMessage = null;
             public const int FavoriteNumberOfFreeItems = 3;
             public const int FavoriteDefaultPrice = 5;
+            public const int NoQuestionID = -1;
+            public const string NoQuestionWhat = "داداش خوردی سرور ما رو";
+            public const string NoQuestionBut = "سرورمون آب شد";
         }
         public const string DefaultLegacyNamespaces = "http://vglr.ir";
     }

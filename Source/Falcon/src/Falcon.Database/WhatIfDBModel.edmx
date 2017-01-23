@@ -9,7 +9,7 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="UserID" Type="int" Nullable="false" />
           <Property Name="GiftID" Type="int" Nullable="false" />
           <Property Name="AchievedDate" Type="datetime" Nullable="false" />
@@ -18,22 +18,22 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="UserID" Type="int" Nullable="false" />
           <Property Name="QuestID" Type="int" Nullable="false" />
+          <Property Name="AchieveStateID" Type="int" Nullable="false" />
           <Property Name="AchievedDate" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="Achievement">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Description" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="Star" Type="int" Nullable="false" />
           <Property Name="Icon" Type="varchar" MaxLength="150" Nullable="false" />
           <Property Name="RectangleColor" Type="varchar" MaxLength="10" Nullable="false" />
-          <Property Name="AchieveStateID" Type="int" />
           <Property Name="CreatedDate" Type="datetime" Nullable="false" />
           <Property Name="UpdatedDate" Type="datetime" Nullable="false" />
         </EntityType>
@@ -61,7 +61,7 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="ShortDesciption" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="LongDescription" Type="nvarchar" MaxLength="150" Nullable="false" />
@@ -76,7 +76,7 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="ShortDescription" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="LongDescription" Type="nvarchar" MaxLength="150" Nullable="false" />
@@ -94,7 +94,7 @@
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="UserID" Type="int" Nullable="false" />
           <Property Name="QuestionID" Type="int" Nullable="false" />
-          <Property Name="Comment" Type="nvarchar" MaxLength="400" Nullable="false" />
+          <Property Name="CommentContent" Type="nvarchar" MaxLength="400" Nullable="false" />
           <Property Name="Response" Type="nvarchar" MaxLength="200" />
           <Property Name="IsVerified" Type="bit" Nullable="false" />
           <Property Name="InsertDate" Type="datetime" Nullable="false" />
@@ -103,7 +103,7 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="UserID" Type="int" Nullable="false" />
           <Property Name="What_if" Type="nvarchar" MaxLength="250" Nullable="false" />
           <Property Name="But" Type="nvarchar" MaxLength="250" Nullable="false" />
@@ -132,7 +132,7 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Description" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="Star" Type="int" Nullable="false" />
@@ -145,7 +145,7 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Star" Type="int" Nullable="false" />
           <Property Name="TotalQuestion" Type="int" Nullable="false" />
           <Property Name="Avatar" Type="varchar" MaxLength="150" Nullable="false" />
@@ -165,7 +165,7 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="UserID" Type="int" Nullable="false" />
           <Property Name="StoreItemID" Type="int" Nullable="false" />
           <Property Name="OrderDate" Type="datetime" Nullable="false" />
@@ -188,7 +188,7 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="UserID" Type="int" Nullable="false" />
           <Property Name="CategoryID" Type="int" Nullable="false" />
           <Property Name="PurchaseDate" Type="datetime" Nullable="false" />
@@ -206,7 +206,7 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="What_if" Type="nvarchar" MaxLength="250" Nullable="false" />
           <Property Name="But" Type="nvarchar" MaxLength="250" Nullable="false" />
           <Property Name="Catgory_ID" Type="int" Nullable="false" />
@@ -258,7 +258,7 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Description" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="Star" Type="int" Nullable="false" />
@@ -343,6 +343,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_AchievedPosession_AchieveStateType">
+          <End Role="AchieveStateType" Type="Self.AchieveStateType" Multiplicity="1" />
+          <End Role="AchievedPosession" Type="Self.AchievedPosession" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AchieveStateType">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="AchievedPosession">
+              <PropertyRef Name="AchieveStateID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_AchievedQuests_Quest">
           <End Role="Achievement" Type="Self.Achievement" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -368,18 +380,6 @@
             </Principal>
             <Dependent Role="AchievedPosession">
               <PropertyRef Name="UserID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Achievement_AchieveStateType">
-          <End Role="AchieveStateType" Type="Self.AchieveStateType" Multiplicity="0..1" />
-          <End Role="Achievement" Type="Self.Achievement" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AchieveStateType">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="Achievement">
-              <PropertyRef Name="AchieveStateID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -802,6 +802,10 @@
             <End Role="User" EntitySet="User" />
             <End Role="AchievedGifts" EntitySet="AchievedGifts" />
           </AssociationSet>
+          <AssociationSet Name="FK_AchievedPosession_AchieveStateType" Association="Self.FK_AchievedPosession_AchieveStateType">
+            <End Role="AchieveStateType" EntitySet="AchieveStateType" />
+            <End Role="AchievedPosession" EntitySet="AchievedPosession" />
+          </AssociationSet>
           <AssociationSet Name="FK_AchievedQuests_Quest" Association="Self.FK_AchievedQuests_Quest">
             <End Role="Achievement" EntitySet="Achievement" />
             <End Role="AchievedPosession" EntitySet="AchievedPosession" />
@@ -809,10 +813,6 @@
           <AssociationSet Name="FK_AchievedQuests_User" Association="Self.FK_AchievedQuests_User">
             <End Role="User" EntitySet="User" />
             <End Role="AchievedPosession" EntitySet="AchievedPosession" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Achievement_AchieveStateType" Association="Self.FK_Achievement_AchieveStateType">
-            <End Role="AchieveStateType" EntitySet="AchieveStateType" />
-            <End Role="Achievement" EntitySet="Achievement" />
           </AssociationSet>
           <AssociationSet Name="FK_Answer_Question" Association="Self.FK_Answer_Question">
             <End Role="Question" EntitySet="Question" />
@@ -968,6 +968,10 @@
             <End Role="User" EntitySet="Users" />
             <End Role="AchievedGift" EntitySet="AchievedGifts" />
           </AssociationSet>
+          <AssociationSet Name="FK_AchievedPosession_AchieveStateType" Association="DBAllModel.FK_AchievedPosession_AchieveStateType">
+            <End Role="AchieveStateType" EntitySet="AchieveStateTypes" />
+            <End Role="AchievedPosession" EntitySet="AchievedPosessions" />
+          </AssociationSet>
           <AssociationSet Name="FK_AchievedQuests_Quest" Association="DBAllModel.FK_AchievedQuests_Quest">
             <End Role="Achievement" EntitySet="Achievements" />
             <End Role="AchievedPosession" EntitySet="AchievedPosessions" />
@@ -975,10 +979,6 @@
           <AssociationSet Name="FK_AchievedQuests_User" Association="DBAllModel.FK_AchievedQuests_User">
             <End Role="User" EntitySet="Users" />
             <End Role="AchievedPosession" EntitySet="AchievedPosessions" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Achievement_AchieveStateType" Association="DBAllModel.FK_Achievement_AchieveStateType">
-            <End Role="AchieveStateType" EntitySet="AchieveStateTypes" />
-            <End Role="Achievement" EntitySet="Achievements" />
           </AssociationSet>
           <AssociationSet Name="FK_Answer_Question" Association="DBAllModel.FK_Answer_Question">
             <End Role="Question" EntitySet="Questions" />
@@ -1097,7 +1097,7 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="UserID" Type="Int32" Nullable="false" />
           <Property Name="GiftID" Type="Int32" Nullable="false" />
           <Property Name="AchievedDate" Type="DateTime" Nullable="false" Precision="3" />
@@ -1108,10 +1108,12 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="UserID" Type="Int32" Nullable="false" />
           <Property Name="QuestID" Type="Int32" Nullable="false" />
+          <Property Name="AchieveStateID" Type="Int32" Nullable="false" />
           <Property Name="AchievedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="AchieveStateType" Relationship="DBAllModel.FK_AchievedPosession_AchieveStateType" FromRole="AchievedPosession" ToRole="AchieveStateType" />
           <NavigationProperty Name="Achievement" Relationship="DBAllModel.FK_AchievedQuests_Quest" FromRole="AchievedPosession" ToRole="Achievement" />
           <NavigationProperty Name="User" Relationship="DBAllModel.FK_AchievedQuests_User" FromRole="AchievedPosession" ToRole="User" />
         </EntityType>
@@ -1119,17 +1121,15 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Description" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="Star" Type="Int32" Nullable="false" />
           <Property Name="Icon" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
           <Property Name="RectangleColor" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
-          <Property Name="AchieveStateID" Type="Int32" />
           <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="UpdatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="AchievedPosessions" Relationship="DBAllModel.FK_AchievedQuests_Quest" FromRole="Achievement" ToRole="AchievedPosession" />
-          <NavigationProperty Name="AchieveStateType" Relationship="DBAllModel.FK_Achievement_AchieveStateType" FromRole="Achievement" ToRole="AchieveStateType" />
         </EntityType>
         <EntityType Name="AchieveStateType">
           <Key>
@@ -1138,7 +1138,7 @@
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="Description" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="Achievements" Relationship="DBAllModel.FK_Achievement_AchieveStateType" FromRole="AchieveStateType" ToRole="Achievement" />
+          <NavigationProperty Name="AchievedPosessions" Relationship="DBAllModel.FK_AchievedPosession_AchieveStateType" FromRole="AchieveStateType" ToRole="AchievedPosession" />
         </EntityType>
         <EntityType Name="Answer">
           <Key>
@@ -1158,7 +1158,7 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="ShortDesciption" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="LongDescription" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
@@ -1175,7 +1175,7 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="ShortDescription" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="LongDescription" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
@@ -1197,7 +1197,7 @@
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="UserID" Type="Int32" Nullable="false" />
           <Property Name="QuestionID" Type="Int32" Nullable="false" />
-          <Property Name="Comment1" Type="String" Nullable="false" MaxLength="400" FixedLength="false" Unicode="true" />
+          <Property Name="CommentContent" Type="String" Nullable="false" MaxLength="400" FixedLength="false" Unicode="true" />
           <Property Name="Response" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="IsVerified" Type="Boolean" Nullable="false" />
           <Property Name="InsertDate" Type="DateTime" Nullable="false" Precision="3" />
@@ -1208,7 +1208,7 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="UserID" Type="Int32" Nullable="false" />
           <Property Name="What_if" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
           <Property Name="But" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
@@ -1243,7 +1243,7 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Description" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="Star" Type="Int32" Nullable="false" />
@@ -1257,7 +1257,7 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Star" Type="Int32" Nullable="false" />
           <Property Name="TotalQuestion" Type="Int32" Nullable="false" />
           <Property Name="Avatar" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
@@ -1280,7 +1280,7 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="UserID" Type="Int32" Nullable="false" />
           <Property Name="StoreItemID" Type="Int32" Nullable="false" />
           <Property Name="OrderDate" Type="DateTime" Nullable="false" Precision="3" />
@@ -1305,7 +1305,7 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="UserID" Type="Int32" Nullable="false" />
           <Property Name="CategoryID" Type="Int32" Nullable="false" />
           <Property Name="PurchaseDate" Type="DateTime" Nullable="false" Precision="3" />
@@ -1327,7 +1327,7 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="What_if" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
           <Property Name="But" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
           <Property Name="Catgory_ID" Type="Int32" Nullable="false" />
@@ -1393,7 +1393,7 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Description" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="Star" Type="Int32" Nullable="false" />
@@ -1497,6 +1497,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_AchievedPosession_AchieveStateType">
+          <End Type="DBAllModel.AchieveStateType" Role="AchieveStateType" Multiplicity="1" />
+          <End Type="DBAllModel.AchievedPosession" Role="AchievedPosession" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AchieveStateType">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="AchievedPosession">
+              <PropertyRef Name="AchieveStateID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_AchievedQuests_Quest">
           <End Type="DBAllModel.Achievement" Role="Achievement" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -1522,18 +1534,6 @@
             </Principal>
             <Dependent Role="AchievedPosession">
               <PropertyRef Name="UserID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Achievement_AchieveStateType">
-          <End Type="DBAllModel.AchieveStateType" Role="AchieveStateType" Multiplicity="0..1" />
-          <End Type="DBAllModel.Achievement" Role="Achievement" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AchieveStateType">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="Achievement">
-              <PropertyRef Name="AchieveStateID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1939,6 +1939,7 @@
             <EntityTypeMapping TypeName="DBAllModel.AchievedPosession">
               <MappingFragment StoreEntitySet="AchievedPosession">
                 <ScalarProperty Name="AchievedDate" ColumnName="AchievedDate" />
+                <ScalarProperty Name="AchieveStateID" ColumnName="AchieveStateID" />
                 <ScalarProperty Name="QuestID" ColumnName="QuestID" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
@@ -1950,7 +1951,6 @@
               <MappingFragment StoreEntitySet="Achievement">
                 <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-                <ScalarProperty Name="AchieveStateID" ColumnName="AchieveStateID" />
                 <ScalarProperty Name="RectangleColor" ColumnName="RectangleColor" />
                 <ScalarProperty Name="Icon" ColumnName="Icon" />
                 <ScalarProperty Name="Star" ColumnName="Star" />
@@ -2020,7 +2020,7 @@
                 <ScalarProperty Name="InsertDate" ColumnName="InsertDate" />
                 <ScalarProperty Name="IsVerified" ColumnName="IsVerified" />
                 <ScalarProperty Name="Response" ColumnName="Response" />
-                <ScalarProperty Name="Comment1" ColumnName="Comment" />
+                <ScalarProperty Name="CommentContent" ColumnName="CommentContent" />
                 <ScalarProperty Name="QuestionID" ColumnName="QuestionID" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
