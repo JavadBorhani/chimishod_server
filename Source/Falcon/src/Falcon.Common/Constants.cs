@@ -75,10 +75,12 @@ namespace Falcon.Common
             public const int Question = 5;
             public const int QuestionsToSkip = 2;  
         }
-        public static class DefaultCommentValues
+        public static class DefaultValues
         {
-            public const bool DefaultVerify = true;
-            public const string DefaultReponseMessage = null;
+            public const bool CommentDefaultVerify = true;
+            public const string CommentDefaultReponseMessage = null;
+            public const int FavoriteNumberOfFreeItems = 3;
+            public const int FavoriteDefaultPrice = 5;
         }
         public const string DefaultLegacyNamespaces = "http://vglr.ir";
     }

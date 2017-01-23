@@ -1,7 +1,5 @@
 ﻿using Falcon.Common;
 using Falcon.Database;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -27,22 +25,33 @@ namespace Falcon.Web.Api.Controllers.V1
         [Route("UserAuthenticator/UUID/{UUID}")]
         public async Task<IHttpActionResult> GetUser(string UUID)
         {
-            var result = db.Users.SingleOrDefault(c => c.UUID == UUID);
-            if (result != null)
+            var user = db.Users.SingleOrDefault(c => c.UUID == UUID);
+            if (user != null)
             {
-                var userModel = new Models.Api.User
+                var UserModel = new Models.Api.User
                 {
-                    ID = result.ID,
-                    UUID = result.UUID,
-                    UserName = result.UserName,
-                    UserTypeID = result.UserTypeID,
-                    TotalStars = result.TotalStars,
-                    LastSceneDateTime = result.LastSceneDateTime,
-                    LevelAnsweredNumber = result.LevelAnsweredNumber,
-                    CurrentLevelID = result.CurrentLevelID,
-                    IsAbleToWriteComment = result.IsAbleToWriteComment
+                    ID = user.ID,
+                    UUID = user.UUID,
+                    UserName = user.UserName,
+                    UserTypeID = user.UserTypeID,
+                    TotalStars = user.TotalStars,
+                    LastSceneDateTime = user.LastSceneDateTime,
+                    LevelAnsweredNumber = user.LevelAnsweredNumber,
+                    CurrentLevelID = user.CurrentLevelID,
+                    IsAbleToWriteComment = user.IsAbleToWriteComment
                 };
-                return Ok(userModel);
+
+                var selectedCatID = db.SelectedCategories.Where(sc => sc.UserID == user.ID).Select(u => u.CategoryID).SingleOrDefault();
+
+                var UserState = new Models.Api.UserState
+                {
+                    UserStar = user.TotalStars,
+                    SelectedCategoryID = selectedCatID,
+                    SelectedCategoryName = db.Categories.FindAsync(selectedCatID).Result.Name,
+                    SelectedThemeID = user.SelectedThemes.Where(st => st.UserID == user.ID).Select(st => st.AppThemeID).SingleOrDefault()
+                };
+
+                return ResponseMessage(Request.CreateResponse(HttpStatusCode.OK, new { UserModel, UserState })); //TODO : Does not support xml change to something generic
             }
             else
             {
@@ -97,7 +106,7 @@ namespace Falcon.Web.Api.Controllers.V1
             db.UserInfoes.Add(userInfo);
             await db.SaveChangesAsync();
 
-            var userModel = new Models.Api.User
+            var UserModel = new Models.Api.User
             {
                 ID = user.ID,
                 UUID = user.UUID,
@@ -109,8 +118,14 @@ namespace Falcon.Web.Api.Controllers.V1
                 CurrentLevelID = user.CurrentLevelID,
                 IsAbleToWriteComment = user.IsAbleToWriteComment
             };
-
-            return Ok(userModel);
+            var UserState = new Models.Api.UserState
+            {
+                UserStar = UserModel.TotalStars,
+                SelectedCategoryID = Constants.DefaulUser.CategoryID,
+                SelectedThemeID = Constants.DefaulUser.AppThemeID,
+                SelectedCategoryName = db.Categories.FindAsync(Constants.DefaulUser.AppThemeID).Result.Name
+            };
+            return ResponseMessage(Request.CreateResponse(HttpStatusCode.Created , new { UserModel, UserState }));
         }
 
         protected override void Dispose(bool disposing)

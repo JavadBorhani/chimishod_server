@@ -22,36 +22,45 @@ namespace Falcon.Web.Api.Controllers.V1
         [ResponseType(typeof(Models.Api.Question))]
         [Route("Questions/Question/{UUID}")]
         [HttpGet]
-        public  IHttpActionResult GettingQuestion(string uuid)
+        public  async Task<IHttpActionResult> GettingQuestion(string uuid)
         {
-            var user = db.Users.SingleOrDefault(u => u.UUID == uuid);            
+            var user = db.Users.SingleOrDefault(u => u.UUID == uuid);
             
             if(user != null)
             { 
-                var result = db.Questions.Where(question => question.Banned == false && !db.Answers 
+                
+                var result =  await db.Questions.Where(question => question.Banned == false && !db.Answers 
                                         .Where( answer => answer.UserID == user.ID)
-                                        .Select(y => y.ID)
+                                        .Select(y => y.QuestionID)
                                         .ToList().Contains(question.ID))
-                                        .OrderByDescending(question => question.Weight).Take(Constants.DefaultReturnAmounts.Question).SingleOrDefault();
+                                        .OrderByDescending(question => question.Weight).Take(Constants.DefaultReturnAmounts.Question).ToArrayAsync();
 
 
-                var questionModel = new Models.Api.Question
+
+                Models.Api.Question[] questions = new Models.Api.Question[result.Length];
+
+                for(int i = 0; i < questions.Length; ++i)
                 {
-                    ID = result.ID,
-                    What_if = result.What_if,
-                    But = result.But,
-                    Catgory_ID = result.Catgory_ID,
-                    Yes_Count = result.Yes_Count ,
-                    No_Count = result.No_Count,
-                    Like_Count = result.Like_Count,
-                    Dislike_Count = result.Dislike_Count,
-                    Weight = result.Weight,
-                    CreatorID = result.CreatorID,
-                    CreatedDate = result.CreatedDate,
-                    UpdateDate = result.UpdateDate,
-                    Banned = result.Banned
-                };
-                return Ok(questionModel);
+                    questions[i] = new Models.Api.Question
+                    {
+                        ID = result[i].ID,
+                        What_if = result[i].What_if,
+                        But = result[i].But,
+                        Catgory_ID = result[i].Catgory_ID,
+                        Yes_Count = result[i].Yes_Count,
+                        No_Count = result[i].No_Count,
+                        Like_Count = result[i].Like_Count,
+                        Dislike_Count = result[i].Dislike_Count,
+                        Weight = result[i].Weight,
+                        CreatorID = result[i].CreatorID,
+                        CreatedDate = result[i].CreatedDate,
+                        UpdateDate = result[i].UpdateDate,
+                        Banned = result[i].Banned
+                    };
+                }
+
+                
+                return Ok(questions);
             }
             return NotFound();
         }

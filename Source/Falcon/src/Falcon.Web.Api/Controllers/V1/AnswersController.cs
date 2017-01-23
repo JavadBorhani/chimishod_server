@@ -89,7 +89,7 @@ namespace Falcon.Web.Api.Controllers.V1
         [HttpPost]
         public async Task<IHttpActionResult> PostingAnswer(string UUID, [FromBody] Models.Api.Answer answer)
         {
-            var user = db.Users.SingleOrDefault(u => u.UUID == UUID);
+            var user = await db.Users.SingleOrDefaultAsync(u => u.UUID == UUID);
             if(user != null)
             {
                 if (!ModelState.IsValid)
@@ -115,6 +115,37 @@ namespace Falcon.Web.Api.Controllers.V1
                 db.Answers.Add(newAnswer);
                 await db.SaveChangesAsync();
 
+                if(answer.IsFavorited == true) // means user favourited the current question
+                {
+                    var favoriteCount = FavoriteCount(user.ID);
+                    if (favoriteCount < Constants.DefaultValues.FavoriteNumberOfFreeItems)
+                    {
+                        var newFavorite = new Favorite
+                        {
+                            UserID = user.ID,
+                            QuestionID = answer.QuestionID,
+                            SelectedDate = mDateTime.Now
+                        };
+                        db.Favorites.Add(newFavorite);
+                        await db.SaveChangesAsync();
+                    }
+                    else
+                    {
+                        if(user.TotalStars - Constants.DefaultValues.FavoriteDefaultPrice >= 0)
+                        {
+                            user.TotalStars -= Constants.DefaultValues.FavoriteDefaultPrice;
+
+                            var newFavorite = new Favorite
+                            {
+                                UserID = user.ID,
+                                QuestionID = answer.QuestionID,
+                                SelectedDate = mDateTime.Now
+                            };
+                            db.Favorites.Add(newFavorite);
+                            await db.SaveChangesAsync();
+                        }
+                    }
+                }
                 var questionToUpdate = db.Questions.Find(answer.QuestionID);
                 if(questionToUpdate != null)
                 {
@@ -136,25 +167,9 @@ namespace Falcon.Web.Api.Controllers.V1
                     }
                     await db.SaveChangesAsync();
                 }
-                return Ok();
+                return Ok();                
             }
             return NotFound();
-        }
-
-        // DELETE: api/Answers/5
-        [ResponseType(typeof(Answer))]
-        public async Task<IHttpActionResult> DeleteAnswer(int id)
-        {
-            Answer answer = await db.Answers.FindAsync(id);
-            if (answer == null)
-            {
-                return NotFound();
-            }
-
-            db.Answers.Remove(answer);
-            await db.SaveChangesAsync();
-
-            return Ok(answer);
         }
 
         protected override void Dispose(bool disposing)
@@ -173,6 +188,10 @@ namespace Falcon.Web.Api.Controllers.V1
         private bool AnswerExists(int userID , int questionID)
         {
             return db.Answers.Count(e => e.UserID == userID && e.QuestionID == questionID) > 0;
+        }
+        private int FavoriteCount(int userID)
+        {
+            return db.Favorites.Count(e => e.UserID == userID);
         }
 
     }

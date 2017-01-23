@@ -23,6 +23,8 @@ namespace Falcon.Web.Models.Api
         [Required]
         public bool YesNoState { get; set; }
 
+        public bool IsFavorited { get; set; }
+
         public System.DateTime CreatedDate { get; set; }
     }
 }
