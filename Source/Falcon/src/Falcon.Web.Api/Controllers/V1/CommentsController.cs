@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
+﻿using System.Data;
 using System.Data.Entity;
-using System.Data.Entity.Infrastructure;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
@@ -29,29 +24,31 @@ namespace Falcon.Web.Api.Controllers.V1
         [HttpGet]
         public async Task<IHttpActionResult> GettingComments(string UUID , int QuestionID)
         {
-            var user = db.Users.SingleOrDefault(u => u.UUID == UUID);
+            var user = await db.Users.SingleOrDefaultAsync(u => u.UUID == UUID);
             if(user != null)
             {
                 var result = await db.Comments.AsNoTracking()
                                         .Where(comment => comment.QuestionID == QuestionID && comment.IsVerified == true)
                                         .Take(Constants.DefaultReturnAmounts.Comment).ToArrayAsync();
 
-                Models.Api.Comment[] commentList = new Models.Api.Comment[result.Length];
+                if (result.Length > 0)
+                { 
+                    Models.Api.Comment[] commentList = new Models.Api.Comment[result.Length];
 
-                for (int i = 0; i < commentList.Length; ++i)
-                {
-                    commentList[i] = new Models.Api.Comment
+                    for (int i = 0; i < commentList.Length; ++i)
                     {
-                        UserName = result[i].User.UserName,
-                        Content = result[i].CommentContent,
-                        Response = result[i].Response,
-                        InsertDate = result[i].InsertDate
-                    };
+                        commentList[i] = new Models.Api.Comment
+                        {
+                            UserName = result[i].User.UserName,
+                            Content = result[i].CommentContent,
+                            Response = result[i].Response,
+                            InsertDate = result[i].InsertDate
+                        };
+                    }
+                    return Ok(commentList);
                 }
-
-                return Ok(commentList);
+                return Ok();
             }
-
             return NotFound();
         }
 
@@ -69,15 +66,15 @@ namespace Falcon.Web.Api.Controllers.V1
             var user = await db.Users.SingleOrDefaultAsync(u => u.UUID == UUID);
             var question = await db.Questions.FindAsync(QuestionID);
 
-            if(user != null || question != null)
+            if(user != null && question != null)
             {
                 var comment = new Comment
                 {
                    UserID = user.ID,
                    QuestionID = question.ID,
                    CommentContent = NewComment.Content,
-                   Response = null,
-                   IsVerified = false,
+                   Response = Constants.DefaultValues.CommentDefaultReponseMessage,
+                   IsVerified = Constants.DefaultValues.CommentDefaultVerify,
                    InsertDate = mDateTime.Now
                 };
 
