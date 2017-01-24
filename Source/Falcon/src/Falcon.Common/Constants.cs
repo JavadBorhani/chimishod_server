@@ -84,7 +84,10 @@ namespace Falcon.Common
             public const int NoQuestionID = -1;
             public const string NoQuestionWhat = "داداش خوردی سرور ما رو";
             public const string NoQuestionBut = "سرورمون آب شد";
-            public const int PurchasedThemeNumberOfAllowedBuy = 1;
+            public const int PurchaseThemeNumberAllowedToBuy = 1;
+            public const int PurchaseCategoryNumberAllowedToBuy = 1;
+            public const int CategoryNumberOfSelectAllowed = 1;
+            public const int ThemeNumberOfSelectAllowed = 1;
         }
         public const string DefaultLegacyNamespaces = "http://vglr.ir";
     }

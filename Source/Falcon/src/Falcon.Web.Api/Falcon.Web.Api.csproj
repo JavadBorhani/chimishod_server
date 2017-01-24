@@ -126,6 +126,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\V1\AnswersController.cs" />
     <Compile Include="Controllers\V1\AppThemesController.cs" />
+    <Compile Include="Controllers\V1\CategoriesController.cs" />
     <Compile Include="Controllers\V1\CommentsController.cs" />
     <Compile Include="Controllers\V1\QuestionsController.cs" />
     <Compile Include="Controllers\V1\UserAuthenticatorController.cs" />

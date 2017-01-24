@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="Api\Answer.cs" />
     <Compile Include="Api\AppTheme.cs" />
+    <Compile Include="Api\Category.cs" />
     <Compile Include="Api\Comment.cs" />
     <Compile Include="Api\UserState.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
