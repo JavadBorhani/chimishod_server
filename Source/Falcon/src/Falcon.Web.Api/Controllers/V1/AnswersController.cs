@@ -50,41 +50,6 @@ namespace Falcon.Web.Api.Controllers.V1
             return Ok(result);
         }
 
-        // PUT: api/Answers/5
-        [ResponseType(typeof(void))]
-        public async Task<IHttpActionResult> PutAnswer(int id, Answer answer)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            if (id != answer.ID)
-            {
-                return BadRequest();
-            }
-
-            db.Entry(answer).State = EntityState.Modified;
-
-            try
-            {
-                await db.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!AnswerExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return StatusCode(HttpStatusCode.NoContent);
-        }
-
         [Route("Answers/Answer/{UUID}")]
         [ResponseType(typeof(Models.Api.Answer))]
         [HttpPost]
