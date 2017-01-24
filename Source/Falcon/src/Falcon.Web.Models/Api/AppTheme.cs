@@ -10,14 +10,12 @@ namespace Falcon.Web.Models.Api
     {
         public int ID { get; set; }
         public string Name { get; set; }
-        public string ShortDesciption { get; set; }
+        public string ShortDescription { get; set; }
         public string LongDescription { get; set; }
         public string SquareColor { get; set; }
         public string CircleColor { get; set; }
         public int Price { get; set; }
         public string Style { get; set; }
-        public DateTime CreatedDate { get; set; }
-        public DateTime UpdatedDate { get; set; }
         public bool IsActive { get; set; }
         public bool IsPurchased { get; set; }
     }

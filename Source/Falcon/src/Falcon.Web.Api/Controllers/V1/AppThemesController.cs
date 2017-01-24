@@ -44,17 +44,16 @@ namespace Falcon.Web.Api.Controllers.V1
 
                     for (int i = 0; i < themes.Length; ++i)
                     {
-
                         userThemes[i] = new Models.Api.AppTheme
                         {
                             ID = themes[i].ID,
                             Name = themes[i].Name,
-                            ShortDesciption = themes[i].ShortDesciption,
+                            ShortDescription = themes[i].ShortDesciption,
                             LongDescription = themes[i].LongDescription,
                             SquareColor = themes[i].SquareColor,
                             CircleColor = themes[i].CircleColor,
                             Price = themes[i].Price,
-                            IsPurchased = purchasedThemes.Contains(themes[i].ID),
+                            IsPurchased = purchasedThemes.Contains(themes[i].ID), // TODO : remember to remove what has checked to increase checking time
                             IsActive = (selectedTheme.AppThemeID == themes[i].ID) ? true : false
                         };                        
                     }
@@ -70,9 +69,9 @@ namespace Falcon.Web.Api.Controllers.V1
 
 
         [ResponseType(typeof(Models.Api.AppTheme))]
-        [Route("Themes/{UUID}/{ThemeID}")]
+        [Route("Themes/Select/{UUID}/{ThemeID}")] // TODO : Change To Action
         [HttpPost]
-        public async Task<IHttpActionResult> SelectAppTheme(String UUID , int ThemeID)
+        public async Task<IHttpActionResult> SelectAppTheme(string UUID , int ThemeID)
         {
             var user = await db.Users.AsNoTracking().SingleOrDefaultAsync(u => u.UUID == UUID);
             if(user != null)
@@ -88,8 +87,10 @@ namespace Falcon.Web.Api.Controllers.V1
                     }
                     else
                     {
-                        bool result = db.PurchaseThemes.AsNoTracking().Count(ph => ph.UserID == user.ID && ph.ThemeID == ThemeID) == 1; // user has bought properly
-                        if (result)
+                        bool hasBoughtTheme = db.PurchaseThemes.AsNoTracking()
+                                                        .Count(ph => ph.UserID == user.ID && ph.ThemeID == ThemeID) == 
+                                                        Constants.DefaultValues.PurchasedThemeNumberOfAllowedBuy; // user has bought properly
+                        if (hasBoughtTheme)
                         {
                             userSelectedTheme.AppThemeID = ThemeID;
                             await db.SaveChangesAsync();
@@ -123,8 +124,8 @@ namespace Falcon.Web.Api.Controllers.V1
         }
 
         [ResponseType(typeof(Models.Api.AppTheme))]
-        [Route("Themes/Buy/{UUID}/{ThemeID}")]
-        [HttpGet]
+        [Route("Themes/Buy/{UUID}/{ThemeID}")] // TODO : Change To Action
+        [HttpPost]
         public async Task<IHttpActionResult> BuyTheme(string UUID , int ThemeID)
         {
             var user = await db.Users.SingleOrDefaultAsync(u => u.UUID == UUID);

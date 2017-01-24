@@ -19,7 +19,7 @@ namespace Falcon.Web.Api.Controllers.V1
         [HttpGet]
         public  async Task<IHttpActionResult> GettingQuestion(string uuid)
         {
-            var user = db.Users.SingleOrDefault(u => u.UUID == uuid);
+            var user = await db.Users.SingleOrDefaultAsync(u => u.UUID == uuid);
             
             if(user != null)
             { 
