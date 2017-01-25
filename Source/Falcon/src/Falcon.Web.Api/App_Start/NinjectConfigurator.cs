@@ -12,6 +12,7 @@ namespace Falcon.Web.Api
         public void Configure(IKernel container)
         {
             AddBindings(container);
+            ConfigureEntityFramework(container);
         }
         
         private void AddBindings(IKernel container)

@@ -60,6 +60,7 @@ namespace Falcon.Web.Api.Controllers.V1
         public async Task<IHttpActionResult> PostingAnswer(string UUID, [FromBody] Models.Api.Answer answer)
         {
             var user = await db.Users.SingleOrDefaultAsync(u => u.UUID == UUID);
+
             if(user != null)
             {
                 if (!ModelState.IsValid)
