@@ -58,8 +58,7 @@ namespace Falcon.Web.Common
 
         private Dictionary<string, HttpControllerDescriptor> InitializeControllerDictionary()
         {
-            var dictionary = new Dictionary<string,
-            HttpControllerDescriptor>(StringComparer.OrdinalIgnoreCase);
+            var dictionary = new Dictionary<string,HttpControllerDescriptor>(StringComparer.OrdinalIgnoreCase);
             var assembliesResolver = mConfiguration.Services.GetAssembliesResolver();
             var controllersResolver = mConfiguration.Services.GetHttpControllerTypeResolver();
             var controllerTypes = controllersResolver.GetControllerTypes(assembliesResolver);
@@ -73,9 +72,7 @@ namespace Falcon.Web.Common
 
                 if (!dictionary.Keys.Contains(controllerKey))
                 {
-                    dictionary[controllerKey] = new HttpControllerDescriptor(mConfiguration,
-                    controllerType.Name,
-                    controllerType);
+                    dictionary[controllerKey] = new HttpControllerDescriptor(mConfiguration,controllerType.Name,controllerType);
                 }
             }
             return dictionary;
@@ -94,9 +91,11 @@ namespace Falcon.Web.Common
         private string GetControllerName(IHttpRouteData routeData)
         {
             var subroute = routeData.GetSubRoutes().FirstOrDefault();
-            if (subroute == null) return null;
+            if (subroute == null)
+                    return null;
             var dataTokenValue = subroute.Route.DataTokens.First().Value;
-            if (dataTokenValue == null) return null;
+            if (dataTokenValue == null)
+                    return null;
             var controllerName = ((HttpActionDescriptor[])dataTokenValue).First().ControllerDescriptor.ControllerName.Replace("Controller", string.Empty);
             return controllerName;
         }

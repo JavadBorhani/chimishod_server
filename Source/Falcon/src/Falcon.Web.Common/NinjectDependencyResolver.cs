@@ -8,7 +8,7 @@ using System.Web.Http.Dependencies;
 
 namespace Falcon.Web.Common
 {
-    public class NinjectDependencyResolver : IDependencyResolver
+    public sealed class NinjectDependencyResolver : IDependencyResolver
     {
         private readonly IKernel mContainer;
 

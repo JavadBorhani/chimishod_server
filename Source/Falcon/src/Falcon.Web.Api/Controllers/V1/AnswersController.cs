@@ -8,6 +8,8 @@ using System.Web.Http;
 using System.Web.Http.Description;
 using Falcon.Database;
 using Falcon.Common;
+using Falcon.Common.Logging;
+using log4net;
 
 namespace Falcon.Web.Api.Controllers.V1
 {
@@ -15,10 +17,12 @@ namespace Falcon.Web.Api.Controllers.V1
     {
         private DBEntity db = new DBEntity();
         private IDateTime mDateTime;
+        private ILog mLogManager;
 
-        public AnswersController(IDateTime dateTime)
+        public AnswersController(IDateTime dateTime , ILogManager logManager)
         {
             mDateTime = dateTime;
+            mLogManager = logManager.GetLog(typeof(AnswersController));
         }
 
         // GET: api/Answers
@@ -65,7 +69,8 @@ namespace Falcon.Web.Api.Controllers.V1
 
                 if(AnswerExists(user.ID , answer.QuestionID))
                 {
-                    return ResponseMessage(Request.CreateResponse(HttpStatusCode.BadRequest));
+                    mLogManager.WarnFormat("Question ID {0} has a value in database" , answer.QuestionID);
+                    return Ok(answer.QuestionID);
                 }
 
                 var newAnswer = new Answer
@@ -133,7 +138,7 @@ namespace Falcon.Web.Api.Controllers.V1
                     }
                     await db.SaveChangesAsync();
                 }
-                return Ok();                
+                return Ok(answer.QuestionID);                
             }
             return NotFound();
         }
