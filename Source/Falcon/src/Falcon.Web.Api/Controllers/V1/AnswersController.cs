@@ -23,15 +23,14 @@ namespace Falcon.Web.Api.Controllers.V1
         {
             mDateTime = dateTime;
             mLogManager = logManager.GetLog(typeof(AnswersController));
+            
         }
 
-        // GET: api/Answers
         public IQueryable<Answer> GetAnswers()
         {
             return db.Answers;
         }
 
-        // GET: api/Answers/5
         [ResponseType(typeof(Models.Api.Answer))]
         public async Task<IHttpActionResult> GetAnswer(int id)
         {
@@ -40,7 +39,6 @@ namespace Falcon.Web.Api.Controllers.V1
             {
                 return NotFound();
             }
-
             var result = new Models.Api.Answer
             {
                 UserID = answer.UserID,
@@ -118,7 +116,8 @@ namespace Falcon.Web.Api.Controllers.V1
                         }
                     }
                 }
-                var questionToUpdate = db.Questions.Find(answer.QuestionID);
+                var questionToUpdate = await db.Questions.FindAsync(answer.QuestionID);
+
                 if(questionToUpdate != null)
                 {
                     if(answer.YesNoState)
