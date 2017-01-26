@@ -96,9 +96,9 @@ namespace Falcon.Web.Api.Controllers.V1
             base.Dispose(disposing);
         }
 
-        private bool CommentExists(int id)
+        private async Task<bool> CommentExists(int id)
         {
-            return db.Comments.Count(e => e.ID == id) > 0;
+            return await db.Comments.CountAsync(e => e.ID == id) > 0;
         }
     }
 }

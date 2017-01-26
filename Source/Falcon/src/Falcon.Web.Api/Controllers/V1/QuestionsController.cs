@@ -55,8 +55,8 @@ namespace Falcon.Web.Api.Controllers.V1
                     return Ok(questions);
                 }
 
-                Models.Api.Question[] noQuestion = new Models.Api.Question[Constants.DefaultReturnAmounts.Question];
-                for (int i = 0; i < Constants.DefaultReturnAmounts.Question; ++i)
+                Models.Api.Question[] noQuestion = new Models.Api.Question[Constants.DefaultReturnAmounts.ServerBurntNumber];
+                for (int i = 0; i < Constants.DefaultReturnAmounts.ServerBurntNumber; ++i)
                 {
                     noQuestion[i] = new Models.Api.Question
                     {

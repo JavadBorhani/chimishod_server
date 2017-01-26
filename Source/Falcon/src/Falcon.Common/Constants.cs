@@ -73,7 +73,8 @@ namespace Falcon.Common
         {
             public const int Comment = 20;
             public const int Question = 5;
-            public const int QuestionsToSkip = 2;  
+            public const int QuestionsToSkip = 2;
+            public const int ServerBurntNumber = 1;  
         }
         public static class DefaultValues
         {

@@ -135,7 +135,7 @@ namespace Falcon.Web.Api.Controllers.V1
             {
                 var userSelectedCategory = await db.SelectedCategories.SingleOrDefaultAsync(st => st.UserID == user.ID);
 
-                if (CategoryExists(CategoryID))
+                if (await CategoryExists(CategoryID))
                 {
                     if (CategoryID == Constants.DefaulUser.CategoryID) //TODO : think about changing default item Over Time :(
                     {
@@ -189,9 +189,9 @@ namespace Falcon.Web.Api.Controllers.V1
             base.Dispose(disposing);
         }
 
-        private bool CategoryExists(int id)
+        private async Task<bool> CategoryExists(int id)
         {
-            return db.Categories.Count(e => e.ID == id) > 0;
+            return await db.Categories.CountAsync(e => e.ID == id) > 0;
         }
     }
 }

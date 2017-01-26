@@ -78,7 +78,7 @@ namespace Falcon.Web.Api.Controllers.V1
             {
                 var userSelectedTheme = await db.SelectedThemes.SingleOrDefaultAsync(st => st.UserID == user.ID);
 
-                if(AppThemeExists(ThemeID))
+                if(await AppThemeExists(ThemeID))
                 {
                     if (ThemeID == Constants.DefaulUser.AppThemeID) //TODO : think about changing default item Over Time :(
                     {
@@ -187,9 +187,9 @@ namespace Falcon.Web.Api.Controllers.V1
             base.Dispose(disposing);
         }
 
-        private bool AppThemeExists(int id)
+        private async Task<bool> AppThemeExists(int id)
         {
-            return db.AppThemes.Count(e => e.ID == id) > 0;
+            return await db.AppThemes.CountAsync(e => e.ID == id) > 0;
         }
     }
 }

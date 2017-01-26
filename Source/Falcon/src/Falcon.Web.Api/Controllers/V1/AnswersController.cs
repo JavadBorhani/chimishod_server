@@ -66,7 +66,7 @@ namespace Falcon.Web.Api.Controllers.V1
                     return BadRequest(ModelState);
                 }
 
-                if(AnswerExists(user.ID , answer.QuestionID))
+                if(await AnswerExists(user.ID , answer.QuestionID))
                 {
                     mLogManager.WarnFormat("Question ID {0} has a value in database" , answer.QuestionID);
                     return Ok(answer.QuestionID);
@@ -87,7 +87,7 @@ namespace Falcon.Web.Api.Controllers.V1
 
                 if(answer.IsFavorited == true) // means user favourited the current question
                 {
-                    var favoriteCount = FavoriteCount(user.ID);
+                    var favoriteCount = await FavoriteCount(user.ID);
                     if (favoriteCount < Constants.DefaultValues.FavoriteNumberOfFreeItems)
                     {
                         var newFavorite = new Favorite
@@ -152,17 +152,17 @@ namespace Falcon.Web.Api.Controllers.V1
             base.Dispose(disposing);
         }
 
-        private bool AnswerExists(int id)
+        private async Task<bool> AnswerExists(int id)
         {
-            return db.Answers.Count(e => e.ID == id) > 0;
+            return await db.Answers.CountAsync(e => e.ID == id) > 0;
         }
-        private bool AnswerExists(int userID , int questionID)
+        private async Task<bool> AnswerExists(int userID , int questionID)
         {
-            return db.Answers.Count(e => e.UserID == userID && e.QuestionID == questionID) > 0;
+            return await db.Answers.CountAsync(e => e.UserID == userID && e.QuestionID == questionID) > 0;
         }
-        private int FavoriteCount(int userID)
+        private async Task<int> FavoriteCount(int userID)
         {
-            return db.Favorites.Count(e => e.UserID == userID);
+            return await db.Favorites.CountAsync(e => e.UserID == userID);
         }
 
     }
