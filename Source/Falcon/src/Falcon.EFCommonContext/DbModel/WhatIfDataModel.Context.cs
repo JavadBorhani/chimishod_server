@@ -28,7 +28,8 @@ namespace Falcon.EFCommonContext.DbModel
         {
             throw new UnintentionalCodeFirstException();
         }
-    
+
+        //TODO: Force Entity Designer to not to include these in our files  
         public virtual DbSet<AchievedGift> AchievedGifts { get; set; }
         public virtual DbSet<AchievedPosession> AchievedPosessions { get; set; }
         public virtual DbSet<Achievement> Achievements { get; set; }
