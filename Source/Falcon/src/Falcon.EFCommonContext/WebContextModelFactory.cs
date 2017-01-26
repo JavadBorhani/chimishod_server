@@ -5,19 +5,12 @@ using System.Web;
 
 namespace Falcon.EFCommonContext
 {
-    public class WebContextFactory : IWebContextFactory
+    public class WebContextModelFactory : IWebContextFactory
     {
         public const string DbContextCacheKey = "DbContext";
-        private readonly DbCompiledModel mCompiledModel;
         private readonly string mNameOrConnectionString;
 
-        private WebContextFactory(string nameOrConnectionString, DbCompiledModel compiledModel)
-        {
-            mNameOrConnectionString = nameOrConnectionString;
-            mCompiledModel = compiledModel;
-        }
-
-        private WebContextFactory(string NameOrConnectionString)
+        private WebContextModelFactory(string NameOrConnectionString)
         {
             mNameOrConnectionString = NameOrConnectionString;
         }
@@ -45,7 +38,7 @@ namespace Falcon.EFCommonContext
         {
             if (!ContextExists)
             {
-                var context = new CommonCodeFirstDbContext(mNameOrConnectionString, mCompiledModel);
+                var context = new CommonModelFirstDbContext(mNameOrConnectionString);
                 context.Database.Connection.Open();
                 HttpContext.Current.Items[DbContextCacheKey] = context;
             }
@@ -61,20 +54,9 @@ namespace Falcon.EFCommonContext
             return (IDbContext) HttpContext.Current.Items[DbContextCacheKey];
         }
 
-        public static WebContextFactory BuildFactory(string nameOrConnectionString, Assembly mappingAssembly, string providerName, string providerVersionHint)
+        public static WebContextModelFactory BuildSqlServer2012Factory(string NameOrConnectionString)
         {
-            var modelBuilder = new DbModelBuilder();
-            modelBuilder.Configurations.AddFromAssembly(mappingAssembly);
-
-            var providerInfo = new DbProviderInfo(providerName, providerVersionHint);
-            var model = modelBuilder.Build(providerInfo);
-            var compiledModel = model.Compile();
-
-            return new WebContextFactory(nameOrConnectionString, compiledModel);
-        }
-        public static WebContextFactory BuildSqlServer2012Factory(string NameOrConnectionString)
-        {
-            return new WebContextFactory(NameOrConnectionString);
+            return new WebContextModelFactory(NameOrConnectionString);
         }
     }
 }

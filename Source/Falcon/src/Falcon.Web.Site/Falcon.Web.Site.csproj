@@ -163,10 +163,6 @@
       <Project>{812a4275-7afa-43df-b581-74d68445db94}</Project>
       <Name>Falcon.Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Falcon.Database\Falcon.Database.csproj">
-      <Project>{a47d42ff-160b-4667-8a3e-4ebf025cab6a}</Project>
-      <Name>Falcon.Database</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Falcon.Data\Falcon.Data.csproj">
       <Project>{551add74-592a-4b33-b629-2f35886d6e1d}</Project>
       <Name>Falcon.Data</Name>

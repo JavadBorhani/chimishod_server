@@ -30,6 +30,11 @@ namespace Falcon.Web.Api
 
             container.Bind<ILogManager>().ToConstant(logManager);
         }
+
+        private void ConfigureUserSession(IKernel container)
+        {
+          //TODO : create new user session
+        }
         private void ConfigureEntityFramework(IKernel container)
         {
             container.Bind<IActionTransactionHelper>().To<ActionTransactionHelper>().InRequestScope();

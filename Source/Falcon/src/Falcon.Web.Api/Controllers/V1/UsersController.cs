@@ -5,13 +5,13 @@ using System.Net;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
-using Falcon.Database;
+using Falcon.EFCommonContext.DbModel;
 
 namespace Falcon.Web.Api.Controllers.V1
 {
     public class UsersController : ApiController
     {
-        private DBEntity db = new DBEntity();
+        private DbEntity db = new DbEntity();
 
 
         // GET: api/Users

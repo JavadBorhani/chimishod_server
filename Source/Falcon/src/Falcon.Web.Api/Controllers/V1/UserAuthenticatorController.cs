@@ -1,5 +1,5 @@
 ﻿using Falcon.Common;
-using Falcon.Database;
+using Falcon.EFCommonContext.DbModel;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -11,7 +11,7 @@ namespace Falcon.Web.Api.Controllers.V1
 {
     public class UserAuthenticatorController : ApiController
     {
-        private DBEntity db = new DBEntity();
+        private DbEntity db = new DbEntity();
 
         private readonly IDateTime mDateTime;
 

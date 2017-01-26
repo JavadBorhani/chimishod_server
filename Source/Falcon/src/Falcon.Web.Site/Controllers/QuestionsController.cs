@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
-using Falcon.Database;
+using Falcon.EFCommonContext.DbModel;
 
 namespace Falcon.Web.Site.Controllers
 {
     public class QuestionsController : Controller
     {
-        private DBEntity db = new DBEntity();
+        private DbEntity db = new DbEntity();
 
         // GET: Questions
         public async Task<ActionResult> Index()

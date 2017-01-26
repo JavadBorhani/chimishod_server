@@ -51,106 +51,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AchievedGift.cs">
-      <DependentUpon>WhatIfDBModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="AchievedPosession.cs">
-      <DependentUpon>WhatIfDBModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Achievement.cs">
-      <DependentUpon>WhatIfDBModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="AchieveStateType.cs">
-      <DependentUpon>WhatIfDBModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Answer.cs">
-      <DependentUpon>WhatIfDBModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="AppTheme.cs">
-      <DependentUpon>WhatIfDBModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Category.cs">
-      <DependentUpon>WhatIfDBModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Comment.cs">
-      <DependentUpon>WhatIfDBModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="CreatedQuestion.cs">
-      <DependentUpon>WhatIfDBModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="CreatedQuestionsVerifyType.cs">
-      <DependentUpon>WhatIfDBModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Favorite.cs">
-      <DependentUpon>WhatIfDBModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Gift.cs">
-      <DependentUpon>WhatIfDBModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Level.cs">
-      <DependentUpon>WhatIfDBModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Manufacture.cs">
-      <DependentUpon>WhatIfDBModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Order.cs">
-      <DependentUpon>WhatIfDBModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="OurAdvertisement.cs">
-      <DependentUpon>WhatIfDBModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="PurchaseCategory.cs">
-      <DependentUpon>WhatIfDBModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="PurchaseTheme.cs">
-      <DependentUpon>WhatIfDBModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Question.cs">
-      <DependentUpon>WhatIfDBModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="ReportedQuestion.cs">
-      <DependentUpon>WhatIfDBModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="ReportType.cs">
-      <DependentUpon>WhatIfDBModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="SelectedCategory.cs">
-      <DependentUpon>WhatIfDBModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="SelectedTheme.cs">
-      <DependentUpon>WhatIfDBModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Store.cs">
-      <DependentUpon>WhatIfDBModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="sysdiagram.cs">
-      <DependentUpon>WhatIfDBModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="User.cs">
-      <DependentUpon>WhatIfDBModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="UserInfo.cs">
-      <DependentUpon>WhatIfDBModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="UserType.cs">
-      <DependentUpon>WhatIfDBModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="WhatIfDBModel.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>WhatIfDBModel.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="WhatIfDBModel.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>WhatIfDBModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="WhatIfDBModel.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>WhatIfDBModel.edmx</DependentUpon>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Falcon.Common\Falcon.Common.csproj">
@@ -169,28 +70,9 @@
   <ItemGroup>
     <None Include="App.Config" />
     <None Include="packages.config" />
-    <EntityDeploy Include="WhatIfDBModel.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>WhatIfDBModel.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <None Include="WhatIfDBModel.edmx.diagram">
-      <DependentUpon>WhatIfDBModel.edmx</DependentUpon>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="WhatIfDBModel.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>WhatIfDBModel.edmx</DependentUpon>
-      <LastGenOutput>WhatIfDBModel.Context.cs</LastGenOutput>
-    </Content>
-    <Content Include="WhatIfDBModel.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>WhatIfDBModel.edmx</DependentUpon>
-      <LastGenOutput>WhatIfDBModel.cs</LastGenOutput>
-    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -9,14 +9,14 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
-using Falcon.Database;
 using Falcon.Common;
+using Falcon.EFCommonContext.DbModel;
 
 namespace Falcon.Web.Api.Controllers.V1
 {
     public class AppThemesController : ApiController
     {
-        private DBEntity db = new DBEntity();
+        private DbEntity db = new DbEntity(); //TODO : remember to remove this
 
         private readonly IDateTime mDateTime;
         public AppThemesController(IDateTime dateTime)
