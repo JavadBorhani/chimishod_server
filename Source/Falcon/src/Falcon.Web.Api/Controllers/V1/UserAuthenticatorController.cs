@@ -1,4 +1,5 @@
 ﻿using Falcon.Common;
+using Falcon.EFCommonContext;
 using Falcon.EFCommonContext.DbModel;
 using System.Linq;
 using System.Net;
@@ -14,12 +15,13 @@ namespace Falcon.Web.Api.Controllers.V1
         private DbEntity db = new DbEntity();
 
         private readonly IDateTime mDateTime;
+        private readonly IDbContext mDbContext;
 
-        public UserAuthenticatorController(IDateTime dateTime)
+        public UserAuthenticatorController(IDbContext Context , IDateTime dateTime)
         {
             mDateTime = dateTime;
+            mDbContext = Context;
         }
-
 
         [ResponseType(typeof(Models.Api.User))]
         [Route("UserAuthenticator/UUID/{UUID}")]
@@ -127,6 +129,7 @@ namespace Falcon.Web.Api.Controllers.V1
             };
             return ResponseMessage(Request.CreateResponse(HttpStatusCode.Created , new { UserModel, UserState }));
         }
+
 
         protected override void Dispose(bool disposing)
         {

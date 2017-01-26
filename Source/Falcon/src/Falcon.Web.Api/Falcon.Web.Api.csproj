@@ -129,6 +129,7 @@
     <Compile Include="Controllers\V1\CategoriesController.cs" />
     <Compile Include="Controllers\V1\CommentsController.cs" />
     <Compile Include="Controllers\V1\QuestionsController.cs" />
+    <Compile Include="Controllers\V1\SampleController.cs" />
     <Compile Include="Controllers\V1\UserAuthenticatorController.cs" />
     <Compile Include="Controllers\V1\UsersController.cs" />
     <Compile Include="Global.asax.cs">

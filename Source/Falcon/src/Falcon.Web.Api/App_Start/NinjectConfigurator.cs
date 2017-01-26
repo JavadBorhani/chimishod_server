@@ -4,11 +4,13 @@ using log4net.Config;
 using Ninject;
 using Falcon.Web.Common;
 using Ninject.Web.Common;
+using Falcon.EFCommonContext;
 
 namespace Falcon.Web.Api
 {
     public class NinjectConfigurator
     {
+        private const string DatabaseConnectionName = "name=DbEntity";
         public void Configure(IKernel container)
         {
             AddBindings(container);
@@ -37,6 +39,10 @@ namespace Falcon.Web.Api
         }
         private void ConfigureEntityFramework(IKernel container)
         {
+            var ContextFactory = WebContextModelFactory.BuildSqlServer2012Factory(DatabaseConnectionName);
+            container.Bind<IWebContextFactory>().ToConstant(ContextFactory);
+
+            container.Bind<IDbContext>().ToMethod(context => context.Kernel.Get<IWebContextFactory>().GetNewOrCurrentContext());
             container.Bind<IActionTransactionHelper>().To<ActionTransactionHelper>().InRequestScope();
         }
 
