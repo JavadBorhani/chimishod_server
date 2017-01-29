@@ -1,4 +1,6 @@
-﻿using System;
+﻿// BMS-Studio Copyright 2017-2018
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,7 +16,7 @@ namespace Falcon.Web.Common
         {
             get { return WebContainerManager.Get<IActionTransactionHelper>(); }
         }
-        public override bool AllowMultiple
+        public override bool AllowMultiple // To Prevent Calling this function twice
         {
             get { return false; }
         }

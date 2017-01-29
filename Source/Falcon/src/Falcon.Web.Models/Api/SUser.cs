@@ -1,4 +1,5 @@
-﻿using System;
+﻿// BMS-Studio Copyright 2017-2018
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Falcon.Web.Models.Api
 {
-    public class User
+    public class SUser
     {
         public int ID { get; set; }
         public string UUID { get; set; }

@@ -1,10 +1,16 @@
-﻿using Falcon.Common.Logging;
+﻿// BMS-Studio Copyright 2017-2018
+
+using Falcon.Common.Logging;
 using Falcon.Common;
 using log4net.Config;
 using Ninject;
 using Falcon.Web.Common;
 using Ninject.Web.Common;
 using Falcon.EFCommonContext;
+using Falcon.Web.Common.Security;
+using Falcon.Common.Security;
+using Falcon.Data.QueryProcessors;
+using Falcon.Database.SqlServer.QueryProcessors;
 
 namespace Falcon.Web.Api
 {
@@ -14,6 +20,7 @@ namespace Falcon.Web.Api
         public void Configure(IKernel container)
         {
             AddBindings(container);
+            ConfigureUserSession(container);
             ConfigureEntityFramework(container);
         }
         
@@ -22,6 +29,9 @@ namespace Falcon.Web.Api
             ConfigureLog4Net(container);
 
             container.Bind<IDateTime>().To<DateTimeAdapter>().InSingletonScope();
+
+            AddQueryProcessors(container);
+
 
         }
         private void ConfigureLog4Net(IKernel container)
@@ -35,7 +45,9 @@ namespace Falcon.Web.Api
 
         private void ConfigureUserSession(IKernel container)
         {
-          //TODO : create new user session
+            var userSession = new UserSession();
+            container.Bind<IUserSession>().ToConstant(userSession).InSingletonScope();
+            container.Bind<IWebUserSession>().ToConstant(userSession).InSingletonScope();
         }
         private void ConfigureEntityFramework(IKernel container)
         {
@@ -44,6 +56,12 @@ namespace Falcon.Web.Api
 
             container.Bind<IDbContext>().ToMethod(context => context.Kernel.Get<IWebContextFactory>().GetNewOrCurrentContext());
             container.Bind<IActionTransactionHelper>().To<ActionTransactionHelper>().InRequestScope();
+        }
+
+
+        private void AddQueryProcessors(IKernel container)
+        {
+            container.Bind<IAchievementQueryProcessor>().To<AchievementQueryProcessor>().InRequestScope();
         }
 
     }

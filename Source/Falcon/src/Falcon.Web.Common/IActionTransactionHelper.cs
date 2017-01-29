@@ -1,4 +1,6 @@
-﻿using System.Web.Http.Filters;
+﻿// BMS-Studio Copyright 2017-2018
+
+using System.Web.Http.Filters;
 
 namespace Falcon.Web.Common
 {

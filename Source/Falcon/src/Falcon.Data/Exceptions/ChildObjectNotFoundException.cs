@@ -1,4 +1,5 @@
-﻿using System;
+﻿// BMS-Studio Copyright 2017-2018
+using System;
 
 namespace Falcon.Data.Exceptions
 {
@@ -7,6 +8,7 @@ namespace Falcon.Data.Exceptions
     {
         public ChildObjectNotFoundException(string message) : base(message)
         {
+
         }
     }
 }

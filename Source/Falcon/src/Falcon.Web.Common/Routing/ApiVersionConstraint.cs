@@ -1,9 +1,7 @@
-﻿using System;
+﻿// BMS-Studio Copyright 2017-2018
+
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web.Http.Routing;
 
 namespace Falcon.Web.Common.Routing

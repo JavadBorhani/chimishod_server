@@ -41,14 +41,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Api\Answer.cs" />
-    <Compile Include="Api\AppTheme.cs" />
-    <Compile Include="Api\Category.cs" />
-    <Compile Include="Api\Comment.cs" />
-    <Compile Include="Api\UserState.cs" />
+    <Compile Include="Api\SAchievement.cs" />
+    <Compile Include="Api\SAnswer.cs" />
+    <Compile Include="Api\SAppTheme.cs" />
+    <Compile Include="Api\SCategory.cs" />
+    <Compile Include="Api\SComment.cs" />
+    <Compile Include="Api\SUserState.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Api\Question.cs" />
-    <Compile Include="Api\User.cs" />
+    <Compile Include="Api\SQuestion.cs" />
+    <Compile Include="Api\SUser.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

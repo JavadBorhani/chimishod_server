@@ -33,11 +33,11 @@ namespace Falcon.Web.Api.Controllers.V1
 
                 if (result.Length > 0)
                 { 
-                    Models.Api.Comment[] commentList = new Models.Api.Comment[result.Length];
+                    Models.Api.SComment[] commentList = new Models.Api.SComment[result.Length];
 
                     for (int i = 0; i < commentList.Length; ++i)
                     {
-                        commentList[i] = new Models.Api.Comment
+                        commentList[i] = new Models.Api.SComment
                         {
                             UserName = result[i].User.UserName,
                             Content = result[i].CommentContent,
@@ -52,10 +52,10 @@ namespace Falcon.Web.Api.Controllers.V1
             return NotFound();
         }
 
-        [ResponseType(typeof(Models.Api.Comment))]
+        [ResponseType(typeof(Models.Api.SComment))]
         [Route("Comments/{UUID}/{QuestionID}")]
         [HttpPost]
-        public async Task<IHttpActionResult> PostingComment(string UUID , int QuestionID , [FromBody] Models.Api.Comment NewComment)
+        public async Task<IHttpActionResult> PostingComment(string UUID , int QuestionID , [FromBody] Models.Api.SComment NewComment)
         {
            
             if (!ModelState.IsValid)

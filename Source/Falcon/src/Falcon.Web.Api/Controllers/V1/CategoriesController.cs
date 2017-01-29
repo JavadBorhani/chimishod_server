@@ -27,7 +27,7 @@ namespace Falcon.Web.Api.Controllers.V1
         }
 
 
-        [ResponseType(typeof(Models.Api.Category))]
+        [ResponseType(typeof(Models.Api.SCategory))]
         [Route("Categories/{UUID}")]
         [HttpGet]
         public async Task<IHttpActionResult> GetCategoryList(string UUID)
@@ -42,11 +42,11 @@ namespace Falcon.Web.Api.Controllers.V1
 
                 if (categories.Length > 0 && selectedCategory > 0 && purchasedCategories.Count >= 0)
                 {
-                    var userCategories = new Models.Api.Category[categories.Length];
+                    var userCategories = new Models.Api.SCategory[categories.Length];
 
                     for (int i = 0; i < categories.Length; ++i)
                     {
-                        userCategories[i] = new Models.Api.Category
+                        userCategories[i] = new Models.Api.SCategory
                         {
                             ID = categories[i].ID,
                             Name = categories[i].Name,
@@ -70,7 +70,7 @@ namespace Falcon.Web.Api.Controllers.V1
             return NotFound();  // TODO : Replace with UnAuthorized
         }
 
-        [ResponseType(typeof(Models.Api.UserState))]
+        [ResponseType(typeof(Models.Api.SUserState))]
         [Route("Categories/Buy/{UUID}/{CategoryID}")]
         [HttpPost]
         public async Task<IHttpActionResult> BuyCategory(string UUID, int CategoryID)
@@ -112,7 +112,7 @@ namespace Falcon.Web.Api.Controllers.V1
                     }
                 }
 
-                var clientResult = new Models.Api.UserState
+                var clientResult = new Models.Api.SUserState
                 {
                     UserStar = user.TotalStars,
                     SelectedThemeID = null,
@@ -126,7 +126,7 @@ namespace Falcon.Web.Api.Controllers.V1
         }
 
 
-        [ResponseType(typeof(Models.Api.UserState))]
+        [ResponseType(typeof(Models.Api.SUserState))]
         [Route("Categories/Select/{UUID}/{CategoryID}")]
         [HttpPost]
         public async Task<IHttpActionResult> SelectCategory(string UUID, int CategoryID)
@@ -159,7 +159,7 @@ namespace Falcon.Web.Api.Controllers.V1
                         }
                     }
 
-                    var userState = new Models.Api.UserState
+                    var userState = new Models.Api.SUserState
                     {
                         UserStar = user.TotalStars,
                         SelectedThemeID = null,

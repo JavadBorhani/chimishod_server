@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿// BMS-Studio Copyright 2017-2018
+
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace Falcon.Web.Models.Api
 {    
-    public class Answer
+    public class SAnswer
     {
         public int ID { get; set; }
 

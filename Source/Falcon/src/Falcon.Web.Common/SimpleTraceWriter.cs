@@ -1,4 +1,6 @@
-﻿using System;
+﻿// BMS-Studio Copyright 2017-2018
+
+using System;
 using System.Net.Http;
 using log4net;
 using Falcon.Common.Logging;

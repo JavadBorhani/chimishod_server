@@ -1,4 +1,6 @@
-﻿using log4net;
+﻿// BMS-Studio Copyright 2017-2018
+
+using log4net;
 using System;
 
 

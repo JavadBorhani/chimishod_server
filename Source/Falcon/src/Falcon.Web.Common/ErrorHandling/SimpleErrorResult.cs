@@ -1,4 +1,6 @@
-﻿using System.Net;
+﻿// BMS-Studio Copyright 2017-2018
+
+using System.Net;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;

@@ -34,6 +34,9 @@
       <HintPath>..\..\lib\AutoMapper.5.2.0\lib\net45\AutoMapper.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="EntityFramework">
+      <HintPath>..\..\lib\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
     <Reference Include="log4net, Version=2.0.7.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <HintPath>..\..\lib\log4net.2.0.7\lib\net45-full\log4net.dll</HintPath>
       <Private>True</Private>
@@ -51,11 +54,17 @@
     <Compile Include="BusinessRuleViolationException.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="DateTimeAdapter.cs" />
+    <Compile Include="Extentions\ContextExtensions.cs" />
     <Compile Include="IDateTime.cs" />
     <Compile Include="Logging\ILogManager.cs" />
     <Compile Include="Logging\LogManagerAdapter.cs" />
     <Compile Include="PrimitiveTypeParser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Security\IUserSession.cs" />
+    <Compile Include="Security\IWebUserSession.cs" />
+    <Compile Include="TypeMapping\AutoMapperAdapter.cs" />
+    <Compile Include="TypeMapping\IAutoMapper.cs" />
+    <Compile Include="TypeMapping\IAutoMapperConfigurator.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

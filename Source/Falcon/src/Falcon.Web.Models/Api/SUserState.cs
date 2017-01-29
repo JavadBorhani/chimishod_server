@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿// BMS-Studio Copyright 2017-2018
 
 namespace Falcon.Web.Models.Api
 {
-    public class UserState
+    public class SUserState
     { 
         public int? UserStar { get; set; }
         public int? SelectedCategoryID { get; set; }

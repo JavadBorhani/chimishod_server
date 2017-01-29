@@ -24,7 +24,7 @@ namespace Falcon.Web.Api.Controllers.V1
             mDateTime = dateTime;
         }
 
-        [ResponseType(typeof(Models.Api.AppTheme))]
+        [ResponseType(typeof(Models.Api.SAppTheme))]
         [Route("Themes/{UUID}")]
         [HttpGet]
         public async Task<IHttpActionResult> GetAppThemes(string UUID)
@@ -40,11 +40,11 @@ namespace Falcon.Web.Api.Controllers.V1
 
                 if(themes.Length > 0 && selectedTheme > 0 && purchasedThemes.Count >= 0)
                 {
-                    Models.Api.AppTheme[] userThemes = new Models.Api.AppTheme[themes.Length];
+                    Models.Api.SAppTheme[] userThemes = new Models.Api.SAppTheme[themes.Length];
 
                     for (int i = 0; i < themes.Length; ++i)
                     {
-                        userThemes[i] = new Models.Api.AppTheme
+                        userThemes[i] = new Models.Api.SAppTheme
                         {
                             ID = themes[i].ID,
                             Name = themes[i].Name,
@@ -68,7 +68,7 @@ namespace Falcon.Web.Api.Controllers.V1
         }
 
 
-        [ResponseType(typeof(Models.Api.UserState))]
+        [ResponseType(typeof(Models.Api.SUserState))]
         [Route("Themes/Select/{UUID}/{ThemeID}")] // TODO : Change To Action
         [HttpPost]
         public async Task<IHttpActionResult> SelectAppTheme(string UUID , int ThemeID)
@@ -101,7 +101,7 @@ namespace Falcon.Web.Api.Controllers.V1
                         }
                     }
 
-                    var userState = new Models.Api.UserState
+                    var userState = new Models.Api.SUserState
                     {
                         UserStar = user.TotalStars,
                         SelectedThemeID = userSelectedTheme.AppThemeID,
@@ -123,7 +123,7 @@ namespace Falcon.Web.Api.Controllers.V1
 
         }
 
-        [ResponseType(typeof(Models.Api.UserState))]
+        [ResponseType(typeof(Models.Api.SUserState))]
         [Route("Themes/Buy/{UUID}/{ThemeID}")] // TODO : Change To Action
         [HttpPost]
         public async Task<IHttpActionResult> BuyTheme(string UUID , int ThemeID)
@@ -164,7 +164,7 @@ namespace Falcon.Web.Api.Controllers.V1
                     }
                 }
 
-                var clientResult = new Models.Api.UserState
+                var clientResult = new Models.Api.SUserState
                 {
                     UserStar = user.TotalStars,
                     SelectedThemeID = selectedTheme.AppThemeID,

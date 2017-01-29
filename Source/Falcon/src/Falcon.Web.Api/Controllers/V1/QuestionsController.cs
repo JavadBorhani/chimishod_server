@@ -14,7 +14,7 @@ namespace Falcon.Web.Api.Controllers.V1
         private DbEntity db = new DbEntity();
 
 
-        [ResponseType(typeof(Models.Api.Question))]
+        [ResponseType(typeof(Models.Api.SQuestion))]
         [Route("Questions/Question/{UUID}")]
         [HttpGet]
         public  async Task<IHttpActionResult> GettingQuestion(string uuid)
@@ -32,10 +32,10 @@ namespace Falcon.Web.Api.Controllers.V1
 
                 if (result.Length > 0)
                 {
-                    Models.Api.Question[] questions = new Models.Api.Question[result.Length];
+                    Models.Api.SQuestion[] questions = new Models.Api.SQuestion[result.Length];
                     for (int i = 0; i < questions.Length; ++i)
                     {
-                        questions[i] = new Models.Api.Question
+                        questions[i] = new Models.Api.SQuestion
                         {
                             ID = result[i].ID,
                             What_if = result[i].What_if,
@@ -55,10 +55,10 @@ namespace Falcon.Web.Api.Controllers.V1
                     return Ok(questions);
                 }
 
-                Models.Api.Question[] noQuestion = new Models.Api.Question[Constants.DefaultReturnAmounts.ServerBurntNumber];
+                Models.Api.SQuestion[] noQuestion = new Models.Api.SQuestion[Constants.DefaultReturnAmounts.ServerBurntNumber];
                 for (int i = 0; i < Constants.DefaultReturnAmounts.ServerBurntNumber; ++i)
                 {
-                    noQuestion[i] = new Models.Api.Question
+                    noQuestion[i] = new Models.Api.SQuestion
                     {
                         ID = Constants.DefaultValues.NoQuestionID,
                         What_if = Constants.DefaultValues.NoQuestionWhat,

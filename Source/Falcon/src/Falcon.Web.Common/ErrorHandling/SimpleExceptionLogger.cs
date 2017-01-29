@@ -1,4 +1,6 @@
-﻿using Falcon.Common.Logging;
+﻿// BMS-Studio Copyright 2017-2018
+
+using Falcon.Common.Logging;
 using log4net;
 using System.Web.Http.ExceptionHandling;
 

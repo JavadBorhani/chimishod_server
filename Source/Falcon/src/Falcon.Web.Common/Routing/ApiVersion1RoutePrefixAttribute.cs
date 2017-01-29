@@ -1,4 +1,6 @@
-﻿using System;
+﻿// BMS-Studio Copyright 2017-2018
+
+using System;
 using System.Web.Http;
 
 namespace Falcon.Web.Common.Routing

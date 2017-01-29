@@ -1,9 +1,10 @@
-﻿using System;
+﻿// BMS-Studio Copyright 2017-2018
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace Falcon.Web.Models.Api
 {
-    public class Comment
+    public class SComment
     {
         
         public int UserID { get; set; }

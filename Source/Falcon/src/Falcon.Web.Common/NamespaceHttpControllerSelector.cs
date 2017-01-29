@@ -1,4 +1,5 @@
-﻿using System;
+﻿// BMS-Studio Copyright 2017-2018
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;

@@ -1,4 +1,6 @@
-﻿using Ninject;
+﻿// BMS-Studio Copyright 2017-2018
+
+using Ninject;
 using System;
 using System.Collections.Generic;
 using System.Linq;

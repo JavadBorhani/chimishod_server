@@ -1,4 +1,5 @@
-﻿using System;
+﻿// BMS-Studio Copyright 2017-2018
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,7 +8,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Falcon.Web.Models.Api
 {
-    public class Question
+    public class SQuestion
     {
         public int ID { get; set; }
         public string What_if { get; set; }

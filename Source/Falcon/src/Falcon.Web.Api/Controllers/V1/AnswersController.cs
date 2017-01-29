@@ -31,7 +31,7 @@ namespace Falcon.Web.Api.Controllers.V1
             return db.Answers;
         }
 
-        [ResponseType(typeof(Models.Api.Answer))]
+        [ResponseType(typeof(Models.Api.SAnswer))]
         public async Task<IHttpActionResult> GetAnswer(int id)
         {
             Answer answer = await db.Answers.FindAsync(id);
@@ -39,7 +39,7 @@ namespace Falcon.Web.Api.Controllers.V1
             {
                 return NotFound();
             }
-            var result = new Models.Api.Answer
+            var result = new Models.Api.SAnswer
             {
                 UserID = answer.UserID,
                 QuestionID = answer.QuestionID,
@@ -53,9 +53,9 @@ namespace Falcon.Web.Api.Controllers.V1
         }
 
         [Route("Answers/Answer/{UUID}")]
-        [ResponseType(typeof(Models.Api.Answer))]
+        [ResponseType(typeof(Models.Api.SAnswer))]
         [HttpPost]
-        public async Task<IHttpActionResult> PostingAnswer(string UUID, [FromBody] Models.Api.Answer answer)
+        public async Task<IHttpActionResult> PostingAnswer(string UUID, [FromBody] Models.Api.SAnswer answer)
         {
             var user = await db.Users.SingleOrDefaultAsync(u => u.UUID == UUID);
 
@@ -151,7 +151,6 @@ namespace Falcon.Web.Api.Controllers.V1
             }
             base.Dispose(disposing);
         }
-
         private async Task<bool> AnswerExists(int id)
         {
             return await db.Answers.CountAsync(e => e.ID == id) > 0;

@@ -23,14 +23,14 @@ namespace Falcon.Web.Api.Controllers.V1
             mDbContext = Context;
         }
 
-        [ResponseType(typeof(Models.Api.User))]
+        [ResponseType(typeof(Models.Api.SUser))]
         [Route("UserAuthenticator/UUID/{UUID}")]
         public async Task<IHttpActionResult> GetUser(string UUID)
         {
             var user = db.Users.SingleOrDefault(c => c.UUID == UUID);
             if (user != null)
             {
-                var UserModel = new Models.Api.User
+                var UserModel = new Models.Api.SUser
                 {
                     ID = user.ID,
                     UUID = user.UUID,
@@ -45,7 +45,7 @@ namespace Falcon.Web.Api.Controllers.V1
 
                 var selectedCatID = db.SelectedCategories.Where(sc => sc.UserID == user.ID).Select(u => u.CategoryID).SingleOrDefault();
 
-                var UserState = new Models.Api.UserState
+                var UserState = new Models.Api.SUserState
                 {
                     UserStar = user.TotalStars,
                     SelectedCategoryID = selectedCatID,
@@ -108,7 +108,7 @@ namespace Falcon.Web.Api.Controllers.V1
             db.UserInfoes.Add(userInfo);
             await db.SaveChangesAsync();
 
-            var UserModel = new Models.Api.User
+            var UserModel = new Models.Api.SUser
             {
                 ID = user.ID,
                 UUID = user.UUID,
@@ -120,7 +120,7 @@ namespace Falcon.Web.Api.Controllers.V1
                 CurrentLevelID = user.CurrentLevelID,
                 IsAbleToWriteComment = user.IsAbleToWriteComment
             };
-            var UserState = new Models.Api.UserState
+            var UserState = new Models.Api.SUserState
             {
                 UserStar = UserModel.TotalStars,
                 SelectedCategoryID = Constants.DefaulUser.CategoryID,

@@ -1,4 +1,6 @@
-﻿using System.Net;
+﻿// BMS-Studio Copyright 2017-2018
+
+using System.Net;
 using System.Web;
 using System.Web.Http.ExceptionHandling;
 using Falcon.Data.Exceptions;

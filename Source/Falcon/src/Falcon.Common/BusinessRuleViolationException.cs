@@ -1,4 +1,5 @@
-﻿using System;
+﻿// BMS-Studio Copyright 2017-2018
+using System;
 
 namespace Falcon.Common
 {
