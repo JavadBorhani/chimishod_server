@@ -16,6 +16,7 @@ namespace Falcon.EFCommonContext.DbModel
     {
         public int ID { get; set; }
         public int UserID { get; set; }
+        public Nullable<int> QuestionBoostID { get; set; }
         public string What_if { get; set; }
         public string But { get; set; }
         public System.DateTime RegisterDateTime { get; set; }
@@ -24,6 +25,7 @@ namespace Falcon.EFCommonContext.DbModel
     
         public virtual Category Category { get; set; }
         public virtual CreatedQuestionsVerifyType CreatedQuestionsVerifyType { get; set; }
+        public virtual QuestionBoost QuestionBoost { get; set; }
         public virtual User User { get; set; }
     }
 }

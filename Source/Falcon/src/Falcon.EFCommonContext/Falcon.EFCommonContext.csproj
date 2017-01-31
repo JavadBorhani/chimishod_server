@@ -111,6 +111,9 @@
     <Compile Include="DbModel\Question.cs">
       <DependentUpon>WhatIfDataModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="DbModel\QuestionBoost.cs">
+      <DependentUpon>WhatIfDataModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="DbModel\ReportedQuestion.cs">
       <DependentUpon>WhatIfDataModel.tt</DependentUpon>
     </Compile>

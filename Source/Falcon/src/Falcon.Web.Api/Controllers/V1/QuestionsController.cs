@@ -15,23 +15,43 @@ namespace Falcon.Web.Api.Controllers.V1
 
 
         [ResponseType(typeof(Models.Api.SQuestion))]
-        [Route("Questions/Question/{UUID}")]
+        [Route("Questions/Question/{UUID}/{CategoryID}")]
         [HttpGet]
-        public  async Task<IHttpActionResult> GettingQuestion(string uuid)
+        public  async Task<IHttpActionResult> GettingQuestion(string uuid , int CategoryID)
         {
             var user = await db.Users.SingleOrDefaultAsync(u => u.UUID == uuid);
             
             if(user != null)
-            { 
-                
-                var result =  await db.Questions.Where(question => question.Banned == false && !db.Answers 
-                                        .Where( answer => answer.UserID == user.ID)
-                                        .Select(y => y.QuestionID)
-                                        .ToList().Contains(question.ID))
-                                        .OrderByDescending(question => question.Weight).Take(Constants.DefaultReturnAmounts.Question).ToArrayAsync();
+            {
+
+                bool isAbleToGetCategory;
+                if (CategoryID == Constants.DefaulUser.CategoryID)
+                    isAbleToGetCategory = true; 
+                else
+                    isAbleToGetCategory = await db.PurchaseCategories.AsNoTracking().CountAsync( pc => pc.UserID == user.ID && pc.CategoryID == CategoryID ) == 1;
+
+                int CatToGet = -1;
+                if (isAbleToGetCategory)
+                {
+                    CatToGet = CategoryID;
+                }
+                else
+                {
+                    CatToGet = await db.SelectedCategories.AsNoTracking().Where(sc => sc.UserID == user.ID).Select(sc => sc.CategoryID).SingleOrDefaultAsync();
+                }
+
+                var result = await db.Questions.Where(question => question.Banned == false && question.Catgory_ID == CatToGet &&
+                                               !db.Answers.Where(answer => answer.UserID == user.ID)
+                                               .Select(y => y.QuestionID)
+                                               .ToList()
+                                               .Contains(question.ID))
+                                               .OrderByDescending(question => question.Weight)
+                                               .Take(Constants.DefaultReturnAmounts.Question)
+                                               .ToArrayAsync();
 
                 if (result.Length > 0)
                 {
+                    //TODO : Refactor SQuestion Data Model 
                     Models.Api.SQuestion[] questions = new Models.Api.SQuestion[result.Length];
                     for (int i = 0; i < questions.Length; ++i)
                     {
@@ -46,7 +66,6 @@ namespace Falcon.Web.Api.Controllers.V1
                             Like_Count = result[i].Like_Count,
                             Dislike_Count = result[i].Dislike_Count,
                             Weight = result[i].Weight,
-                            CreatorID = result[i].CreatorID,
                             CreatedDate = result[i].CreatedDate,
                             UpdateDate = result[i].UpdateDate,
                             Banned = result[i].Banned

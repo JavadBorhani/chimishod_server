@@ -19,8 +19,9 @@ namespace Falcon.EFCommonContext.DbModel
             : base("name=DbEntity")
         {
         }
+
         public DbEntity(string NameOrConnectionString) : base(NameOrConnectionString)
-        {
+        { 
 
         }
     
@@ -28,8 +29,7 @@ namespace Falcon.EFCommonContext.DbModel
         {
             throw new UnintentionalCodeFirstException();
         }
-
-        //TODO: Force Entity Designer to not to include these in our files  
+    
         public virtual DbSet<AchievedGift> AchievedGifts { get; set; }
         public virtual DbSet<AchievedPosession> AchievedPosessions { get; set; }
         public virtual DbSet<Achievement> Achievements { get; set; }
@@ -49,6 +49,7 @@ namespace Falcon.EFCommonContext.DbModel
         public virtual DbSet<PurchaseCategory> PurchaseCategories { get; set; }
         public virtual DbSet<PurchaseTheme> PurchaseThemes { get; set; }
         public virtual DbSet<Question> Questions { get; set; }
+        public virtual DbSet<QuestionBoost> QuestionBoosts { get; set; }
         public virtual DbSet<ReportedQuestion> ReportedQuestions { get; set; }
         public virtual DbSet<ReportType> ReportTypes { get; set; }
         public virtual DbSet<SelectedCategory> SelectedCategories { get; set; }

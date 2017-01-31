@@ -6,7 +6,7 @@ namespace Falcon.EFCommonContext
     {
         private const string DatabaseConnectionName = "name=DbEntity";
         public CommonModelFirstDbContext(string NameOrConnectionString) 
-            : base(DatabaseConnectionName)
+            : base(string.IsNullOrWhiteSpace(NameOrConnectionString) ? DatabaseConnectionName : NameOrConnectionString)
         {
 
         }

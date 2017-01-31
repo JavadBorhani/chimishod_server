@@ -2,7 +2,7 @@
 
 namespace Falcon.Common.TypeMapping
 {
-    public interface IAutoMapperConfigurator
+    public interface IAutoMapperTypeConfigurator
     {
         void Configure();
     }

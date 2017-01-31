@@ -5,67 +5,70 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="d87f924fb6394d2484c7b5effdc43f04" Name="Diagram1">
-        <EntityTypeShape EntityType="Falcon.DbModel.AchievedGift" Width="1.5" PointX="5.25" PointY="23.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="Falcon.DbModel.AchievedPosession" Width="1.5" PointX="8.25" PointY="23.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="Falcon.DbModel.Achievement" Width="1.5" PointX="6" PointY="31.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="Falcon.DbModel.AchieveStateType" Width="1.5" PointX="6" PointY="34.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="Falcon.DbModel.Answer" Width="1.5" PointX="5.25" PointY="19.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="Falcon.DbModel.AppTheme" Width="1.5" PointX="3" PointY="15.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="Falcon.DbModel.Category" Width="1.5" PointX="0.75" PointY="10" IsExpanded="true" />
-        <EntityTypeShape EntityType="Falcon.DbModel.Comment" Width="1.5" PointX="5.25" PointY="27.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="Falcon.DbModel.CreatedQuestion" Width="1.5" PointX="8.25" PointY="19.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="Falcon.DbModel.CreatedQuestionsVerifyType" Width="1.5" PointX="6" PointY="12.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="Falcon.DbModel.Favorite" Width="1.5" PointX="8.25" PointY="27.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="Falcon.DbModel.Gift" Width="1.5" PointX="3" PointY="29.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="Falcon.DbModel.Level" Width="1.5" PointX="0.75" PointY="23.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="Falcon.DbModel.Manufacture" Width="1.5" PointX="11.25" PointY="23.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="Falcon.DbModel.Order" Width="1.5" PointX="11.25" PointY="20.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="Falcon.DbModel.OurAdvertisement" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="Falcon.DbModel.PurchaseCategory" Width="1.5" PointX="11.25" PointY="26.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="Falcon.DbModel.PurchaseTheme" Width="1.5" PointX="11.25" PointY="17.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="Falcon.DbModel.Question" Width="1.5" PointX="3" PointY="9.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="Falcon.DbModel.ReportedQuestion" Width="1.5" PointX="11.25" PointY="30.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="Falcon.DbModel.ReportType" Width="1.5" PointX="9" PointY="33.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="Falcon.DbModel.SelectedCategory" Width="1.5" PointX="8.25" PointY="30.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="Falcon.DbModel.SelectedTheme" Width="1.5" PointX="5.25" PointY="15.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="Falcon.DbModel.Store" Width="1.5" PointX="9" PointY="15.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="Falcon.DbModel.sysdiagram" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="Falcon.DbModel.User" Width="1.5" PointX="3" PointY="21.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="Falcon.DbModel.UserInfo" Width="1.5" PointX="5.25" PointY="63.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="Falcon.DbModel.UserType" Width="1.5" PointX="0.75" PointY="20.875" IsExpanded="true" />
-        <AssociationConnector Association="Falcon.DbModel.FK_AchievedGifts_Gift" ManuallyRouted="false" />
-        <AssociationConnector Association="Falcon.DbModel.FK_AchievedGifts_User" ManuallyRouted="false" />
-        <AssociationConnector Association="Falcon.DbModel.FK_AchievedPosession_AchieveStateType" ManuallyRouted="false" />
-        <AssociationConnector Association="Falcon.DbModel.FK_AchievedQuests_Quest" ManuallyRouted="false" />
-        <AssociationConnector Association="Falcon.DbModel.FK_AchievedQuests_User" ManuallyRouted="false" />
-        <AssociationConnector Association="Falcon.DbModel.FK_Answer_Question" ManuallyRouted="false" />
-        <AssociationConnector Association="Falcon.DbModel.FK_Answer_User" ManuallyRouted="false" />
-        <AssociationConnector Association="Falcon.DbModel.FK_PurchaseTheme_AppTheme" ManuallyRouted="false" />
-        <AssociationConnector Association="Falcon.DbModel.FK_SelectedTheme_AppTheme" ManuallyRouted="false" />
-        <AssociationConnector Association="Falcon.DbModel.FK_CreatedQuestions_Category" ManuallyRouted="false" />
-        <AssociationConnector Association="Falcon.DbModel.FK_PurchaseCategory_Category" ManuallyRouted="false" />
-        <AssociationConnector Association="Falcon.DbModel.FK_Question_Category" ManuallyRouted="false" />
-        <AssociationConnector Association="Falcon.DbModel.FK_SelectedCategory_Category" ManuallyRouted="false" />
-        <AssociationConnector Association="Falcon.DbModel.FK_Comment_Question" ManuallyRouted="false" />
-        <AssociationConnector Association="Falcon.DbModel.FK_Comment_User" ManuallyRouted="false" />
-        <AssociationConnector Association="Falcon.DbModel.FK_CreatedQuestions_CreatedQuestionsVerifyType" ManuallyRouted="false" />
-        <AssociationConnector Association="Falcon.DbModel.FK_CreatedQuestions_User" ManuallyRouted="false" />
-        <AssociationConnector Association="Falcon.DbModel.FK_Favorite_Question" ManuallyRouted="false" />
-        <AssociationConnector Association="Falcon.DbModel.FK_Favorite_User" ManuallyRouted="false" />
-        <AssociationConnector Association="Falcon.DbModel.FK_User_Level" ManuallyRouted="false" />
-        <AssociationConnector Association="Falcon.DbModel.FK_Manufacture_Question" ManuallyRouted="false" />
-        <AssociationConnector Association="Falcon.DbModel.FK_Manufacture_User" ManuallyRouted="false" />
-        <AssociationConnector Association="Falcon.DbModel.FK_Order_Store" ManuallyRouted="false" />
-        <AssociationConnector Association="Falcon.DbModel.FK_Order_User" ManuallyRouted="false" />
-        <AssociationConnector Association="Falcon.DbModel.FK_PurchaseCategory_User" ManuallyRouted="false" />
-        <AssociationConnector Association="Falcon.DbModel.FK_PurchaseTheme_User" ManuallyRouted="false" />
-        <AssociationConnector Association="Falcon.DbModel.FK_ReportedQuestions_Question" ManuallyRouted="false" />
-        <AssociationConnector Association="Falcon.DbModel.FK_ReportedQuestions_ReportType" ManuallyRouted="false" />
-        <AssociationConnector Association="Falcon.DbModel.FK_ReportedQuestions_User" ManuallyRouted="false" />
-        <AssociationConnector Association="Falcon.DbModel.FK_SelectedCategory_User" ManuallyRouted="false" />
-        <AssociationConnector Association="Falcon.DbModel.FK_SelectedTheme_User" ManuallyRouted="false" />
-        <AssociationConnector Association="Falcon.DbModel.FK_User_UserType" ManuallyRouted="false" />
-        <AssociationConnector Association="Falcon.DbModel.FK_UserInfo_User" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="Falcon.DbModel.AchievedGift" Width="1.5" PointX="8.25" PointY="18" />
+        <EntityTypeShape EntityType="Falcon.DbModel.AchievedPosession" Width="1.5" PointX="8.25" PointY="26.75" />
+        <EntityTypeShape EntityType="Falcon.DbModel.Achievement" Width="1.5" PointX="6" PointY="34.375" />
+        <EntityTypeShape EntityType="Falcon.DbModel.AchieveStateType" Width="1.5" PointX="6" PointY="37.875" />
+        <EntityTypeShape EntityType="Falcon.DbModel.Answer" Width="1.5" PointX="11.25" PointY="23.625" />
+        <EntityTypeShape EntityType="Falcon.DbModel.AppTheme" Width="1.5" PointX="9" PointY="35.375" />
+        <EntityTypeShape EntityType="Falcon.DbModel.Category" Width="1.5" PointX="6.75" PointY="4.375" />
+        <EntityTypeShape EntityType="Falcon.DbModel.Comment" Width="1.5" PointX="5.25" PointY="23.625" />
+        <EntityTypeShape EntityType="Falcon.DbModel.CreatedQuestion" Width="1.5" PointX="8.25" PointY="30.375" />
+        <EntityTypeShape EntityType="Falcon.DbModel.CreatedQuestionsVerifyType" Width="1.5" PointX="6" PointY="41.125" />
+        <EntityTypeShape EntityType="Falcon.DbModel.Favorite" Width="1.5" PointX="11.25" PointY="20" />
+        <EntityTypeShape EntityType="Falcon.DbModel.Gift" Width="1.5" PointX="6" PointY="12.625" />
+        <EntityTypeShape EntityType="Falcon.DbModel.Level" Width="1.5" PointX="0.75" PointY="20.875" />
+        <EntityTypeShape EntityType="Falcon.DbModel.Manufacture" Width="1.5" PointX="5.25" PointY="20" />
+        <EntityTypeShape EntityType="Falcon.DbModel.Order" Width="1.5" PointX="5.25" PointY="16.875" />
+        <EntityTypeShape EntityType="Falcon.DbModel.OurAdvertisement" Width="1.5" PointX="0.75" PointY="0.75" />
+        <EntityTypeShape EntityType="Falcon.DbModel.PurchaseCategory" Width="1.5" PointX="8.25" PointY="21" />
+        <EntityTypeShape EntityType="Falcon.DbModel.PurchaseTheme" Width="1.5" PointX="11.25" PointY="28" />
+        <EntityTypeShape EntityType="Falcon.DbModel.Question" Width="1.5" PointX="9" PointY="5.625" />
+        <EntityTypeShape EntityType="Falcon.DbModel.QuestionBoost" Width="1.5" PointX="6.75" PointY="8.75" />
+        <EntityTypeShape EntityType="Falcon.DbModel.ReportedQuestion" Width="1.5" PointX="5.25" PointY="30.75" />
+        <EntityTypeShape EntityType="Falcon.DbModel.ReportType" Width="1.5" PointX="3" PointY="31.125" />
+        <EntityTypeShape EntityType="Falcon.DbModel.SelectedCategory" Width="1.5" PointX="8.25" PointY="24" />
+        <EntityTypeShape EntityType="Falcon.DbModel.SelectedTheme" Width="1.5" PointX="5.25" PointY="28" />
+        <EntityTypeShape EntityType="Falcon.DbModel.Store" Width="1.5" PointX="3" PointY="16.5" />
+        <EntityTypeShape EntityType="Falcon.DbModel.sysdiagram" Width="1.5" PointX="2.75" PointY="0.75" />
+        <EntityTypeShape EntityType="Falcon.DbModel.User" Width="1.5" PointX="3" PointY="22.125" />
+        <EntityTypeShape EntityType="Falcon.DbModel.UserInfo" Width="1.5" PointX="5.25" PointY="64.375" />
+        <EntityTypeShape EntityType="Falcon.DbModel.UserType" Width="1.5" PointX="0.75" PointY="24.125" />
+        <AssociationConnector Association="Falcon.DbModel.FK_AchievedGifts_Gift" />
+        <AssociationConnector Association="Falcon.DbModel.FK_AchievedGifts_User" />
+        <AssociationConnector Association="Falcon.DbModel.FK_AchievedPosession_AchieveStateType" />
+        <AssociationConnector Association="Falcon.DbModel.FK_AchievedQuests_Quest" />
+        <AssociationConnector Association="Falcon.DbModel.FK_AchievedQuests_User" />
+        <AssociationConnector Association="Falcon.DbModel.FK_Answer_Question" />
+        <AssociationConnector Association="Falcon.DbModel.FK_Answer_User" />
+        <AssociationConnector Association="Falcon.DbModel.FK_PurchaseTheme_AppTheme" />
+        <AssociationConnector Association="Falcon.DbModel.FK_SelectedTheme_AppTheme" />
+        <AssociationConnector Association="Falcon.DbModel.FK_CreatedQuestions_Category" />
+        <AssociationConnector Association="Falcon.DbModel.FK_PurchaseCategory_Category" />
+        <AssociationConnector Association="Falcon.DbModel.FK_Question_Category" />
+        <AssociationConnector Association="Falcon.DbModel.FK_SelectedCategory_Category" />
+        <AssociationConnector Association="Falcon.DbModel.FK_Comment_Question" />
+        <AssociationConnector Association="Falcon.DbModel.FK_Comment_User" />
+        <AssociationConnector Association="Falcon.DbModel.FK_CreatedQuestions_CreatedQuestionsVerifyType" />
+        <AssociationConnector Association="Falcon.DbModel.FK_CreatedQuestions_QuestionBoost" />
+        <AssociationConnector Association="Falcon.DbModel.FK_CreatedQuestions_User" />
+        <AssociationConnector Association="Falcon.DbModel.FK_Favorite_Question" />
+        <AssociationConnector Association="Falcon.DbModel.FK_Favorite_User" />
+        <AssociationConnector Association="Falcon.DbModel.FK_User_Level" />
+        <AssociationConnector Association="Falcon.DbModel.FK_Manufacture_Question" />
+        <AssociationConnector Association="Falcon.DbModel.FK_Manufacture_User" />
+        <AssociationConnector Association="Falcon.DbModel.FK_Order_Store" />
+        <AssociationConnector Association="Falcon.DbModel.FK_Order_User" />
+        <AssociationConnector Association="Falcon.DbModel.FK_PurchaseCategory_User" />
+        <AssociationConnector Association="Falcon.DbModel.FK_PurchaseTheme_User" />
+        <AssociationConnector Association="Falcon.DbModel.FK_Question_QuestionBoost" />
+        <AssociationConnector Association="Falcon.DbModel.FK_ReportedQuestions_Question" />
+        <AssociationConnector Association="Falcon.DbModel.FK_ReportedQuestions_ReportType" />
+        <AssociationConnector Association="Falcon.DbModel.FK_ReportedQuestions_User" />
+        <AssociationConnector Association="Falcon.DbModel.FK_SelectedCategory_User" />
+        <AssociationConnector Association="Falcon.DbModel.FK_SelectedTheme_User" />
+        <AssociationConnector Association="Falcon.DbModel.FK_User_UserType" />
+        <AssociationConnector Association="Falcon.DbModel.FK_UserInfo_User" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

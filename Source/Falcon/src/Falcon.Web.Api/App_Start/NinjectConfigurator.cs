@@ -11,6 +11,12 @@ using Falcon.Web.Common.Security;
 using Falcon.Common.Security;
 using Falcon.Data.QueryProcessors;
 using Falcon.Database.SqlServer.QueryProcessors;
+using Falcon.Common.TypeMapping;
+using System;
+using System.Linq;
+using AutoMapper;
+using System.Collections.Generic;
+using Falcon.Web.Api.App_Start;
 
 namespace Falcon.Web.Api
 {
@@ -20,17 +26,18 @@ namespace Falcon.Web.Api
         public void Configure(IKernel container)
         {
             AddBindings(container);
-            ConfigureUserSession(container);
-            ConfigureEntityFramework(container);
+            
         }
         
         private void AddBindings(IKernel container)
         {
+            ConfigureUserSession(container);
+            ConfigureEntityFramework(container);
             ConfigureLog4Net(container);
+            ConfigureAutoMapper(container);
+            AddQueryProcessors(container);
 
             container.Bind<IDateTime>().To<DateTimeAdapter>().InSingletonScope();
-
-            AddQueryProcessors(container);
 
 
         }
@@ -58,10 +65,30 @@ namespace Falcon.Web.Api
             container.Bind<IActionTransactionHelper>().To<ActionTransactionHelper>().InRequestScope();
         }
 
-
         private void AddQueryProcessors(IKernel container)
         {
             container.Bind<IAchievementQueryProcessor>().To<AchievementQueryProcessor>().InRequestScope();
+        }
+
+        private void ConfigureAutoMapper(IKernel container)
+        {
+            container.Bind<IAutoMapper>().To<AutoMapperAdapter>().InSingletonScope();
+
+
+            var result = AppDomain.CurrentDomain.GetAssemblies()
+                                                .Where(r => r.FullName.Contains("Falcon"))
+                                                .Select(r => r.GetTypes());
+
+            List<Profile> profiles = new List<Profile>();
+            foreach(var m in result)
+            {
+                for(int i = 0; i< m.Length; ++i)
+                {
+                    if (m[i].IsSubclassOf(typeof(Profile)))
+                        profiles.Add((Profile)Activator.CreateInstance(m[i]));
+                }
+            }
+            new AutoMapperConfiguration().Configure(profiles, container); //TODO : add list of profiles
         }
 
     }
