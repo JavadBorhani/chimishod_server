@@ -10,9 +10,6 @@ namespace Falcon.Web.Api
         protected void Application_Start()
         {
             GlobalConfiguration.Configure(WebApiConfig.Register);
-
-          
-
         }
         protected void Application_Error()
         {

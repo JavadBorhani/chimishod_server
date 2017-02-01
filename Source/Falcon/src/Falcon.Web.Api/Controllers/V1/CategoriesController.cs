@@ -6,6 +6,11 @@ using System.Web.Http;
 using System.Web.Http.Description;
 using Falcon.Common;
 using Falcon.EFCommonContext.DbModel;
+using System.Net.Http;
+using System.Net;
+using AutoMapper;
+using Falcon.Web.Models.Api;
+using System.Collections.Generic;
 
 namespace Falcon.Web.Api.Controllers.V1
 {
@@ -14,10 +19,12 @@ namespace Falcon.Web.Api.Controllers.V1
         private DbEntity db = new DbEntity();
 
         private readonly IDateTime mDateTime;
+        private readonly IMapper mMapper;
 
-        public CategoriesController(IDateTime dateTime)
+        public CategoriesController(IDateTime dateTime , IMapper Mapper)
         {
             mDateTime = dateTime;
+            mMapper = Mapper;
         }
            
         // GET: api/Categories
@@ -177,6 +184,40 @@ namespace Falcon.Web.Api.Controllers.V1
             else
             {
                 return NotFound(); // TODO : Change with UnAuthorized
+            }
+        }
+
+
+        [ResponseType(typeof(Models.Api.SCategory))]
+        [Route("Categories/Purchased/{UUID}")]
+        [HttpPost]
+        public async Task<IHttpActionResult> GetPurchasedCategoryList(string UUID)
+        {
+            var userID = await db.Users.AsNoTracking().Where(u => u.UUID == UUID).Select(u => u.ID).SingleOrDefaultAsync();
+
+            if(userID != 0) // User Found
+            {
+
+                var userActiveCategories = await db.Categories.Where(c => c.ID == Constants.DefaulUser.CategoryID || 
+                                                                        db.PurchaseCategories.Where(pc => pc.UserID == userID)
+                                                                                            .Select( pc => pc.CategoryID)
+                                                                                            .ToList()
+                                                                                            .Contains(c.ID))
+                                                                                            .ToListAsync();
+                if(userActiveCategories.Count > 0)
+                {
+
+                    var result = mMapper.Map<List<Category>, List<SCategory>>(userActiveCategories);
+                    return Ok(result);
+                }
+                else
+                {
+                    return NotFound();
+                }
+            }
+            else
+            {
+                return ResponseMessage(Request.CreateResponse(HttpStatusCode.Unauthorized));
             }
         }
 
