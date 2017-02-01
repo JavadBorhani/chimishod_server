@@ -57,6 +57,16 @@
           <Property Name="YesNoState" Type="bit" Nullable="false" />
           <Property Name="CreatedDate" Type="datetime" Nullable="false" />
         </EntityType>
+        <EntityType Name="ApplicationState">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FavoritePrice" Type="int" Nullable="false" />
+          <Property Name="DefaultUserName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="DefaultUserCoin" Type="int" Nullable="false" />
+          <Property Name="CreateQuestionPrice" Type="int" Nullable="false" />
+        </EntityType>
         <EntityType Name="AppTheme">
           <Key>
             <PropertyRef Name="ID" />
@@ -809,6 +819,7 @@
           <EntitySet Name="Achievement" EntityType="Self.Achievement" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AchieveStateType" EntityType="Self.AchieveStateType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Answer" EntityType="Self.Answer" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ApplicationState" EntityType="Self.ApplicationState" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AppTheme" EntityType="Self.AppTheme" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Category" EntityType="Self.Category" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Comment" EntityType="Self.Comment" Schema="dbo" store:Type="Tables" />
@@ -984,6 +995,7 @@
           <EntitySet Name="Achievements" EntityType="Falcon.DbModel.Achievement" />
           <EntitySet Name="AchieveStateTypes" EntityType="Falcon.DbModel.AchieveStateType" />
           <EntitySet Name="Answers" EntityType="Falcon.DbModel.Answer" />
+          <EntitySet Name="ApplicationStates" EntityType="Falcon.DbModel.ApplicationState" />
           <EntitySet Name="AppThemes" EntityType="Falcon.DbModel.AppTheme" />
           <EntitySet Name="Categories" EntityType="Falcon.DbModel.Category" />
           <EntitySet Name="Comments" EntityType="Falcon.DbModel.Comment" />
@@ -1209,6 +1221,16 @@
           <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="Question" Relationship="Falcon.DbModel.FK_Answer_Question" FromRole="Answer" ToRole="Question" />
           <NavigationProperty Name="User" Relationship="Falcon.DbModel.FK_Answer_User" FromRole="Answer" ToRole="User" />
+        </EntityType>
+        <EntityType Name="ApplicationState">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FavoritePrice" Type="Int32" Nullable="false" />
+          <Property Name="DefaultUserName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="DefaultUserCoin" Type="Int32" Nullable="false" />
+          <Property Name="CreateQuestionPrice" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="AppTheme">
           <Key>
@@ -2017,7 +2039,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-      </Schema>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -2076,6 +2098,17 @@
                 <ScalarProperty Name="Liked" ColumnName="Liked" />
                 <ScalarProperty Name="QuestionID" ColumnName="QuestionID" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ApplicationStates">
+            <EntityTypeMapping TypeName="Falcon.DbModel.ApplicationState">
+              <MappingFragment StoreEntitySet="ApplicationState">
+                <ScalarProperty Name="CreateQuestionPrice" ColumnName="CreateQuestionPrice" />
+                <ScalarProperty Name="DefaultUserCoin" ColumnName="DefaultUserCoin" />
+                <ScalarProperty Name="DefaultUserName" ColumnName="DefaultUserName" />
+                <ScalarProperty Name="FavoritePrice" ColumnName="FavoritePrice" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>

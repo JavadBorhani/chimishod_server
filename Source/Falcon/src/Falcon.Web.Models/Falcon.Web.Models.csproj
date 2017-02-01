@@ -33,6 +33,8 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -41,12 +43,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Api\SApplicationState.cs" />
     <Compile Include="Api\SCreatedQuestion.cs" />
     <Compile Include="Api\SAchievement.cs" />
     <Compile Include="Api\SAnswer.cs" />
     <Compile Include="Api\SAppTheme.cs" />
     <Compile Include="Api\SCategory.cs" />
     <Compile Include="Api\SComment.cs" />
+    <Compile Include="Api\SQuestionBoost.cs" />
     <Compile Include="Api\SUserState.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Api\SQuestion.cs" />

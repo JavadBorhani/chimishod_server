@@ -20,11 +20,11 @@ namespace Falcon.EFCommonContext.DbModel
         {
         }
 
-        public DbEntity(string NameOrConnectionString) : base(NameOrConnectionString)
-        { 
-
+        public DbEntity(string NameOrConnectionString)
+            : base(NameOrConnectionString)
+        {
         }
-    
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             throw new UnintentionalCodeFirstException();
@@ -35,6 +35,7 @@ namespace Falcon.EFCommonContext.DbModel
         public virtual DbSet<Achievement> Achievements { get; set; }
         public virtual DbSet<AchieveStateType> AchieveStateTypes { get; set; }
         public virtual DbSet<Answer> Answers { get; set; }
+        public virtual DbSet<ApplicationState> ApplicationStates { get; set; }
         public virtual DbSet<AppTheme> AppThemes { get; set; }
         public virtual DbSet<Category> Categories { get; set; }
         public virtual DbSet<Comment> Comments { get; set; }
