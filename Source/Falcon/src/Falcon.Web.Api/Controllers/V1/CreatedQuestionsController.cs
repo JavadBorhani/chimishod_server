@@ -1,5 +1,4 @@
 ﻿using System.Data.Entity;
-using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -50,11 +49,11 @@ namespace Falcon.Web.Api.App_Start
                                                         .SingleOrDefaultAsync();
 
                     int boostPrice = (boost != null) ? boost.Price : 0;
-                    int? boostID = (boost == null) ? (int?)null : boost.Price;
+                    int? boostID = (boost == null) ? (int?)null : boost.ID;
 
-                    if (HasEnoughMoney(user.TotalStars, Constants.DefaultValues.CreateNewQuestionPrice, boostPrice))
+                    if (HasEnoughMoney(user.TotalStars, Constants.DefaultValues.CreateNewQuestionPrice, boostPrice)) //TODO Change Create Question Price to get from appState
                     {
-                        user.TotalStars -= Constants.DefaultValues.CreateNewQuestionPrice - boostPrice;
+                        user.TotalStars -= (Constants.DefaultValues.CreateNewQuestionPrice + boostPrice);
 
                         var newQuestion = new CreatedQuestion
                         {
