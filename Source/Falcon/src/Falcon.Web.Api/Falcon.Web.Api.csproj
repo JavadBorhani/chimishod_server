@@ -124,6 +124,8 @@
     <Compile Include="App_Start\AutoMapperConfiguration.cs" />
     <Compile Include="AutoMappingConfiguration\ApplicationStateMap\ApplicationStateToSApplicationStateAutoTypeConfiguration.cs" />
     <Compile Include="AutoMappingConfiguration\CategoryMap\CategoryToSCategoryAutoTypeConfiguration.cs" />
+    <Compile Include="AutoMappingConfiguration\NewCreatedQuestionsMap\CreatedQuestionToSNewCreatedQuestionsAutoTypeConfiguration.cs" />
+    <Compile Include="AutoMappingConfiguration\NewCreatedQuestionsMap\QuestionToSNewCreatedQuestionsAutoTypeConfiguration.cs" />
     <Compile Include="AutoMappingConfiguration\QuestionBoostMap\QuestionBoostToSQuestionBoostAutoTypeConfiguration.cs" />
     <Compile Include="Controllers\V1\ApplicationStatesController.cs" />
     <Compile Include="Controllers\V1\CreatedQuestionsController.cs" />
@@ -135,6 +137,7 @@
     <Compile Include="Controllers\V1\AppThemesController.cs" />
     <Compile Include="Controllers\V1\CategoriesController.cs" />
     <Compile Include="Controllers\V1\CommentsController.cs" />
+    <Compile Include="Controllers\V1\FavoritesController.cs" />
     <Compile Include="Controllers\V1\QuestionBoostsController.cs" />
     <Compile Include="Controllers\V1\QuestionsController.cs" />
     <Compile Include="Controllers\V1\UserAuthenticatorController.cs" />

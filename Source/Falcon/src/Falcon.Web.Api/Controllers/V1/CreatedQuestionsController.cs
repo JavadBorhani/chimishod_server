@@ -9,6 +9,9 @@ using Falcon.Web.Common;
 using Falcon.Web.Models.Api;
 using Falcon.Common;
 using System.Net.Http;
+using System.Web.Http.Results;
+using System.Collections.Generic;
+using AutoMapper;
 
 namespace Falcon.Web.Api.App_Start
 {
@@ -18,10 +21,12 @@ namespace Falcon.Web.Api.App_Start
         private DbEntity db = new DbEntity();
 
         private readonly IDateTime mDateTime;
+        private readonly IMapper mMapper;
 
-        public CreatedQuestionsController(IDateTime DateTime)
+        public CreatedQuestionsController(IDateTime DateTime , IMapper Mapper)
         {
             mDateTime = DateTime;
+            mMapper = Mapper;
         }
 
         [ResponseType(typeof(SUserState))]
@@ -62,7 +67,7 @@ namespace Falcon.Web.Api.App_Start
                             But = createdQuestion.But,
                             UserID = user.ID,
                             QuestionBoostID = boostID,
-                            VerifyStateID = Constants.DefaultValues.CreateNewQuestionVerifyState,
+                            VerifyStateID = Constants.DefaultValues.CreatedQuestionIsInChecking,
                             RegisterDateTime = mDateTime.Now,
                         };
 
@@ -79,6 +84,41 @@ namespace Falcon.Web.Api.App_Start
                 return NotFound();
             }
             return ResponseMessage(Request.CreateResponse(HttpStatusCode.Unauthorized)); //TODO Change to global answer UnAuthoraized
+        }
+
+        [ResponseType(typeof(SQuestion))]
+        [HttpPost]
+        [Route("CreatedQuestions/{UUID}")]
+        public async Task<IHttpActionResult> GetCreatedQuestionList(string UUID)
+        {
+            var userID = await db.Users.AsNoTracking().Where(u => u.UUID == UUID).Select(u => u.ID).SingleOrDefaultAsync();
+            if(userID != 0)
+            {
+                List<SNewCreatedQuestions> output = new List<SNewCreatedQuestions>();
+
+                var questions = await db.Manufactures.AsNoTracking()
+                                                    .Where(u => u.UserID == userID)
+                                                    .Select(u => u.Question)
+                                                    .Where( u => u.Banned == false)
+                                                    .ToListAsync();
+
+                output.AddRange(mMapper.Map<List<Question>, List<SNewCreatedQuestions>>(questions));
+
+                var createdQuestions = await db.CreatedQuestions.AsNoTracking().Where(cq => cq.UserID == userID && 
+                                                                (   
+                                                                    cq.VerifyStateID == Constants.DefaultValues.CreatedQuestionIsInChecking || 
+                                                                    cq.VerifyStateID == Constants.DefaultValues.CreatedQuestionRejected
+                                                                ))
+                                                                .ToListAsync();
+
+                output.AddRange(mMapper.Map<List<CreatedQuestion>, List<SNewCreatedQuestions>>(createdQuestions));
+
+                return Ok(output);
+            }
+            else
+            {
+                return ReturnResponse(HttpStatusCode.Unauthorized);
+            }
         }
 
         private bool HasEnoughMoney(int TotalStar , int QuestionPrice , int BoostPrice)
@@ -111,6 +151,11 @@ namespace Falcon.Web.Api.App_Start
         private bool CreatedQuestionExists(int userID , string What , string but)
         {
             return db.CreatedQuestions.Count(e => e.UserID == userID && e.What_if == What && e.But == but) > 0;
+        }
+
+        private ResponseMessageResult ReturnResponse(HttpStatusCode Code)
+        {
+            return ResponseMessage(Request.CreateResponse(Code));
         }
     }
 }

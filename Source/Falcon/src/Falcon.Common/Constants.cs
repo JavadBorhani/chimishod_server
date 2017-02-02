@@ -92,7 +92,9 @@ namespace Falcon.Common
             public const int CategoryNumberOfSelectAllowed = 1;
             public const int ThemeNumberOfSelectAllowed = 1;
             public const int CreateNewQuestionPrice = 100;
-            public const int CreateNewQuestionVerifyState = 1;
+            public const int CreatedQuestionsVerified = 3;
+            public const int CreatedQuestionIsInChecking = 2;
+            public const int CreatedQuestionRejected = 1;
         }
         public const string DefaultLegacyNamespaces = "http://vglr.ir";
     }
