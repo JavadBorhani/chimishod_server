@@ -60,15 +60,40 @@ namespace Falcon.Web.Api.Controllers.V1
         [ResponseType(typeof(SUserStatistics))]
         public async Task<IHttpActionResult> GetStatistics(string UUID)
         {
-            var user = await  db.Users.AsNoTracking().Where(u => u.UUID == UUID).Select( u => u.ID).SingleOrDefaultAsync();
+            var userID = await  db.Users.AsNoTracking().Where(u => u.UUID == UUID).Select( u => u.ID).SingleOrDefaultAsync();
 
-            if(user != 0)
+            if(userID != 0)
             {
+                int userTotalYes = 0;
+                int userTotalNo = 0;
+                float userNormal = 0;
+                // QuestionID YESCount NoCount
+                var userAndQuestion = await db.Answers.AsNoTracking()
+                                                    .Where( u => u.UserID == userID)
+                                                    .Select( u => new { u.YesNoState, u.Question.Yes_Count , u.Question.No_Count, u.Question.Banned }).ToArrayAsync(); 
+                
+                if(userAndQuestion.Length >  0 )
+                {
+                    for (int i = 0; i < userAndQuestion.Length; ++i)
+                    {
+                        if (userAndQuestion[i].Banned == false)
+                        {
+                            userTotalYes = (userAndQuestion[i].YesNoState == true) ? (++userTotalYes) : userTotalYes;
+                            userTotalNo = (userAndQuestion[i].YesNoState == false) ? (++userTotalNo) : userTotalNo;
+                            var total = 1;
+                            total = userAndQuestion[i].Yes_Count + userAndQuestion[i].No_Count;
+                            var yesPercent = userAndQuestion[i].Yes_Count * 100.0f / total;
+                            var noPercent = userAndQuestion[i].No_Count * 100.0f / total;
+                            userNormal += ((userAndQuestion[i].YesNoState == true) ? yesPercent : noPercent);
+                        }
+                    }
+                    userNormal = userNormal / userAndQuestion.Length;
+                }
                 SUserStatistics m = new SUserStatistics
                 {
-                    UserNormal = 0,
-                    UserTotalNo = 0,
-                    UserTotalYes = 0
+                    UserNormal = userTotalYes,
+                    UserTotalNo = userTotalNo,
+                    UserTotalYes = (int)userNormal
                 };
                 return Ok(m);
             }
