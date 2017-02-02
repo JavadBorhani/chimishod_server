@@ -34,7 +34,7 @@ namespace Falcon.Web.Api.Controllers.V1
             return db.Answers;
         }
 
-        [ResponseType(typeof(Models.Api.SAnswer))]
+        [ResponseType(typeof(SAnswer))]
         public async Task<IHttpActionResult> GetAnswer(int id)
         {
             Answer answer = await db.Answers.FindAsync(id);
@@ -67,7 +67,7 @@ namespace Falcon.Web.Api.Controllers.V1
                 int userTotalYes = 0;
                 int userTotalNo = 0;
                 float userNormal = 0;
-                // QuestionID YESCount NoCount
+
                 var userAndQuestion = await db.Answers.AsNoTracking()
                                                     .Where( u => u.UserID == userID)
                                                     .Select( u => new { u.YesNoState, u.Question.Yes_Count , u.Question.No_Count, u.Question.Banned }).ToArrayAsync(); 
@@ -80,10 +80,13 @@ namespace Falcon.Web.Api.Controllers.V1
                         {
                             userTotalYes = (userAndQuestion[i].YesNoState == true) ? (++userTotalYes) : userTotalYes;
                             userTotalNo = (userAndQuestion[i].YesNoState == false) ? (++userTotalNo) : userTotalNo;
-                            var total = 1;
-                            total = userAndQuestion[i].Yes_Count + userAndQuestion[i].No_Count;
-                            var yesPercent = userAndQuestion[i].Yes_Count * 100.0f / total;
-                            var noPercent = userAndQuestion[i].No_Count * 100.0f / total;
+
+                            
+                            var total = userAndQuestion[i].Yes_Count + userAndQuestion[i].No_Count;
+                            total = (total == 0) ? 1 : total;
+                            float yesPercent = userAndQuestion[i].Yes_Count * 100.0f / total;
+                            float noPercent = userAndQuestion[i].No_Count * 100.0f / total;
+
                             userNormal += ((userAndQuestion[i].YesNoState == true) ? yesPercent : noPercent);
                         }
                     }
@@ -91,9 +94,9 @@ namespace Falcon.Web.Api.Controllers.V1
                 }
                 SUserStatistics m = new SUserStatistics
                 {
-                    UserNormal = userTotalYes,
+                    UserNormal = (int)userNormal,
                     UserTotalNo = userTotalNo,
-                    UserTotalYes = (int)userNormal
+                    UserTotalYes = userTotalYes
                 };
                 return Ok(m);
             }
@@ -104,7 +107,7 @@ namespace Falcon.Web.Api.Controllers.V1
         }
 
         [Route("Answers/Answer/{UUID}")]
-        [ResponseType(typeof(Models.Api.SAnswer))]
+        [ResponseType(typeof(SAnswer))]
         [HttpPost]
         public async Task<IHttpActionResult> PostingAnswer(string UUID, [FromBody] Models.Api.SAnswer answer)
         {
@@ -202,14 +205,17 @@ namespace Falcon.Web.Api.Controllers.V1
             }
             base.Dispose(disposing);
         }
+
         private async Task<bool> AnswerExists(int id)
         {
             return await db.Answers.CountAsync(e => e.ID == id) > 0;
         }
+
         private async Task<bool> AnswerExists(int userID , int questionID)
         {
             return await db.Answers.CountAsync(e => e.UserID == userID && e.QuestionID == questionID) > 0;
         }
+
         private async Task<int> FavoriteCount(int userID)
         {
             return await db.Favorites.CountAsync(e => e.UserID == userID);
