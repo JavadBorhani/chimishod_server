@@ -1,5 +1,4 @@
 ﻿using System.Data.Entity;
-using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -10,20 +9,24 @@ using Falcon.Common;
 using Falcon.Common.Logging;
 using log4net;
 using Falcon.EFCommonContext.DbModel;
+using AutoMapper;
+using Falcon.Web.Models.Api;
+using System.Web.Http.Results;
 
 namespace Falcon.Web.Api.Controllers.V1
 {
     public class AnswersController : ApiController
     {
         private DbEntity db = new DbEntity();
-        private IDateTime mDateTime;
-        private ILog mLogManager;
+        private readonly IDateTime mDateTime;
+        private readonly ILog mLogManager;
+        private readonly IMapper mMapper;
 
-        public AnswersController(IDateTime dateTime , ILogManager logManager)
+        public AnswersController(IDateTime dateTime , ILogManager logManager , IMapper Mapper)
         {
             mDateTime = dateTime;
             mLogManager = logManager.GetLog(typeof(AnswersController));
-            
+            mMapper = Mapper;
         }
 
         public IQueryable<Answer> GetAnswers()
@@ -50,6 +53,29 @@ namespace Falcon.Web.Api.Controllers.V1
                 IsFavorited = true
             };
             return Ok(result);
+        }
+
+        [HttpPost]
+        [Route("Statistics/{UUID}")]
+        [ResponseType(typeof(SUserStatistics))]
+        public async Task<IHttpActionResult> GetStatistics(string UUID)
+        {
+            var user = await  db.Users.AsNoTracking().Where(u => u.UUID == UUID).Select( u => u.ID).SingleOrDefaultAsync();
+
+            if(user != 0)
+            {
+                SUserStatistics m = new SUserStatistics
+                {
+                    UserNormal = 0,
+                    UserTotalNo = 0,
+                    UserTotalYes = 0
+                };
+                return Ok(m);
+            }
+            else
+            {
+                return ReturnResponse(HttpStatusCode.Unauthorized);
+            }
         }
 
         [Route("Answers/Answer/{UUID}")]
@@ -162,6 +188,11 @@ namespace Falcon.Web.Api.Controllers.V1
         private async Task<int> FavoriteCount(int userID)
         {
             return await db.Favorites.CountAsync(e => e.UserID == userID);
+        }
+
+        private ResponseMessageResult ReturnResponse(HttpStatusCode Code)
+        {
+            return ResponseMessage(Request.CreateResponse(Code));
         }
 
     }
