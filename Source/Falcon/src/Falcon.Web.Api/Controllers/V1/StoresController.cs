@@ -38,8 +38,16 @@ namespace Falcon.Web.Api.Controllers.V1
             var user = await db.Users.AsNoTracking().Where(u => u.UUID == UUID).Select( u => u.ID).SingleOrDefaultAsync();
             if(user != 0)
             {
-                var storeList = db.Stores;
-                return Ok();
+                var storeList = await db.Stores.Take(20).ToListAsync();
+                if (storeList.Count > 0)
+                {
+                    var clientList = mMapper.Map<List<Store>, List<SStore>>(storeList);
+                    return Ok(clientList);
+                }
+                else
+                {
+                    return ReturnResponse(HttpStatusCode.NoContent);
+                }
             }
             else
             {
