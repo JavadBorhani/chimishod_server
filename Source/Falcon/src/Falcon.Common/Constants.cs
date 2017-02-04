@@ -95,6 +95,8 @@ namespace Falcon.Common
             public const int CreatedQuestionsVerified = 3;
             public const int CreatedQuestionIsInChecking = 2;
             public const int CreatedQuestionRejected = 1;
+            public const int StoreNumberToSend = 20;
+            public const int CreatedQuestionsDefaultID = -1;
         }
         public const string DefaultLegacyNamespaces = "http://vglr.ir";
     }

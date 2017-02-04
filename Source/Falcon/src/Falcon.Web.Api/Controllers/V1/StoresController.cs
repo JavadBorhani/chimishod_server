@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
-using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -38,7 +36,8 @@ namespace Falcon.Web.Api.Controllers.V1
             var user = await db.Users.AsNoTracking().Where(u => u.UUID == UUID).Select( u => u.ID).SingleOrDefaultAsync();
             if(user != 0)
             {
-                var storeList = await db.Stores.Take(20).ToListAsync();
+                var storeList = await db.Stores.Take(Constants.DefaultValues.StoreNumberToSend).ToListAsync();
+
                 if (storeList.Count > 0)
                 {
                     var clientList = mMapper.Map<List<Store>, List<SStore>>(storeList);
