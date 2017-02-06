@@ -18,10 +18,10 @@ namespace Falcon.EFCommonContext.DbModel
         public DbEntity()
             : base("name=DbEntity")
         {
-        }
 
-        public DbEntity(string NameOrDatabaseConnection)
-            : base(NameOrDatabaseConnection)
+        }
+        public DbEntity(string NameOrConnectionString)
+            : base(NameOrConnectionString)
         {
         }
 

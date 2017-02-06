@@ -97,6 +97,12 @@ namespace Falcon.Common
             public const int CreatedQuestionRejected = 1;
             public const int StoreNumberToSend = 20;
             public const int CreatedQuestionsDefaultID = -1;
+            public const int AchievementsMinimumAchivables = 5;
+            public const int AchievementDefaultNotAchieved = 1;
+            public const int AchievementDefaultAchievableID = 2;
+            public const int AchievementDefaultAchievedID = 3;
+            public const int AchievementCategoryQueryTypeID = 1;  
+            public const int AchievementAdHocQueryTypeID = 2;
         }
         public const string DefaultLegacyNamespaces = "http://vglr.ir";
     }

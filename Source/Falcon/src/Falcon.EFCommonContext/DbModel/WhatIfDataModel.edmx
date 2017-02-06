@@ -22,7 +22,8 @@
           <Property Name="UserID" Type="int" Nullable="false" />
           <Property Name="QuestID" Type="int" Nullable="false" />
           <Property Name="AchieveStateID" Type="int" Nullable="false" />
-          <Property Name="AchievedDate" Type="datetime" Nullable="false" />
+          <Property Name="AchievedDate" Type="datetime" />
+          <Property Name="AchievableDate" Type="datetime" />
         </EntityType>
         <EntityType Name="Achievement">
           <Key>
@@ -38,6 +39,7 @@
           <Property Name="Query" Type="nvarchar" MaxLength="1000" />
           <Property Name="LevelID" Type="int" />
           <Property Name="CategoryID" Type="int" />
+          <Property Name="CategoryQuantity" Type="int" />
           <Property Name="CreatedDate" Type="datetime" Nullable="false" />
           <Property Name="UpdatedDate" Type="datetime" Nullable="false" />
         </EntityType>
@@ -1214,7 +1216,8 @@
           <Property Name="UserID" Type="Int32" Nullable="false" />
           <Property Name="QuestID" Type="Int32" Nullable="false" />
           <Property Name="AchieveStateID" Type="Int32" Nullable="false" />
-          <Property Name="AchievedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="AchievedDate" Type="DateTime" Precision="3" />
+          <Property Name="AchievableDate" Type="DateTime" Precision="3" />
           <NavigationProperty Name="AchieveStateType" Relationship="Falcon.DbModel.FK_AchievedPosession_AchieveStateType" FromRole="AchievedPosession" ToRole="AchieveStateType" />
           <NavigationProperty Name="Achievement" Relationship="Falcon.DbModel.FK_AchievedQuests_Quest" FromRole="AchievedPosession" ToRole="Achievement" />
           <NavigationProperty Name="User" Relationship="Falcon.DbModel.FK_AchievedQuests_User" FromRole="AchievedPosession" ToRole="User" />
@@ -1233,6 +1236,7 @@
           <Property Name="Query" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
           <Property Name="LevelID" Type="Int32" />
           <Property Name="CategoryID" Type="Int32" />
+          <Property Name="CategoryQuantity" Type="Int32" />
           <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="UpdatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="AchievedPosessions" Relationship="Falcon.DbModel.FK_AchievedQuests_Quest" FromRole="Achievement" ToRole="AchievedPosession" />
@@ -2118,6 +2122,7 @@
           <EntitySetMapping Name="AchievedPosessions">
             <EntityTypeMapping TypeName="Falcon.DbModel.AchievedPosession">
               <MappingFragment StoreEntitySet="AchievedPosession">
+                <ScalarProperty Name="AchievableDate" ColumnName="AchievableDate" />
                 <ScalarProperty Name="AchievedDate" ColumnName="AchievedDate" />
                 <ScalarProperty Name="AchieveStateID" ColumnName="AchieveStateID" />
                 <ScalarProperty Name="QuestID" ColumnName="QuestID" />
@@ -2131,6 +2136,7 @@
               <MappingFragment StoreEntitySet="Achievement">
                 <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="CategoryQuantity" ColumnName="CategoryQuantity" />
                 <ScalarProperty Name="CategoryID" ColumnName="CategoryID" />
                 <ScalarProperty Name="LevelID" ColumnName="LevelID" />
                 <ScalarProperty Name="Query" ColumnName="Query" />
