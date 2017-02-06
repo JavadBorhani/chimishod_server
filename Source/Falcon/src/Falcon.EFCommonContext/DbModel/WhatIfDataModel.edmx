@@ -34,8 +34,20 @@
           <Property Name="Star" Type="int" Nullable="false" />
           <Property Name="Icon" Type="varchar" MaxLength="150" Nullable="false" />
           <Property Name="RectangleColor" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="QueryTypeID" Type="int" />
+          <Property Name="Query" Type="nvarchar" MaxLength="1000" />
+          <Property Name="LevelID" Type="int" />
+          <Property Name="CategoryID" Type="int" />
           <Property Name="CreatedDate" Type="datetime" Nullable="false" />
           <Property Name="UpdatedDate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="AchievementQueryType">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="QueyName" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="QueryDescription" Type="nvarchar" MaxLength="100" Nullable="false" />
         </EntityType>
         <EntityType Name="AchieveStateType">
           <Key>
@@ -404,6 +416,18 @@
             </Principal>
             <Dependent Role="AchievedPosession">
               <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Achievement_AchievementQueryType">
+          <End Role="AchievementQueryType" Type="Self.AchievementQueryType" Multiplicity="0..1" />
+          <End Role="Achievement" Type="Self.Achievement" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AchievementQueryType">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Achievement">
+              <PropertyRef Name="QueryTypeID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -817,6 +841,7 @@
           <EntitySet Name="AchievedGifts" EntityType="Self.AchievedGifts" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AchievedPosession" EntityType="Self.AchievedPosession" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Achievement" EntityType="Self.Achievement" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AchievementQueryType" EntityType="Self.AchievementQueryType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AchieveStateType" EntityType="Self.AchieveStateType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Answer" EntityType="Self.Answer" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ApplicationState" EntityType="Self.ApplicationState" Schema="dbo" store:Type="Tables" />
@@ -863,6 +888,10 @@
           <AssociationSet Name="FK_AchievedQuests_User" Association="Self.FK_AchievedQuests_User">
             <End Role="User" EntitySet="User" />
             <End Role="AchievedPosession" EntitySet="AchievedPosession" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Achievement_AchievementQueryType" Association="Self.FK_Achievement_AchievementQueryType">
+            <End Role="AchievementQueryType" EntitySet="AchievementQueryType" />
+            <End Role="Achievement" EntitySet="Achievement" />
           </AssociationSet>
           <AssociationSet Name="FK_Answer_Question" Association="Self.FK_Answer_Question">
             <End Role="Question" EntitySet="Question" />
@@ -993,6 +1022,7 @@
           <EntitySet Name="AchievedGifts" EntityType="Falcon.DbModel.AchievedGift" />
           <EntitySet Name="AchievedPosessions" EntityType="Falcon.DbModel.AchievedPosession" />
           <EntitySet Name="Achievements" EntityType="Falcon.DbModel.Achievement" />
+          <EntitySet Name="AchievementQueryTypes" EntityType="Falcon.DbModel.AchievementQueryType" />
           <EntitySet Name="AchieveStateTypes" EntityType="Falcon.DbModel.AchieveStateType" />
           <EntitySet Name="Answers" EntityType="Falcon.DbModel.Answer" />
           <EntitySet Name="ApplicationStates" EntityType="Falcon.DbModel.ApplicationState" />
@@ -1039,6 +1069,10 @@
           <AssociationSet Name="FK_AchievedQuests_User" Association="Falcon.DbModel.FK_AchievedQuests_User">
             <End Role="User" EntitySet="Users" />
             <End Role="AchievedPosession" EntitySet="AchievedPosessions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Achievement_AchievementQueryType" Association="Falcon.DbModel.FK_Achievement_AchievementQueryType">
+            <End Role="AchievementQueryType" EntitySet="AchievementQueryTypes" />
+            <End Role="Achievement" EntitySet="Achievements" />
           </AssociationSet>
           <AssociationSet Name="FK_Answer_Question" Association="Falcon.DbModel.FK_Answer_Question">
             <End Role="Question" EntitySet="Questions" />
@@ -1195,9 +1229,23 @@
           <Property Name="Star" Type="Int32" Nullable="false" />
           <Property Name="Icon" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
           <Property Name="RectangleColor" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="QueryTypeID" Type="Int32" />
+          <Property Name="Query" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="LevelID" Type="Int32" />
+          <Property Name="CategoryID" Type="Int32" />
           <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="UpdatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="AchievedPosessions" Relationship="Falcon.DbModel.FK_AchievedQuests_Quest" FromRole="Achievement" ToRole="AchievedPosession" />
+          <NavigationProperty Name="AchievementQueryType" Relationship="Falcon.DbModel.FK_Achievement_AchievementQueryType" FromRole="Achievement" ToRole="AchievementQueryType" />
+        </EntityType>
+        <EntityType Name="AchievementQueryType">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="QueyName" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="QueryDescription" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Achievements" Relationship="Falcon.DbModel.FK_Achievement_AchievementQueryType" FromRole="AchievementQueryType" ToRole="Achievement" />
         </EntityType>
         <EntityType Name="AchieveStateType">
           <Key>
@@ -1630,6 +1678,18 @@
             </Principal>
             <Dependent Role="AchievedPosession">
               <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Achievement_AchievementQueryType">
+          <End Type="Falcon.DbModel.AchievementQueryType" Role="AchievementQueryType" Multiplicity="0..1" />
+          <End Type="Falcon.DbModel.Achievement" Role="Achievement" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AchievementQueryType">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Achievement">
+              <PropertyRef Name="QueryTypeID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2071,11 +2131,24 @@
               <MappingFragment StoreEntitySet="Achievement">
                 <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="CategoryID" ColumnName="CategoryID" />
+                <ScalarProperty Name="LevelID" ColumnName="LevelID" />
+                <ScalarProperty Name="Query" ColumnName="Query" />
+                <ScalarProperty Name="QueryTypeID" ColumnName="QueryTypeID" />
                 <ScalarProperty Name="RectangleColor" ColumnName="RectangleColor" />
                 <ScalarProperty Name="Icon" ColumnName="Icon" />
                 <ScalarProperty Name="Star" ColumnName="Star" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AchievementQueryTypes">
+            <EntityTypeMapping TypeName="Falcon.DbModel.AchievementQueryType">
+              <MappingFragment StoreEntitySet="AchievementQueryType">
+                <ScalarProperty Name="QueryDescription" ColumnName="QueryDescription" />
+                <ScalarProperty Name="QueyName" ColumnName="QueyName" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>

@@ -20,8 +20,8 @@ namespace Falcon.EFCommonContext.DbModel
         {
         }
 
-        public DbEntity(string NameOrConnectionString)
-            : base(NameOrConnectionString)
+        public DbEntity(string NameOrDatabaseConnection)
+            : base(NameOrDatabaseConnection)
         {
         }
 
@@ -33,6 +33,7 @@ namespace Falcon.EFCommonContext.DbModel
         public virtual DbSet<AchievedGift> AchievedGifts { get; set; }
         public virtual DbSet<AchievedPosession> AchievedPosessions { get; set; }
         public virtual DbSet<Achievement> Achievements { get; set; }
+        public virtual DbSet<AchievementQueryType> AchievementQueryTypes { get; set; }
         public virtual DbSet<AchieveStateType> AchieveStateTypes { get; set; }
         public virtual DbSet<Answer> Answers { get; set; }
         public virtual DbSet<ApplicationState> ApplicationStates { get; set; }

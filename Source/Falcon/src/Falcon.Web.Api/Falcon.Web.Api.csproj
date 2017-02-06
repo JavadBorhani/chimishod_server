@@ -128,12 +128,13 @@
     <Compile Include="AutoMappingConfiguration\NewCreatedQuestionsMap\QuestionToSNewCreatedQuestionsAutoTypeConfiguration.cs" />
     <Compile Include="AutoMappingConfiguration\QuestionBoostMap\QuestionBoostToSQuestionBoostAutoTypeConfiguration.cs" />
     <Compile Include="AutoMappingConfiguration\StoreMap\StoreToSStoreAutoTypeConfiguration.cs" />
+    <Compile Include="Controllers\V1\AchievedPosessionsController.cs" />
     <Compile Include="Controllers\V1\ApplicationStatesController.cs" />
     <Compile Include="Controllers\V1\CreatedQuestionsController.cs" />
     <Compile Include="App_Start\NinjectConfigurator.cs" />
     <Compile Include="App_Start\NinjectWebCommon.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
-    <Compile Include="AutoMappingConfiguration\AchievementToSAchievementAutoTypeConfigurator.cs" />
+    <Compile Include="AutoMappingConfiguration\AchievementMap\AchievementToSAchievementAutoTypeConfigurator.cs" />
     <Compile Include="Controllers\V1\AnswersController.cs" />
     <Compile Include="Controllers\V1\AppThemesController.cs" />
     <Compile Include="Controllers\V1\CategoriesController.cs" />

@@ -10,6 +10,7 @@ using System.Net.Http;
 using Falcon.Web.Models.Api;
 using System.Collections.Generic;
 using System.Web.Http.Description;
+using System;
 
 namespace Falcon.Web.Api.Controllers.V1
 {
@@ -44,12 +45,42 @@ namespace Falcon.Web.Api.Controllers.V1
                 }
                 else
                 {
-                    return ReturnResponse(HttpStatusCode.NoContent);
+                    return Response(HttpStatusCode.NoContent);
                 }
             }
             else
             {
-                return ReturnResponse(HttpStatusCode.Unauthorized);
+                return Response(HttpStatusCode.Unauthorized);
+            }
+        }
+
+        [ResponseType(typeof(SNewCreatedQuestions))]
+        [Route("Favorites/{UUID}/{QuestionID}")]
+        [HttpPost]
+
+        public async Task<IHttpActionResult> RemoveFavoritedQuestion(string UUID , int QuestionID)
+        {
+            var userID = await db.Users.AsNoTracking().Where(u => u.UUID == UUID).Select(u => u.ID).SingleOrDefaultAsync();
+
+            if (userID != 0) // UserExists
+            {
+                var favoritedQuestion = await db.Favorites.Where( f => f.UserID == userID && f.QuestionID == QuestionID).SingleOrDefaultAsync();
+
+                if (favoritedQuestion != null)
+                {
+                    db.Favorites.Remove(favoritedQuestion);
+                    await db.SaveChangesAsync();
+
+                    return Response(HttpStatusCode.OK , QuestionID);
+                }
+                else
+                {
+                    return Response(HttpStatusCode.NoContent);
+                }
+            }
+            else
+            {
+                return Response(HttpStatusCode.Unauthorized);
             }
         }
 
@@ -67,9 +98,13 @@ namespace Falcon.Web.Api.Controllers.V1
             return db.Favorites.Count(e => e.ID == id) > 0;
         }
 
-        private ResponseMessageResult ReturnResponse(HttpStatusCode Code)
+        private ResponseMessageResult Response(HttpStatusCode Code)
         {
             return ResponseMessage(Request.CreateResponse(Code));
+        }
+        private ResponseMessageResult Response(HttpStatusCode Code , object DataToSend)
+        {
+            return ResponseMessage(Request.CreateResponse(Code , DataToSend));
         }
     }
 }

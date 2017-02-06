@@ -12,29 +12,19 @@ namespace Falcon.EFCommonContext.DbModel
     using System;
     using System.Collections.Generic;
     
-    public partial class Achievement
+    public partial class AchievementQueryType
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Achievement()
+        public AchievementQueryType()
         {
-            this.AchievedPosessions = new HashSet<AchievedPosession>();
+            this.Achievements = new HashSet<Achievement>();
         }
     
         public int ID { get; set; }
-        public string Name { get; set; }
-        public string Description { get; set; }
-        public int Star { get; set; }
-        public string Icon { get; set; }
-        public string RectangleColor { get; set; }
-        public Nullable<int> QueryTypeID { get; set; }
-        public string Query { get; set; }
-        public Nullable<int> LevelID { get; set; }
-        public Nullable<int> CategoryID { get; set; }
-        public System.DateTime CreatedDate { get; set; }
-        public System.DateTime UpdatedDate { get; set; }
+        public string QueyName { get; set; }
+        public string QueryDescription { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<AchievedPosession> AchievedPosessions { get; set; }
-        public virtual AchievementQueryType AchievementQueryType { get; set; }
+        public virtual ICollection<Achievement> Achievements { get; set; }
     }
 }
