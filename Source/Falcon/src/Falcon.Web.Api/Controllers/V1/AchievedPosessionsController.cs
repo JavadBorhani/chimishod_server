@@ -327,7 +327,7 @@ namespace Falcon.Web.Api.Controllers.V1
             }
         }
 
-        [Route("Achievements/Achivable/{UUID}")]
+        [Route("Achievements/Achievable/{UUID}")]
         [ResponseType(typeof(SAchievement))]
         [HttpPost]
         public async Task<IHttpActionResult> GetAchievableList(string UUID)
@@ -374,6 +374,7 @@ namespace Falcon.Web.Api.Controllers.V1
         {
             return ResponseMessage(Request.CreateResponse(Code));
         }
+
         private ResponseMessageResult Response(HttpStatusCode Code, object DataToSend)
         {
             return ResponseMessage(Request.CreateResponse(Code, DataToSend));
