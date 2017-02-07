@@ -11,7 +11,6 @@ using Falcon.Web.Common.Security;
 using Falcon.Common.Security;
 using Falcon.Data.QueryProcessors;
 using Falcon.Database.SqlServer.QueryProcessors;
-using Falcon.Common.TypeMapping;
 using System;
 using System.Linq;
 using AutoMapper;
@@ -72,7 +71,6 @@ namespace Falcon.Web.Api
 
         private void ConfigureAutoMapper(IKernel container)
         {
-            container.Bind<IAutoMapper>().To<AutoMapperAdapter>().InSingletonScope();
 
 
             var result = AppDomain.CurrentDomain.GetAssemblies()
