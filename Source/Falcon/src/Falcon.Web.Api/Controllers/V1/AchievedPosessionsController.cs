@@ -56,15 +56,17 @@ namespace Falcon.Web.Api.Controllers.V1
                     List<Achievement> newAchievables = new List<Achievement>();
                     var userCurrentLevel = await db.Users.Where(u => u.ID == userID).Select(u => u.CurrentLevelID).SingleOrDefaultAsync();
 
-                    var achievableList = await db.AchievedPosessions
-                                                            .AsNoTracking()
-                                                            .Where(ap => ap.AchieveStateID == Constants.DefaultValues.AchievementDefaultAchievableID)
-                                                            .Select(ap => ap.ID)
-                                                            .ToListAsync();
+                    //var achievableIDsList = await db.AchievedPosessions
+                    //                                        .AsNoTracking()
+                    //                                        .Where(ap => ap.AchieveStateID == Constants.DefaultValues.AchievementDefaultAchievableID)
+                    //                                        .Select(ap => ap.ID)
+                    //                                        .ToListAsync();
+
+                    var achievableIDsList = achievables.Select(a => a.ID).ToList();
 
                     //Get list of Ad-hoc 
                     adhoc = await db.Achievements.AsNoTracking()
-                        .Where(a => a.QueryTypeID == Constants.DefaultValues.AchievementAdHocQueryTypeID && a.LevelID >= userCurrentLevel && !achievableList.Contains(a.ID))
+                        .Where(a => a.QueryTypeID == Constants.DefaultValues.AchievementAdHocQueryTypeID && a.LevelID >= userCurrentLevel && !achievableIDsList.Contains(a.ID))
                         .ToListAsync();
                     
 
@@ -86,7 +88,7 @@ namespace Falcon.Web.Api.Controllers.V1
 
                     // Get List of category base
                     usuals = await db.Achievements.AsNoTracking()
-                        .Where(a => a.QueryTypeID == Constants.DefaultValues.AchievementCategoryQueryTypeID && !achievableList.Contains(a.ID) && purchasedCategories.Contains(a.CategoryID ?? 0) )
+                        .Where(a => a.QueryTypeID == Constants.DefaultValues.AchievementCategoryQueryTypeID && !achievableIDsList.Contains(a.ID) && purchasedCategories.Contains(a.CategoryID ?? 0) )
                         .GroupBy( a => a.CategoryID)
                         .Select( g => g.FirstOrDefault())
                         .ToListAsync();
@@ -185,7 +187,8 @@ namespace Falcon.Web.Api.Controllers.V1
                             });
                     }
 
-                    return ResponseMessage(Request.CreateResponse(HttpStatusCode.OK, new { mapAchivable, notAchieved })); 
+                    mapAchivable.AddRange(mapNotAchieved);
+                    return Response(HttpStatusCode.OK, mapAchivable);
 
                 }
                 else if (achievables.Count > 0 && achievables.Count >= Constants.DefaultValues.AchievementsMinimumAchivables) 
@@ -265,21 +268,80 @@ namespace Falcon.Web.Api.Controllers.V1
             }
         }
 
+        [ResponseType(typeof(int))]
+        [Route("Achievements/Change/{UUID}/{AchievementID}")]
+        [HttpPost]
+        public async Task<IHttpActionResult> ChangeAchievableToAchieved(string UUID, int AchievementID)
+        {
+            var user = await db.Users.Where(u => u.UUID == UUID).SingleOrDefaultAsync();
+
+            if (user != null) //user Exists
+            {
+                var achievable = await db.AchievedPosessions
+                                        .Include(ap => ap.Achievement)
+                                        .Where(ap => ap.UserID == user.ID &&
+                                               ap.QuestID == AchievementID &&
+                                               ap.AchieveStateID == Constants.DefaultValues.AchievementDefaultAchievableID)
+                                        .SingleOrDefaultAsync();
+                if (achievable != null)
+                {
+                    achievable.AchieveStateID = Constants.DefaultValues.AchievementDefaultAchievedID;
+                    user.TotalStars += achievable.Achievement.Star;
+                    await db.SaveChangesAsync();
+                    return Response(HttpStatusCode.OK, user.TotalStars);
+                }
+                return Response(HttpStatusCode.Unauthorized);
+            }
+            else
+            {
+                return Response(HttpStatusCode.Unauthorized);
+            }
+        }
+
         [Route("Achievements/Achieved/{UUID}")]
         [ResponseType(typeof(SAchievement))]
         [HttpPost]
         public async Task<IHttpActionResult> GetAchievedList(string UUID)
         {
-            int userID = await db.Users.Where(u => u.UUID == UUID).Select(u => u.ID).SingleOrDefaultAsync();
+            int userID = await db.Users.AsNoTracking().Where(u => u.UUID == UUID).Select(u => u.ID).SingleOrDefaultAsync();
             if(userID != 0) // User Exists
             {
-                var achievableList = await db.AchievedPosessions
+                var achievedList = await db.AchievedPosessions
                                                             .AsNoTracking()
                                                             .Include( ap => ap.Achievement)
                                                             .Where(ap => ap.AchieveStateID == Constants.DefaultValues.AchievementDefaultAchievedID)
                                                             .Select(ap => ap.Achievement)
                                                             .ToListAsync();
 
+
+                var result = mMapper.Map<List<Achievement>, List<SAchievement>>(achievedList);
+
+                if (result.Count > 0)
+                    return Response(HttpStatusCode.OK, result);
+                else
+                    return Response(HttpStatusCode.NoContent);
+            }
+            else
+            {
+                return Response(HttpStatusCode.Unauthorized);
+            }
+        }
+
+        [Route("Achievements/Achivable/{UUID}")]
+        [ResponseType(typeof(SAchievement))]
+        [HttpPost]
+        public async Task<IHttpActionResult> GetAchievableList(string UUID)
+        {
+            var userID = await db.Users.AsNoTracking().Where(u => u.UUID == UUID).Select(u => u.ID).SingleOrDefaultAsync();
+            if(userID != 0)
+            {
+                var achievableList = await db.AchievedPosessions
+                                                .AsNoTracking()
+                                                .Include(ap => ap.Achievement)
+                                                .Where( ap => ap.UserID == userID &&  
+                                                        ap.AchieveStateID == Constants.DefaultValues.AchievementDefaultAchievableID)
+                                                .Select(ap => ap.Achievement)
+                                                .ToListAsync();
 
                 var result = mMapper.Map<List<Achievement>, List<SAchievement>>(achievableList);
 
@@ -293,7 +355,6 @@ namespace Falcon.Web.Api.Controllers.V1
                 return Response(HttpStatusCode.Unauthorized);
             }
         }
-
 
         protected override void Dispose(bool disposing)
         {
