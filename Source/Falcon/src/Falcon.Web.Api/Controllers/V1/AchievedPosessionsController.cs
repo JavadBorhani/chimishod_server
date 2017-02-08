@@ -46,7 +46,10 @@ namespace Falcon.Web.Api.Controllers.V1
 
                 List<Achievement> adhoc = new List<Achievement>();
                 List<Achievement> usuals = new List<Achievement>();
-                if(achievables.Count >= Constants.DefaultValues.AchievementsMinimumAchivables)
+
+                var tempDistinctAchievable = achievables.GroupBy(a => a.CategoryID).Select(g => g.FirstOrDefault()).Count();
+
+                if (tempDistinctAchievable >= Constants.DefaultValues.AchievementsMinimumAchivables)
                 {
                     var result = mMapper.Map<List<Achievement>, List<SAchievement>>(achievables.GroupBy( a => a.CategoryID).Select(g => g.FirstOrDefault()).ToList());
                     return Response(HttpStatusCode.OK, result);
@@ -80,6 +83,7 @@ namespace Falcon.Web.Api.Controllers.V1
                             if (result == 1)
                             {
                                 newAchievables.Add(adhoc[i]);
+                                ++tempDistinctAchievable;
                                 adhoc.RemoveAt(i);
                             }
                         }
@@ -110,6 +114,7 @@ namespace Falcon.Web.Api.Controllers.V1
                         if (isAchievable)
                         {
                             newAchievables.Add(usuals[i]);
+                            ++tempDistinctAchievable;
                             usuals.Remove(usuals[i]);
                         }
                     }
@@ -135,7 +140,7 @@ namespace Falcon.Web.Api.Controllers.V1
                     }
                 }
 
-                if(achievables.Count > 0 && achievables.Count < Constants.DefaultValues.AchievementsMinimumAchivables)
+                if(tempDistinctAchievable > 0 && tempDistinctAchievable < Constants.DefaultValues.AchievementsMinimumAchivables)
                 {
                     var mapAchivable = mMapper.Map<List<Achievement>, List<SAchievement>>(
                         achievables
@@ -201,7 +206,7 @@ namespace Falcon.Web.Api.Controllers.V1
                     return Response(HttpStatusCode.OK, mapAchivable);
 
                 }
-                else if (achievables.Count > 0 && achievables.Count >= Constants.DefaultValues.AchievementsMinimumAchivables) 
+                else if (tempDistinctAchievable > 0 && tempDistinctAchievable >= Constants.DefaultValues.AchievementsMinimumAchivables) 
                 {
                     //map data then send 
                     var result = achievables.
@@ -214,7 +219,7 @@ namespace Falcon.Web.Api.Controllers.V1
 
                     return Response(HttpStatusCode.OK, mapResult);
                 }
-                else if( achievables.Count <= 0)
+                else if(tempDistinctAchievable <= 0)
                 {
                     List<Achievement> notAchieved = new List<Achievement>();
 
