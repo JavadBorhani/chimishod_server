@@ -16,7 +16,7 @@ namespace Falcon.EFCommonContext.DbModel
     {
         public int ID { get; set; }
         public int UserID { get; set; }
-        public int QuestID { get; set; }
+        public int AchievementID { get; set; }
         public int AchieveStateID { get; set; }
         public Nullable<System.DateTime> AchievedDate { get; set; }
         public Nullable<System.DateTime> AchievableDate { get; set; }

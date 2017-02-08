@@ -121,7 +121,7 @@ namespace Falcon.Web.Api.Controllers.V1
                         list.Add(new AchievedPosession
                         {
                             UserID = userID,
-                            QuestID = newAchievables[i].ID,
+                            AchievementID = newAchievables[i].ID,
                             AchieveStateID = Constants.DefaultValues.AchievementDefaultAchievableID,
                             AchievedDate = null,
                             AchievableDate = mDateTime.Now,
@@ -295,7 +295,7 @@ namespace Falcon.Web.Api.Controllers.V1
                 var achievable = await db.AchievedPosessions
                                         .Include(ap => ap.Achievement)
                                         .Where(ap => ap.UserID == user.ID &&
-                                               ap.QuestID == AchievementID &&
+                                               ap.AchievementID == AchievementID &&
                                                ap.AchieveStateID == Constants.DefaultValues.AchievementDefaultAchievableID)
                                         .SingleOrDefaultAsync();
                 if (achievable != null)

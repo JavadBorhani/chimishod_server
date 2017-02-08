@@ -20,7 +20,7 @@
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="UserID" Type="int" Nullable="false" />
-          <Property Name="QuestID" Type="int" Nullable="false" />
+          <Property Name="AchievementID" Type="int" Nullable="false" />
           <Property Name="AchieveStateID" Type="int" Nullable="false" />
           <Property Name="AchievedDate" Type="datetime" />
           <Property Name="AchievableDate" Type="datetime" />
@@ -403,7 +403,7 @@
               <PropertyRef Name="ID" />
             </Principal>
             <Dependent Role="AchievedPosession">
-              <PropertyRef Name="QuestID" />
+              <PropertyRef Name="AchievementID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -430,6 +430,30 @@
             </Principal>
             <Dependent Role="Achievement">
               <PropertyRef Name="QueryTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Achievement_Category">
+          <End Role="Category" Type="Self.Category" Multiplicity="0..1" />
+          <End Role="Achievement" Type="Self.Achievement" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Category">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Achievement">
+              <PropertyRef Name="CategoryID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Achievement_Level">
+          <End Role="Level" Type="Self.Level" Multiplicity="0..1" />
+          <End Role="Achievement" Type="Self.Achievement" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Level">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Achievement">
+              <PropertyRef Name="LevelID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -895,6 +919,14 @@
             <End Role="AchievementQueryType" EntitySet="AchievementQueryType" />
             <End Role="Achievement" EntitySet="Achievement" />
           </AssociationSet>
+          <AssociationSet Name="FK_Achievement_Category" Association="Self.FK_Achievement_Category">
+            <End Role="Category" EntitySet="Category" />
+            <End Role="Achievement" EntitySet="Achievement" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Achievement_Level" Association="Self.FK_Achievement_Level">
+            <End Role="Level" EntitySet="Level" />
+            <End Role="Achievement" EntitySet="Achievement" />
+          </AssociationSet>
           <AssociationSet Name="FK_Answer_Question" Association="Self.FK_Answer_Question">
             <End Role="Question" EntitySet="Question" />
             <End Role="Answer" EntitySet="Answer" />
@@ -1076,6 +1108,14 @@
             <End Role="AchievementQueryType" EntitySet="AchievementQueryTypes" />
             <End Role="Achievement" EntitySet="Achievements" />
           </AssociationSet>
+          <AssociationSet Name="FK_Achievement_Category" Association="Falcon.DbModel.FK_Achievement_Category">
+            <End Role="Category" EntitySet="Categories" />
+            <End Role="Achievement" EntitySet="Achievements" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Achievement_Level" Association="Falcon.DbModel.FK_Achievement_Level">
+            <End Role="Level" EntitySet="Levels" />
+            <End Role="Achievement" EntitySet="Achievements" />
+          </AssociationSet>
           <AssociationSet Name="FK_Answer_Question" Association="Falcon.DbModel.FK_Answer_Question">
             <End Role="Question" EntitySet="Questions" />
             <End Role="Answer" EntitySet="Answers" />
@@ -1214,7 +1254,7 @@
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="UserID" Type="Int32" Nullable="false" />
-          <Property Name="QuestID" Type="Int32" Nullable="false" />
+          <Property Name="AchievementID" Type="Int32" Nullable="false" />
           <Property Name="AchieveStateID" Type="Int32" Nullable="false" />
           <Property Name="AchievedDate" Type="DateTime" Precision="3" />
           <Property Name="AchievableDate" Type="DateTime" Precision="3" />
@@ -1241,6 +1281,8 @@
           <Property Name="UpdatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="AchievedPosessions" Relationship="Falcon.DbModel.FK_AchievedQuests_Quest" FromRole="Achievement" ToRole="AchievedPosession" />
           <NavigationProperty Name="AchievementQueryType" Relationship="Falcon.DbModel.FK_Achievement_AchievementQueryType" FromRole="Achievement" ToRole="AchievementQueryType" />
+          <NavigationProperty Name="Category" Relationship="Falcon.DbModel.FK_Achievement_Category" FromRole="Achievement" ToRole="Category" />
+          <NavigationProperty Name="Level" Relationship="Falcon.DbModel.FK_Achievement_Level" FromRole="Achievement" ToRole="Level" />
         </EntityType>
         <EntityType Name="AchievementQueryType">
           <Key>
@@ -1315,6 +1357,7 @@
           <Property Name="Price" Type="Int32" Nullable="false" />
           <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="UpdatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Achievements" Relationship="Falcon.DbModel.FK_Achievement_Category" FromRole="Category" ToRole="Achievement" />
           <NavigationProperty Name="CreatedQuestions" Relationship="Falcon.DbModel.FK_CreatedQuestions_Category" FromRole="Category" ToRole="CreatedQuestion" />
           <NavigationProperty Name="PurchaseCategories" Relationship="Falcon.DbModel.FK_PurchaseCategory_Category" FromRole="Category" ToRole="PurchaseCategory" />
           <NavigationProperty Name="Questions" Relationship="Falcon.DbModel.FK_Question_Category" FromRole="Category" ToRole="Question" />
@@ -1395,6 +1438,7 @@
           <Property Name="Avatar" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
           <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="UpdatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Achievements" Relationship="Falcon.DbModel.FK_Achievement_Level" FromRole="Level" ToRole="Achievement" />
           <NavigationProperty Name="Users" Relationship="Falcon.DbModel.FK_User_Level" FromRole="Level" ToRole="User" />
         </EntityType>
         <EntityType Name="Manufacture">
@@ -1667,7 +1711,7 @@
               <PropertyRef Name="ID" />
             </Principal>
             <Dependent Role="AchievedPosession">
-              <PropertyRef Name="QuestID" />
+              <PropertyRef Name="AchievementID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1694,6 +1738,30 @@
             </Principal>
             <Dependent Role="Achievement">
               <PropertyRef Name="QueryTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Achievement_Category">
+          <End Type="Falcon.DbModel.Category" Role="Category" Multiplicity="0..1" />
+          <End Type="Falcon.DbModel.Achievement" Role="Achievement" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Category">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Achievement">
+              <PropertyRef Name="CategoryID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Achievement_Level">
+          <End Type="Falcon.DbModel.Level" Role="Level" Multiplicity="0..1" />
+          <End Type="Falcon.DbModel.Achievement" Role="Achievement" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Level">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Achievement">
+              <PropertyRef Name="LevelID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2125,7 +2193,7 @@
                 <ScalarProperty Name="AchievableDate" ColumnName="AchievableDate" />
                 <ScalarProperty Name="AchievedDate" ColumnName="AchievedDate" />
                 <ScalarProperty Name="AchieveStateID" ColumnName="AchieveStateID" />
-                <ScalarProperty Name="QuestID" ColumnName="QuestID" />
+                <ScalarProperty Name="AchievementID" ColumnName="AchievementID" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
