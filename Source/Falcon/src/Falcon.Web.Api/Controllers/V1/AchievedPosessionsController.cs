@@ -309,7 +309,8 @@ namespace Falcon.Web.Api.Controllers.V1
                 var achievedList = await db.AchievedPosessions
                                                             .AsNoTracking()
                                                             .Include( ap => ap.Achievement)
-                                                            .Where(ap => ap.AchieveStateID == Constants.DefaultValues.AchievementDefaultAchievedID)
+                                                            .Where( ap => ap.UserID == userID && 
+                                                                    ap.AchieveStateID == Constants.DefaultValues.AchievementDefaultAchievedID)
                                                             .Select(ap => ap.Achievement)
                                                             .ToListAsync();
 
