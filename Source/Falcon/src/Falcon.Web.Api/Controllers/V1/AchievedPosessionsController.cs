@@ -42,6 +42,7 @@ namespace Falcon.Web.Api.Controllers.V1
                                                             .Include( Ap => Ap.Achievement)
                                                             .Where(ap => ap.UserID == userID &&  ap.AchieveStateID == Constants.DefaultValues.AchievementDefaultAchievableID)
                                                             .Select( ap => ap.Achievement)
+                                                            .OrderBy( ap => ap.ID)
                                                             .ToListAsync();
 
                 List<Achievement> adhoc = new List<Achievement>();
@@ -99,6 +100,7 @@ namespace Falcon.Web.Api.Controllers.V1
                                                     purchasedCategories.Contains(a.CategoryID ?? 0) )
                         .GroupBy( a => a.CategoryID)
                         .Select( g => g.FirstOrDefault())
+                        .OrderBy(a => a.CategoryQuantity)
                         .ToListAsync();
 
                     for(int i = usuals.Count -1; i >= 0; --i)
