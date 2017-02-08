@@ -42,13 +42,17 @@ namespace Falcon.Web.Api.Controllers.V1
                                                             .Include( Ap => Ap.Achievement)
                                                             .Where(ap => ap.UserID == userID &&  ap.AchieveStateID == Constants.DefaultValues.AchievementDefaultAchievableID)
                                                             .Select( ap => ap.Achievement)
+                                                            .OrderBy( ap => ap.ID)
                                                             .ToListAsync();
 
                 List<Achievement> adhoc = new List<Achievement>();
                 List<Achievement> usuals = new List<Achievement>();
-                if(achievables.Count >= Constants.DefaultValues.AchievementsMinimumAchivables)
+
+                var tempDistinctAchievable = achievables.GroupBy(a => a.CategoryID).Select(g => g.FirstOrDefault()).Count();
+
+                if (tempDistinctAchievable >= Constants.DefaultValues.AchievementsMinimumAchivables)
                 {
-                    var result = mMapper.Map<List<Achievement>, List<SAchievement>>(achievables);
+                    var result = mMapper.Map<List<Achievement>, List<SAchievement>>(achievables.GroupBy( a => a.CategoryID).Select(g => g.FirstOrDefault()).ToList());
                     return Response(HttpStatusCode.OK, result);
                 }
                 else
@@ -56,17 +60,19 @@ namespace Falcon.Web.Api.Controllers.V1
                     List<Achievement> newAchievables = new List<Achievement>();
                     var userCurrentLevel = await db.Users.Where(u => u.ID == userID).Select(u => u.CurrentLevelID).SingleOrDefaultAsync();
 
-                    //var achievableIDsList = await db.AchievedPosessions
-                    //                                        .AsNoTracking()
-                    //                                        .Where(ap => ap.AchieveStateID == Constants.DefaultValues.AchievementDefaultAchievableID)
-                    //                                        .Select(ap => ap.ID)
-                    //                                        .ToListAsync();
+                    
+                    var achievableAndAchievedIDList = await db.AchievedPosessions
+                                            .AsNoTracking()
+                                            .Include(ap => ap.Achievement)
+                                            .Where(ap => ap.UserID == userID &&
+                                                   ap.AchieveStateID == Constants.DefaultValues.AchievementDefaultAchievedID)
+                                            .Select(ap => ap.Achievement.ID).ToListAsync();
 
-                    var achievableIDsList = achievables.Select(a => a.ID).ToList();
+                    achievableAndAchievedIDList.AddRange(achievables.Select( a => a.ID));
 
                     //Get list of Ad-hoc 
                     adhoc = await db.Achievements.AsNoTracking()
-                        .Where(a => a.QueryTypeID == Constants.DefaultValues.AchievementAdHocQueryTypeID && a.LevelID >= userCurrentLevel && !achievableIDsList.Contains(a.ID))
+                        .Where(a => a.QueryTypeID == Constants.DefaultValues.AchievementAdHocQueryTypeID && a.LevelID >= userCurrentLevel && !achievableAndAchievedIDList.Contains(a.ID))
                         .ToListAsync();
                     
 
@@ -78,6 +84,7 @@ namespace Falcon.Web.Api.Controllers.V1
                             if (result == 1)
                             {
                                 newAchievables.Add(adhoc[i]);
+                                ++tempDistinctAchievable;
                                 adhoc.RemoveAt(i);
                             }
                         }
@@ -88,9 +95,12 @@ namespace Falcon.Web.Api.Controllers.V1
 
                     // Get List of category base
                     usuals = await db.Achievements.AsNoTracking()
-                        .Where(a => a.QueryTypeID == Constants.DefaultValues.AchievementCategoryQueryTypeID && !achievableIDsList.Contains(a.ID) && purchasedCategories.Contains(a.CategoryID ?? 0) )
+                        .Where(a => a.QueryTypeID == Constants.DefaultValues.AchievementCategoryQueryTypeID &&
+                                                    !achievableAndAchievedIDList.Contains(a.ID) && 
+                                                    purchasedCategories.Contains(a.CategoryID ?? 0) )
                         .GroupBy( a => a.CategoryID)
                         .Select( g => g.FirstOrDefault())
+                        .OrderBy(a => a.CategoryQuantity)
                         .ToListAsync();
 
                     for(int i = usuals.Count -1; i >= 0; --i)
@@ -101,11 +111,12 @@ namespace Falcon.Web.Api.Controllers.V1
                             .AsNoTracking()
                             .Include(a => a.Question)
                             .Where(u => u.UserID == userID && u.Question.Catgory_ID == (value ?? 0))
-                            .CountAsync() > usuals[i].CategoryQuantity;
+                            .CountAsync() >= usuals[i].CategoryQuantity;
 
                         if (isAchievable)
                         {
                             newAchievables.Add(usuals[i]);
+                            ++tempDistinctAchievable;
                             usuals.Remove(usuals[i]);
                         }
                     }
@@ -117,7 +128,7 @@ namespace Falcon.Web.Api.Controllers.V1
                         list.Add(new AchievedPosession
                         {
                             UserID = userID,
-                            QuestID = newAchievables[i].ID,
+                            AchievementID = newAchievables[i].ID,
                             AchieveStateID = Constants.DefaultValues.AchievementDefaultAchievableID,
                             AchievedDate = null,
                             AchievableDate = mDateTime.Now,
@@ -130,12 +141,18 @@ namespace Falcon.Web.Api.Controllers.V1
                         achievables.AddRange(newAchievables);
                     }
                 }
-                if(achievables.Count > 0 && achievables.Count < Constants.DefaultValues.AchievementsMinimumAchivables)
+
+                if(tempDistinctAchievable > 0 && tempDistinctAchievable < Constants.DefaultValues.AchievementsMinimumAchivables)
                 {
-                    var mapAchivable = mMapper.Map<List<Achievement>, List<SAchievement>>(achievables);
+                    var mapAchivable = mMapper.Map<List<Achievement>, List<SAchievement>>(
+                        achievables
+                        .GroupBy(a => a.CategoryID)
+                        .Select(g => g.FirstOrDefault())
+                        .ToList());
+
                     List<Achievement> notAchieved = new List<Achievement>();
 
-                    int remainedNumber = Constants.DefaultValues.AchievementsMinimumAchivables - achievables.Count;
+                    int remainedNumber = Constants.DefaultValues.AchievementsMinimumAchivables - mapAchivable.Count;
 
                     int counter = 0;
                     int adhocSize = adhoc.Count;
@@ -191,15 +208,20 @@ namespace Falcon.Web.Api.Controllers.V1
                     return Response(HttpStatusCode.OK, mapAchivable);
 
                 }
-                else if (achievables.Count > 0 && achievables.Count >= Constants.DefaultValues.AchievementsMinimumAchivables) 
+                else if (tempDistinctAchievable > 0 && tempDistinctAchievable >= Constants.DefaultValues.AchievementsMinimumAchivables) 
                 {
                     //map data then send 
-                    var result = achievables.Take(Constants.DefaultValues.AchievementsMinimumAchivables).ToList();
+                    var result = achievables.
+                        GroupBy(a => a.CategoryID)
+                        .Select(g => g.FirstOrDefault())
+                        .Take(Constants.DefaultValues.AchievementsMinimumAchivables)
+                        .ToList();
+
                     var mapResult = mMapper.Map<List<Achievement>, List<SAchievement>>(result);
 
                     return Response(HttpStatusCode.OK, mapResult);
                 }
-                else if( achievables.Count <= 0)
+                else if(tempDistinctAchievable <= 0)
                 {
                     List<Achievement> notAchieved = new List<Achievement>();
 
@@ -280,12 +302,13 @@ namespace Falcon.Web.Api.Controllers.V1
                 var achievable = await db.AchievedPosessions
                                         .Include(ap => ap.Achievement)
                                         .Where(ap => ap.UserID == user.ID &&
-                                               ap.QuestID == AchievementID &&
+                                               ap.AchievementID == AchievementID &&
                                                ap.AchieveStateID == Constants.DefaultValues.AchievementDefaultAchievableID)
                                         .SingleOrDefaultAsync();
                 if (achievable != null)
                 {
                     achievable.AchieveStateID = Constants.DefaultValues.AchievementDefaultAchievedID;
+                    achievable.AchievedDate = mDateTime.Now;
                     user.TotalStars += achievable.Achievement.Star;
                     await db.SaveChangesAsync();
                     return Response(HttpStatusCode.OK, user.TotalStars);
@@ -309,7 +332,8 @@ namespace Falcon.Web.Api.Controllers.V1
                 var achievedList = await db.AchievedPosessions
                                                             .AsNoTracking()
                                                             .Include( ap => ap.Achievement)
-                                                            .Where(ap => ap.AchieveStateID == Constants.DefaultValues.AchievementDefaultAchievedID)
+                                                            .Where( ap => ap.UserID == userID && 
+                                                                    ap.AchieveStateID == Constants.DefaultValues.AchievementDefaultAchievedID)
                                                             .Select(ap => ap.Achievement)
                                                             .ToListAsync();
 
