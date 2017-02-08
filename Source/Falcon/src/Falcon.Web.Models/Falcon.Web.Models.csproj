@@ -52,6 +52,7 @@
     <Compile Include="Api\SComment.cs" />
     <Compile Include="Api\SNewCreatedQuestions.cs" />
     <Compile Include="Api\SQuestionBoost.cs" />
+    <Compile Include="Api\SReportType.cs" />
     <Compile Include="Api\SStore.cs" />
     <Compile Include="Api\SUserState.cs" />
     <Compile Include="Api\SUserStatistics.cs" />
