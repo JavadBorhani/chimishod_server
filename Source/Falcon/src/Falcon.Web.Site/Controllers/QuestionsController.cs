@@ -18,7 +18,7 @@ namespace Falcon.Web.Site.Controllers
         // GET: Questions
         public async Task<ActionResult> Index()
         {
-            var questions = db.Questions.Include(q => q.Category);
+            var questions = db.Questions.Include(q => q.Category).Include(q => q.QuestionBoost);
             return View(await questions.ToListAsync());
         }
 
@@ -41,6 +41,7 @@ namespace Falcon.Web.Site.Controllers
         public ActionResult Create()
         {
             ViewBag.Catgory_ID = new SelectList(db.Categories, "ID", "Name");
+            ViewBag.QuestionBoostID = new SelectList(db.QuestionBoosts, "ID", "Name");
             return View();
         }
 
@@ -49,7 +50,7 @@ namespace Falcon.Web.Site.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "ID,What_if,But,Catgory_ID,Yes_Count,No_Count,Like_Count,Dislike_Count,Weight,CreatorID,CreatedDate,UpdateDate,Banned")] Question question)
+        public async Task<ActionResult> Create([Bind(Include = "ID,What_if,But,Catgory_ID,QuestionBoostID,Yes_Count,No_Count,Like_Count,Dislike_Count,Weight,CreatedDate,UpdateDate,Banned")] Question question)
         {
             if (ModelState.IsValid)
             {
@@ -59,6 +60,7 @@ namespace Falcon.Web.Site.Controllers
             }
 
             ViewBag.Catgory_ID = new SelectList(db.Categories, "ID", "Name", question.Catgory_ID);
+            ViewBag.QuestionBoostID = new SelectList(db.QuestionBoosts, "ID", "Name", question.QuestionBoostID);
             return View(question);
         }
 
@@ -75,6 +77,7 @@ namespace Falcon.Web.Site.Controllers
                 return HttpNotFound();
             }
             ViewBag.Catgory_ID = new SelectList(db.Categories, "ID", "Name", question.Catgory_ID);
+            ViewBag.QuestionBoostID = new SelectList(db.QuestionBoosts, "ID", "Name", question.QuestionBoostID);
             return View(question);
         }
 
@@ -83,7 +86,7 @@ namespace Falcon.Web.Site.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "ID,What_if,But,Catgory_ID,Yes_Count,No_Count,Like_Count,Dislike_Count,Weight,CreatorID,CreatedDate,UpdateDate,Banned")] Question question)
+        public async Task<ActionResult> Edit([Bind(Include = "ID,What_if,But,Catgory_ID,QuestionBoostID,Yes_Count,No_Count,Like_Count,Dislike_Count,Weight,CreatedDate,UpdateDate,Banned")] Question question)
         {
             if (ModelState.IsValid)
             {
@@ -92,6 +95,7 @@ namespace Falcon.Web.Site.Controllers
                 return RedirectToAction("Index");
             }
             ViewBag.Catgory_ID = new SelectList(db.Categories, "ID", "Name", question.Catgory_ID);
+            ViewBag.QuestionBoostID = new SelectList(db.QuestionBoosts, "ID", "Name", question.QuestionBoostID);
             return View(question);
         }
 
