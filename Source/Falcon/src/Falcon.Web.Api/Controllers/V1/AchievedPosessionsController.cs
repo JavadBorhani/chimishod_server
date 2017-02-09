@@ -17,7 +17,6 @@ using System;
 
 namespace Falcon.Web.Api.Controllers.V1
 {
-    [UnitOfWorkActionFilter]
     public class AchievedPosessionsController : ApiController
     {
         private DbEntity db = new DbEntity();
@@ -81,7 +80,10 @@ namespace Falcon.Web.Api.Controllers.V1
 
                     //Get list of Ad-hoc 
                     adhoc = await db.Achievements.AsNoTracking()
-                        .Where(a => a.QueryTypeID == Constants.DefaultValues.AchievementAdHocQueryTypeID && a.LevelID >= userCurrentLevel && !achievableAndAchievedIDList.Contains(a.ID))
+                        .Where( a => a.IsActive && 
+                                a.QueryTypeID == Constants.DefaultValues.AchievementAdHocQueryTypeID && 
+                                a.LevelID >= userCurrentLevel && 
+                                !achievableAndAchievedIDList.Contains(a.ID))
                         .ToListAsync();
                     
 
@@ -89,8 +91,8 @@ namespace Falcon.Web.Api.Controllers.V1
                     {
                         if (!string.IsNullOrEmpty(adhoc[i].Query))
                         {
-                            int result = await db.Database.ExecuteSqlCommandAsync(adhoc[i].Query, userID);
-                            if (result == 1)
+                            int result = await db.Database.SqlQuery<int>(adhoc[i].Query, userID).SingleOrDefaultAsync();
+                            if (result >= 1)
                             {
                                 newAchievables.Add(adhoc[i]);
                                 ++tempDistinctAchievable;
@@ -104,9 +106,11 @@ namespace Falcon.Web.Api.Controllers.V1
 
                     // Get List of category base
                     usuals = await db.Achievements.AsNoTracking()
-                        .Where(a => a.QueryTypeID == Constants.DefaultValues.AchievementCategoryQueryTypeID &&
-                                                    !achievableAndAchievedIDList.Contains(a.ID) && 
-                                                    purchasedCategories.Contains(a.CategoryID ?? 0) )
+                        .Where( a => a.IsActive && 
+                                a.QueryTypeID == Constants.DefaultValues.AchievementCategoryQueryTypeID &&
+                                !achievableAndAchievedIDList.Contains(a.ID) && 
+                                purchasedCategories.Contains(a.CategoryID ?? 0) )
+
                         .GroupBy( a => a.CategoryID)
                         .Select( g => g.FirstOrDefault())
                         .OrderBy(a => a.CategoryQuantity)

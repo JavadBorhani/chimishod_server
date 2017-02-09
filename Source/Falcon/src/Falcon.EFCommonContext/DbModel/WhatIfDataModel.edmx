@@ -40,6 +40,7 @@
           <Property Name="LevelID" Type="int" />
           <Property Name="CategoryID" Type="int" />
           <Property Name="CategoryQuantity" Type="int" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
           <Property Name="CreatedDate" Type="datetime" Nullable="false" />
           <Property Name="UpdatedDate" Type="datetime" Nullable="false" />
         </EntityType>
@@ -1277,6 +1278,7 @@
           <Property Name="LevelID" Type="Int32" />
           <Property Name="CategoryID" Type="Int32" />
           <Property Name="CategoryQuantity" Type="Int32" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
           <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="UpdatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="AchievedPosessions" Relationship="Falcon.DbModel.FK_AchievedQuests_Quest" FromRole="Achievement" ToRole="AchievedPosession" />
@@ -2204,6 +2206,7 @@
               <MappingFragment StoreEntitySet="Achievement">
                 <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
                 <ScalarProperty Name="CategoryQuantity" ColumnName="CategoryQuantity" />
                 <ScalarProperty Name="CategoryID" ColumnName="CategoryID" />
                 <ScalarProperty Name="LevelID" ColumnName="LevelID" />

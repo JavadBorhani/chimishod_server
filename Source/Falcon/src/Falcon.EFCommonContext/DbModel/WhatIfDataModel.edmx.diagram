@@ -5,37 +5,37 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="d87f924fb6394d2484c7b5effdc43f04" Name="Diagram1">
-        <EntityTypeShape EntityType="Falcon.DbModel.AchievedGift" Width="1.5" PointX="14.25" PointY="28.875" />
-        <EntityTypeShape EntityType="Falcon.DbModel.AchievedPosession" Width="1.5" PointX="8.25" PointY="24.625" />
-        <EntityTypeShape EntityType="Falcon.DbModel.Achievement" Width="1.5" PointX="3" PointY="23.875" />
-        <EntityTypeShape EntityType="Falcon.DbModel.AchievementQueryType" Width="1.5" PointX="0.75" PointY="28.375" />
-        <EntityTypeShape EntityType="Falcon.DbModel.AchieveStateType" Width="1.5" PointX="6" PointY="19.875" />
-        <EntityTypeShape EntityType="Falcon.DbModel.Answer" Width="1.5" PointX="8.25" PointY="16.625" />
+        <EntityTypeShape EntityType="Falcon.DbModel.AchievedGift" Width="1.5" PointX="5.25" PointY="30" />
+        <EntityTypeShape EntityType="Falcon.DbModel.AchievedPosession" Width="1.5" PointX="8.25" PointY="24.75" />
+        <EntityTypeShape EntityType="Falcon.DbModel.Achievement" Width="1.5" PointX="6" PointY="23.875" />
+        <EntityTypeShape EntityType="Falcon.DbModel.AchievementQueryType" Width="1.5" PointX="3.75" PointY="36.5" />
+        <EntityTypeShape EntityType="Falcon.DbModel.AchieveStateType" Width="1.5" PointX="6" PointY="13.875" />
+        <EntityTypeShape EntityType="Falcon.DbModel.Answer" Width="1.5" PointX="11.25" PointY="28.75" />
         <EntityTypeShape EntityType="Falcon.DbModel.ApplicationState" Width="1.5" PointX="0.75" PointY="0.75" />
-        <EntityTypeShape EntityType="Falcon.DbModel.AppTheme" Width="1.5" PointX="6" PointY="30.375" />
-        <EntityTypeShape EntityType="Falcon.DbModel.Category" Width="1.5" PointX="0.75" PointY="19.75" />
-        <EntityTypeShape EntityType="Falcon.DbModel.Comment" Width="1.5" PointX="8.25" PointY="32.625" />
-        <EntityTypeShape EntityType="Falcon.DbModel.CreatedQuestion" Width="1.5" PointX="11.25" PointY="24.375" />
-        <EntityTypeShape EntityType="Falcon.DbModel.CreatedQuestionsVerifyType" Width="1.5" PointX="9" PointY="37.125" />
-        <EntityTypeShape EntityType="Falcon.DbModel.Favorite" Width="1.5" PointX="11.25" PointY="28.875" />
-        <EntityTypeShape EntityType="Falcon.DbModel.Gift" Width="1.5" PointX="12" PointY="35.625" />
+        <EntityTypeShape EntityType="Falcon.DbModel.AppTheme" Width="1.5" PointX="9" PointY="35.375" />
+        <EntityTypeShape EntityType="Falcon.DbModel.Category" Width="1.5" PointX="3.75" PointY="11.875" />
+        <EntityTypeShape EntityType="Falcon.DbModel.Comment" Width="1.5" PointX="8.25" PointY="20.75" />
+        <EntityTypeShape EntityType="Falcon.DbModel.CreatedQuestion" Width="1.5" PointX="11.25" PointY="20.375" />
+        <EntityTypeShape EntityType="Falcon.DbModel.CreatedQuestionsVerifyType" Width="1.5" PointX="9" PointY="14.25" />
+        <EntityTypeShape EntityType="Falcon.DbModel.Favorite" Width="1.5" PointX="8.25" PointY="29" />
+        <EntityTypeShape EntityType="Falcon.DbModel.Gift" Width="1.5" PointX="3" PointY="30.75" />
         <EntityTypeShape EntityType="Falcon.DbModel.Level" Width="1.5" PointX="0.75" PointY="24.75" />
-        <EntityTypeShape EntityType="Falcon.DbModel.Manufacture" Width="1.5" PointX="14.25" PointY="20.875" />
-        <EntityTypeShape EntityType="Falcon.DbModel.Order" Width="1.5" PointX="11.25" PointY="20.75" />
+        <EntityTypeShape EntityType="Falcon.DbModel.Manufacture" Width="1.5" PointX="8.25" PointY="17" />
+        <EntityTypeShape EntityType="Falcon.DbModel.Order" Width="1.5" PointX="8.25" PointY="31.875" />
         <EntityTypeShape EntityType="Falcon.DbModel.OurAdvertisement" Width="1.5" PointX="2.75" PointY="0.75" />
-        <EntityTypeShape EntityType="Falcon.DbModel.PurchaseCategory" Width="1.5" PointX="8.25" PointY="20.875" />
-        <EntityTypeShape EntityType="Falcon.DbModel.PurchaseTheme" Width="1.5" PointX="11.25" PointY="31.875" />
-        <EntityTypeShape EntityType="Falcon.DbModel.Question" Width="1.5" PointX="6" PointY="13.5" />
-        <EntityTypeShape EntityType="Falcon.DbModel.QuestionBoost" Width="1.5" PointX="3.75" PointY="14.5" />
-        <EntityTypeShape EntityType="Falcon.DbModel.ReportedQuestion" Width="1.5" PointX="14.25" PointY="24.75" />
-        <EntityTypeShape EntityType="Falcon.DbModel.ReportType" Width="1.5" PointX="12" PointY="15.125" />
-        <EntityTypeShape EntityType="Falcon.DbModel.SelectedCategory" Width="1.5" PointX="11.25" PointY="18" />
-        <EntityTypeShape EntityType="Falcon.DbModel.SelectedTheme" Width="1.5" PointX="8.25" PointY="29" />
-        <EntityTypeShape EntityType="Falcon.DbModel.Store" Width="1.5" PointX="9" PointY="12.5" />
+        <EntityTypeShape EntityType="Falcon.DbModel.PurchaseCategory" Width="1.5" PointX="11.25" PointY="17" />
+        <EntityTypeShape EntityType="Falcon.DbModel.PurchaseTheme" Width="1.5" PointX="5.25" PointY="33" />
+        <EntityTypeShape EntityType="Falcon.DbModel.Question" Width="1.5" PointX="6" PointY="5.625" />
+        <EntityTypeShape EntityType="Falcon.DbModel.QuestionBoost" Width="1.5" PointX="3.75" PointY="6.625" />
+        <EntityTypeShape EntityType="Falcon.DbModel.ReportedQuestion" Width="1.5" PointX="5.25" PointY="19.75" />
+        <EntityTypeShape EntityType="Falcon.DbModel.ReportType" Width="1.5" PointX="3" PointY="20.25" />
+        <EntityTypeShape EntityType="Falcon.DbModel.SelectedCategory" Width="1.5" PointX="5.25" PointY="17.125" />
+        <EntityTypeShape EntityType="Falcon.DbModel.SelectedTheme" Width="1.5" PointX="11.25" PointY="25.125" />
+        <EntityTypeShape EntityType="Falcon.DbModel.Store" Width="1.5" PointX="6" PointY="36.625" />
         <EntityTypeShape EntityType="Falcon.DbModel.sysdiagram" Width="1.5" PointX="4.75" PointY="0.75" />
-        <EntityTypeShape EntityType="Falcon.DbModel.User" Width="1.5" PointX="6" PointY="23.125" />
-        <EntityTypeShape EntityType="Falcon.DbModel.UserInfo" Width="1.5" PointX="8.25" PointY="62" />
-        <EntityTypeShape EntityType="Falcon.DbModel.UserType" Width="1.5" PointX="3.75" PointY="21.125" />
+        <EntityTypeShape EntityType="Falcon.DbModel.User" Width="1.5" PointX="3" PointY="23.125" />
+        <EntityTypeShape EntityType="Falcon.DbModel.UserInfo" Width="1.5" PointX="5.25" PointY="62.125" />
+        <EntityTypeShape EntityType="Falcon.DbModel.UserType" Width="1.5" PointX="0.75" PointY="22.25" />
         <AssociationConnector Association="Falcon.DbModel.FK_AchievedGifts_Gift" />
         <AssociationConnector Association="Falcon.DbModel.FK_AchievedGifts_User" />
         <AssociationConnector Association="Falcon.DbModel.FK_AchievedPosession_AchieveStateType" />
