@@ -37,6 +37,8 @@ namespace Falcon.Web.Common
                 Environment.NewLine,
                 rec.Operation,
                 Environment.NewLine,
+                rec.Operator,
+                Environment.NewLine,
                 rec.Category,
                 Environment.NewLine,
                 rec.Request,

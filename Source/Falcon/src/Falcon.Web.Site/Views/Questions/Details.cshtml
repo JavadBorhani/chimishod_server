@@ -1,4 +1,4 @@
-﻿@model Falcon.Database.Question
+﻿@model Falcon.EFCommonContext.DbModel.Question
 
 @{
     Layout = null;
@@ -73,14 +73,6 @@
             </dd>
     
             <dt>
-                @Html.DisplayNameFor(model => model.CreatorID)
-            </dt>
-    
-            <dd>
-                @Html.DisplayFor(model => model.CreatorID)
-            </dd>
-    
-            <dt>
                 @Html.DisplayNameFor(model => model.CreatedDate)
             </dt>
     
@@ -110,6 +102,14 @@
     
             <dd>
                 @Html.DisplayFor(model => model.Category.Name)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.QuestionBoost.Name)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.QuestionBoost.Name)
             </dd>
     
         </dl>

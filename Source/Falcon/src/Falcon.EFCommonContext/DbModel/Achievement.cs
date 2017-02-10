@@ -31,6 +31,7 @@ namespace Falcon.EFCommonContext.DbModel
         public Nullable<int> LevelID { get; set; }
         public Nullable<int> CategoryID { get; set; }
         public Nullable<int> CategoryQuantity { get; set; }
+        public bool IsActive { get; set; }
         public System.DateTime CreatedDate { get; set; }
         public System.DateTime UpdatedDate { get; set; }
     

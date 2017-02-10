@@ -1,4 +1,4 @@
-﻿@model Falcon.Database.Question
+﻿@model Falcon.EFCommonContext.DbModel.Question
 
 @{
     Layout = null;
@@ -52,6 +52,14 @@
             </div>
     
             <div class="form-group">
+                @Html.LabelFor(model => model.QuestionBoostID, "QuestionBoostID", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DropDownList("QuestionBoostID", null, htmlAttributes: new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.QuestionBoostID, "", new { @class = "text-danger" })
+                </div>
+            </div>
+    
+            <div class="form-group">
                 @Html.LabelFor(model => model.Yes_Count, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
                     @Html.EditorFor(model => model.Yes_Count, new { htmlAttributes = new { @class = "form-control" } })
@@ -88,14 +96,6 @@
                 <div class="col-md-10">
                     @Html.EditorFor(model => model.Weight, new { htmlAttributes = new { @class = "form-control" } })
                     @Html.ValidationMessageFor(model => model.Weight, "", new { @class = "text-danger" })
-                </div>
-            </div>
-    
-            <div class="form-group">
-                @Html.LabelFor(model => model.CreatorID, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.CreatorID, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.CreatorID, "", new { @class = "text-danger" })
                 </div>
             </div>
     

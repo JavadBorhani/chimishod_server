@@ -13,10 +13,10 @@ using System.Web.Http.Results;
 using Falcon.Common;
 using System.Collections.Generic;
 using Falcon.Web.Common;
+using System;
 
 namespace Falcon.Web.Api.Controllers.V1
 {
-    [UnitOfWorkActionFilter]
     public class AchievedPosessionsController : ApiController
     {
         private DbEntity db = new DbEntity();
@@ -40,7 +40,8 @@ namespace Falcon.Web.Api.Controllers.V1
             {
                 var achievables = await db.AchievedPosessions.AsNoTracking()
                                                             .Include( Ap => Ap.Achievement)
-                                                            .Where(ap => ap.UserID == userID &&  ap.AchieveStateID == Constants.DefaultValues.AchievementDefaultAchievableID)
+                                                            .Where( ap => ap.UserID == userID && 
+                                                                    ap.AchieveStateID == Constants.DefaultValues.AchievementDefaultAchievableID)
                                                             .Select( ap => ap.Achievement)
                                                             .OrderBy( ap => ap.ID)
                                                             .ToListAsync();
@@ -50,9 +51,16 @@ namespace Falcon.Web.Api.Controllers.V1
 
                 var tempDistinctAchievable = achievables.GroupBy(a => a.CategoryID).Select(g => g.FirstOrDefault()).Count();
 
-                if (tempDistinctAchievable >= Constants.DefaultValues.AchievementsMinimumAchivables)
+                if (tempDistinctAchievable >= Constants.DefaultValues.AchievementsMinimumAchievables)
                 {
-                    var result = mMapper.Map<List<Achievement>, List<SAchievement>>(achievables.GroupBy( a => a.CategoryID).Select(g => g.FirstOrDefault()).ToList());
+                    
+                    var result = mMapper.Map<List<Achievement>, List<SAchievement>>
+                        (achievables
+                        .GroupBy(a => a.CategoryID)
+                        .Select(g => g.FirstOrDefault())
+                        .Take(Constants.DefaultValues.AchievementsMinimumAchievables)
+                        .ToList());
+
                     return Response(HttpStatusCode.OK, result);
                 }
                 else
@@ -72,7 +80,10 @@ namespace Falcon.Web.Api.Controllers.V1
 
                     //Get list of Ad-hoc 
                     adhoc = await db.Achievements.AsNoTracking()
-                        .Where(a => a.QueryTypeID == Constants.DefaultValues.AchievementAdHocQueryTypeID && a.LevelID >= userCurrentLevel && !achievableAndAchievedIDList.Contains(a.ID))
+                        .Where( a => a.IsActive && 
+                                a.QueryTypeID == Constants.DefaultValues.AchievementAdHocQueryTypeID && 
+                                a.LevelID >= userCurrentLevel && 
+                                !achievableAndAchievedIDList.Contains(a.ID))
                         .ToListAsync();
                     
 
@@ -80,8 +91,8 @@ namespace Falcon.Web.Api.Controllers.V1
                     {
                         if (!string.IsNullOrEmpty(adhoc[i].Query))
                         {
-                            int result = await db.Database.ExecuteSqlCommandAsync(adhoc[i].Query, userID);
-                            if (result == 1)
+                            int result = await db.Database.SqlQuery<int>(adhoc[i].Query, userID).SingleOrDefaultAsync();
+                            if (result >= 1)
                             {
                                 newAchievables.Add(adhoc[i]);
                                 ++tempDistinctAchievable;
@@ -95,9 +106,11 @@ namespace Falcon.Web.Api.Controllers.V1
 
                     // Get List of category base
                     usuals = await db.Achievements.AsNoTracking()
-                        .Where(a => a.QueryTypeID == Constants.DefaultValues.AchievementCategoryQueryTypeID &&
-                                                    !achievableAndAchievedIDList.Contains(a.ID) && 
-                                                    purchasedCategories.Contains(a.CategoryID ?? 0) )
+                        .Where( a => a.IsActive && 
+                                a.QueryTypeID == Constants.DefaultValues.AchievementCategoryQueryTypeID &&
+                                !achievableAndAchievedIDList.Contains(a.ID) && 
+                                purchasedCategories.Contains(a.CategoryID ?? 0) )
+
                         .GroupBy( a => a.CategoryID)
                         .Select( g => g.FirstOrDefault())
                         .OrderBy(a => a.CategoryQuantity)
@@ -142,52 +155,30 @@ namespace Falcon.Web.Api.Controllers.V1
                     }
                 }
 
-                if(tempDistinctAchievable > 0 && tempDistinctAchievable < Constants.DefaultValues.AchievementsMinimumAchivables)
+                if(tempDistinctAchievable >= 0)
                 {
-                    var mapAchivable = mMapper.Map<List<Achievement>, List<SAchievement>>(
+                    List<SAchievement> mapAchievable = new List<SAchievement>();
+
+                    if(tempDistinctAchievable > 0 )
+                    {
+                        mapAchievable = mMapper.Map<List<Achievement>, List<SAchievement>>(
                         achievables
                         .GroupBy(a => a.CategoryID)
                         .Select(g => g.FirstOrDefault())
                         .ToList());
+                    }
+                  
+                    int remainedNumber = Constants.DefaultValues.AchievementsMinimumAchievables - mapAchievable.Count;
+
+                    if(remainedNumber >= Constants.DefaultValues.AchievementsMinimumAchievables)
+                    {
+                        var result = mapAchievable.Take(Constants.DefaultValues.AchievementsMinimumAchievables);
+
+                        return Response(HttpStatusCode.OK, result);
+                    }
 
                     List<Achievement> notAchieved = new List<Achievement>();
-
-                    int remainedNumber = Constants.DefaultValues.AchievementsMinimumAchivables - mapAchivable.Count;
-
-                    int counter = 0;
-                    int adhocSize = adhoc.Count;
-                    int usualsSize = usuals.Count;
-                    int breakflag = 0;
-
-                    for (int i = 0; i < remainedNumber; ++i)
-                    {
-                        if (i < adhocSize)
-                        {
-                            notAchieved.Add(adhoc[i]);
-                            ++counter;
-                        }
-                        else
-                        {
-                            ++breakflag;
-                        }
-                        if (counter == remainedNumber) break;
-
-                        if (i < usualsSize)
-                        {
-                            notAchieved.Add(usuals[i]);
-                            ++counter;
-                        }
-                        else
-                        {
-                            ++breakflag;
-                        }
-
-                        if (counter == remainedNumber) break;
-                        if (breakflag == 2)
-                            break;
-                        else
-                            breakflag = 0;
-                    }
+                    AddRemainedResults(remainedNumber, ref usuals, ref adhoc, ref notAchieved);
 
                     var mapNotAchieved = new List<SAchievement>(notAchieved.Count);
                     for(int i = 0; i < notAchieved.Count; ++i)
@@ -200,84 +191,13 @@ namespace Falcon.Web.Api.Controllers.V1
                                 Star = notAchieved[i].Star,
                                 Icon = notAchieved[i].Icon,
                                 RectangleColor = notAchieved[i].RectangleColor,
-                                AchievementState = Constants.DefaultValues.AchievementDefaultNotAchieved
+                                AchievementState = Constants.DefaultValues.AchievementDefaultNotAchievedID
                             });
                     }
 
-                    mapAchivable.AddRange(mapNotAchieved);
-                    return Response(HttpStatusCode.OK, mapAchivable);
+                    mapAchievable.AddRange(mapNotAchieved);
+                    return Response(HttpStatusCode.OK, mapAchievable);
 
-                }
-                else if (tempDistinctAchievable > 0 && tempDistinctAchievable >= Constants.DefaultValues.AchievementsMinimumAchivables) 
-                {
-                    //map data then send 
-                    var result = achievables.
-                        GroupBy(a => a.CategoryID)
-                        .Select(g => g.FirstOrDefault())
-                        .Take(Constants.DefaultValues.AchievementsMinimumAchivables)
-                        .ToList();
-
-                    var mapResult = mMapper.Map<List<Achievement>, List<SAchievement>>(result);
-
-                    return Response(HttpStatusCode.OK, mapResult);
-                }
-                else if(tempDistinctAchievable <= 0)
-                {
-                    List<Achievement> notAchieved = new List<Achievement>();
-
-                    int remainedNumber = Constants.DefaultValues.AchievementsMinimumAchivables;
-
-                    int counter = 0;
-                    int adhocSize = adhoc.Count;
-                    int usualsSize = usuals.Count;
-                    int breakflag = 0;
-
-                    for (int i = 0; i < remainedNumber; ++i)
-                    {
-                        if (i < adhocSize)
-                        {
-                            notAchieved.Add(adhoc[i]);
-                            ++counter;
-                        }
-                        else
-                        {
-                            ++breakflag;
-                        }
-                        if (counter == remainedNumber) break;
-
-                        if (i < usualsSize)
-                        {
-                            notAchieved.Add(usuals[i]);
-                            ++counter;
-                        }
-                        else
-                        {
-                            ++breakflag;
-                        }
-
-                        if (counter == remainedNumber) break;
-                        if (breakflag == 2)
-                            break;
-                        else
-                            breakflag = 0; 
-                    }
-
-                    var mapNotAchieved = new List<SAchievement>(notAchieved.Count);
-                    for (int i = 0; i < notAchieved.Count; ++i)
-                    {
-                        mapNotAchieved.Add(new SAchievement
-                        {
-                            ID = notAchieved[i].ID,
-                            Name = notAchieved[i].Name,
-                            Description = notAchieved[i].Description,
-                            Star = notAchieved[i].Star,
-                            Icon = notAchieved[i].Icon,
-                            RectangleColor = notAchieved[i].RectangleColor,
-                            AchievementState = Constants.DefaultValues.AchievementDefaultNotAchieved
-                        });
-                    }
-
-                    return Response(HttpStatusCode.OK, mapNotAchieved);
                 }
                 else
                 {
@@ -287,6 +207,43 @@ namespace Falcon.Web.Api.Controllers.V1
             else
             {
                 return Response(HttpStatusCode.Unauthorized);
+            }
+        }
+        private void AddRemainedResults(int RemainedNumber , ref List<Achievement>  Usuals, ref List<Achievement> AdHoc , ref List<Achievement> NotAchieved)
+        {
+            int counter = 0;
+            int adhocSize = Usuals.Count;
+            int usualsSize = AdHoc.Count;
+            int breakflag = 0;
+
+            for (int i = 0; i < RemainedNumber; ++i)
+            {
+                if (i < adhocSize)
+                {
+                    NotAchieved.Add(AdHoc[i]);
+                    ++counter;
+                }
+                else
+                {
+                    ++breakflag;
+                }
+                if (counter == RemainedNumber) break;
+
+                if (i < usualsSize)
+                {
+                    NotAchieved.Add(Usuals[i]);
+                    ++counter;
+                }
+                else
+                {
+                    ++breakflag;
+                }
+
+                if (counter == RemainedNumber) break;
+                if (breakflag == 2)
+                    break;
+                else
+                    breakflag = 0;
             }
         }
 

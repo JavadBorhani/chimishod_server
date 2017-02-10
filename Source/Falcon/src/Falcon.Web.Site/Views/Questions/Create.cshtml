@@ -1,4 +1,4 @@
-﻿@model Falcon.Database.Question
+﻿@model Falcon.EFCommonContext.DbModel.Question
 
 @{
     Layout = null;
@@ -26,14 +26,6 @@
             <hr />
             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
             <div class="form-group">
-                @Html.LabelFor(model => model.ID, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.ID, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.ID, "", new { @class = "text-danger" })
-                </div>
-            </div>
-    
-            <div class="form-group">
                 @Html.LabelFor(model => model.What_if, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
                     @Html.EditorFor(model => model.What_if, new { htmlAttributes = new { @class = "form-control" } })
@@ -54,6 +46,14 @@
                 <div class="col-md-10">
                     @Html.DropDownList("Catgory_ID", null, htmlAttributes: new { @class = "form-control" })
                     @Html.ValidationMessageFor(model => model.Catgory_ID, "", new { @class = "text-danger" })
+                </div>
+            </div>
+    
+            <div class="form-group">
+                @Html.LabelFor(model => model.QuestionBoostID, "QuestionBoostID", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DropDownList("QuestionBoostID", null, htmlAttributes: new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.QuestionBoostID, "", new { @class = "text-danger" })
                 </div>
             </div>
     
@@ -94,14 +94,6 @@
                 <div class="col-md-10">
                     @Html.EditorFor(model => model.Weight, new { htmlAttributes = new { @class = "form-control" } })
                     @Html.ValidationMessageFor(model => model.Weight, "", new { @class = "text-danger" })
-                </div>
-            </div>
-    
-            <div class="form-group">
-                @Html.LabelFor(model => model.CreatorID, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.CreatorID, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.CreatorID, "", new { @class = "text-danger" })
                 </div>
             </div>
     
