@@ -9,6 +9,7 @@ namespace Falcon.Web.Models.Api
         public string Description { get; set; }
         public int Star { get; set; }
         public string Icon { get; set; }
+        public int Prize { get; set; }
         public string RectangleColor { get; set; }
         public int AchievementState { get; set; }
     }

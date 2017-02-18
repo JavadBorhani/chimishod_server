@@ -12,8 +12,6 @@ using Falcon.Web.Models.Api;
 using System.Web.Http.Results;
 using Falcon.Common;
 using System.Collections.Generic;
-using Falcon.Web.Common;
-using System;
 
 namespace Falcon.Web.Api.Controllers.V1
 {
@@ -143,7 +141,7 @@ namespace Falcon.Web.Api.Controllers.V1
                             UserID = userID,
                             AchievementID = newAchievables[i].ID,
                             AchieveStateID = Constants.DefaultValues.AchievementDefaultAchievableID,
-                            AchievedDate = null,
+                            AchievedDate = null,    
                             AchievableDate = mDateTime.Now,
                         });
                     }
@@ -189,6 +187,7 @@ namespace Falcon.Web.Api.Controllers.V1
                                 Name = notAchieved[i].Name,
                                 Description = notAchieved[i].Description,
                                 Star = notAchieved[i].Star,
+                                Prize = notAchieved[i].Prize,
                                 Icon = notAchieved[i].Icon,
                                 RectangleColor = notAchieved[i].RectangleColor,
                                 AchievementState = Constants.DefaultValues.AchievementDefaultNotAchievedID
@@ -212,8 +211,8 @@ namespace Falcon.Web.Api.Controllers.V1
         private void AddRemainedResults(int RemainedNumber , ref List<Achievement>  Usuals, ref List<Achievement> AdHoc , ref List<Achievement> NotAchieved)
         {
             int counter = 0;
-            int adhocSize = Usuals.Count;
-            int usualsSize = AdHoc.Count;
+            int adhocSize = AdHoc.Count;
+            int usualsSize = Usuals.Count;
             int breakflag = 0;
 
             for (int i = 0; i < RemainedNumber; ++i)
@@ -324,7 +323,7 @@ namespace Falcon.Web.Api.Controllers.V1
                                                 .Select(ap => ap.Achievement)
                                                 .ToListAsync();
 
-                var result = mMapper.Map<List<Achievement>, List<SAchievement>>(achievableList);
+                var result = mMapper.Map<List<Achievement>, List<SAchievement>>(achievableList); //TODO , replace AchievableIDS
 
                 if (result.Count > 0)
                     return Response(HttpStatusCode.OK, result);

@@ -131,6 +131,7 @@ namespace Falcon.Web.Api.Controllers.V1
             var user = await db.Users.SingleOrDefaultAsync(u => u.UUID == UUID);
             if(user != null)
             {
+                bool bought = false;
                 var theme = await db.AppThemes.FindAsync(ThemeID);
                 var selectedTheme = await db.SelectedThemes.SingleOrDefaultAsync(sc => sc.UserID == user.ID);
                 if (theme != null)
@@ -159,6 +160,8 @@ namespace Falcon.Web.Api.Controllers.V1
                             
                             selectedTheme.AppThemeID = ThemeID;
 
+                            bought = true;
+
                             await db.SaveChangesAsync();
                         }
                     }
@@ -169,7 +172,8 @@ namespace Falcon.Web.Api.Controllers.V1
                     UserStar = user.TotalStars,
                     SelectedThemeID = selectedTheme.AppThemeID,
                     SelectedCategoryID = null,
-                    SelectedCategoryName = null
+                    SelectedCategoryName = null,
+                    Bought = bought,
                 };
                 return Ok(clientResult);
             }

@@ -63,6 +63,7 @@ namespace Falcon.Web.Api.Controllers.V1
                             CircleColor = categories[i].CircleColor,
                             RectangleColor = categories[i].RectangleColor,
                             Price = categories[i].Price,
+                            PrizeCoefficient = categories[i].PrizeCoefficient,
                             IsPurchased = (categories[i].ID == Constants.DefaulUser.CategoryID) ? true : purchasedCategories.Contains(categories[i].ID), // TODO : remember to remove what has checked to increase checking time
                             IsActive = (selectedCategory == categories[i].ID) ? true : false
                         };
@@ -85,6 +86,7 @@ namespace Falcon.Web.Api.Controllers.V1
             var user = await db.Users.SingleOrDefaultAsync(u => u.UUID == UUID);
             if (user != null)
             {
+                bool bought = false;
                 var category = await db.Categories.FindAsync(CategoryID);
                 var selectedCategory = await db.SelectedCategories.SingleOrDefaultAsync(sc => sc.UserID == user.ID);
                 if (category != null)
@@ -107,10 +109,12 @@ namespace Falcon.Web.Api.Controllers.V1
                                 CategoryID = CategoryID,
                                 PurchaseDate = mDateTime.Now
                             };
-
+                            
                             db.PurchaseCategories.Add(newCategory);
 
                             //Select as the current theme
+
+                            bought = true;
 
                             selectedCategory.CategoryID = CategoryID;
 
@@ -124,7 +128,8 @@ namespace Falcon.Web.Api.Controllers.V1
                     UserStar = user.TotalStars,
                     SelectedThemeID = null,
                     SelectedCategoryID = selectedCategory.CategoryID,
-                    SelectedCategoryName = selectedCategory.Category.Name
+                    SelectedCategoryName = selectedCategory.Category.Name,
+                    Bought = bought,
                 };
                 return Ok(clientResult);
             }

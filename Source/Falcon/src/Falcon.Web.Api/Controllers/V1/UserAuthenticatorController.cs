@@ -38,7 +38,8 @@ namespace Falcon.Web.Api.Controllers.V1
                     UserTypeID = user.UserTypeID,
                     TotalStars = user.TotalStars,
                     LastSceneDateTime = user.LastSceneDateTime,
-                    LevelAnsweredNumber = user.LevelAnsweredNumber,
+                    Score = user.Score,
+                    LevelProgress = user.LevelProgress,
                     CurrentLevelID = user.CurrentLevelID,
                     IsAbleToWriteComment = user.IsAbleToWriteComment
                 };
@@ -52,6 +53,7 @@ namespace Falcon.Web.Api.Controllers.V1
                     SelectedCategoryName = db.Categories.FindAsync(selectedCatID).Result.Name,
                     SelectedThemeID = user.SelectedThemes.Where(st => st.UserID == user.ID).Select(st => st.AppThemeID).SingleOrDefault()
                 };
+
 
                 return ResponseMessage(Request.CreateResponse(HttpStatusCode.OK, new { UserModel, UserState })); //TODO : Does not support xml change to something generic
             }
@@ -69,10 +71,11 @@ namespace Falcon.Web.Api.Controllers.V1
                 UserName = Constants.DefaulUser.UserName,
                 UserTypeID = Constants.DefaulUser.UserTypeID,
                 TotalStars = Constants.DefaulUser.TotalStar,
-                LastSceneDateTime = mDateTime.Now,
-                LevelAnsweredNumber = Constants.DefaulUser.LevelAnswerdNumber,
+                Score = Constants.DefaulUser.Score,
+                LevelProgress = Constants.DefaulUser.LevelProgress,
                 CurrentLevelID = Constants.DefaulUser.CurrentLevelID,
-                IsAbleToWriteComment = Constants.DefaulUser.IsAbleToWriteComment
+                IsAbleToWriteComment = Constants.DefaulUser.IsAbleToWriteComment,
+                LastSceneDateTime = mDateTime.Now,
             };
 
             var registeredUser = db.Users.Add(user);
@@ -93,8 +96,6 @@ namespace Falcon.Web.Api.Controllers.V1
             UserInfo userInfo = new UserInfo
             {
                 UserID = registeredUser.ID,
-                FirstName = Constants.DefaulUser.FirstName,
-                LastName = Constants.DefaulUser.LastName,
                 Email = Constants.DefaulUser.Email,
                 PhoneNumber = Constants.DefaulUser.PhoneNumber,
                 GoogleID = Constants.DefaulUser.GoogleID,
@@ -103,9 +104,17 @@ namespace Falcon.Web.Api.Controllers.V1
                 RegisterDateTime = mDateTime.Now
             };
 
+            SelectedAvatar selectedAvatar = new SelectedAvatar
+            {
+                UserID = registeredUser.ID,
+                UserAvatarID = Constants.DefaulUser.AvatarID,
+            };
+
             db.SelectedThemes.Add(selecetedTheme);
             db.SelectedCategories.Add(selectedCategory);
             db.UserInfoes.Add(userInfo);
+            db.SelectedAvatars.Add(selectedAvatar);
+
             await db.SaveChangesAsync();
 
             var UserModel = new Models.Api.SUser
@@ -116,7 +125,8 @@ namespace Falcon.Web.Api.Controllers.V1
                 UserTypeID = user.UserTypeID,
                 TotalStars = user.TotalStars,
                 LastSceneDateTime = user.LastSceneDateTime,
-                LevelAnsweredNumber = user.LevelAnsweredNumber,
+                Score = user.Score,
+                LevelProgress = user.LevelProgress,
                 CurrentLevelID = user.CurrentLevelID,
                 IsAbleToWriteComment = user.IsAbleToWriteComment
             };

@@ -12,24 +12,22 @@ namespace Falcon.EFCommonContext.DbModel
     using System;
     using System.Collections.Generic;
     
-    public partial class Level
+    public partial class UserAvatar
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Level()
+        public UserAvatar()
         {
-            this.Achievements = new HashSet<Achievement>();
-            this.Users = new HashSet<User>();
+            this.PurchaseAvatars = new HashSet<PurchaseAvatar>();
+            this.SelectedAvatars = new HashSet<SelectedAvatar>();
         }
     
         public int ID { get; set; }
-        public int Star { get; set; }
-        public int ScoreCeil { get; set; }
-        public System.DateTime CreatedDate { get; set; }
-        public System.DateTime UpdatedDate { get; set; }
+        public string PicUrl { get; set; }
+        public int Price { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Achievement> Achievements { get; set; }
+        public virtual ICollection<PurchaseAvatar> PurchaseAvatars { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<User> Users { get; set; }
+        public virtual ICollection<SelectedAvatar> SelectedAvatars { get; set; }
     }
 }

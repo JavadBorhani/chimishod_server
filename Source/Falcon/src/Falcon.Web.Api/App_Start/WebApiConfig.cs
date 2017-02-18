@@ -5,11 +5,6 @@ using Falcon.Web.Common.ErrorHandling;
 using System.Web.Http;
 using System.Web.Http.ExceptionHandling;
 
-using System.Web.Http.Tracing;
-using System.Web.Http.Dispatcher;
-using System.Web.Http.Routing;
-using Falcon.Web.Common.Routing;
-
 namespace Falcon.Web.Api
 {
     public static class WebApiConfig
@@ -17,7 +12,7 @@ namespace Falcon.Web.Api
         public static void Register(HttpConfiguration config)
         {
 
-            config.EnableSystemDiagnosticsTracing();
+            //config.EnableSystemDiagnosticsTracing();
 
             // Web API configuration and services
 

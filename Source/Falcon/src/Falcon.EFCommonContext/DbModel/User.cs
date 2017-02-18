@@ -25,9 +25,11 @@ namespace Falcon.EFCommonContext.DbModel
             this.Favorites = new HashSet<Favorite>();
             this.Manufactures = new HashSet<Manufacture>();
             this.Orders = new HashSet<Order>();
+            this.PurchaseAvatars = new HashSet<PurchaseAvatar>();
             this.PurchaseCategories = new HashSet<PurchaseCategory>();
             this.PurchaseThemes = new HashSet<PurchaseTheme>();
             this.ReportedQuestions = new HashSet<ReportedQuestion>();
+            this.SelectedAvatars = new HashSet<SelectedAvatar>();
             this.SelectedCategories = new HashSet<SelectedCategory>();
             this.SelectedThemes = new HashSet<SelectedTheme>();
             this.UserInfoes = new HashSet<UserInfo>();
@@ -38,10 +40,11 @@ namespace Falcon.EFCommonContext.DbModel
         public string UserName { get; set; }
         public Nullable<int> UserTypeID { get; set; }
         public int TotalStars { get; set; }
-        public System.DateTime LastSceneDateTime { get; set; }
-        public int LevelAnsweredNumber { get; set; }
-        public int CurrentLevelID { get; set; }
+        public int Score { get; set; }
+        public int LevelProgress { get; set; }
+        public Nullable<int> CurrentLevelID { get; set; }
         public bool IsAbleToWriteComment { get; set; }
+        public System.DateTime LastSceneDateTime { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<AchievedGift> AchievedGifts { get; set; }
@@ -61,11 +64,15 @@ namespace Falcon.EFCommonContext.DbModel
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Order> Orders { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<PurchaseAvatar> PurchaseAvatars { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PurchaseCategory> PurchaseCategories { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PurchaseTheme> PurchaseThemes { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ReportedQuestion> ReportedQuestions { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<SelectedAvatar> SelectedAvatars { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SelectedCategory> SelectedCategories { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

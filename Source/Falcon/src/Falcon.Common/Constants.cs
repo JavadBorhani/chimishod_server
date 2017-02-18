@@ -7,15 +7,16 @@ namespace Falcon.Common
         public static class DefaulUser
         {
             public const string UserName = "Not-Set";
+            public const int Score = 0;
             public const int UserTypeID = 1;
             public const int TotalStar = 50;
+            public const int LevelProgress = 0; 
             public const int LevelAnswerdNumber = 0;
             public const int CurrentLevelID = 1;
             public const bool IsAbleToWriteComment = true;
             public const int AppThemeID = 1;
             public const int CategoryID = 1;
-            public const string FirstName = null;
-            public const string LastName  = null;
+            public const int AvatarID = 1; 
             public const string Email     = null;
             public const string PhoneNumber = null;
             public const string GoogleID = null;

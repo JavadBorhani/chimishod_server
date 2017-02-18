@@ -12,17 +12,13 @@ namespace Falcon.EFCommonContext.DbModel
     using System;
     using System.Collections.Generic;
     
-    public partial class UserInfo
+    public partial class SelectedAvatar
     {
         public int ID { get; set; }
         public int UserID { get; set; }
-        public string Email { get; set; }
-        public string PhoneNumber { get; set; }
-        public string GoogleID { get; set; }
-        public bool IsVerified { get; set; }
-        public bool IsBanned { get; set; }
-        public System.DateTime RegisterDateTime { get; set; }
+        public int UserAvatarID { get; set; }
     
         public virtual User User { get; set; }
+        public virtual UserAvatar UserAvatar { get; set; }
     }
 }
