@@ -64,7 +64,7 @@ namespace Falcon.Web.Api.Controllers.V1
                             RectangleColor = categories[i].RectangleColor,
                             Price = categories[i].Price,
                             PrizeCoefficient = categories[i].PrizeCoefficient,
-                            IsPurchased = (categories[i].ID == Constants.DefaulUser.CategoryID) ? true : purchasedCategories.Contains(categories[i].ID), // TODO : remember to remove what has checked to increase checking time
+                            IsPurchased = (categories[i].ID == Constants.DefaultUser.CategoryID) ? true : purchasedCategories.Contains(categories[i].ID), // TODO : remember to remove what has checked to increase checking time
                             IsActive = (selectedCategory == categories[i].ID) ? true : false
                         };
                     }
@@ -91,7 +91,7 @@ namespace Falcon.Web.Api.Controllers.V1
                 var selectedCategory = await db.SelectedCategories.SingleOrDefaultAsync(sc => sc.UserID == user.ID);
                 if (category != null)
                 {
-                    bool hasBought = (CategoryID == Constants.DefaulUser.AppThemeID) ? true : db.PurchaseCategories.Count(ph => ph.UserID == user.ID && ph.CategoryID == CategoryID) == 
+                    bool hasBought = (CategoryID == Constants.DefaultUser.AppThemeID) ? true : db.PurchaseCategories.Count(ph => ph.UserID == user.ID && ph.CategoryID == CategoryID) == 
                                                                     Constants.DefaultValues.PurchaseCategoryNumberAllowedToBuy;
                     if (hasBought)
                     {
@@ -150,7 +150,7 @@ namespace Falcon.Web.Api.Controllers.V1
 
                 if (await CategoryExists(CategoryID))
                 {
-                    if (CategoryID == Constants.DefaulUser.CategoryID) //TODO : think about changing default item Over Time :(
+                    if (CategoryID == Constants.DefaultUser.CategoryID) //TODO : think about changing default item Over Time :(
                     {
                         userSelectedCategory.CategoryID = CategoryID;
                         await db.SaveChangesAsync();
@@ -203,7 +203,7 @@ namespace Falcon.Web.Api.Controllers.V1
             if(userID != 0) // User Found
             {
 
-                var userActiveCategories = await db.Categories.Where(c => c.ID == Constants.DefaulUser.CategoryID || 
+                var userActiveCategories = await db.Categories.Where(c => c.ID == Constants.DefaultUser.CategoryID || 
                                                                         db.PurchaseCategories.Where(pc => pc.UserID == userID)
                                                                                             .Select( pc => pc.CategoryID)
                                                                                             .ToList()

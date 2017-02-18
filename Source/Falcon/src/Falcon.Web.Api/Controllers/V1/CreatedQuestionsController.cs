@@ -129,7 +129,7 @@ namespace Falcon.Web.Api.App_Start
         private async Task<bool> CategoryExistsAndIsAbleToUse(int userID , int categoryID)
         {
             bool result = false;
-            if (categoryID == Constants.DefaulUser.CategoryID)
+            if (categoryID == Constants.DefaultUser.CategoryID)
                 result = true;
             else
             {

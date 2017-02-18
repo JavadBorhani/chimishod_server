@@ -4,7 +4,7 @@ namespace Falcon.Common
 {
     public static class Constants
     {
-        public static class DefaulUser
+        public static class DefaultUser
         {
             public const string UserName = "Not-Set";
             public const int Score = 0;
@@ -16,7 +16,7 @@ namespace Falcon.Common
             public const bool IsAbleToWriteComment = true;
             public const int AppThemeID = 1;
             public const int CategoryID = 1;
-            public const int CategoryCoeffecient = 1;
+            //public const int CategoryCoeffecient = 1;
             public const int AvatarID = 1; 
             public const string Email     = null;
             public const string PhoneNumber = null;

@@ -196,7 +196,7 @@ namespace Falcon.Web.Api.Controllers.V1
                 {
                     bool isAbleToGetCategory;
 
-                    if (answer.CategoryToGetQuestion == Constants.DefaulUser.CategoryID)
+                    if (answer.CategoryToGetQuestion == Constants.DefaultUser.CategoryID)
                         isAbleToGetCategory = true;
                     else
                         isAbleToGetCategory = await db.PurchaseCategories.AsNoTracking().CountAsync(pc => pc.UserID == user.ID && pc.CategoryID == answer.CategoryToGetQuestion) == 1;

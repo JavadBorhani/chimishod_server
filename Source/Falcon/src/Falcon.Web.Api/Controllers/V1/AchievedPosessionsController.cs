@@ -100,7 +100,7 @@ namespace Falcon.Web.Api.Controllers.V1
                     }
 
                     var purchasedCategories = await db.PurchaseCategories.AsNoTracking().Where(pc => pc.UserID == userID).Select( pc => pc.CategoryID).ToListAsync();
-                    purchasedCategories.Add(Constants.DefaulUser.CategoryID); // Add Default CategoryID
+                    purchasedCategories.Add(Constants.DefaultUser.CategoryID); // Add Default CategoryID
 
                     // Get List of category base
                     usuals = await db.Achievements.AsNoTracking()

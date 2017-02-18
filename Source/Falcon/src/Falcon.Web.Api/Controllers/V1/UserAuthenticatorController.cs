@@ -1,12 +1,15 @@
 ﻿using Falcon.Common;
+using Falcon.Data.Exceptions;
 using Falcon.EFCommonContext;
 using Falcon.EFCommonContext.DbModel;
+using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
+using System.Web.Http.Results;
 
 namespace Falcon.Web.Api.Controllers.V1
 {
@@ -44,13 +47,18 @@ namespace Falcon.Web.Api.Controllers.V1
                     IsAbleToWriteComment = user.IsAbleToWriteComment
                 };
 
-                var selectedCatID = db.SelectedCategories.Where(sc => sc.UserID == user.ID).Select(u => u.CategoryID).SingleOrDefault();
+                var selectedCat = db.SelectedCategories.AsNoTracking()
+                    .Where(sc => sc.UserID == user.ID)
+                    .Include(sc => sc.Category)
+                    .Select(u => new { u.Category.ID , u.Category.Name , u.Category.PrizeCoefficient })
+                    .SingleOrDefault();
 
                 var UserState = new Models.Api.SUserState
                 {
                     UserStar = user.TotalStars,
-                    SelectedCategoryID = selectedCatID,
-                    SelectedCategoryName = db.Categories.FindAsync(selectedCatID).Result.Name,
+                    SelectedCategoryID = selectedCat.ID,
+                    SelectedCategoryName = selectedCat.Name,
+                    SelectedCategoryCoEfficient = selectedCat.PrizeCoefficient,
                     SelectedThemeID = user.SelectedThemes.Where(st => st.UserID == user.ID).Select(st => st.AppThemeID).SingleOrDefault()
                 };
 
@@ -68,13 +76,13 @@ namespace Falcon.Web.Api.Controllers.V1
             User user = new User
             {
                 UUID = UUID,
-                UserName = Constants.DefaulUser.UserName,
-                UserTypeID = Constants.DefaulUser.UserTypeID,
-                TotalStars = Constants.DefaulUser.TotalStar,
-                Score = Constants.DefaulUser.Score,
-                LevelProgress = Constants.DefaulUser.LevelProgress,
-                CurrentLevelID = Constants.DefaulUser.CurrentLevelID,
-                IsAbleToWriteComment = Constants.DefaulUser.IsAbleToWriteComment,
+                UserName = Constants.DefaultUser.UserName,
+                UserTypeID = Constants.DefaultUser.UserTypeID,
+                TotalStars = Constants.DefaultUser.TotalStar,
+                Score = Constants.DefaultUser.Score,
+                LevelProgress = Constants.DefaultUser.LevelProgress,
+                CurrentLevelID = Constants.DefaultUser.CurrentLevelID,
+                IsAbleToWriteComment = Constants.DefaultUser.IsAbleToWriteComment,
                 LastSceneDateTime = mDateTime.Now,
             };
 
@@ -84,30 +92,30 @@ namespace Falcon.Web.Api.Controllers.V1
             SelectedTheme selecetedTheme = new SelectedTheme
             {
                 UserID = registeredUser.ID,
-                AppThemeID = Constants.DefaulUser.AppThemeID
+                AppThemeID = Constants.DefaultUser.AppThemeID
             };
 
             SelectedCategory selectedCategory = new SelectedCategory
             {
                 UserID = registeredUser.ID,
-                CategoryID = Constants.DefaulUser.CategoryID
+                CategoryID = Constants.DefaultUser.CategoryID
             };
 
             UserInfo userInfo = new UserInfo
             {
                 UserID = registeredUser.ID,
-                Email = Constants.DefaulUser.Email,
-                PhoneNumber = Constants.DefaulUser.PhoneNumber,
-                GoogleID = Constants.DefaulUser.GoogleID,
-                IsVerified = Constants.DefaulUser.IsVerified,
-                IsBanned = Constants.DefaulUser.IsBanned,
+                Email = Constants.DefaultUser.Email,
+                PhoneNumber = Constants.DefaultUser.PhoneNumber,
+                GoogleID = Constants.DefaultUser.GoogleID,
+                IsVerified = Constants.DefaultUser.IsVerified,
+                IsBanned = Constants.DefaultUser.IsBanned,
                 RegisterDateTime = mDateTime.Now
             };
 
             SelectedAvatar selectedAvatar = new SelectedAvatar
             {
                 UserID = registeredUser.ID,
-                UserAvatarID = Constants.DefaulUser.AvatarID,
+                UserAvatarID = Constants.DefaultUser.AvatarID,
             };
 
             db.SelectedThemes.Add(selecetedTheme);
@@ -130,15 +138,27 @@ namespace Falcon.Web.Api.Controllers.V1
                 CurrentLevelID = user.CurrentLevelID,
                 IsAbleToWriteComment = user.IsAbleToWriteComment
             };
-            var UserState = new Models.Api.SUserState
+            var catInfo = await db.Categories.AsNoTracking()
+                                                .Where(c => c.ID == Constants.DefaultUser.CategoryID)
+                                                .Select(c => new { c.Name, c.PrizeCoefficient })
+                                                .SingleOrDefaultAsync();
+            if (catInfo != null)
             {
-                UserStar = UserModel.TotalStars,
-                SelectedCategoryID = Constants.DefaulUser.CategoryID,
-                SelectedThemeID = Constants.DefaulUser.AppThemeID,
-                SelectedCategoryName = db.Categories.FindAsync(Constants.DefaulUser.AppThemeID).Result.Name,
-                SelectedCategoryCoEfficient = Constants.DefaulUser.CategoryCoeffecient,
-            };
-            return ResponseMessage(Request.CreateResponse(HttpStatusCode.Created , new { UserModel, UserState }));
+                var UserState = new Models.Api.SUserState
+                {
+                    UserStar = UserModel.TotalStars,
+                    SelectedCategoryID = Constants.DefaultUser.CategoryID,
+                    SelectedThemeID = Constants.DefaultUser.AppThemeID,
+                    SelectedCategoryName = catInfo.Name,
+                    SelectedCategoryCoEfficient = catInfo.PrizeCoefficient,
+                };
+                return ResponseMessage(Request.CreateResponse(HttpStatusCode.Created, new { UserModel, UserState }));
+            }
+            else
+            {
+                throw new ChildObjectNotFoundException("Cat information is null");
+            }
+            
         }
 
 
@@ -149,6 +169,16 @@ namespace Falcon.Web.Api.Controllers.V1
                 db.Dispose();
             }
             base.Dispose(disposing);
+        }
+
+        private ResponseMessageResult Response(HttpStatusCode Code)
+        {
+            return ResponseMessage(Request.CreateResponse(Code));
+        }
+
+        private ResponseMessageResult Response(HttpStatusCode Code, object DataToSend)
+        {
+            return ResponseMessage(Request.CreateResponse(Code, DataToSend));
         }
     }
 }

@@ -53,7 +53,7 @@ namespace Falcon.Web.Api.Controllers.V1
                             SquareColor = themes[i].SquareColor,
                             CircleColor = themes[i].CircleColor,
                             Price = themes[i].Price,
-                            IsPurchased = (themes[i].ID == Constants.DefaulUser.AppThemeID) ? true : purchasedThemes.Contains(themes[i].ID), // TODO : remember to remove what has checked to increase checking time
+                            IsPurchased = (themes[i].ID == Constants.DefaultUser.AppThemeID) ? true : purchasedThemes.Contains(themes[i].ID), // TODO : remember to remove what has checked to increase checking time
                             IsActive = (selectedTheme == themes[i].ID) ? true : false
                         };                        
                     }
@@ -80,7 +80,7 @@ namespace Falcon.Web.Api.Controllers.V1
 
                 if(await AppThemeExists(ThemeID))
                 {
-                    if (ThemeID == Constants.DefaulUser.AppThemeID) //TODO : think about changing default item Over Time :(
+                    if (ThemeID == Constants.DefaultUser.AppThemeID) //TODO : think about changing default item Over Time :(
                     {
                         userSelectedTheme.AppThemeID = ThemeID;
                         await db.SaveChangesAsync();
@@ -136,7 +136,7 @@ namespace Falcon.Web.Api.Controllers.V1
                 var selectedTheme = await db.SelectedThemes.SingleOrDefaultAsync(sc => sc.UserID == user.ID);
                 if (theme != null)
                 {
-                    bool hasBought = (ThemeID == Constants.DefaulUser.AppThemeID) ? true : db.PurchaseThemes.Count(ph => ph.UserID == user.ID && ph.ThemeID == ThemeID) > 0;
+                    bool hasBought = (ThemeID == Constants.DefaultUser.AppThemeID) ? true : db.PurchaseThemes.Count(ph => ph.UserID == user.ID && ph.ThemeID == ThemeID) > 0;
                     if (hasBought)
                     {
                         //TODO : Log to system , unAuthorized Request
