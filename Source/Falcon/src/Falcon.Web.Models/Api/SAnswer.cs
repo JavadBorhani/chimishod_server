@@ -23,6 +23,10 @@ namespace Falcon.Web.Models.Api
 
         public bool IsFavorited { get; set; }
 
-        public System.DateTime CreatedDate { get; set; }
+        public DateTime CreatedDate { get; set; }
+
+        public bool SendQuestion { get; set; }
+
+        public int CategoryToGetQuestion { get; set; }
     }
 }

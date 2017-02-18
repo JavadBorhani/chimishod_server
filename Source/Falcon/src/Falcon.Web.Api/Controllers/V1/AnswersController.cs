@@ -102,28 +102,27 @@ namespace Falcon.Web.Api.Controllers.V1
             }
             else
             {
-                return ReturnResponse(HttpStatusCode.Unauthorized);
+                return Response(HttpStatusCode.Unauthorized);
             }
         }
 
         [Route("Answers/Answer/{UUID}")]
-        [ResponseType(typeof(SAnswer))]
         [HttpPost]
-        public async Task<IHttpActionResult> PostingAnswer(string UUID, [FromBody] Models.Api.SAnswer answer)
+        public async Task<IHttpActionResult> PostingAnswer(string UUID, [FromBody] SAnswer answer)
         {
             var user = await db.Users.SingleOrDefaultAsync(u => u.UUID == UUID);
 
-            if(user != null)
+            if (user != null)
             {
                 if (!ModelState.IsValid)
                 {
                     return BadRequest(ModelState);
                 }
 
-                if(await AnswerExists(user.ID , answer.QuestionID))
+                if (await AnswerExists(user.ID, answer.QuestionID))
                 {
-                    mLogManager.WarnFormat("Question ID {0} has a value in database" , answer.QuestionID);
-                    return Ok(answer.QuestionID);
+                    mLogManager.WarnFormat("Question ID {0} has a value in database", answer.QuestionID);
+                    return Response(HttpStatusCode.Unauthorized);
                 }
 
                 var newAnswer = new Answer
@@ -139,7 +138,7 @@ namespace Falcon.Web.Api.Controllers.V1
                 db.Answers.Add(newAnswer);
                 await db.SaveChangesAsync();
 
-                if(answer.IsFavorited == true) // means user favourited the current question
+                if (answer.IsFavorited == true) // means user favourited the current question
                 {
                     var favoriteCount = await FavoriteCount(user.ID);
                     if (favoriteCount < Constants.DefaultValues.FavoriteNumberOfFreeItems)
@@ -155,7 +154,7 @@ namespace Falcon.Web.Api.Controllers.V1
                     }
                     else
                     {
-                        if(user.TotalStars - Constants.DefaultValues.FavoriteDefaultPrice >= 0)
+                        if (user.TotalStars - Constants.DefaultValues.FavoriteDefaultPrice >= 0)
                         {
                             user.TotalStars -= Constants.DefaultValues.FavoriteDefaultPrice;
 
@@ -172,9 +171,9 @@ namespace Falcon.Web.Api.Controllers.V1
                 }
                 var questionToUpdate = await db.Questions.FindAsync(answer.QuestionID);
 
-                if(questionToUpdate != null)
+                if (questionToUpdate != null)
                 {
-                    if(answer.YesNoState)
+                    if (answer.YesNoState)
                     {
                         ++questionToUpdate.Yes_Count;
                     }
@@ -182,19 +181,93 @@ namespace Falcon.Web.Api.Controllers.V1
                     {
                         ++questionToUpdate.No_Count;
                     }
-                    if(answer.Liked != null)
+                    if (answer.Liked != null)
                     {
                         ++questionToUpdate.Like_Count;
                     }
-                    else if(answer.Dislike != null)
+                    else if (answer.Dislike != null)
                     {
                         ++questionToUpdate.Dislike_Count;
                     }
                     await db.SaveChangesAsync();
                 }
-                return Ok(answer.QuestionID);                
+                SQuestion[] Questions;
+                if (answer.SendQuestion)
+                {
+                    bool isAbleToGetCategory;
+
+                    if (answer.CategoryToGetQuestion == Constants.DefaulUser.CategoryID)
+                        isAbleToGetCategory = true;
+                    else
+                        isAbleToGetCategory = await db.PurchaseCategories.AsNoTracking().CountAsync(pc => pc.UserID == user.ID && pc.CategoryID == answer.CategoryToGetQuestion) == 1;
+
+                    int CatToGet = -1;
+                    if (isAbleToGetCategory)
+                    {
+                        CatToGet = answer.CategoryToGetQuestion;
+                    }
+                    else
+                    {
+                        CatToGet = await db.SelectedCategories.AsNoTracking().Where(sc => sc.UserID == user.ID).Select(sc => sc.CategoryID).SingleOrDefaultAsync();
+                    }
+
+                    var result = await db.Questions.Where(question => question.Banned == false && question.Catgory_ID == CatToGet &&
+                                                   !db.Answers.Where(a => a.UserID == user.ID)
+                                                   .Select(y => y.QuestionID)
+                                                   .ToList()
+                                                   .Contains(question.ID))
+                                                   .OrderByDescending(question => question.Weight)
+                                                   .Take(Constants.DefaultReturnAmounts.Question)
+                                                   .ToArrayAsync();
+
+                    if (result.Length > 0)
+                    {
+                        //TODO : Refactor SQuestion Data Model 
+                        Questions = new SQuestion[result.Length];
+                        for (int i = 0; i < Questions.Length; ++i)
+                        {
+                            Questions[i] = new SQuestion
+                            {
+                                ID = result[i].ID,
+                                What_if = result[i].What_if,
+                                But = result[i].But,
+                                Catgory_ID = result[i].Catgory_ID,
+                                Yes_Count = result[i].Yes_Count,
+                                No_Count = result[i].No_Count,
+                                Like_Count = result[i].Like_Count,
+                                Dislike_Count = result[i].Dislike_Count,
+                                Weight = result[i].Weight,
+                                CreatedDate = result[i].CreatedDate,
+                                UpdateDate = result[i].UpdateDate,
+                                Banned = result[i].Banned
+                            };
+                        }
+                        return ResponseMessage(Request.CreateResponse(HttpStatusCode.OK, new { Questions, answer.QuestionID }));
+                    }
+
+                    Questions = new SQuestion[Constants.DefaultReturnAmounts.ServerBurntNumber];
+                    for (int i = 0; i < Constants.DefaultReturnAmounts.ServerBurntNumber; ++i)
+                    {
+                        Questions[i] = new SQuestion
+                        {
+                            ID = Constants.DefaultValues.NoQuestionID,
+                            What_if = Constants.DefaultValues.NoQuestionWhat,
+                            But = Constants.DefaultValues.NoQuestionBut
+                        };
+                    }
+                    return ResponseMessage(Request.CreateResponse(HttpStatusCode.OK, new { Questions, answer.QuestionID }));
+                }
+                else
+                {
+                    return Response(HttpStatusCode.OK, answer.QuestionID);
+                }
+
             }
-            return NotFound();
+            else
+            {
+                return Response(HttpStatusCode.Unauthorized);
+            }
+            
         }
 
         protected override void Dispose(bool disposing)
@@ -204,11 +277,6 @@ namespace Falcon.Web.Api.Controllers.V1
                 db.Dispose();
             }
             base.Dispose(disposing);
-        }
-
-        private async Task<bool> AnswerExists(int id)
-        {
-            return await db.Answers.CountAsync(e => e.ID == id) > 0;
         }
 
         private async Task<bool> AnswerExists(int userID , int questionID)
@@ -221,9 +289,14 @@ namespace Falcon.Web.Api.Controllers.V1
             return await db.Favorites.CountAsync(e => e.UserID == userID);
         }
 
-        private ResponseMessageResult ReturnResponse(HttpStatusCode Code)
+        private ResponseMessageResult Response(HttpStatusCode Code)
         {
             return ResponseMessage(Request.CreateResponse(Code));
+        }
+
+        private ResponseMessageResult Response(HttpStatusCode Code, object DataToSend)
+        {
+            return ResponseMessage(Request.CreateResponse(Code, DataToSend));
         }
 
     }
