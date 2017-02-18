@@ -135,7 +135,8 @@ namespace Falcon.Web.Api.Controllers.V1
                 UserStar = UserModel.TotalStars,
                 SelectedCategoryID = Constants.DefaulUser.CategoryID,
                 SelectedThemeID = Constants.DefaulUser.AppThemeID,
-                SelectedCategoryName = db.Categories.FindAsync(Constants.DefaulUser.AppThemeID).Result.Name
+                SelectedCategoryName = db.Categories.FindAsync(Constants.DefaulUser.AppThemeID).Result.Name,
+                SelectedCategoryCoEfficient = Constants.DefaulUser.CategoryCoeffecient,
             };
             return ResponseMessage(Request.CreateResponse(HttpStatusCode.Created , new { UserModel, UserState }));
         }

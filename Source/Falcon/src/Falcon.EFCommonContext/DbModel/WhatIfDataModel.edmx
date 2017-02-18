@@ -291,7 +291,7 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="UserID" Type="int" Nullable="false" />
           <Property Name="UserAvatarID" Type="int" Nullable="false" />
         </EntityType>
@@ -1698,7 +1698,7 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="UserID" Type="Int32" Nullable="false" />
           <Property Name="UserAvatarID" Type="Int32" Nullable="false" />
           <NavigationProperty Name="User" Relationship="Falcon.DbModel.FK_SelectedAvatar_User" FromRole="SelectedAvatar" ToRole="User" />
