@@ -56,6 +56,7 @@
     <Compile Include="Api\SReportType.cs" />
     <Compile Include="Api\SStore.cs" />
     <Compile Include="Api\SUserAvatar.cs" />
+    <Compile Include="Api\SUserInfo.cs" />
     <Compile Include="Api\SUserState.cs" />
     <Compile Include="Api\SUserStatistics.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

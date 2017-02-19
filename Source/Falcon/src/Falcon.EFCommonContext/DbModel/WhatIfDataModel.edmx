@@ -360,6 +360,7 @@
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="PicUrl" Type="nvarchar" MaxLength="150" Nullable="false" />
           <Property Name="Price" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="UserInfo">
           <Key>
@@ -1795,6 +1796,7 @@
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="PicUrl" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
           <Property Name="Price" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="PurchaseAvatars" Relationship="Falcon.DbModel.FK_PurchaseAvatar_UserAvatar" FromRole="UserAvatar" ToRole="PurchaseAvatar" />
           <NavigationProperty Name="SelectedAvatars" Relationship="Falcon.DbModel.FK_SelectedAvatar_UserAvatar" FromRole="UserAvatar" ToRole="SelectedAvatar" />
         </EntityType>
@@ -2775,6 +2777,7 @@
           <EntitySetMapping Name="UserAvatars">
             <EntityTypeMapping TypeName="Falcon.DbModel.UserAvatar">
               <MappingFragment StoreEntitySet="UserAvatar">
+                <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Price" ColumnName="Price" />
                 <ScalarProperty Name="PicUrl" ColumnName="PicUrl" />
                 <ScalarProperty Name="ID" ColumnName="ID" />

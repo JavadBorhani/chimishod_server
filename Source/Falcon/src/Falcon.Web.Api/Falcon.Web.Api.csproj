@@ -148,6 +148,7 @@
     <Compile Include="Controllers\V1\StoresController.cs" />
     <Compile Include="Controllers\V1\UserAuthenticatorController.cs" />
     <Compile Include="Controllers\V1\UserAvatarsController.cs" />
+    <Compile Include="Controllers\V1\UserInfoesController.cs" />
     <Compile Include="Controllers\V1\UsersController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
