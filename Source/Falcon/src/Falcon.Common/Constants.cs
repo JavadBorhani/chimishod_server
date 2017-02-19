@@ -74,6 +74,16 @@ namespace Falcon.Common
             public const int QuestionsToSkip = 2;
             public const int ServerBurntNumber = 1;  
         }
+
+        public static class UserInfoStatusType
+        {
+            public const int EditSucceed = 1;
+            public const int UserNameConflict = 2;
+            public const int UserNameNotExists = 3;
+            public const int EmailConflict = 4;
+            public const int PasswordConflict = 5;
+            public const int Error = 6;
+        }
         public static class DefaultValues
         {
             public const bool CommentDefaultVerify = true;

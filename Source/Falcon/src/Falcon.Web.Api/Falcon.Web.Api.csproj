@@ -129,6 +129,7 @@
     <Compile Include="AutoMappingConfiguration\QuestionBoostMap\QuestionBoostToSQuestionBoostAutoTypeConfiguration.cs" />
     <Compile Include="AutoMappingConfiguration\ReportTypeMap\ReportTypeToSReportTypeAutoTypeConfiguration.cs" />
     <Compile Include="AutoMappingConfiguration\StoreMap\StoreToSStoreAutoTypeConfiguration.cs" />
+    <Compile Include="AutoMappingConfiguration\UserInfoMap\UserInfoToSUserInfoAutoTypeConfiguration.cs" />
     <Compile Include="Controllers\V1\AchievedPosessionsController.cs" />
     <Compile Include="Controllers\V1\ApplicationStatesController.cs" />
     <Compile Include="Controllers\V1\CreatedQuestionsController.cs" />
@@ -141,6 +142,7 @@
     <Compile Include="Controllers\V1\CategoriesController.cs" />
     <Compile Include="Controllers\V1\CommentsController.cs" />
     <Compile Include="Controllers\V1\FavoritesController.cs" />
+    <Compile Include="Controllers\V1\GiftsController.cs" />
     <Compile Include="Controllers\V1\QuestionBoostsController.cs" />
     <Compile Include="Controllers\V1\QuestionsController.cs" />
     <Compile Include="Controllers\V1\ReportedQuestionsController.cs" />

@@ -99,15 +99,14 @@ namespace Falcon.Web.Api.Controllers.V1
                         }
                     }
 
-                    var purchasedCategories = await db.PurchaseCategories.AsNoTracking().Where(pc => pc.UserID == userID).Select( pc => pc.CategoryID).ToListAsync();
-                    purchasedCategories.Add(Constants.DefaultUser.CategoryID); // Add Default CategoryID
+                    //var purchasedCategories = await db.PurchaseCategories.AsNoTracking().Where(pc => pc.UserID == userID).Select( pc => pc.CategoryID).ToListAsync();
+                    //purchasedCategories.Add(Constants.DefaultUser.CategoryID); // Add Default CategoryID
 
                     // Get List of category base
                     usuals = await db.Achievements.AsNoTracking()
                         .Where( a => a.IsActive && 
                                 a.QueryTypeID == Constants.DefaultValues.AchievementCategoryQueryTypeID &&
-                                !achievableAndAchievedIDList.Contains(a.ID) && 
-                                purchasedCategories.Contains(a.CategoryID ?? 0) )
+                                !achievableAndAchievedIDList.Contains(a.ID))
 
                         .GroupBy( a => a.CategoryID)
                         .Select( g => g.FirstOrDefault())
@@ -168,7 +167,7 @@ namespace Falcon.Web.Api.Controllers.V1
                   
                     int remainedNumber = Constants.DefaultValues.AchievementsMinimumAchievables - mapAchievable.Count;
 
-                    if(remainedNumber >= Constants.DefaultValues.AchievementsMinimumAchievables)
+                    if(remainedNumber <= 0)
                     {
                         var result = mapAchievable.Take(Constants.DefaultValues.AchievementsMinimumAchievables);
 
