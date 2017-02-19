@@ -9,5 +9,8 @@ namespace Falcon.Web.Models.Api
         public string DefaultUserName { get; set; }
         public int DefaultUserCoin { get; set; }
         public int CreateQuestionPrice { get; set; }
+        public int AnswerPrize { get; set; }
+        public int LikePrize { get; set; }
+        public int CreateNewQuestionPrize { get; set; }
     }
 }

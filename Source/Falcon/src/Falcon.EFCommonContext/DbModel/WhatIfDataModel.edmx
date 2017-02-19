@@ -82,6 +82,9 @@
           <Property Name="DefaultUserName" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="DefaultUserCoin" Type="int" Nullable="false" />
           <Property Name="CreateQuestionPrice" Type="int" Nullable="false" />
+          <Property Name="AnswerPrize" Type="int" Nullable="false" />
+          <Property Name="LikePrize" Type="int" Nullable="false" />
+          <Property Name="CreateNewQuestionPrize" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="AppTheme">
           <Key>
@@ -1447,6 +1450,9 @@
           <Property Name="DefaultUserName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="DefaultUserCoin" Type="Int32" Nullable="false" />
           <Property Name="CreateQuestionPrice" Type="Int32" Nullable="false" />
+          <Property Name="AnswerPrize" Type="Int32" Nullable="false" />
+          <Property Name="LikePrize" Type="Int32" Nullable="false" />
+          <Property Name="CreateNewQuestionPrize" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="AppTheme">
           <Key>
@@ -2464,6 +2470,9 @@
           <EntitySetMapping Name="ApplicationStates">
             <EntityTypeMapping TypeName="Falcon.DbModel.ApplicationState">
               <MappingFragment StoreEntitySet="ApplicationState">
+                <ScalarProperty Name="CreateNewQuestionPrize" ColumnName="CreateNewQuestionPrize" />
+                <ScalarProperty Name="LikePrize" ColumnName="LikePrize" />
+                <ScalarProperty Name="AnswerPrize" ColumnName="AnswerPrize" />
                 <ScalarProperty Name="CreateQuestionPrice" ColumnName="CreateQuestionPrice" />
                 <ScalarProperty Name="DefaultUserCoin" ColumnName="DefaultUserCoin" />
                 <ScalarProperty Name="DefaultUserName" ColumnName="DefaultUserName" />

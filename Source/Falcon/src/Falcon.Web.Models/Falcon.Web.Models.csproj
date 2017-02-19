@@ -44,6 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Api\SApplicationState.cs" />
+    <Compile Include="Api\SAvatarState.cs" />
     <Compile Include="Api\SCreatedQuestion.cs" />
     <Compile Include="Api\SAchievement.cs" />
     <Compile Include="Api\SAnswer.cs" />
@@ -54,6 +55,7 @@
     <Compile Include="Api\SQuestionBoost.cs" />
     <Compile Include="Api\SReportType.cs" />
     <Compile Include="Api\SStore.cs" />
+    <Compile Include="Api\SUserAvatar.cs" />
     <Compile Include="Api\SUserState.cs" />
     <Compile Include="Api\SUserStatistics.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

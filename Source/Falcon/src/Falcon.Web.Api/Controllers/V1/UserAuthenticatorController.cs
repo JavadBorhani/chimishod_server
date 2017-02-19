@@ -30,7 +30,7 @@ namespace Falcon.Web.Api.Controllers.V1
         [Route("UserAuthenticator/UUID/{UUID}")]
         public async Task<IHttpActionResult> GetUser(string UUID)
         {
-            var user = db.Users.SingleOrDefault(c => c.UUID == UUID);
+            var user = await db.Users.AsNoTracking().Where(c => c.UUID == UUID).Include( c => c.Level).SingleOrDefaultAsync();
             if (user != null)
             {
                 var UserModel = new Models.Api.SUser
@@ -44,7 +44,8 @@ namespace Falcon.Web.Api.Controllers.V1
                     Score = user.Score,
                     LevelProgress = user.LevelProgress,
                     CurrentLevelID = user.CurrentLevelID,
-                    IsAbleToWriteComment = user.IsAbleToWriteComment
+                    IsAbleToWriteComment = user.IsAbleToWriteComment,
+                    ScoreCeil = user.Level.ScoreCeil 
                 };
 
                 var selectedCat = db.SelectedCategories.AsNoTracking()
@@ -125,6 +126,12 @@ namespace Falcon.Web.Api.Controllers.V1
 
             await db.SaveChangesAsync();
 
+            var levelCeilScore = await db.Users.AsNoTracking()
+                                        .Where(u => u.ID == user.ID)
+                                        .Include( u => u.Level)
+                                        .Select(u => u.Level.ScoreCeil)
+                                        .SingleOrDefaultAsync();
+
             var UserModel = new Models.Api.SUser
             {
                 ID = user.ID,
@@ -136,7 +143,8 @@ namespace Falcon.Web.Api.Controllers.V1
                 Score = user.Score,
                 LevelProgress = user.LevelProgress,
                 CurrentLevelID = user.CurrentLevelID,
-                IsAbleToWriteComment = user.IsAbleToWriteComment
+                IsAbleToWriteComment = user.IsAbleToWriteComment,
+                ScoreCeil = levelCeilScore,
             };
             var catInfo = await db.Categories.AsNoTracking()
                                                 .Where(c => c.ID == Constants.DefaultUser.CategoryID)
