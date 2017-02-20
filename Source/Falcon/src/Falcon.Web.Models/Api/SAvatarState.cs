@@ -12,5 +12,6 @@ namespace Falcon.Web.Models.Api
         public int ID { get; set; }
         public string PicUrl { get; set; }
         public bool Purchased {get ;set ;}
+        public int RequestID { get; set; }
     }
 }

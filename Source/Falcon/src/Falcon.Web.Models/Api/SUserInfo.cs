@@ -12,7 +12,7 @@ namespace Falcon.Web.Models.Api
     public class SUserInfo
     {
 
-        
+        [EmailAddress(ErrorMessage = "email is not valid")]
         public string Email { get; set; }
 
         [Required(AllowEmptyStrings = false)]

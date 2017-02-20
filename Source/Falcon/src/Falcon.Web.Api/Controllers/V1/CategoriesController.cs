@@ -130,6 +130,7 @@ namespace Falcon.Web.Api.Controllers.V1
                     SelectedCategoryID = selectedCategory.CategoryID,
                     SelectedCategoryName = selectedCategory.Category.Name,
                     Bought = bought,
+                    RequestID = CategoryID,
                 };
                 return Ok(clientResult);
             }

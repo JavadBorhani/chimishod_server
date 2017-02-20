@@ -174,6 +174,7 @@ namespace Falcon.Web.Api.Controllers.V1
                     SelectedCategoryID = null,
                     SelectedCategoryName = null,
                     Bought = bought,
+                    RequestID = ThemeID,
                 };
                 return Ok(clientResult);
             }

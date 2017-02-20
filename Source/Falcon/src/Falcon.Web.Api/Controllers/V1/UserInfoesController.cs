@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
+﻿using System.Data;
 using System.Data.Entity;
-using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -14,6 +11,7 @@ using Falcon.Common;
 using System.Web.Http.Results;
 using Falcon.Web.Models.Api;
 using System.Net.Mail;
+using System.Text.RegularExpressions;
 
 namespace Falcon.Web.Api.Controllers.V1
 {
@@ -32,6 +30,36 @@ namespace Falcon.Web.Api.Controllers.V1
         [ResponseType(typeof(SUserInfo))]
         [Route("UserInfos/{UUID}")]
         [HttpPost]
+        public async Task<IHttpActionResult> GoogleSignIn([FromBody] SGoogleAuthentication GoogleAuthentication) //TODO : Move to User Authenticator
+        {
+            if(ModelState.IsValid)
+            {
+                return Response(HttpStatusCode.OK);
+            }
+            else
+            {
+                return Response(HttpStatusCode.BadRequest);
+            }
+        }
+
+        [ResponseType(typeof(SUserInfo))]
+        [Route("UserInfos/{UUID}")]
+        [HttpPost]
+        public async Task<IHttpActionResult> GoogleRecovery([FromBody] SGoogleAuthentication GoogleAuthentication)
+        {
+            if (ModelState.IsValid)
+            {
+                return Response(HttpStatusCode.OK);
+            }
+            else
+            {
+                return Response(HttpStatusCode.BadRequest);
+            }
+        }
+
+        [ResponseType(typeof(SUserInfo))]
+        [Route("UserInfos/{UUID}")]
+        [HttpPost]
         public async Task<IHttpActionResult> GetUserInfo(string UUID)
         {
             var userID = await db.Users.AsNoTracking().Where(u => u.UUID == UUID).Select(u => u.ID).SingleOrDefaultAsync();
@@ -40,12 +68,12 @@ namespace Falcon.Web.Api.Controllers.V1
             {
                 SUserInfo userInfo = await db.UserInfoes.AsNoTracking()
                     .Where(ui => ui.UserID == userID)
-                    .Include( ui => ui.User)
-                    .Select( ui => new SUserInfo
+                    .Include(ui => ui.User)
+                    .Select(ui => new SUserInfo
                     {
-                        Email       =  ui.Email,
-                        UserName    =  ui.User.UserName,
-                        IsEditable  =  ui.IsEditable > 0 ? true : false,
+                        Email = ui.Email,
+                        UserName = ui.User.UserName,
+                        IsEditable = ui.IsEditable > 0 ? true : false,
                     })
                     .SingleOrDefaultAsync();
 
@@ -59,9 +87,9 @@ namespace Falcon.Web.Api.Controllers.V1
 
         [Route("UserInfos/{UUID}")]
         [HttpPost]
-        public async Task<IHttpActionResult> EditUserInfo(string UUID , [FromBody] SUserInfo UserInfo)
+        public async Task<IHttpActionResult> EditUserInfo(string UUID, [FromBody] SUserInfo UserInfo)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 var userID = await db.Users.AsNoTracking().Where(u => u.UUID == UUID).Select(u => u.ID).SingleOrDefaultAsync();
 
@@ -78,7 +106,7 @@ namespace Falcon.Web.Api.Controllers.V1
                         UserInfo.Password = UserInfo.Password;
                         await db.SaveChangesAsync();
 
-                        return Ok(); 
+                        return Ok();
                     }
                     else
                     {
@@ -101,11 +129,11 @@ namespace Falcon.Web.Api.Controllers.V1
         public async Task<IHttpActionResult> RecoverUser([FromBody] SUserInfo UserInfo)
         {
 
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 var UUID = await db.UserInfoes.AsNoTracking()
                     .Where(u => u.User.UserName == UserInfo.UserName && u.Password == UserInfo.Password)
-                    .Select(u => u.User.UUID )
+                    .Select(u => u.User.UUID)
                     .SingleOrDefaultAsync();
 
                 if (!string.IsNullOrEmpty(UUID))
@@ -121,25 +149,24 @@ namespace Falcon.Web.Api.Controllers.V1
             {
                 return Response(HttpStatusCode.BadRequest);
             }
-            
+
         }
 
         [Route("UserInfos/{Email}")]
         [HttpPost]
         public async Task<IHttpActionResult> ForgotPassword(string Email)
         {
-            //TODO : Adding Mail Service to send email for the current user
-            if(!string.IsNullOrEmpty(Email))
+            if (IsValidMail(Email))
             {
-                var userInfo = await db.UserInfoes.Where(u => u.Email == Email).Select(u => new { u.User.UserName , u.Password }).SingleOrDefaultAsync();
-                if(userInfo != null)
+                var userInfo = await db.UserInfoes.Where(u => u.Email == Email).Select(u => new { u.User.UserName, u.Password }).SingleOrDefaultAsync();
+                if (userInfo != null)
                 {
                     SendVerificationEmailViaWebApi(Email, userInfo.UserName, userInfo.Password);
                     return Ok();
                 }
                 else
                 {
-                    return Response(HttpStatusCode.OK, Constants.UserInfoStatusType.UserNameNotExists);
+                    return Response(HttpStatusCode.OK, Constants.UserInfoStatusType.UserNameIsWrong);
                 }
             }
             else
@@ -148,20 +175,20 @@ namespace Falcon.Web.Api.Controllers.V1
             }
         }
 
-        private void SendVerificationEmailViaWebApi(string EmailToSend , string UserName , string Password)
+        private void SendVerificationEmailViaWebApi(string EmailToSend, string UserName, string Password)
         {
             string subject = "Verification Mail";
-            string body = string.Format("Flapp Studio - What if Game \n This is password Recovery \n UserName : '{0}' \n Password : '{1}'" , UserName , Password);
-            string FromMail = "JavadBorhani@yahoo.com";
+            string body = string.Format("Flapp Studio - What if Game \n This is password Recovery \n UserName : '{0}' \n Password : '{1}'", UserName, Password);
+            string FromMail = Constants.DefaultHotConfig.WebSiteNoReplyMail;
             string emailTo = EmailToSend;
             MailMessage mail = new MailMessage();
-            SmtpClient SmtpServer = new SmtpClient("mail.reckonbits.com.pk");
+            SmtpClient SmtpServer = new SmtpClient(Constants.DefaultHotConfig.HostSmtpServer);
             mail.From = new MailAddress(FromMail);
             mail.To.Add(emailTo);
             mail.Subject = subject;
             mail.Body = body;
-            SmtpServer.Port = 25;
-            SmtpServer.Credentials = new System.Net.NetworkCredential("JavadBorhani@yahoo.com", "VisualBasic7");
+            SmtpServer.Port = 8383;
+            SmtpServer.Credentials = new NetworkCredential(Constants.DefaultHotConfig.WebSiteNoReplyMail, Constants.DefaultHotConfig.WebSiteNoReplyMailPassword);
             SmtpServer.EnableSsl = false;
             SmtpServer.Send(mail);
         }
@@ -173,6 +200,11 @@ namespace Falcon.Web.Api.Controllers.V1
                 db.Dispose();
             }
             base.Dispose(disposing);
+        }
+
+        private bool IsValidMail(string Mail)
+        {
+          return Regex.IsMatch(Mail, @"\A(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)\Z", RegexOptions.IgnoreCase);
         }
 
         private async Task<bool> IsAbleToEditProfile(int userID)
@@ -188,6 +220,7 @@ namespace Falcon.Web.Api.Controllers.V1
         {
             return ResponseMessage(Request.CreateResponse(Code));
         }
+
         private ResponseMessageResult Response(HttpStatusCode Code, object DataToSend)
         {
             return ResponseMessage(Request.CreateResponse(Code, DataToSend));

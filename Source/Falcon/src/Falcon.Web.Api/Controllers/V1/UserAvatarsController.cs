@@ -172,6 +172,7 @@ namespace Falcon.Web.Api.Controllers.V1
                     ID = avatar.ID,
                     PicUrl = avatar.PicUrl,
                     Purchased = bought,
+                    RequestID = UserAvatarID,
                 };
                 return Ok(clientResult);
             }

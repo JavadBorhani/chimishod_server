@@ -79,10 +79,8 @@ namespace Falcon.Common
         {
             public const int EditSucceed = 1;
             public const int UserNameConflict = 2;
-            public const int UserNameNotExists = 3;
+            public const int UserNameIsWrong = 3;
             public const int EmailConflict = 4;
-            public const int PasswordConflict = 5;
-            public const int Error = 6;
         }
         public static class DefaultValues
         {
@@ -109,6 +107,14 @@ namespace Falcon.Common
             public const int AchievementDefaultAchievedID = 3;
             public const int AchievementCategoryQueryTypeID = 1;  
             public const int AchievementAdHocQueryTypeID = 2;
+        }
+        public static class DefaultHotConfig
+        {
+            public const string WebSiteNoReplyMail = "noreply@vglr.ir";
+            public const string WebSiteNoReplyMailPassword = "@@@Visualbasic7";
+            public const string WebSiteSupportMail = "";
+            public const string WebSiteSupportMailPassword = "";
+            public const string HostSmtpServer = "31.25.89.211"; 
         }
         public const string DefaultLegacyNamespaces = "http://vglr.ir";
     }
