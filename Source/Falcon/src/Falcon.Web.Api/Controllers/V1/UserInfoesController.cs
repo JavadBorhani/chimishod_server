@@ -106,11 +106,11 @@ namespace Falcon.Web.Api.Controllers.V1
                         UserInfo.Password = UserInfo.Password;
                         await db.SaveChangesAsync();
 
-                        return Ok();
+                        return Ok(Constants.UserInfoStatusType.EditSucceed);
                     }
                     else
                     {
-                        return Response(HttpStatusCode.Forbidden);
+                        return Response(HttpStatusCode.OK , Constants.UserInfoStatusType.Error);
                     }
                 }
                 else
@@ -162,16 +162,16 @@ namespace Falcon.Web.Api.Controllers.V1
                 if (userInfo != null)
                 {
                     SendVerificationEmailViaWebApi(Email, userInfo.UserName, userInfo.Password);
-                    return Ok();
+                    return Ok(true);
                 }
                 else
                 {
-                    return Response(HttpStatusCode.OK, Constants.UserInfoStatusType.UserNameIsWrong);
+                    return Response(HttpStatusCode.OK, false);
                 }
             }
             else
             {
-                return Response(HttpStatusCode.Unauthorized);
+                return Response(HttpStatusCode.Unauthorized , false);
             }
         }
 
@@ -179,16 +179,16 @@ namespace Falcon.Web.Api.Controllers.V1
         {
             string subject = "Verification Mail";
             string body = string.Format("Flapp Studio - What if Game \n This is password Recovery \n UserName : '{0}' \n Password : '{1}'", UserName, Password);
-            string FromMail = Constants.DefaultHotConfig.WebSiteNoReplyMail;
+            string FromMail = Constants.DefaultHostConfig.WebSiteNoReplyMail;
             string emailTo = EmailToSend;
             MailMessage mail = new MailMessage();
-            SmtpClient SmtpServer = new SmtpClient(Constants.DefaultHotConfig.HostSmtpServer);
+            SmtpClient SmtpServer = new SmtpClient(Constants.DefaultHostConfig.HostSmtpServer);
             mail.From = new MailAddress(FromMail);
             mail.To.Add(emailTo);
             mail.Subject = subject;
             mail.Body = body;
             SmtpServer.Port = 8383;
-            SmtpServer.Credentials = new NetworkCredential(Constants.DefaultHotConfig.WebSiteNoReplyMail, Constants.DefaultHotConfig.WebSiteNoReplyMailPassword);
+            SmtpServer.Credentials = new NetworkCredential(Constants.DefaultHostConfig.WebSiteNoReplyMail, Constants.DefaultHostConfig.WebSiteNoReplyMailPassword);
             SmtpServer.EnableSsl = false;
             SmtpServer.Send(mail);
         }

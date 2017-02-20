@@ -9,7 +9,7 @@ namespace Falcon.Common
             public const string UserName = "Not-Set";
             public const int Score = 0;
             public const int UserTypeID = 1;
-            public const int TotalStar = 50;
+            public const int TotalStar = 200;
             public const int LevelProgress = 0; 
             public const int LevelAnswerdNumber = 0;
             public const int CurrentLevelID = 1;
@@ -79,8 +79,9 @@ namespace Falcon.Common
         {
             public const int EditSucceed = 1;
             public const int UserNameConflict = 2;
-            public const int UserNameIsWrong = 3;
-            public const int EmailConflict = 4;
+            public const int EmailConflict = 3;
+            public const int Error = 4; 
+            public const int UserNameIsWrong = 5;
         }
         public static class DefaultValues
         {
@@ -108,7 +109,7 @@ namespace Falcon.Common
             public const int AchievementCategoryQueryTypeID = 1;  
             public const int AchievementAdHocQueryTypeID = 2;
         }
-        public static class DefaultHotConfig
+        public static class DefaultHostConfig
         {
             public const string WebSiteNoReplyMail = "noreply@vglr.ir";
             public const string WebSiteNoReplyMailPassword = "@@@Visualbasic7";

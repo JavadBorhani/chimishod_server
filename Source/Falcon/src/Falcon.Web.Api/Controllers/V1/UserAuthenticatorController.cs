@@ -48,11 +48,11 @@ namespace Falcon.Web.Api.Controllers.V1
                     ScoreCeil = user.Level.ScoreCeil 
                 };
 
-                var selectedCat = db.SelectedCategories.AsNoTracking()
+                var selectedCat = await db.SelectedCategories.AsNoTracking()
                     .Where(sc => sc.UserID == user.ID)
                     .Include(sc => sc.Category)
                     .Select(u => new { u.Category.ID , u.Category.Name , u.Category.PrizeCoefficient })
-                    .SingleOrDefault();
+                    .SingleOrDefaultAsync();
 
                 var UserState = new Models.Api.SUserState
                 {
@@ -63,8 +63,20 @@ namespace Falcon.Web.Api.Controllers.V1
                     SelectedThemeID = user.SelectedThemes.Where(st => st.UserID == user.ID).Select(st => st.AppThemeID).SingleOrDefault()
                 };
 
+                var avatar = await db.SelectedAvatars.AsNoTracking()
+                    .Where(sa => sa.UserID == user.ID)
+                    .Include(sa => sa.UserAvatar)
+                    .Select(u => new { u.UserAvatar.ID, u.UserAvatar.PicUrl })
+                    .SingleOrDefaultAsync();
 
-                return ResponseMessage(Request.CreateResponse(HttpStatusCode.OK, new { UserModel, UserState })); //TODO : Does not support xml change to something generic
+                var UserAvatar = new Models.Api.SUserAvatar
+                {
+                    ID = avatar.ID,
+                    PicUrl = avatar.PicUrl,
+                };
+
+
+                return ResponseMessage(Request.CreateResponse(HttpStatusCode.OK, new { UserModel, UserState , UserAvatar })); //TODO : Does not support xml change to something generic
             }
             else
             {
