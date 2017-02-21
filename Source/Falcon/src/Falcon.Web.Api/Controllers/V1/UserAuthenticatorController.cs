@@ -95,7 +95,7 @@ namespace Falcon.Web.Api.Controllers.V1
             User user = new User
             {
                 UUID = UUID,
-                UserName = Constants.DefaultUser.UserName,
+                UserName = Constants.DefaultUser.UserName + mDateTime.Ticks,
                 UserTypeID = Constants.DefaultUser.UserTypeID,
                 TotalStars = Constants.DefaultUser.TotalStar,
                 Score = Constants.DefaultUser.Score,
@@ -130,6 +130,7 @@ namespace Falcon.Web.Api.Controllers.V1
                 IsBanned = Constants.DefaultUser.IsBanned,
                 RegisterDateTime = mDateTime.Now,
                 IsEditable = Constants.DefaultUser.EditableCount,
+                Password = "" + mDateTime.Ticks,
             };
 
             SelectedAvatar selectedAvatar = new SelectedAvatar

@@ -28,7 +28,7 @@ namespace Falcon.Web.Api.Controllers.V1
         }
 
         [ResponseType(typeof(SUserInfo))]
-        [Route("UserInfos/{UUID}")]
+        [Route("UserInfo/{UUID}")]
         [HttpPost]
         public async Task<IHttpActionResult> GoogleSignIn([FromBody] SGoogleAuthentication GoogleAuthentication) //TODO : Move to User Authenticator
         {
@@ -43,7 +43,7 @@ namespace Falcon.Web.Api.Controllers.V1
         }
 
         [ResponseType(typeof(SUserInfo))]
-        [Route("UserInfos/{UUID}")]
+        [Route("UserInfo/{UUID}")]
         [HttpPost]
         public async Task<IHttpActionResult> GoogleRecovery([FromBody] SGoogleAuthentication GoogleAuthentication)
         {
@@ -58,7 +58,7 @@ namespace Falcon.Web.Api.Controllers.V1
         }
 
         [ResponseType(typeof(SUserInfo))]
-        [Route("UserInfos/{UUID}")]
+        [Route("UserInfo/{UUID}")]
         [HttpPost]
         public async Task<IHttpActionResult> GetUserInfo(string UUID)
         {
@@ -85,7 +85,7 @@ namespace Falcon.Web.Api.Controllers.V1
             }
         }
 
-        [Route("UserInfos/Edit/{UUID}")]
+        [Route("UserInfo/Edit/{UUID}")]
         [HttpPost]
         public async Task<IHttpActionResult> EditUserInfo(string UUID, [FromBody] SUserInfo UserInfo)
         {
@@ -124,7 +124,7 @@ namespace Falcon.Web.Api.Controllers.V1
             }
         }
 
-        [Route("UserInfos/Recover/")]
+        [Route("UserInfo/Recover/")]
         [HttpPost]
         public async Task<IHttpActionResult> RecoverUser([FromBody] SUserInfo UserInfo)
         {
@@ -152,7 +152,7 @@ namespace Falcon.Web.Api.Controllers.V1
 
         }
 
-        [Route("UserInfos/Forgot/{Email}")]
+        [Route("UserInfo/Forgot/{Email}")]
         [HttpPost]
         public async Task<IHttpActionResult> ForgotPassword(string Email)
         {

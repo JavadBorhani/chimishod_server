@@ -6,7 +6,7 @@ namespace Falcon.Common
     {
         public static class DefaultUser
         {
-            public const string UserName = "Not-Set";
+            public const string UserName = "Guest_";
             public const string Email     = null;
             public const string PhoneNumber = null;
             public const string GoogleID = null;

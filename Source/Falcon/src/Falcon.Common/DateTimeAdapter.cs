@@ -25,5 +25,12 @@ namespace Falcon.Common
                 return DateTime.UtcNow; 
             }
         }
+        public long Ticks
+        {
+            get
+            {
+                return DateTime.Now.Ticks;
+            }
+        }
     }
 }

@@ -12,5 +12,6 @@ namespace Falcon.Common
     {
         DateTime UtcNow { get; }
         DateTime Now { get; }
+        long Ticks { get; }
     }
 }
