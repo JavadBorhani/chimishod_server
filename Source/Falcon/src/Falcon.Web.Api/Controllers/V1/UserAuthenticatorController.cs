@@ -30,6 +30,8 @@ namespace Falcon.Web.Api.Controllers.V1
         [Route("UserAuthenticator/UUID/{UUID}")]
         public async Task<IHttpActionResult> GetUser(string UUID)
         {
+            //TODO : Validate User UUID and Add User Cellphone
+
             var user = await db.Users.AsNoTracking().Where(c => c.UUID == UUID).Include( c => c.Level).SingleOrDefaultAsync();
             if (user != null)
             {
@@ -162,6 +164,19 @@ namespace Falcon.Web.Api.Controllers.V1
                                                 .Where(c => c.ID == Constants.DefaultUser.CategoryID)
                                                 .Select(c => new { c.Name, c.PrizeCoefficient })
                                                 .SingleOrDefaultAsync();
+
+            var avatar = await db.SelectedAvatars.AsNoTracking()
+                  .Where(sa => sa.UserID == user.ID)
+                  .Include(sa => sa.UserAvatar)
+                  .Select(u => new { u.UserAvatar.ID, u.UserAvatar.PicUrl })
+                  .SingleOrDefaultAsync();
+
+            var UserAvatar = new Models.Api.SUserAvatar
+            {
+                ID = avatar.ID,
+                PicUrl = avatar.PicUrl,
+            };
+
             if (catInfo != null)
             {
                 var UserState = new Models.Api.SUserState
@@ -172,7 +187,7 @@ namespace Falcon.Web.Api.Controllers.V1
                     SelectedCategoryName = catInfo.Name,
                     SelectedCategoryCoEfficient = catInfo.PrizeCoefficient,
                 };
-                return ResponseMessage(Request.CreateResponse(HttpStatusCode.Created, new { UserModel, UserState }));
+                return ResponseMessage(Request.CreateResponse(HttpStatusCode.Created, new { UserModel, UserState , UserAvatar }));
             }
             else
             {
