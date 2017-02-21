@@ -11,6 +11,8 @@ using Falcon.Web.Models.Api;
 using System.Collections.Generic;
 using System.Web.Http.Description;
 using System;
+using Falcon.Common.Logging;
+using log4net;
 
 namespace Falcon.Web.Api.Controllers.V1
 {
@@ -20,10 +22,12 @@ namespace Falcon.Web.Api.Controllers.V1
 
 
         private readonly IMapper mMapper;
+        private readonly ILog mLogManager;
         
-        public FavoritesController(IMapper Mapper)
+        public FavoritesController(IMapper Mapper , ILogManager logManager)
         {
             mMapper = Mapper;
+            mLogManager = logManager.GetLog(typeof(FavoritesController));
         }
 
         [ResponseType(typeof(SNewCreatedQuestions))]
@@ -64,13 +68,22 @@ namespace Falcon.Web.Api.Controllers.V1
 
             if (userID != 0) // UserExists
             {
-                var favoritedQuestion = await db.Favorites.Where( f => f.UserID == userID && f.QuestionID == QuestionID).SingleOrDefaultAsync();
+                var favoritedQuestions = await db.Favorites.Where( f => f.UserID == userID && f.QuestionID == QuestionID).ToArrayAsync();
 
-                if (favoritedQuestion != null)
+                if (favoritedQuestions != null)
                 {
-                    db.Favorites.Remove(favoritedQuestion);
-                    await db.SaveChangesAsync();
-
+                    if(favoritedQuestions.Length > 1)
+                    {
+                        mLogManager.Error("More than one favorite");
+                        db.Favorites.RemoveRange(favoritedQuestions);
+                        await db.SaveChangesAsync();
+                    }
+                    else if( favoritedQuestions.Length == 1)
+                    {
+                        db.Favorites.Remove(favoritedQuestions[0]);
+                        await db.SaveChangesAsync();
+                    }
+                   
                     return Response(HttpStatusCode.OK , QuestionID);
                 }
                 else

@@ -38,11 +38,10 @@ namespace Falcon.Web.Api.Controllers.V1
                 var UserModel = new Models.Api.SUser
                 {
                     ID = user.ID,
-                    UUID = user.UUID,
                     UserName = user.UserName,
                     UserTypeID = user.UserTypeID,
                     TotalStars = user.TotalStars,
-                    LastSceneDateTime = user.LastSceneDateTime,
+                    LastSceneDateTime = mDateTime.Now,
                     Score = user.Score,
                     LevelProgress = user.LevelProgress,
                     CurrentLevelID = user.CurrentLevelID,
@@ -77,6 +76,9 @@ namespace Falcon.Web.Api.Controllers.V1
                     PicUrl = avatar.PicUrl,
                 };
 
+                var userLastScene = db.Users.Where(c => c.ID == user.ID).Select(c => c.LastSceneDateTime).SingleOrDefault();
+                userLastScene = mDateTime.Now;
+                await db.SaveChangesAsync();
 
                 return ResponseMessage(Request.CreateResponse(HttpStatusCode.OK, new { UserModel, UserState , UserAvatar })); //TODO : Does not support xml change to something generic
             }
@@ -149,7 +151,6 @@ namespace Falcon.Web.Api.Controllers.V1
             var UserModel = new Models.Api.SUser
             {
                 ID = user.ID,
-                UUID = user.UUID,
                 UserName = user.UserName,
                 UserTypeID = user.UserTypeID,
                 TotalStars = user.TotalStars,
