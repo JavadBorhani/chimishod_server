@@ -130,6 +130,8 @@
     <Compile Include="AutoMappingConfiguration\ReportTypeMap\ReportTypeToSReportTypeAutoTypeConfiguration.cs" />
     <Compile Include="AutoMappingConfiguration\StoreMap\StoreToSStoreAutoTypeConfiguration.cs" />
     <Compile Include="AutoMappingConfiguration\UserInfoMap\UserInfoToSUserInfoAutoTypeConfiguration.cs" />
+    <Compile Include="Controllers\Utility\ILevelManager.cs" />
+    <Compile Include="Controllers\Utility\LevelManager.cs" />
     <Compile Include="Controllers\V1\AchievedPosessionsController.cs" />
     <Compile Include="Controllers\V1\ApplicationStatesController.cs" />
     <Compile Include="Controllers\V1\CreatedQuestionsController.cs" />
@@ -169,7 +171,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Controllers\Utility\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Falcon.Common\Falcon.Common.csproj">

@@ -66,18 +66,27 @@ namespace Falcon.Web.Api.Controllers.V1
 
             if (userID != 0)
             {
-                SUserInfo userInfo = await db.UserInfoes.AsNoTracking()
+                var info = await db.UserInfoes.AsNoTracking()
                     .Where(ui => ui.UserID == userID)
                     .Include(ui => ui.User)
-                    .Select(ui => new SUserInfo
+                    .Select(ui => new 
                     {
                         Email = ui.Email,
                         UserName = ui.User.UserName,
                         IsEditable = ui.IsEditable > 0 ? true : false,
+                        ChangeInfoDate = ui.ChangeInfoDate,
                     })
                     .SingleOrDefaultAsync();
 
-                return Ok(userInfo);
+                SUserInfo result = new SUserInfo
+                {
+                    UserName = info.UserName,
+                    Email = info.Email,
+                    HasRegistered = (info.ChangeInfoDate != null) ? true : false,
+                    IsEditable = info.IsEditable,
+                };
+
+                return Ok(result);
             }
             else
             {
@@ -95,18 +104,32 @@ namespace Falcon.Web.Api.Controllers.V1
 
                 if (userID != 0)
                 {
-                    var userInfo = await db.UserInfoes.Where(u => u.UserID == userID).Include(u => u.User).SingleOrDefaultAsync();
-                    if (userInfo.IsEditable > 0 && !string.IsNullOrEmpty(UserInfo.Email))
+                    var Info = await db.UserInfoes.Where(u => u.UserID == userID).Include(u => u.User).SingleOrDefaultAsync();
+                    if (Info.IsEditable > 0 && !string.IsNullOrEmpty(UserInfo.Email))
                     {
                         //TODO : Validate User information
+                        if(await UserNameIsAccessible(userID , UserInfo.Email))
+                        {
+                            if(await EmailIsAccessible(Info.ID, UserInfo.Email))
+                            {
+                                --Info.IsEditable;
+                                Info.Email = UserInfo.Email;
+                                Info.User.UserName = UserInfo.UserName;
+                                Info.Password = UserInfo.Password;
+                                Info.ChangeInfoDate = mDateTime.Now;
+                                await db.SaveChangesAsync();
 
-                        --userInfo.IsEditable;
-                        userInfo.Email = UserInfo.Email;
-                        userInfo.User.UserName = UserInfo.UserName;
-                        UserInfo.Password = UserInfo.Password;
-                        await db.SaveChangesAsync();
-
-                        return Ok(Constants.UserInfoStatusType.EditSucceed);
+                                return Ok(Constants.UserInfoStatusType.EditSucceed);
+                            }
+                            else
+                            {
+                                return Response(HttpStatusCode.OK, Constants.UserInfoStatusType.EmailConflict);
+                            }
+                        }
+                        else
+                        {
+                            return Response(HttpStatusCode.OK, Constants.UserInfoStatusType.UserNameConflict);
+                        }
                     }
                     else
                     {
@@ -124,11 +147,23 @@ namespace Falcon.Web.Api.Controllers.V1
             }
         }
 
+        private async Task<bool> UserNameIsAccessible(int UserID, string UserName)
+        {
+            //TODO : Move Email and password to User Table
+            return await db.Users.AsNoTracking().CountAsync(u => u.ID != UserID && u.UserName == UserName) == 0; 
+        }
+        private async Task<bool> EmailIsAccessible(int UserInfoID, string Email)
+        {
+            //TODO : Move Email and password to User Table
+            return await db.UserInfoes.AsNoTracking().CountAsync(u => u.ID != UserInfoID && u.Email == Email) == 0;
+        }
+
         [Route("UserInfo/Recover/")]
         [HttpPost]
         public async Task<IHttpActionResult> RecoverUser([FromBody] SUserInfo UserInfo)
         {
 
+            UserInfo.Email = "one@one.com";
             if (ModelState.IsValid)
             {
                 var UUID = await db.UserInfoes.AsNoTracking()

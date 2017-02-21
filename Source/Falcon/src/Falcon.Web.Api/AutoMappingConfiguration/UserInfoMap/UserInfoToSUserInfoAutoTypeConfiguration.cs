@@ -15,7 +15,8 @@ namespace Falcon.Web.Api.AutoMappingConfiguration.UserInfoMap
         {
             CreateMap<UserInfo, SUserInfo>()
                 .ForMember(s => s.UserName, m => m.MapFrom(u => u.User.UserName))
-                .ForMember(s => s.Email , m => m.MapFrom( u => u.Email));
+                .ForMember(s => s.Email , m => m.MapFrom( u => u.Email))
+                .ForMember(s => s.HasRegistered , m => m.Ignore());
         }
     }
 }

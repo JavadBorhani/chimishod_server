@@ -21,7 +21,8 @@ namespace Falcon.Web.Models.Api
         public bool IsEditable { get; set; }
 
         [Required(AllowEmptyStrings = false)]
-        [IgnoreDataMember]
         public string Password { get; set; }
+
+        public bool HasRegistered { get; set; }
     }
 }

@@ -92,10 +92,11 @@ namespace Falcon.Web.Api.Controllers.V1
 
         private async Task<IHttpActionResult> CreateNewUser(string UUID)
         {
+            var uniqueNumber = mDateTime.Ticks.ToString();
             User user = new User
             {
                 UUID = UUID,
-                UserName = Constants.DefaultUser.UserName + mDateTime.Ticks,
+                UserName = Constants.DefaultUser.UserName + uniqueNumber.Substring(uniqueNumber.Length - 7),
                 UserTypeID = Constants.DefaultUser.UserTypeID,
                 TotalStars = Constants.DefaultUser.TotalStar,
                 Score = Constants.DefaultUser.Score,
