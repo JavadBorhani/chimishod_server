@@ -1,7 +1,7 @@
-[assembly: WebActivatorEx.PreApplicationStartMethod(typeof(Falcon.Web.Site.App_Start.NinjectWebCommon), "Start")]
-[assembly: WebActivatorEx.ApplicationShutdownMethodAttribute(typeof(Falcon.Web.Site.App_Start.NinjectWebCommon), "Stop")]
+[assembly: WebActivatorEx.PreApplicationStartMethod(typeof(Falcon.Web.Dashboard.App_Start.NinjectWebCommon), "Start")]
+[assembly: WebActivatorEx.ApplicationShutdownMethodAttribute(typeof(Falcon.Web.Dashboard.App_Start.NinjectWebCommon), "Stop")]
 
-namespace Falcon.Web.Site.App_Start
+namespace Falcon.Web.Dashboard.App_Start
 {
     using System;
     using System.Web;

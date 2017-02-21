@@ -9,7 +9,7 @@ using System.Web;
 using System.Web.Mvc;
 using Falcon.EFCommonContext.DbModel;
 
-namespace Falcon.Web.Site.Controllers
+namespace Falcon.Web.Dashboard.Controllers
 {
     public class QuestionsController : Controller
     {
