@@ -7,22 +7,23 @@ namespace Falcon.Common
         public static class DefaultUser
         {
             public const string UserName = "Not-Set";
+            public const string Email     = null;
+            public const string PhoneNumber = null;
+            public const string GoogleID = null;
+            public const bool IsVerified = false;
+            public const bool IsBanned = false;
+            public const bool IsAbleToWriteComment = true;
             public const int Score = 0;
             public const int UserTypeID = 1;
             public const int TotalStar = 200;
             public const int LevelProgress = 0; 
             public const int LevelAnswerdNumber = 0;
             public const int CurrentLevelID = 1;
-            public const bool IsAbleToWriteComment = true;
             public const int AppThemeID = 1;
             public const int CategoryID = 1;
             //public const int CategoryCoeffecient = 1;
+            public const int EditableCount = 2; 
             public const int AvatarID = 1; 
-            public const string Email     = null;
-            public const string PhoneNumber = null;
-            public const string GoogleID = null;
-            public const bool IsVerified = false;
-            public const bool IsBanned = false;
         }
         public static class MediaTypeNames
         {

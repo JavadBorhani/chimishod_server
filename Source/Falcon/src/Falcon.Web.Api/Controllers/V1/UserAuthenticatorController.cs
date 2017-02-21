@@ -49,6 +49,8 @@ namespace Falcon.Web.Api.Controllers.V1
                     ScoreCeil = user.Level.ScoreCeil 
                 };
 
+                var selectedThemeId = await db.SelectedThemes.AsNoTracking().Where(st => st.UserID == user.ID).Select(st => st.AppThemeID).SingleOrDefaultAsync();
+
                 var selectedCat = await db.SelectedCategories.AsNoTracking()
                     .Where(sc => sc.UserID == user.ID)
                     .Include(sc => sc.Category)
@@ -61,7 +63,7 @@ namespace Falcon.Web.Api.Controllers.V1
                     SelectedCategoryID = selectedCat.ID,
                     SelectedCategoryName = selectedCat.Name,
                     SelectedCategoryCoEfficient = selectedCat.PrizeCoefficient,
-                    SelectedThemeID = user.SelectedThemes.Where(st => st.UserID == user.ID).Select(st => st.AppThemeID).SingleOrDefault()
+                    SelectedThemeID = selectedThemeId
                 };
 
                 var avatar = await db.SelectedAvatars.AsNoTracking()
@@ -76,7 +78,7 @@ namespace Falcon.Web.Api.Controllers.V1
                     PicUrl = avatar.PicUrl,
                 };
 
-                var userLastScene = db.Users.Where(c => c.ID == user.ID).Select(c => c.LastSceneDateTime).SingleOrDefault();
+                var userLastScene = await db.Users.Where(c => c.ID == user.ID).Select(c => c.LastSceneDateTime).SingleOrDefaultAsync();
                 userLastScene = mDateTime.Now;
                 await db.SaveChangesAsync();
 
@@ -126,7 +128,8 @@ namespace Falcon.Web.Api.Controllers.V1
                 GoogleID = Constants.DefaultUser.GoogleID,
                 IsVerified = Constants.DefaultUser.IsVerified,
                 IsBanned = Constants.DefaultUser.IsBanned,
-                RegisterDateTime = mDateTime.Now
+                RegisterDateTime = mDateTime.Now,
+                IsEditable = Constants.DefaultUser.EditableCount,
             };
 
             SelectedAvatar selectedAvatar = new SelectedAvatar

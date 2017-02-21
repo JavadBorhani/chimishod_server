@@ -85,7 +85,7 @@ namespace Falcon.Web.Api.Controllers.V1
             }
         }
 
-        [Route("UserInfos/{UUID}")]
+        [Route("UserInfos/Edit/{UUID}")]
         [HttpPost]
         public async Task<IHttpActionResult> EditUserInfo(string UUID, [FromBody] SUserInfo UserInfo)
         {
@@ -124,7 +124,7 @@ namespace Falcon.Web.Api.Controllers.V1
             }
         }
 
-        [Route("UserInfos")]
+        [Route("UserInfos/Recover/")]
         [HttpPost]
         public async Task<IHttpActionResult> RecoverUser([FromBody] SUserInfo UserInfo)
         {
@@ -152,7 +152,7 @@ namespace Falcon.Web.Api.Controllers.V1
 
         }
 
-        [Route("UserInfos/{Email}")]
+        [Route("UserInfos/Forgot/{Email}")]
         [HttpPost]
         public async Task<IHttpActionResult> ForgotPassword(string Email)
         {
