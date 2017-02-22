@@ -7,6 +7,6 @@ namespace Falcon.Web.Api.Controllers.Utility
 {
     public class LevelManager
     {
-
+        
     }
 }

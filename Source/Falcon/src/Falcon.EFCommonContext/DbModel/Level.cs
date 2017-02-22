@@ -22,6 +22,7 @@ namespace Falcon.EFCommonContext.DbModel
         }
     
         public int ID { get; set; }
+        public int LevelNumber { get; set; }
         public int Star { get; set; }
         public int ScoreCeil { get; set; }
         public System.DateTime CreatedDate { get; set; }

@@ -139,6 +139,7 @@ namespace Falcon.Web.Api.Controllers.V1
                 db.Answers.Add(newAnswer);
                 await db.SaveChangesAsync();
 
+
                 if (answer.IsFavorited == true) // means user favourited the current question
                 {
                     var favoriteCount = await FavoriteCount(user.ID);
@@ -170,7 +171,7 @@ namespace Falcon.Web.Api.Controllers.V1
                         }
                     }
                 }
-                var questionToUpdate = await db.Questions.FindAsync(answer.QuestionID);
+                var questionToUpdate = await db.Questions.Where(q => q.ID ==  answer.QuestionID).Include( q => q.Category).SingleOrDefaultAsync();
 
                 if (questionToUpdate != null)
                 {
@@ -192,6 +193,13 @@ namespace Falcon.Web.Api.Controllers.V1
                     }
                     await db.SaveChangesAsync();
                 }
+
+
+                int nextLevelId = await GetNextLevelID(user.Level.LevelNumber);
+                LevelUpChecking(ref user, user.Level.ScoreCeil, Constants.Prize.Answering * questionToUpdate.Category.PrizeCoefficient, nextLevelId);
+
+
+
                 SQuestion[] Questions;
                 if (answer.SendQuestion)
                 {
@@ -289,6 +297,24 @@ namespace Falcon.Web.Api.Controllers.V1
         {
             return await db.Favorites.CountAsync(e => e.UserID == userID);
         }
+        private void LevelUpChecking(ref User user, int levelCeil, int Prize, int nextLevelID)
+        {
+            user.Score += Prize;
+            if (user.LevelProgress + Prize >= levelCeil)
+            {
+                user.CurrentLevelID = nextLevelID;
+                int remained = (user.LevelProgress + Prize) - levelCeil;
+                user.LevelProgress = remained;
+            }
+            else
+            {
+                user.LevelProgress += Prize;
+            }
+        }
 
+        private async Task<int> GetNextLevelID(int currnetLevelNumber)
+        {
+            return await db.Levels.AsNoTracking().Where(l => l.LevelNumber == (currnetLevelNumber + 1)).Select(l => l.ID).SingleOrDefaultAsync();
+        }
     }
 }

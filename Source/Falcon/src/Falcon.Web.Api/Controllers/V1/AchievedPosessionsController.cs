@@ -251,7 +251,7 @@ namespace Falcon.Web.Api.Controllers.V1
         [HttpPost]
         public async Task<IHttpActionResult> ChangeAchievableToAchieved(string UUID, int AchievementID)
         {
-            var user = await db.Users.Where(u => u.UUID == UUID).SingleOrDefaultAsync();
+            var user = await db.Users.Where(u => u.UUID == UUID).Include( u => u.Level).SingleOrDefaultAsync();
 
             if (user != null) //user Exists
             {
@@ -263,9 +263,15 @@ namespace Falcon.Web.Api.Controllers.V1
                                         .SingleOrDefaultAsync();
                 if (achievable != null)
                 {
+                    int prize = achievable.Achievement.Prize;
+                   
                     achievable.AchieveStateID = Constants.DefaultValues.AchievementDefaultAchievedID;
                     achievable.AchievedDate = mDateTime.Now;
                     user.TotalStars += achievable.Achievement.Star;
+
+                    int nextLevelId = await GetNextLevelID(user.Level.LevelNumber);
+                    LevelUpChecking( ref user , user.Level.ScoreCeil, prize , nextLevelId);
+
                     await db.SaveChangesAsync();
                     return Response(HttpStatusCode.OK, user.TotalStars);
                 }
@@ -276,6 +282,7 @@ namespace Falcon.Web.Api.Controllers.V1
                 return Response(HttpStatusCode.Unauthorized);
             }
         }
+
 
         [Route("Achievements/Achieved/{UUID}")]
         [ResponseType(typeof(SAchievement))]
@@ -348,6 +355,26 @@ namespace Falcon.Web.Api.Controllers.V1
         private bool AchievedPosessionExists(int id)
         {
             return db.AchievedPosessions.Count(e => e.ID == id) > 0;
+        }
+
+        private void LevelUpChecking(ref User user, int levelCeil ,  int Prize, int nextLevelID)
+        {
+            user.Score += Prize;
+            if (user.LevelProgress + Prize >= levelCeil)
+            {
+                user.CurrentLevelID = nextLevelID;
+                int remained = (user.LevelProgress + Prize) - levelCeil;
+                user.LevelProgress = remained;
+            }
+            else
+            {
+                user.LevelProgress += Prize;
+            }
+        }
+
+        private async Task<int> GetNextLevelID(int currnetLevelNumber)
+        {
+            return await db.Levels.AsNoTracking().Where(l => l.LevelNumber == (currnetLevelNumber + 1)).Select(l => l.ID).SingleOrDefaultAsync();
         }
     }
 }

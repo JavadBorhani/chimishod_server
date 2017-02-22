@@ -177,6 +177,7 @@
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="LevelNumber" Type="int" Nullable="false" />
           <Property Name="Star" Type="int" Nullable="false" />
           <Property Name="ScoreCeil" Type="int" Nullable="false" />
           <Property Name="CreatedDate" Type="datetime" Nullable="false" />
@@ -1566,6 +1567,7 @@
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="LevelNumber" Type="Int32" Nullable="false" />
           <Property Name="Star" Type="Int32" Nullable="false" />
           <Property Name="ScoreCeil" Type="Int32" Nullable="false" />
           <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
@@ -2589,6 +2591,7 @@
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
                 <ScalarProperty Name="ScoreCeil" ColumnName="ScoreCeil" />
                 <ScalarProperty Name="Star" ColumnName="Star" />
+                <ScalarProperty Name="LevelNumber" ColumnName="LevelNumber" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>

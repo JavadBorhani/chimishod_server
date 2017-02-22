@@ -118,6 +118,14 @@ namespace Falcon.Common
             public const string WebSiteSupportMailPassword = "";
             public const string HostSmtpServer = "31.25.89.211"; 
         }
+        public static class Prize
+        {
+            public const int CreateQuestionPrize = 10;
+            public const int CreatedQuestionAccepted = 10;
+            public const int LikeQuestion = 1;
+            public const int Answering = 1; 
+        }
+
         public const string DefaultLegacyNamespaces = "http://vglr.ir";
     }
 }
