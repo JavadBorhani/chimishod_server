@@ -186,6 +186,15 @@ namespace Falcon.Web.Api.Controllers.V1
                     if (answer.Liked != null)
                     {
                         ++questionToUpdate.Like_Count;
+                        var otherUser = await db.Manufactures.Where(m => m.QuestionID == answer.QuestionID)
+                                                                .Include(m => m.User)
+                                                                .Select(m => m.User)
+                                                                .SingleOrDefaultAsync();
+                        if(otherUser != null)
+                        {
+                            otherUser.Score         += Constants.Prize.LikeQuestion;
+                            otherUser.LevelProgress += Constants.Prize.LikeQuestion;
+                        }
                     }
                     else if (answer.Dislike != null)
                     {
@@ -197,8 +206,6 @@ namespace Falcon.Web.Api.Controllers.V1
 
                 int nextLevelId = await GetNextLevelID(user.Level.LevelNumber);
                 LevelUpChecking(ref user, user.Level.ScoreCeil, Constants.Prize.Answering * questionToUpdate.Category.PrizeCoefficient, nextLevelId);
-
-
 
                 SQuestion[] Questions;
                 if (answer.SendQuestion)
