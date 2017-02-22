@@ -8,7 +8,6 @@ using System.Web.Http;
 using System.Web.Http.Description;
 using Falcon.EFCommonContext.DbModel;
 using Falcon.Common;
-using System.Web.Http.Results;
 using Falcon.Web.Models.Api;
 using System.Net.Mail;
 using System.Text.RegularExpressions;
@@ -29,7 +28,7 @@ namespace Falcon.Web.Api.Controllers.V1
         }
 
         [ResponseType(typeof(SUserInfo))]
-        [Route("UserInfo/{UUID}")]
+        [Route("UserInfo/GoogleSignIn/{UUID}")]
         [HttpPost]
         public async Task<IHttpActionResult> GoogleSignIn([FromBody] SGoogleAuthentication GoogleAuthentication) //TODO : Move to User Authenticator
         {
@@ -44,7 +43,7 @@ namespace Falcon.Web.Api.Controllers.V1
         }
 
         [ResponseType(typeof(SUserInfo))]
-        [Route("UserInfo/{UUID}")]
+        [Route("UserInfo/GoogleRecovery/{UUID}")]
         [HttpPost]
         public async Task<IHttpActionResult> GoogleRecovery([FromBody] SGoogleAuthentication GoogleAuthentication)
         {
@@ -120,7 +119,8 @@ namespace Falcon.Web.Api.Controllers.V1
                                 Info.ChangeInfoDate = mDateTime.Now;
                                 await db.SaveChangesAsync();
 
-                                return Response(HttpStatusCode.OK, Constants.UserInfoStatusType.EditSucceed , UserInfo);
+                                //TODO, Refactor This
+                                return ResponseMessage(Request.CreateResponse(HttpStatusCode.OK, new { Constants.UserInfoStatusType.EditSucceed ,UserInfo }));
                             }
                             else
                             {
@@ -148,16 +148,6 @@ namespace Falcon.Web.Api.Controllers.V1
             }
         }
 
-        private async Task<bool> UserNameIsAccessible(int UserID, string UserName)
-        {
-            //TODO : Move Email and password to User Table
-            return await db.Users.AsNoTracking().CountAsync(u => u.ID != UserID && u.UserName == UserName) == 0; 
-        }
-        private async Task<bool> EmailIsAccessible(int UserInfoID, string Email)
-        {
-            //TODO : Move Email and password to User Table
-            return await db.UserInfoes.AsNoTracking().CountAsync(u => u.ID != UserInfoID && u.Email == Email) == 0;
-        }
 
         [Route("UserInfo/Recover/")]
         [HttpPost]
@@ -187,17 +177,21 @@ namespace Falcon.Web.Api.Controllers.V1
             }
 
         }
-
-        [Route("UserInfo/Forgot/{Email}")]
+        [ResponseType(typeof(bool))]
+        [Route("UserInfo/Forgot/")]
         [HttpPost]
-        public async Task<IHttpActionResult> ForgotPassword(string Email)
+        public async Task<IHttpActionResult> ForgotPassword([FromBody] SGoogleAuthentication Info)
         {
-            if (IsValidMail(Email))
+            if (IsValidMail(Info.Email))
             {
-                var userInfo = await db.UserInfoes.Where(u => u.Email == Email).Select(u => new { u.User.UserName, u.Password }).SingleOrDefaultAsync();
+                var userInfo = await db.UserInfoes.AsNoTracking()
+                                                    .Where(u => u.Email == Info.Email)
+                                                    .Select(u => new { u.User.UserName, u.Password })
+                                                    .SingleOrDefaultAsync();
                 if (userInfo != null)
                 {
-                    SendVerificationEmailViaWebApi(Email, userInfo.UserName, userInfo.Password);
+                    //TODO : Send mail Async and continue the process
+                    //SendVerificationEmailViaWebApi(Info.Email, userInfo.UserName, userInfo.Password);
                     return Ok(true);
                 }
                 else
@@ -251,6 +245,18 @@ namespace Falcon.Web.Api.Controllers.V1
         private bool UserInfoExists(int id)
         {
             return db.UserInfoes.Count(e => e.ID == id) > 0;
+        }
+
+
+        private async Task<bool> UserNameIsAccessible(int UserID, string UserName)
+        {
+            //TODO : Move Email and password to User Table
+            return await db.Users.AsNoTracking().CountAsync(u => u.ID != UserID && u.UserName == UserName) == 0;
+        }
+        private async Task<bool> EmailIsAccessible(int UserInfoID, string Email)
+        {
+            //TODO : Move Email and password to User Table
+            return await db.UserInfoes.AsNoTracking().CountAsync(u => u.ID != UserInfoID && u.Email == Email) == 0;
         }
     }
 }
