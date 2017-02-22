@@ -11,10 +11,11 @@ using System.Net;
 using AutoMapper;
 using Falcon.Web.Models.Api;
 using System.Collections.Generic;
+using Falcon.Web.Api.Utilities.Extentions;
 
 namespace Falcon.Web.Api.Controllers.V1
 {
-    public class CategoriesController : ApiController
+    public class CategoriesController : FalconApiController
     {
         private DbEntity db = new DbEntity();
 

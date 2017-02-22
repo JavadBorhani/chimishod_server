@@ -12,10 +12,11 @@ using Falcon.EFCommonContext.DbModel;
 using AutoMapper;
 using Falcon.Web.Models.Api;
 using System.Web.Http.Results;
+using Falcon.Web.Api.Utilities.Extentions;
 
 namespace Falcon.Web.Api.Controllers.V1
 {
-    public class AnswersController : ApiController
+    public class AnswersController : FalconApiController
     {
         private DbEntity db = new DbEntity();
         private readonly IDateTime mDateTime;
@@ -287,16 +288,6 @@ namespace Falcon.Web.Api.Controllers.V1
         private async Task<int> FavoriteCount(int userID)
         {
             return await db.Favorites.CountAsync(e => e.UserID == userID);
-        }
-
-        private ResponseMessageResult Response(HttpStatusCode Code)
-        {
-            return ResponseMessage(Request.CreateResponse(Code));
-        }
-
-        private ResponseMessageResult Response(HttpStatusCode Code, object DataToSend)
-        {
-            return ResponseMessage(Request.CreateResponse(Code, DataToSend));
         }
 
     }

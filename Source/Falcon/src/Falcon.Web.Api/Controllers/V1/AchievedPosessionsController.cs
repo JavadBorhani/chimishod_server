@@ -12,10 +12,11 @@ using Falcon.Web.Models.Api;
 using System.Web.Http.Results;
 using Falcon.Common;
 using System.Collections.Generic;
+using Falcon.Web.Api.Utilities.Extentions;
 
 namespace Falcon.Web.Api.Controllers.V1
 {
-    public class AchievedPosessionsController : ApiController
+    public class AchievedPosessionsController : FalconApiController
     {
         private DbEntity db = new DbEntity();
 
@@ -347,16 +348,6 @@ namespace Falcon.Web.Api.Controllers.V1
         private bool AchievedPosessionExists(int id)
         {
             return db.AchievedPosessions.Count(e => e.ID == id) > 0;
-        }
-
-        private ResponseMessageResult Response(HttpStatusCode Code)
-        {
-            return ResponseMessage(Request.CreateResponse(Code));
-        }
-
-        private ResponseMessageResult Response(HttpStatusCode Code, object DataToSend)
-        {
-            return ResponseMessage(Request.CreateResponse(Code, DataToSend));
         }
     }
 }

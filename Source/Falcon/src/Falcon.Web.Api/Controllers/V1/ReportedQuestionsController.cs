@@ -8,10 +8,11 @@ using System.Web.Http;
 using Falcon.EFCommonContext.DbModel;
 using Falcon.Common;
 using System.Web.Http.Results;
+using Falcon.Web.Api.Utilities.Extentions;
 
 namespace Falcon.Web.Api.Controllers.V1
 {
-    public class ReportedQuestionsController : ApiController
+    public class ReportedQuestionsController : FalconApiController
     {
         private DbEntity db = new DbEntity();
 
@@ -78,16 +79,6 @@ namespace Falcon.Web.Api.Controllers.V1
         private bool ReportedQuestionExists(int id)
         {
             return db.ReportedQuestions.Count(e => e.ID == id) > 0;
-        }
-
-        private ResponseMessageResult Response(HttpStatusCode Code)
-        {
-            return ResponseMessage(Request.CreateResponse(Code));
-        }
-
-        private ResponseMessageResult Response(HttpStatusCode Code, object DataToSend)
-        {
-            return ResponseMessage(Request.CreateResponse(Code, DataToSend));
         }
     }
 }

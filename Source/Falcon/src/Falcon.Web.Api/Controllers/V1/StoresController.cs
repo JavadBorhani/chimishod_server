@@ -12,10 +12,11 @@ using Falcon.Common;
 using AutoMapper;
 using Falcon.Web.Models.Api;
 using System.Web.Http.Results;
+using Falcon.Web.Api.Utilities.Extentions;
 
 namespace Falcon.Web.Api.Controllers.V1
 {
-    public class StoresController : ApiController
+    public class StoresController : FalconApiController
     {
         private DbEntity db = new DbEntity();
 
@@ -45,12 +46,12 @@ namespace Falcon.Web.Api.Controllers.V1
                 }
                 else
                 {
-                    return ReturnResponse(HttpStatusCode.NoContent);
+                    return Response(HttpStatusCode.NoContent);
                 }
             }
             else
             {
-                return ReturnResponse(HttpStatusCode.Unauthorized);
+                return Response(HttpStatusCode.Unauthorized);
             }
         }
 
@@ -68,9 +69,5 @@ namespace Falcon.Web.Api.Controllers.V1
             return db.Stores.Count(e => e.ID == id) > 0;
         }
 
-        private ResponseMessageResult ReturnResponse(HttpStatusCode Code)
-        {
-            return ResponseMessage(Request.CreateResponse(Code));
-        }
     }
 }

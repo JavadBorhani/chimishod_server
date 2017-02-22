@@ -12,11 +12,12 @@ using System.Net.Http;
 using System.Web.Http.Results;
 using System.Collections.Generic;
 using AutoMapper;
+using Falcon.Web.Api.Utilities.Extentions;
 
 namespace Falcon.Web.Api.App_Start
 {
     [UnitOfWorkActionFilter]
-    public class CreatedQuestionsController : ApiController
+    public class CreatedQuestionsController : FalconApiController
     {
         private DbEntity db = new DbEntity();
 
@@ -117,7 +118,7 @@ namespace Falcon.Web.Api.App_Start
             }
             else
             {
-                return ReturnResponse(HttpStatusCode.Unauthorized);
+                return Response(HttpStatusCode.Unauthorized);
             }
         }
 
@@ -151,11 +152,6 @@ namespace Falcon.Web.Api.App_Start
         private bool CreatedQuestionExists(int userID , string What , string but)
         {
             return db.CreatedQuestions.Count(e => e.UserID == userID && e.What_if == What && e.But == but) > 0;
-        }
-
-        private ResponseMessageResult ReturnResponse(HttpStatusCode Code)
-        {
-            return ResponseMessage(Request.CreateResponse(Code));
         }
     }
 }

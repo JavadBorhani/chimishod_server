@@ -13,10 +13,11 @@ using System.Web.Http.Description;
 using System;
 using Falcon.Common.Logging;
 using log4net;
+using Falcon.Web.Api.Utilities.Extentions;
 
 namespace Falcon.Web.Api.Controllers.V1
 {
-    public class FavoritesController : ApiController
+    public class FavoritesController : FalconApiController
     {
         private DbEntity db = new DbEntity();
 
@@ -109,16 +110,6 @@ namespace Falcon.Web.Api.Controllers.V1
         private bool FavoriteExists(int id)
         {
             return db.Favorites.Count(e => e.ID == id) > 0;
-        }
-
-        private ResponseMessageResult Response(HttpStatusCode Code)
-        {
-            return ResponseMessage(Request.CreateResponse(Code));
-        }
-
-        private ResponseMessageResult Response(HttpStatusCode Code , object DataToSend)
-        {
-            return ResponseMessage(Request.CreateResponse(Code , DataToSend));
         }
     }
 }

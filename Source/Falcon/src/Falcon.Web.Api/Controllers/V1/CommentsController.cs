@@ -6,10 +6,11 @@ using System.Web.Http;
 using System.Web.Http.Description;
 using Falcon.Common;
 using Falcon.EFCommonContext.DbModel;
+using Falcon.Web.Api.Utilities.Extentions;
 
 namespace Falcon.Web.Api.Controllers.V1
 {
-    public class CommentsController : ApiController
+    public class CommentsController : FalconApiController
     {
         private DbEntity db = new DbEntity();
 

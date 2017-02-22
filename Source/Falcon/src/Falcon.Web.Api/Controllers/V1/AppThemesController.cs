@@ -11,10 +11,11 @@ using System.Web.Http;
 using System.Web.Http.Description;
 using Falcon.Common;
 using Falcon.EFCommonContext.DbModel;
+using Falcon.Web.Api.Utilities.Extentions;
 
 namespace Falcon.Web.Api.Controllers.V1
 {
-    public class AppThemesController : ApiController
+    public class AppThemesController : FalconApiController
     {
         private DbEntity db = new DbEntity(); //TODO : remember to remove this
 

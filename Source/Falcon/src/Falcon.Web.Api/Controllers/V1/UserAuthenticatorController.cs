@@ -2,6 +2,7 @@
 using Falcon.Data.Exceptions;
 using Falcon.EFCommonContext;
 using Falcon.EFCommonContext.DbModel;
+using Falcon.Web.Api.Utilities.Extentions;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
@@ -13,7 +14,7 @@ using System.Web.Http.Results;
 
 namespace Falcon.Web.Api.Controllers.V1
 {
-    public class UserAuthenticatorController : ApiController
+    public class UserAuthenticatorController : FalconApiController
     {
         private DbEntity db = new DbEntity();
 
@@ -212,14 +213,5 @@ namespace Falcon.Web.Api.Controllers.V1
             base.Dispose(disposing);
         }
 
-        private ResponseMessageResult Response(HttpStatusCode Code)
-        {
-            return ResponseMessage(Request.CreateResponse(Code));
-        }
-
-        private ResponseMessageResult Response(HttpStatusCode Code, object DataToSend)
-        {
-            return ResponseMessage(Request.CreateResponse(Code, DataToSend));
-        }
     }
 }

@@ -12,10 +12,11 @@ using Falcon.EFCommonContext.DbModel;
 using AutoMapper;
 using Falcon.Web.Models.Api;
 using System.Web.Http.Results;
+using Falcon.Web.Api.Utilities.Extentions;
 
 namespace Falcon.Web.Api.Controllers.V1
 {
-    public class QuestionBoostsController : ApiController
+    public class QuestionBoostsController : FalconApiController
     {
         private DbEntity db = new DbEntity();
         private readonly IMapper mMapper;
@@ -41,11 +42,11 @@ namespace Falcon.Web.Api.Controllers.V1
                     var clientBoostLists = mMapper.Map<List<QuestionBoost>, List<SQuestionBoost>>(dbBoostList);
                     return Ok(clientBoostLists);
                 }
-                return ReturnResponse(HttpStatusCode.NoContent);
+                return Response(HttpStatusCode.NoContent);
             }
             else
             {
-                return ReturnResponse(HttpStatusCode.Unauthorized);
+                return Response(HttpStatusCode.Unauthorized);
             }
         }
 
@@ -63,9 +64,5 @@ namespace Falcon.Web.Api.Controllers.V1
             return db.QuestionBoosts.Count(e => e.ID == id) > 0;
         }
 
-        private ResponseMessageResult ReturnResponse(HttpStatusCode Code)
-        {
-            return ResponseMessage(Request.CreateResponse(Code));
-        }
     }
 }

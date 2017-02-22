@@ -9,10 +9,11 @@ using System.Net.Http;
 using System.Net;
 using System.Web.Http.Description;
 using Falcon.Web.Models.Api;
+using Falcon.Web.Api.Utilities.Extentions;
 
 namespace Falcon.Web.Api.Controllers.V1
 {
-    public class ApplicationStatesController : ApiController
+    public class ApplicationStatesController : FalconApiController
     {
         private DbEntity db = new DbEntity();
         private readonly IMapper mMapper;
@@ -36,7 +37,7 @@ namespace Falcon.Web.Api.Controllers.V1
             }
             else
             {
-                return ReturnResponse(HttpStatusCode.Unauthorized);
+                return Response(HttpStatusCode.Unauthorized);
             }
         }
 
@@ -52,11 +53,6 @@ namespace Falcon.Web.Api.Controllers.V1
         private bool ApplicationStateExists(int id)
         {
             return db.ApplicationStates.Count(e => e.ID == id) > 0;
-        }
-
-        private ResponseMessageResult ReturnResponse(HttpStatusCode Code)
-        {
-            return ResponseMessage(Request.CreateResponse(Code));
         }
     }
 }

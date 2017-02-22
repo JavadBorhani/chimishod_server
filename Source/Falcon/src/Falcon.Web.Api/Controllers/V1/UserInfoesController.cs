@@ -12,10 +12,11 @@ using System.Web.Http.Results;
 using Falcon.Web.Models.Api;
 using System.Net.Mail;
 using System.Text.RegularExpressions;
+using Falcon.Web.Api.Utilities.Extentions;
 
 namespace Falcon.Web.Api.Controllers.V1
 {
-    public class UserInfoesController : ApiController
+    public class UserInfoesController : FalconApiController
     {
         private DbEntity db = new DbEntity();
 
@@ -119,7 +120,7 @@ namespace Falcon.Web.Api.Controllers.V1
                                 Info.ChangeInfoDate = mDateTime.Now;
                                 await db.SaveChangesAsync();
 
-                                return Ok(Constants.UserInfoStatusType.EditSucceed);
+                                return Response(HttpStatusCode.OK, Constants.UserInfoStatusType.EditSucceed , UserInfo);
                             }
                             else
                             {
@@ -250,15 +251,6 @@ namespace Falcon.Web.Api.Controllers.V1
         private bool UserInfoExists(int id)
         {
             return db.UserInfoes.Count(e => e.ID == id) > 0;
-        }
-        private ResponseMessageResult Response(HttpStatusCode Code)
-        {
-            return ResponseMessage(Request.CreateResponse(Code));
-        }
-
-        private ResponseMessageResult Response(HttpStatusCode Code, object DataToSend)
-        {
-            return ResponseMessage(Request.CreateResponse(Code, DataToSend));
         }
     }
 }

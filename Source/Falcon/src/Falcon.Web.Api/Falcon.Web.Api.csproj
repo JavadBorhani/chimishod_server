@@ -130,8 +130,9 @@
     <Compile Include="AutoMappingConfiguration\ReportTypeMap\ReportTypeToSReportTypeAutoTypeConfiguration.cs" />
     <Compile Include="AutoMappingConfiguration\StoreMap\StoreToSStoreAutoTypeConfiguration.cs" />
     <Compile Include="AutoMappingConfiguration\UserInfoMap\UserInfoToSUserInfoAutoTypeConfiguration.cs" />
-    <Compile Include="Controllers\Utility\ILevelManager.cs" />
-    <Compile Include="Controllers\Utility\LevelManager.cs" />
+    <Compile Include="Utilities\Extensions\FalconApiController.cs" />
+    <Compile Include="Utilities\ILevelManager.cs" />
+    <Compile Include="Utilities\LevelManager.cs" />
     <Compile Include="Controllers\V1\AchievedPosessionsController.cs" />
     <Compile Include="Controllers\V1\ApplicationStatesController.cs" />
     <Compile Include="Controllers\V1\CreatedQuestionsController.cs" />

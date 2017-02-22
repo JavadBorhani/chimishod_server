@@ -10,10 +10,11 @@ using System.Net.Http;
 using Falcon.Web.Models.Api;
 using AutoMapper;
 using System.Collections.Generic;
+using Falcon.Web.Api.Utilities.Extentions;
 
 namespace Falcon.Web.Api.Controllers.V1
 {
-    public class ReportTypesController : ApiController
+    public class ReportTypesController : FalconApiController
     {
         private DbEntity db = new DbEntity();
 
@@ -55,15 +56,6 @@ namespace Falcon.Web.Api.Controllers.V1
         private bool ReportTypeExists(int id)
         {
             return db.ReportTypes.Count(e => e.ID == id) > 0;
-        }
-        private ResponseMessageResult Response(HttpStatusCode Code)
-        {
-            return ResponseMessage(Request.CreateResponse(Code));
-        }
-
-        private ResponseMessageResult Response(HttpStatusCode Code, object DataToSend)
-        {
-            return ResponseMessage(Request.CreateResponse(Code, DataToSend));
         }
     }
 }

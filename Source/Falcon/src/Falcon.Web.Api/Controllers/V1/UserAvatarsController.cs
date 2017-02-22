@@ -13,10 +13,11 @@ using Falcon.EFCommonContext.DbModel;
 using System.Web.Http.Results;
 using Falcon.Common;
 using Falcon.Web.Models.Api;
+using Falcon.Web.Api.Utilities.Extentions;
 
 namespace Falcon.Web.Api.Controllers.V1
 {
-    public class UserAvatarsController : ApiController
+    public class UserAvatarsController : FalconApiController
     {
         private DbEntity db = new DbEntity();
 
@@ -192,11 +193,6 @@ namespace Falcon.Web.Api.Controllers.V1
         private async Task<bool> UserAvatarExists(int id)
         {
             return await db.UserAvatars.CountAsync(e => e.ID == id) > 0;
-        }
-
-        private ResponseMessageResult Response(HttpStatusCode Code)
-        {
-            return ResponseMessage(Request.CreateResponse(Code));
         }
     }
 }
