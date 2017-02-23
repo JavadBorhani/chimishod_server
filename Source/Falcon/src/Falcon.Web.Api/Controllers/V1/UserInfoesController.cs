@@ -101,14 +101,14 @@ namespace Falcon.Web.Api.Controllers.V1
             if (ModelState.IsValid)
             {
                 var userID = await db.Users.AsNoTracking().Where(u => u.UUID == UUID).Select(u => u.ID).SingleOrDefaultAsync();
-
+                string EditSucceed;
                 if (userID != 0)
                 {
                     var Info = await db.UserInfoes.Where(u => u.UserID == userID).Include(u => u.User).SingleOrDefaultAsync();
                     if (Info.IsEditable > 0 && !string.IsNullOrEmpty(UserInfo.Email))
                     {
                         //TODO : Validate User information
-                        if(await UserNameIsAccessible(userID , UserInfo.Email))
+                        if(await UserNameIsAccessible(userID , UserInfo.UserName))
                         {
                             if(await EmailIsAccessible(Info.ID, UserInfo.Email))
                             {
@@ -118,23 +118,30 @@ namespace Falcon.Web.Api.Controllers.V1
                                 Info.Password = UserInfo.Password;
                                 Info.ChangeInfoDate = mDateTime.Now;
                                 await db.SaveChangesAsync();
-
+                                
+                                UserInfo.IsEditable = Info.IsEditable > 0 ? true : false;
+                                UserInfo.Password = null;
+                                UserInfo.HasRegistered = true;
                                 //TODO, Refactor This
-                                return ResponseMessage(Request.CreateResponse(HttpStatusCode.OK, new { Constants.UserInfoStatusType.EditSucceed ,UserInfo }));
+                                EditSucceed = Constants.UserInfoStatusType.EditSucceed;
+                                return ResponseMessage(Request.CreateResponse(HttpStatusCode.OK, new { EditSucceed, UserInfo }));
                             }
                             else
                             {
-                                return Response(HttpStatusCode.OK, Constants.UserInfoStatusType.EmailConflict);
+                                EditSucceed = Constants.UserInfoStatusType.EmailConflict;
+                                return Response(HttpStatusCode.OK, new { EditSucceed });
                             }
                         }
                         else
                         {
-                            return Response(HttpStatusCode.OK, Constants.UserInfoStatusType.UserNameConflict);
+                            EditSucceed = Constants.UserInfoStatusType.UserNameConflict;
+                            return Response(HttpStatusCode.OK, new { EditSucceed });
                         }
                     }
                     else
                     {
-                        return Response(HttpStatusCode.OK , Constants.UserInfoStatusType.Error);
+                        EditSucceed = Constants.UserInfoStatusType.Error;
+                        return Response(HttpStatusCode.OK , new { EditSucceed });
                     }
                 }
                 else

@@ -78,11 +78,11 @@ namespace Falcon.Common
 
         public static class UserInfoStatusType
         {
-            public const int EditSucceed = 1;
-            public const int UserNameConflict = 2;
-            public const int EmailConflict = 3;
-            public const int Error = 4; 
-            public const int UserNameIsWrong = 5;
+            public const string EditSucceed = "1";
+            public const string UserNameConflict = "2";
+            public const string EmailConflict = "3";
+            public const string Error = "4"; 
+            public const string UserNameIsWrong = "5";
         }
         public static class DefaultValues
         {
