@@ -1,9 +1,10 @@
-﻿// BMS-Studio Copyright 2017-2018
+﻿// Flapp Copyright 2017-2018
 
 using System.Net;
 using System.Web;
 using System.Web.Http.ExceptionHandling;
 using Falcon.Data.Exceptions;
+using Falcon.Common;
 
 namespace Falcon.Web.Common.ErrorHandling
 {
@@ -31,11 +32,11 @@ namespace Falcon.Web.Common.ErrorHandling
                 context.Result = new SimpleErrorResult(context.Request, HttpStatusCode.Conflict, exception.Message);
                 return;
             }
-            //if (exception is BusinessRuleViolationException)
-            //{
-            //    context.Result = new SimpleErrorResult(context.Request, HttpStatusCode.PaymentRequired, exception.Message);
-            //    return;
-            //}
+            if (exception is BusinessRuleViolationException)
+            {
+                context.Result = new SimpleErrorResult(context.Request, HttpStatusCode.PaymentRequired, exception.Message);
+                return;
+            }
             context.Result = new SimpleErrorResult(context.Request, HttpStatusCode.InternalServerError, exception.Message);
         }
     }
