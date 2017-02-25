@@ -18,7 +18,8 @@ namespace Falcon.Common
             public const int TotalStar = 200;
             public const int LevelProgress = 0; 
             public const int LevelAnswerdNumber = 0;
-            public const int CurrentLevelID = 1;
+            public const int CurrentLevelD = 1;
+            public const int LevelNumber = 1; 
             public const int AppThemeID = 1;
             public const int CategoryID = 1;
             //public const int CategoryCoeffecient = 1;
@@ -35,6 +36,7 @@ namespace Falcon.Common
 
         public static class Paging
         {
+            public const int UserNumberToShow = 20;
             public const int MinPageSize = 1;
             public const int MinPageNumber = 1;
             public const int DefaultPageNumber = 1;

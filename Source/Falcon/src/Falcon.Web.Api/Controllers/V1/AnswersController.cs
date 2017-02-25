@@ -112,7 +112,7 @@ namespace Falcon.Web.Api.Controllers.V1
         public async Task<IHttpActionResult> PostingAnswer(string UUID, [FromBody] SAnswer answer)
         {
             var user = await db.Users.SingleOrDefaultAsync(u => u.UUID == UUID);
-
+            //TODO : Remember to Remove Extar Save Changes on database ;
             if (user != null)
             {
                 if (!ModelState.IsValid)
@@ -203,10 +203,14 @@ namespace Falcon.Web.Api.Controllers.V1
                     await db.SaveChangesAsync();
                 }
 
-
-                int nextLevelId = await GetNextLevelID(user.Level.LevelNumber);
-                LevelUpChecking(ref user, user.Level.ScoreCeil, Constants.Prize.Answering * questionToUpdate.Category.PrizeCoefficient, nextLevelId);
-
+                int prizeCoefficient = questionToUpdate.Category.PrizeCoefficient;
+                if (Constants.Prize.Answering > 0 && prizeCoefficient > 0 )
+                {
+                    int nextLevelId = await GetNextLevelID(user.Level.LevelNumber);
+                    LevelUpChecking(ref user, user.Level.ScoreCeil, Constants.Prize.Answering * prizeCoefficient, nextLevelId);
+                    await db.SaveChangesAsync();
+                }
+                
                 SQuestion[] Questions;
                 if (answer.SendQuestion)
                 {

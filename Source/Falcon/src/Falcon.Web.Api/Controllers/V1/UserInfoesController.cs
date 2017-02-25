@@ -189,27 +189,35 @@ namespace Falcon.Web.Api.Controllers.V1
         [HttpPost]
         public async Task<IHttpActionResult> ForgotPassword([FromBody] SGoogleAuthentication Info)
         {
-            if (IsValidMail(Info.Email))
+            if(Info != null)
             {
-                var userInfo = await db.UserInfoes.AsNoTracking()
-                                                    .Where(u => u.Email == Info.Email)
-                                                    .Select(u => new { u.User.UserName, u.Password })
-                                                    .SingleOrDefaultAsync();
-                if (userInfo != null)
+                if (IsValidMail(Info.Email))
                 {
-                    //TODO : Send mail Async and continue the process
-                    //SendVerificationEmailViaWebApi(Info.Email, userInfo.UserName, userInfo.Password);
-                    return Ok(true);
+                    var userInfo = await db.UserInfoes.AsNoTracking()
+                                                        .Where(u => u.Email == Info.Email)
+                                                        .Select(u => new { u.User.UserName, u.Password })
+                                                        .SingleOrDefaultAsync();
+                    if (userInfo != null)
+                    {
+                        //TODO : Send mail Async and continue the process
+                        //SendVerificationEmailViaWebApi(Info.Email, userInfo.UserName, userInfo.Password);
+                        return Ok(true);
+                    }
+                    else
+                    {
+                        return Response(HttpStatusCode.OK, false);
+                    }
                 }
                 else
                 {
-                    return Response(HttpStatusCode.OK, false);
+                    return Response(HttpStatusCode.Unauthorized, false);
                 }
             }
             else
             {
-                return Response(HttpStatusCode.Unauthorized , false);
+                return Response(HttpStatusCode.BadRequest, false);
             }
+            
         }
 
         private void SendVerificationEmailViaWebApi(string EmailToSend, string UserName, string Password)

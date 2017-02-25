@@ -45,9 +45,10 @@ namespace Falcon.Web.Api.Controllers.V1
                     LastSceneDateTime = mDateTime.Now,
                     Score = user.Score,
                     LevelProgress = user.LevelProgress,
-                    CurrentLevelID = user.CurrentLevelID,
+                    LevelNumber = user.CurrentLevelID,
                     IsAbleToWriteComment = user.IsAbleToWriteComment,
-                    ScoreCeil = user.Level.ScoreCeil 
+                    ScoreCeil = user.Level.ScoreCeil,
+                    NextLevelCeil = await db.Levels.AsNoTracking().Where(l => l.LevelNumber == (user.Level.LevelNumber + 1)).Select(l => l.ScoreCeil).SingleOrDefaultAsync()
                 };
 
                 var selectedThemeId = await db.SelectedThemes.AsNoTracking().Where(st => st.UserID == user.ID).Select(st => st.AppThemeID).SingleOrDefaultAsync();
@@ -102,7 +103,7 @@ namespace Falcon.Web.Api.Controllers.V1
                 TotalStars = Constants.DefaultUser.TotalStar,
                 Score = Constants.DefaultUser.Score,
                 LevelProgress = Constants.DefaultUser.LevelProgress,
-                CurrentLevelID = Constants.DefaultUser.CurrentLevelID,
+                CurrentLevelID = Constants.DefaultUser.CurrentLevelD,
                 IsAbleToWriteComment = Constants.DefaultUser.IsAbleToWriteComment,
                 LastSceneDateTime = mDateTime.Now,
             };
@@ -163,9 +164,10 @@ namespace Falcon.Web.Api.Controllers.V1
                 LastSceneDateTime = user.LastSceneDateTime,
                 Score = user.Score,
                 LevelProgress = user.LevelProgress,
-                CurrentLevelID = user.CurrentLevelID,
+                LevelNumber = Constants.DefaultUser.LevelNumber,
                 IsAbleToWriteComment = user.IsAbleToWriteComment,
                 ScoreCeil = levelCeilScore,
+                NextLevelCeil = await db.Levels.Where(l => l.LevelNumber == (Constants.DefaultUser.LevelNumber + 1)).Select(l => l.LevelNumber).SingleOrDefaultAsync()
             };
             var catInfo = await db.Categories.AsNoTracking()
                                                 .Where(c => c.ID == Constants.DefaultUser.CategoryID)
