@@ -10,17 +10,22 @@ using System.Net;
 using System.Web.Http.Description;
 using Falcon.Web.Models.Api;
 using Falcon.Web.Api.Utilities.Extentions;
+using Falcon.EFCommonContext;
+using Falcon.Web.Common;
 
 namespace Falcon.Web.Api.Controllers.V1
 {
+    [UnitOfWorkActionFilter]
     public class ApplicationStatesController : FalconApiController
     {
-        private DbEntity db = new DbEntity();
+        
         private readonly IMapper mMapper;
+        private readonly IDbContext mDb;
 
-        public ApplicationStatesController(IMapper Mapper)
+        public ApplicationStatesController(IMapper Mapper , IDbContext Database)
         {
             mMapper = Mapper;
+            mDb = Database;
         }
 
         [ResponseType(typeof(SApplicationState))]
@@ -28,10 +33,10 @@ namespace Falcon.Web.Api.Controllers.V1
         [HttpPost]
         public async Task<IHttpActionResult> GetApplicationStates(string UUID)
         {
-            var user = await  db.Users.AsNoTracking().Where(u => u.UUID == UUID).Select(u => u.ID).SingleOrDefaultAsync();
+            var user = await  mDb.Set<User>().AsNoTracking().Where(u => u.UUID == UUID).Select(u => u.ID).SingleOrDefaultAsync();
             if(user != 0) // user exists
             {
-                var dbApplicationState = await db.ApplicationStates.SingleOrDefaultAsync();
+                var dbApplicationState = await mDb.Set<ApplicationState>().SingleOrDefaultAsync();
                 var clientResult = mMapper.Map<ApplicationState , SApplicationState> (dbApplicationState);
                 return Ok(clientResult);
             }
@@ -40,19 +45,6 @@ namespace Falcon.Web.Api.Controllers.V1
                 return Response(HttpStatusCode.Unauthorized);
             }
         }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
-        }
-
-        private bool ApplicationStateExists(int id)
-        {
-            return db.ApplicationStates.Count(e => e.ID == id) > 0;
-        }
+        
     }
 }

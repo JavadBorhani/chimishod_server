@@ -13,29 +13,33 @@ using AutoMapper;
 using Falcon.Web.Models.Api;
 using System.Web.Http.Results;
 using Falcon.Web.Api.Utilities.Extentions;
+using Falcon.Web.Common;
+using Falcon.EFCommonContext;
 
 namespace Falcon.Web.Api.Controllers.V1
 {
+    [UnitOfWorkActionFilter]
     public class QuestionBoostsController : FalconApiController
     {
-        private DbEntity db = new DbEntity();
+        private readonly IDbContext mDb;
         private readonly IMapper mMapper;
 
-        public QuestionBoostsController(IMapper Mapper)
+        public QuestionBoostsController(IMapper Mapper, IDbContext Database)
         {
             mMapper = Mapper;
+            mDb = Database; 
         }
        
-        [ResponseType(typeof(Models.Api.SQuestionBoost))]
+        [ResponseType(typeof(SQuestionBoost))]
         [Route("QuestionBoosts/{UUID}")]
         [HttpPost]
         public async Task<IHttpActionResult> GetQuestionBoostList(string UUID)
         {
-            var user = await db.Users.Where(u => u.UUID == UUID).Select( u => u.ID).SingleOrDefaultAsync();
+            var user = await mDb.Set<User>().Where(u => u.UUID == UUID).Select( u => u.ID).SingleOrDefaultAsync();
 
             if(user != 0)
             {
-                var dbBoostList = await db.QuestionBoosts.ToListAsync();
+                var dbBoostList = await mDb.Set<QuestionBoost>().ToListAsync();
 
                 if(dbBoostList.Count > 0 )
                 {
@@ -50,19 +54,6 @@ namespace Falcon.Web.Api.Controllers.V1
             }
         }
 
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
-        }
-
-        private bool QuestionBoostExists(int id)
-        {
-            return db.QuestionBoosts.Count(e => e.ID == id) > 0;
-        }
 
     }
 }

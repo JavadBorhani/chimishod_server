@@ -9,18 +9,21 @@ using Falcon.EFCommonContext.DbModel;
 using Falcon.Common;
 using System.Web.Http.Results;
 using Falcon.Web.Api.Utilities.Extentions;
+using Falcon.Web.Common;
+using Falcon.EFCommonContext;
 
 namespace Falcon.Web.Api.Controllers.V1
 {
+    [UnitOfWorkActionFilter]
     public class ReportedQuestionsController : FalconApiController
     {
-        private DbEntity db = new DbEntity();
-
+        private readonly IDbContext mDb;
         private readonly IDateTime mDateTime;
 
-        public ReportedQuestionsController(IDateTime DateTime)
+        public ReportedQuestionsController(IDateTime DateTime, IDbContext Database)
         {
             mDateTime = DateTime;
+            mDb = Database;
         }
 
 
@@ -28,12 +31,12 @@ namespace Falcon.Web.Api.Controllers.V1
         [HttpPost]
         public async Task<IHttpActionResult> ReportQuestion(string UUID , int QuestionID , int ReportID)
         {
-            var userID = await db.Users.AsNoTracking().Where(u => u.UUID == UUID).Select(u => u.ID).SingleOrDefaultAsync();
+            var userID = await mDb.Set<User>().AsNoTracking().Where(u => u.UUID == UUID).Select(u => u.ID).SingleOrDefaultAsync();
             if(userID != 0)
             {
-                var reportExists = await db.ReportedQuestions.Where(rq => rq.UserID == userID && rq.QuestionID == QuestionID).Select(rq => rq.ID).SingleOrDefaultAsync();
-                var questionIDExists = await db.Questions.CountAsync( q=> q.ID == QuestionID) > 0;
-                var reportIDExists = await db.ReportTypes.CountAsync(rt => rt.ID == ReportID) > 0;
+                var reportExists = await mDb.Set<ReportedQuestion>().Where(rq => rq.UserID == userID && rq.QuestionID == QuestionID).Select(rq => rq.ID).SingleOrDefaultAsync();
+                var questionIDExists = await mDb.Set<Question>().CountAsync( q=> q.ID == QuestionID) > 0;
+                var reportIDExists = await mDb.Set<ReportType>().CountAsync(rt => rt.ID == ReportID) > 0;
 
                 if (reportExists == 0)
                 {
@@ -46,8 +49,8 @@ namespace Falcon.Web.Api.Controllers.V1
                             ReportTypeID = ReportID,
                             CreatedDate = mDateTime.Now
                         };
-                        db.ReportedQuestions.Add(newReport);
-                        await db.SaveChangesAsync();
+                        mDb.Set<ReportedQuestion>().Add(newReport);
+                        await mDb.SaveChangesAsync();
 
                         return Response(HttpStatusCode.OK);
                     }
@@ -65,20 +68,6 @@ namespace Falcon.Web.Api.Controllers.V1
             {
                 return Response(HttpStatusCode.Unauthorized);
             }
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
-        }
-
-        private bool ReportedQuestionExists(int id)
-        {
-            return db.ReportedQuestions.Count(e => e.ID == id) > 0;
         }
     }
 }

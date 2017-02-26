@@ -13,17 +13,21 @@ using Falcon.EFCommonContext.DbModel;
 using Falcon.Web.Api.Utilities.Extentions;
 using Falcon.Web.Models.Api;
 using AutoMapper;
+using Falcon.Web.Common;
+using Falcon.EFCommonContext;
 
 namespace Falcon.Web.Api.Controllers.V1
 {
+    [UnitOfWorkActionFilter]
     public class LevelsController : FalconApiController
     {
-        private DbEntity db = new DbEntity();
+        private readonly IDbContext mDb;
 
         private readonly IMapper mMapper;
-        public LevelsController(IMapper Mapper)
+        public LevelsController(IMapper Mapper, IDbContext Database)
         {
             mMapper = Mapper;
+            mDb = Database; 
         }
 
         [ResponseType(typeof(SLevel))]
@@ -31,12 +35,12 @@ namespace Falcon.Web.Api.Controllers.V1
         [HttpPost]
         public async Task<IHttpActionResult> GetLevelInfo(string UUID , int LevelNumber)
         {
-            var userID = await db.Users.AsNoTracking().Where(u => u.UUID == UUID).Select(a => a.ID).SingleOrDefaultAsync();
+            var userID = await mDb.Set<User>().AsNoTracking().Where(u => u.UUID == UUID).Select(a => a.ID).SingleOrDefaultAsync();
             if(userID != 0)
             {
                 if(LevelNumber >= 0 )
                 {
-                    var levelinfo = await db.Levels.AsNoTracking().Where(l => l.LevelNumber == LevelNumber).SingleOrDefaultAsync();
+                    var levelinfo = await mDb.Set<Level>().AsNoTracking().Where(l => l.LevelNumber == LevelNumber).SingleOrDefaultAsync();
 
                     if(levelinfo != null)
                     {
@@ -53,20 +57,6 @@ namespace Falcon.Web.Api.Controllers.V1
                 }
             }
             return Response(HttpStatusCode.Unauthorized);
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
-        }
-
-        private bool LevelExists(int id)
-        {
-            return db.Levels.Count(e => e.ID == id) > 0;
         }
     }
 }

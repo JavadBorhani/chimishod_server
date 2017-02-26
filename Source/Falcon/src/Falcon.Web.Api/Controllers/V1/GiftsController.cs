@@ -11,25 +11,19 @@ using System.Web.Http;
 using System.Web.Http.Description;
 using Falcon.EFCommonContext.DbModel;
 using Falcon.Web.Api.Utilities.Extentions;
+using Falcon.Web.Common;
+using Falcon.EFCommonContext;
 
 namespace Falcon.Web.Api.Controllers.V1
 {
+    [UnitOfWorkActionFilter]
     public class GiftsController : FalconApiController
     {
-        private DbEntity db = new DbEntity();
+        private readonly IDbContext mDb;
 
-        protected override void Dispose(bool disposing)
+        public GiftsController(IDbContext Database)
         {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
-        }
-
-        private bool GiftExists(int id)
-        {
-            return db.Gifts.Count(e => e.ID == id) > 0;
+            mDb = Database;
         }
     }
 }

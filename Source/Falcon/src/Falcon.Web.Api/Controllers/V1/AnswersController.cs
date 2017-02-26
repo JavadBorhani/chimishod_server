@@ -13,37 +13,41 @@ using AutoMapper;
 using Falcon.Web.Models.Api;
 using System.Web.Http.Results;
 using Falcon.Web.Api.Utilities.Extentions;
+using Falcon.EFCommonContext;
+using Falcon.Web.Common;
 
 namespace Falcon.Web.Api.Controllers.V1
 {
+    [UnitOfWorkActionFilter]
     public class AnswersController : FalconApiController
     {
-        private DbEntity db = new DbEntity();
         private readonly IDateTime mDateTime;
         private readonly ILog mLogManager;
         private readonly IMapper mMapper;
+        private readonly IDbContext mDb;
 
-        public AnswersController(IDateTime dateTime , ILogManager logManager , IMapper Mapper)
+        public AnswersController(IDateTime dateTime , ILogManager logManager , IMapper Mapper , IDbContext Database)
         {
             mDateTime = dateTime;
             mLogManager = logManager.GetLog(typeof(AnswersController));
             mMapper = Mapper;
+            mDb = Database;
         }
 
         public IQueryable<Answer> GetAnswers()
         {
-            return db.Answers;
+            return mDb.Set<Answer>();
         }
 
         [ResponseType(typeof(SAnswer))]
         public async Task<IHttpActionResult> GetAnswer(int id)
         {
-            Answer answer = await db.Answers.FindAsync(id);
+            Answer answer = await mDb.Set<Answer>().FindAsync(id);
             if (answer == null)
             {
                 return NotFound();
             }
-            var result = new Models.Api.SAnswer
+            var result = new SAnswer
             {
                 UserID = answer.UserID,
                 QuestionID = answer.QuestionID,
@@ -61,7 +65,7 @@ namespace Falcon.Web.Api.Controllers.V1
         [ResponseType(typeof(SUserStatistics))]
         public async Task<IHttpActionResult> GetStatistics(string UUID)
         {
-            var userID = await  db.Users.AsNoTracking().Where(u => u.UUID == UUID).Select( u => u.ID).SingleOrDefaultAsync();
+            var userID = await mDb.Set<User>().AsNoTracking().Where(u => u.UUID == UUID).Select( u => u.ID).SingleOrDefaultAsync();
 
             if(userID != 0)
             {
@@ -69,9 +73,10 @@ namespace Falcon.Web.Api.Controllers.V1
                 int userTotalNo = 0;
                 float userNormal = 0;
 
-                var userAndQuestion = await db.Answers.AsNoTracking()
+                var userAndQuestion = await mDb.Set<Answer>().AsNoTracking()
                                                     .Where( u => u.UserID == userID)
-                                                    .Select( u => new { u.YesNoState, u.Question.Yes_Count , u.Question.No_Count, u.Question.Banned }).ToArrayAsync(); 
+                                                    .Select( u => new { u.YesNoState, u.Question.Yes_Count , u.Question.No_Count, u.Question.Banned })
+                                                    .ToArrayAsync(); 
                 
                 if(userAndQuestion.Length >  0 )
                 {
@@ -111,7 +116,7 @@ namespace Falcon.Web.Api.Controllers.V1
         [HttpPost]
         public async Task<IHttpActionResult> PostingAnswer(string UUID, [FromBody] SAnswer answer)
         {
-            var user = await db.Users.SingleOrDefaultAsync(u => u.UUID == UUID);
+            var user = await mDb.Set<User>().SingleOrDefaultAsync(u => u.UUID == UUID);
             //TODO : Remember to Remove Extar Save Changes on database ;
             if (user != null)
             {
@@ -136,8 +141,8 @@ namespace Falcon.Web.Api.Controllers.V1
                     CreatedDate = mDateTime.Now
                 };
 
-                db.Answers.Add(newAnswer);
-                await db.SaveChangesAsync();
+                mDb.Set<Answer>().Add(newAnswer);
+                await mDb.SaveChangesAsync();
 
 
                 if (answer.IsFavorited == true) // means user favourited the current question
@@ -151,8 +156,8 @@ namespace Falcon.Web.Api.Controllers.V1
                             QuestionID = answer.QuestionID,
                             SelectedDate = mDateTime.Now
                         };
-                        db.Favorites.Add(newFavorite);
-                        await db.SaveChangesAsync();
+                        mDb.Set<Favorite>().Add(newFavorite);
+                        await mDb.SaveChangesAsync();
                     }
                     else
                     {
@@ -166,12 +171,12 @@ namespace Falcon.Web.Api.Controllers.V1
                                 QuestionID = answer.QuestionID,
                                 SelectedDate = mDateTime.Now
                             };
-                            db.Favorites.Add(newFavorite);
-                            await db.SaveChangesAsync();
+                            mDb.Set<Favorite>().Add(newFavorite);
+                            await mDb.SaveChangesAsync();
                         }
                     }
                 }
-                var questionToUpdate = await db.Questions.Where(q => q.ID ==  answer.QuestionID).Include( q => q.Category).SingleOrDefaultAsync();
+                var questionToUpdate = await mDb.Set<Question>().Where(q => q.ID ==  answer.QuestionID).Include( q => q.Category).SingleOrDefaultAsync();
 
                 if (questionToUpdate != null)
                 {
@@ -186,7 +191,7 @@ namespace Falcon.Web.Api.Controllers.V1
                     if (answer.Liked != null)
                     {
                         ++questionToUpdate.Like_Count;
-                        var otherUser = await db.Manufactures.Where(m => m.QuestionID == answer.QuestionID)
+                        var otherUser = await mDb.Set<Manufacture>().Where(m => m.QuestionID == answer.QuestionID)
                                                                 .Include(m => m.User)
                                                                 .Select(m => m.User)
                                                                 .SingleOrDefaultAsync();
@@ -200,7 +205,7 @@ namespace Falcon.Web.Api.Controllers.V1
                     {
                         ++questionToUpdate.Dislike_Count;
                     }
-                    await db.SaveChangesAsync();
+                    await mDb.SaveChangesAsync();
                 }
 
                 int prizeCoefficient = questionToUpdate.Category.PrizeCoefficient;
@@ -208,7 +213,7 @@ namespace Falcon.Web.Api.Controllers.V1
                 {
                     int nextLevelId = await GetNextLevelID(user.Level.LevelNumber);
                     LevelUpChecking(ref user, user.Level.ScoreCeil, Constants.Prize.Answering * prizeCoefficient, nextLevelId);
-                    await db.SaveChangesAsync();
+                    await mDb.SaveChangesAsync();
                 }
                 
                 SQuestion[] Questions;
@@ -219,7 +224,7 @@ namespace Falcon.Web.Api.Controllers.V1
                     if (answer.CategoryToGetQuestion == Constants.DefaultUser.CategoryID)
                         isAbleToGetCategory = true;
                     else
-                        isAbleToGetCategory = await db.PurchaseCategories.AsNoTracking().CountAsync(pc => pc.UserID == user.ID && pc.CategoryID == answer.CategoryToGetQuestion) == 1;
+                        isAbleToGetCategory = await mDb.Set<PurchaseCategory>().AsNoTracking().CountAsync(pc => pc.UserID == user.ID && pc.CategoryID == answer.CategoryToGetQuestion) == 1;
 
                     int CatToGet = -1;
                     if (isAbleToGetCategory)
@@ -228,17 +233,17 @@ namespace Falcon.Web.Api.Controllers.V1
                     }
                     else
                     {
-                        CatToGet = await db.SelectedCategories.AsNoTracking().Where(sc => sc.UserID == user.ID).Select(sc => sc.CategoryID).SingleOrDefaultAsync();
+                        CatToGet = await mDb.Set<SelectedCategory>().AsNoTracking().Where(sc => sc.UserID == user.ID).Select(sc => sc.CategoryID).SingleOrDefaultAsync();
                     }
 
-                    Questions = await db.Questions.Where(question => question.Banned == false && question.Catgory_ID == CatToGet &&
-                                                   !db.Answers.Where(a => a.UserID == user.ID)
+                    Questions = await mDb.Set<Question>().Where(question => question.Banned == false && question.Catgory_ID == CatToGet &&
+                                                   !mDb.Set<Answer>().Where(a => a.UserID == user.ID)
                                                    .Select(y => y.QuestionID)
                                                    .ToList()
                                                    .Contains(question.ID))
                                                    .OrderByDescending(question => question.Weight)
                                                    .Take(Constants.DefaultReturnAmounts.Question)
-                                                   .Join(db.Manufactures, question => question.ID, manu => manu.QuestionID, (question, manu) => new SQuestion
+                                                   .Join(mDb.Set<Manufacture>(), question => question.ID, manu => manu.QuestionID, (question, manu) => new SQuestion
                                                    {
                                                        ID = question.ID,
                                                        What_if = question.What_if,
@@ -285,23 +290,14 @@ namespace Falcon.Web.Api.Controllers.V1
             
         }
 
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
-        }
-
         private async Task<bool> AnswerExists(int userID , int questionID)
         {
-            return await db.Answers.CountAsync(e => e.UserID == userID && e.QuestionID == questionID) > 0;
+            return await mDb.Set<Answer>().CountAsync(e => e.UserID == userID && e.QuestionID == questionID) > 0;
         }
 
         private async Task<int> FavoriteCount(int userID)
         {
-            return await db.Favorites.CountAsync(e => e.UserID == userID);
+            return await mDb.Set<Favorite>().CountAsync(e => e.UserID == userID);
         }
         private void LevelUpChecking(ref User user, int levelCeil, int Prize, int nextLevelID)
         {
@@ -320,7 +316,7 @@ namespace Falcon.Web.Api.Controllers.V1
 
         private async Task<int> GetNextLevelID(int currnetLevelNumber)
         {
-            return await db.Levels.AsNoTracking().Where(l => l.LevelNumber == (currnetLevelNumber + 1)).Select(l => l.ID).SingleOrDefaultAsync();
+            return await mDb.Set<Level>().AsNoTracking().Where(l => l.LevelNumber == (currnetLevelNumber + 1)).Select(l => l.ID).SingleOrDefaultAsync();
         }
     }
 }

@@ -1,37 +1,30 @@
-﻿using System.Data.Entity;
-using System.Data.Entity.Infrastructure;
-using System.Linq;
-using System.Net;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using System.Web.Http;
-using System.Web.Http.Description;
-using Falcon.EFCommonContext.DbModel;
 using Falcon.Common;
+using Falcon.Web.Common;
+using Falcon.EFCommonContext;
+using Falcon.EFCommonContext.DbModel;
+using System.Data.Entity;
+using System.Threading.Tasks;
 
 namespace Falcon.Web.Api.Controllers.V1
 {
+    [UnitOfWorkActionFilter]
     public class UsersController : ApiController
     {
-        private DbEntity db = new DbEntity();
+        private readonly IDbContext mDb;
         private readonly IDateTime mDateTime;
 
-        public UsersController(IDateTime DateTime)
+        public UsersController(IDateTime DateTime , IDbContext Database)
         {
             mDateTime = DateTime;
+            mDb = Database;
         }
 
-        protected override void Dispose(bool disposing)
+        private async Task<bool> UserExists(int id)
         {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
-        }
-
-        private bool UserExists(int id)
-        {
-            return db.Users.Count(e => e.ID == id) > 0;
+            
+            return await mDb.Set<User>().CountAsync(e => e.ID == id) > 0;
         }
     }
 }

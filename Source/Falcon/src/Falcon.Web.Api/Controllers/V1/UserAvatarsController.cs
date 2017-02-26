@@ -14,18 +14,21 @@ using System.Web.Http.Results;
 using Falcon.Common;
 using Falcon.Web.Models.Api;
 using Falcon.Web.Api.Utilities.Extentions;
+using Falcon.Web.Common;
+using Falcon.EFCommonContext;
 
 namespace Falcon.Web.Api.Controllers.V1
 {
+    [UnitOfWorkActionFilter]
     public class UserAvatarsController : FalconApiController
     {
-        private DbEntity db = new DbEntity();
-
+        private readonly IDbContext mDb;
         private readonly IDateTime mDateTime;
 
-        public UserAvatarsController(IDateTime DateTime)
+        public UserAvatarsController(IDateTime DateTime, IDbContext Database)
         {
             mDateTime = DateTime;
+            mDb = Database;
         }
 
 
@@ -34,13 +37,13 @@ namespace Falcon.Web.Api.Controllers.V1
         [HttpPost]
         public async Task<IHttpActionResult> GetUserFacePictureList(string UUID)
         {
-            var userId = await db.Users.AsNoTracking().Where(u => u.UUID == UUID).Select( u => u.ID).SingleOrDefaultAsync();
+            var userId = await mDb.Set<User>().AsNoTracking().Where(u => u.UUID == UUID).Select( u => u.ID).SingleOrDefaultAsync();
             //TODO : Refactor this to one query 
             if (userId != 0)
             {
-                var avatars = await db.UserAvatars.AsNoTracking().ToArrayAsync();
-                var selectedAvatar = await db.SelectedAvatars.AsNoTracking().Where(st => st.UserID == userId).Select(sc => sc.UserAvatarID).SingleOrDefaultAsync();
-                var purchasedAvatars = await db.PurchaseAvatars.AsNoTracking().Where(pt => pt.UserID == userId).Select(c => c.UserAvatarID).ToListAsync();
+                var avatars = await mDb.Set<UserAvatar>().AsNoTracking().ToArrayAsync();
+                var selectedAvatar = await mDb.Set<SelectedAvatar>().AsNoTracking().Where(st => st.UserID == userId).Select(sc => sc.UserAvatarID).SingleOrDefaultAsync();
+                var purchasedAvatars = await mDb.Set<PurchaseAvatar>().AsNoTracking().Where(pt => pt.UserID == userId).Select(c => c.UserAvatarID).ToListAsync();
 
                 if (avatars.Length > 0 && selectedAvatar > 0 && purchasedAvatars.Count >= 0)
                 {
@@ -72,14 +75,14 @@ namespace Falcon.Web.Api.Controllers.V1
         [HttpPost]
         public async Task<IHttpActionResult> SelectUserFacePicture(string UUID, int UserAvatarID)
         {
-            var user = await db.Users.AsNoTracking()
+            var user = await mDb.Set<User>().AsNoTracking()
                                         .Where(u => u.UUID == UUID)
                                         .Select(u => new { u.ID, u.TotalStars })
                                         .SingleOrDefaultAsync();
 
             if (user != null)
             {
-                var userSelectedAvatar = await db.SelectedAvatars.Where(sa => sa.UserID == user.ID)
+                var userSelectedAvatar = await mDb.Set<SelectedAvatar>().Where(sa => sa.UserID == user.ID)
                                                                 .Include( sa => sa.UserAvatar)
                                                                 .SingleOrDefaultAsync();
 
@@ -88,16 +91,16 @@ namespace Falcon.Web.Api.Controllers.V1
                     if (UserAvatarID == Constants.DefaultUser.CategoryID) 
                     {
                         userSelectedAvatar.UserAvatarID = UserAvatarID;
-                        await db.SaveChangesAsync();
+                        await mDb.SaveChangesAsync();
                     }
                     else
                     {
-                        bool hasBoughtCategory = await db.PurchaseAvatars.AsNoTracking().CountAsync(pc => pc.UserID == user.ID && pc.UserAvatarID == UserAvatarID) > 0;
+                        bool hasBoughtCategory = await mDb.Set<PurchaseAvatar>().AsNoTracking().CountAsync(pc => pc.UserID == user.ID && pc.UserAvatarID == UserAvatarID) > 0;
 
                         if (hasBoughtCategory)
                         {
                             userSelectedAvatar.UserAvatarID = UserAvatarID;
-                            await db.SaveChangesAsync();
+                            await mDb.SaveChangesAsync();
                         }
                         else
                         {
@@ -130,16 +133,16 @@ namespace Falcon.Web.Api.Controllers.V1
         [HttpPost]
         public async Task<IHttpActionResult> PurchaseUserAvatar(string UUID , int UserAvatarID)
         {
-            var user = await db.Users.SingleOrDefaultAsync(u => u.UUID == UUID);
+            var user = await mDb.Set<User>().SingleOrDefaultAsync(u => u.UUID == UUID);
             if (user != null)
             {
                 bool bought = false;
-                var avatar = await db.UserAvatars.FindAsync(UserAvatarID);
-                var selectedAvatar = await db.SelectedAvatars.SingleOrDefaultAsync(sc => sc.UserID == user.ID);
+                var avatar = await mDb.Set<UserAvatar>().FindAsync(UserAvatarID);
+                var selectedAvatar = await mDb.Set<SelectedAvatar>().SingleOrDefaultAsync(sc => sc.UserID == user.ID);
 
                 if (avatar != null)
                 {
-                    bool hasBought = (UserAvatarID == Constants.DefaultUser.AvatarID) ? true : await db.PurchaseAvatars.CountAsync(pa => pa.UserID == user.ID && pa.UserAvatarID == UserAvatarID) > 0;
+                    bool hasBought = (UserAvatarID == Constants.DefaultUser.AvatarID) ? true : await mDb.Set<PurchaseAvatar>().CountAsync(pa => pa.UserID == user.ID && pa.UserAvatarID == UserAvatarID) > 0;
                     if (hasBought)
                     {
                         return Response(HttpStatusCode.Conflict);
@@ -157,12 +160,12 @@ namespace Falcon.Web.Api.Controllers.V1
                                 PurchasedDate = mDateTime.Now
                             };
 
-                            db.PurchaseAvatars.Add(newAvatar);
+                            mDb.Set<PurchaseAvatar>().Add(newAvatar);
 
                             selectedAvatar.UserAvatarID = UserAvatarID;
 
                             bought = true;
-                            await db.SaveChangesAsync();
+                            await mDb.SaveChangesAsync();
                         }
                     }
                 }
@@ -181,18 +184,9 @@ namespace Falcon.Web.Api.Controllers.V1
             return NotFound();
         }
 
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
-        }
-
         private async Task<bool> UserAvatarExists(int id)
         {
-            return await db.UserAvatars.CountAsync(e => e.ID == id) > 0;
+            return await mDb.Set<UserAvatar>().CountAsync(e => e.ID == id) > 0;
         }
     }
 }

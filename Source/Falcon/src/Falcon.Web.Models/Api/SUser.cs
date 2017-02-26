@@ -10,11 +10,7 @@ namespace Falcon.Web.Models.Api
         public int? UserTypeID { get; set; }
         public int TotalStars { get; set; }
         public int Score { get; set; }
-        public int LevelProgress { get; set; }
-        public int? LevelNumber { get; set; }
         public bool IsAbleToWriteComment { get; set; }
-        public DateTime LastSceneDateTime { get; set; }
-        public int ScoreCeil { get; set; }
-        public int NextLevelCeil { get; set;}
+        public int LevelProgress { get; set; }
     }
 }

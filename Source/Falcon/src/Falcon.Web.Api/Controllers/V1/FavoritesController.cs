@@ -14,21 +14,23 @@ using System;
 using Falcon.Common.Logging;
 using log4net;
 using Falcon.Web.Api.Utilities.Extentions;
+using Falcon.Web.Common;
+using Falcon.EFCommonContext;
 
 namespace Falcon.Web.Api.Controllers.V1
 {
+    [UnitOfWorkActionFilter]
     public class FavoritesController : FalconApiController
     {
-        private DbEntity db = new DbEntity();
-
-
+        private readonly IDbContext mDb;
         private readonly IMapper mMapper;
         private readonly ILog mLogManager;
         
-        public FavoritesController(IMapper Mapper , ILogManager logManager)
+        public FavoritesController(IMapper Mapper , ILogManager logManager, IDbContext Database)
         {
             mMapper = Mapper;
             mLogManager = logManager.GetLog(typeof(FavoritesController));
+            mDb = Database;
         }
 
         [ResponseType(typeof(SNewCreatedQuestions))]
@@ -37,11 +39,11 @@ namespace Falcon.Web.Api.Controllers.V1
         
         public async Task<IHttpActionResult> GetFavoriteList(string UUID)
         {
-            var userID = await db.Users.AsNoTracking().Where(u => u.UUID == UUID).Select(u => u.ID).SingleOrDefaultAsync();
+            var userID = await mDb.Set<User>().AsNoTracking().Where(u => u.UUID == UUID).Select(u => u.ID).SingleOrDefaultAsync();
 
             if (userID != 0) // UserExists
             {
-                var favoritedQuestion = await db.Favorites.Where(f => f.UserID == userID).Select(f => f.Question).ToListAsync();
+                var favoritedQuestion = await mDb.Set<Favorite>().Where(f => f.UserID == userID).Select(f => f.Question).ToListAsync();
 
                 if(favoritedQuestion.Count > 0 )
                 {
@@ -65,24 +67,24 @@ namespace Falcon.Web.Api.Controllers.V1
 
         public async Task<IHttpActionResult> RemoveFavoritedQuestion(string UUID , int QuestionID)
         {
-            var userID = await db.Users.AsNoTracking().Where(u => u.UUID == UUID).Select(u => u.ID).SingleOrDefaultAsync();
+            var userID = await mDb.Set<User>().AsNoTracking().Where(u => u.UUID == UUID).Select(u => u.ID).SingleOrDefaultAsync();
 
             if (userID != 0) // UserExists
             {
-                var favoritedQuestions = await db.Favorites.Where( f => f.UserID == userID && f.QuestionID == QuestionID).ToArrayAsync();
+                var favoritedQuestions = await mDb.Set<Favorite>().Where( f => f.UserID == userID && f.QuestionID == QuestionID).ToArrayAsync();
 
                 if (favoritedQuestions != null)
                 {
                     if(favoritedQuestions.Length > 1)
                     {
                         mLogManager.Error("More than one favorite");
-                        db.Favorites.RemoveRange(favoritedQuestions);
-                        await db.SaveChangesAsync();
+                        mDb.Set<Favorite>().RemoveRange(favoritedQuestions);
+                        await mDb.SaveChangesAsync();
                     }
                     else if( favoritedQuestions.Length == 1)
                     {
-                        db.Favorites.Remove(favoritedQuestions[0]);
-                        await db.SaveChangesAsync();
+                        mDb.Set<Favorite>().Remove(favoritedQuestions[0]);
+                        await mDb.SaveChangesAsync();
                     }
                    
                     return Response(HttpStatusCode.OK , QuestionID);
@@ -96,20 +98,6 @@ namespace Falcon.Web.Api.Controllers.V1
             {
                 return Response(HttpStatusCode.Unauthorized);
             }
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
-        }
-
-        private bool FavoriteExists(int id)
-        {
-            return db.Favorites.Count(e => e.ID == id) > 0;
         }
     }
 }

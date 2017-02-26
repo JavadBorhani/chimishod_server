@@ -13,20 +13,23 @@ using AutoMapper;
 using Falcon.Web.Models.Api;
 using System.Web.Http.Results;
 using Falcon.Web.Api.Utilities.Extentions;
+using Falcon.Web.Common;
+using Falcon.EFCommonContext;
 
 namespace Falcon.Web.Api.Controllers.V1
 {
+    [UnitOfWorkActionFilter]
     public class StoresController : FalconApiController
     {
-        private DbEntity db = new DbEntity();
-
+        private readonly IDbContext mDb;
         private readonly IMapper mMapper;
         private readonly IDateTime mDateTime;
 
-        public StoresController(IMapper Mapper , IDateTime DateTime)
+        public StoresController(IMapper Mapper , IDateTime DateTime, IDbContext Database)
         {
             mMapper = Mapper;
             mDateTime = DateTime;
+            mDb = Database; 
         }
 
         [ResponseType(typeof(SStore))]
@@ -34,10 +37,10 @@ namespace Falcon.Web.Api.Controllers.V1
         [HttpPost]
         public async Task<IHttpActionResult> GetStoreList(string UUID)
         {
-            var user = await db.Users.AsNoTracking().Where(u => u.UUID == UUID).Select( u => u.ID).SingleOrDefaultAsync();
+            var user = await mDb.Set<User>().AsNoTracking().Where(u => u.UUID == UUID).Select( u => u.ID).SingleOrDefaultAsync();
             if(user != 0)
             {
-                var storeList = await db.Stores.Take(Constants.DefaultValues.StoreNumberToSend).ToListAsync();
+                var storeList = await mDb.Set<Store>().Take(Constants.DefaultValues.StoreNumberToSend).ToListAsync();
 
                 if (storeList.Count > 0)
                 {
@@ -55,18 +58,10 @@ namespace Falcon.Web.Api.Controllers.V1
             }
         }
 
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
-        }
 
         private bool StoreExists(int id)
         {
-            return db.Stores.Count(e => e.ID == id) > 0;
+            return mDb.Set<Store>().Count(e => e.ID == id) > 0;
         }
 
     }

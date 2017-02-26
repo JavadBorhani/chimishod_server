@@ -13,21 +13,22 @@ using System.Web.Http.Results;
 using System.Collections.Generic;
 using AutoMapper;
 using Falcon.Web.Api.Utilities.Extentions;
+using Falcon.EFCommonContext;
 
 namespace Falcon.Web.Api.App_Start
 {
     [UnitOfWorkActionFilter]
     public class CreatedQuestionsController : FalconApiController
     {
-        private DbEntity db = new DbEntity();
-
+        private readonly IDbContext mDb;
         private readonly IDateTime mDateTime;
         private readonly IMapper mMapper;
 
-        public CreatedQuestionsController(IDateTime DateTime , IMapper Mapper)
+        public CreatedQuestionsController(IDateTime DateTime , IMapper Mapper, IDbContext Database)
         {
             mDateTime = DateTime;
             mMapper = Mapper;
+            mDb = Database;
         }
 
         [ResponseType(typeof(SUserState))]
@@ -35,7 +36,7 @@ namespace Falcon.Web.Api.App_Start
         [HttpPost]
         public async Task<IHttpActionResult> CreateNewQuestion(string UUID , int CategoryID, [FromBody] SCreatedQuestion createdQuestion)
         {
-            var user = await db.Users.SingleOrDefaultAsync(u => u.UUID == UUID);
+            var user = await mDb.Set<User>().SingleOrDefaultAsync(u => u.UUID == UUID);
 
             if(user != null)
             {
@@ -45,11 +46,11 @@ namespace Falcon.Web.Api.App_Start
                 }
                 if (await CategoryExistsAndIsAbleToUse(user.ID , CategoryID))
                 {
-                    if(CreatedQuestionExists(user.ID , createdQuestion.What , createdQuestion.But))
+                    if(await CreatedQuestionExists(user.ID , createdQuestion.What , createdQuestion.But))
                     {
                         return ResponseMessage(Request.CreateResponse(HttpStatusCode.Conflict)); //409
                     }
-                    var boost = await db.QuestionBoosts.AsNoTracking()
+                    var boost = await mDb.Set<QuestionBoost>().AsNoTracking()
                                                         .Where(qb => qb.ID == createdQuestion.BoostID)
                                                         .Select(qb => new { qb.Price, qb.ID})
                                                         .SingleOrDefaultAsync();
@@ -72,8 +73,8 @@ namespace Falcon.Web.Api.App_Start
                             RegisterDateTime = mDateTime.Now,
                         };
 
-                        db.CreatedQuestions.Add(newQuestion);
-                        await db.SaveChangesAsync();
+                        mDb.Set<CreatedQuestion>().Add(newQuestion);
+                        await mDb.SaveChangesAsync();
 
                         int nextLevelId = await GetNextLevelID(user.Level.LevelNumber);
                         LevelUpChecking(ref user, user.Level.ScoreCeil, Constants.Prize.CreateQuestionPrize , nextLevelId);
@@ -96,12 +97,12 @@ namespace Falcon.Web.Api.App_Start
         [Route("CreatedQuestions/{UUID}")]
         public async Task<IHttpActionResult> GetCreatedQuestionList(string UUID)
         {
-            var userID = await db.Users.AsNoTracking().Where(u => u.UUID == UUID).Select(u => u.ID).SingleOrDefaultAsync();
+            var userID = await mDb.Set<User>().AsNoTracking().Where(u => u.UUID == UUID).Select(u => u.ID).SingleOrDefaultAsync();
             if(userID != 0)
             {
                 List<SNewCreatedQuestions> output = new List<SNewCreatedQuestions>();
 
-                var questions = await db.Manufactures.AsNoTracking()
+                var questions = await mDb.Set<Manufacture>().AsNoTracking()
                                                     .Where(u => u.UserID == userID)
                                                     .Select(u => u.Question)
                                                     .Where( u => u.Banned == false)
@@ -109,7 +110,7 @@ namespace Falcon.Web.Api.App_Start
 
                 output.AddRange(mMapper.Map<List<Question>, List<SNewCreatedQuestions>>(questions));
 
-                var createdQuestions = await db.CreatedQuestions.AsNoTracking().Where(cq => cq.UserID == userID && 
+                var createdQuestions = await mDb.Set<CreatedQuestion>().AsNoTracking().Where(cq => cq.UserID == userID && 
                                                                 (   
                                                                     cq.VerifyStateID == Constants.DefaultValues.CreatedQuestionIsInChecking || 
                                                                     cq.VerifyStateID == Constants.DefaultValues.CreatedQuestionRejected
@@ -138,24 +139,16 @@ namespace Falcon.Web.Api.App_Start
                 result = true;
             else
             {
-                result = await db.PurchaseCategories.AsNoTracking()
+                result = await mDb.Set<PurchaseCategory>().AsNoTracking()
                                                     .CountAsync(pc => pc.UserID == userID && pc.CategoryID == categoryID) > 0 ;
             }
             return result;
         }
 
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
-        }
 
-        private bool CreatedQuestionExists(int userID , string What , string but)
+        private async Task<bool> CreatedQuestionExists(int userID , string What , string but)
         {
-            return db.CreatedQuestions.Count(e => e.UserID == userID && e.What_if == What && e.But == but) > 0;
+            return await mDb.Set<CreatedQuestion>().CountAsync(e => e.UserID == userID && e.What_if == What && e.But == but) > 0;
         }
 
         private void LevelUpChecking(ref User user, int levelCeil, int Prize, int nextLevelID)
@@ -175,7 +168,7 @@ namespace Falcon.Web.Api.App_Start
 
         private async Task<int> GetNextLevelID(int currnetLevelNumber)
         {
-            return await db.Levels.AsNoTracking().Where(l => l.LevelNumber == (currnetLevelNumber + 1)).Select(l => l.ID).SingleOrDefaultAsync();
+            return await mDb.Set<Level>().AsNoTracking().Where(l => l.LevelNumber == (currnetLevelNumber + 1)).Select(l => l.ID).SingleOrDefaultAsync();
         }
     }
 }

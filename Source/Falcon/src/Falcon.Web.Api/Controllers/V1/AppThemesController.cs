@@ -12,17 +12,22 @@ using System.Web.Http.Description;
 using Falcon.Common;
 using Falcon.EFCommonContext.DbModel;
 using Falcon.Web.Api.Utilities.Extentions;
+using Falcon.EFCommonContext;
+using Falcon.Web.Common;
 
 namespace Falcon.Web.Api.Controllers.V1
 {
+    [UnitOfWorkActionFilter]
     public class AppThemesController : FalconApiController
     {
-        private DbEntity db = new DbEntity(); //TODO : remember to remove this
-
+      
         private readonly IDateTime mDateTime;
-        public AppThemesController(IDateTime dateTime)
+        private readonly IDbContext mDb;
+
+        public AppThemesController(IDateTime dateTime , IDbContext Database)
         {
             mDateTime = dateTime;
+            mDb = Database;
         }
 
         [ResponseType(typeof(Models.Api.SAppTheme))]
@@ -31,13 +36,13 @@ namespace Falcon.Web.Api.Controllers.V1
         public async Task<IHttpActionResult> GetAppThemes(string UUID)
         {
             //TODO : Convert Whole of this into one join 
-
-            var user = await db.Users.SingleOrDefaultAsync(u => u.UUID == UUID);
+            
+            var user = await mDb.Set<User>().SingleOrDefaultAsync(u => u.UUID == UUID);
             if(user != null)
             {
-                var themes = await db.AppThemes.AsNoTracking().ToArrayAsync();
-                var selectedTheme = await db.SelectedThemes.AsNoTracking().Where(st => st.UserID == user.ID).Select( st => st.AppThemeID).SingleOrDefaultAsync();
-                var purchasedThemes = await db.PurchaseThemes.AsNoTracking().Where(pt => pt.UserID == user.ID).Select(c => c.ThemeID).ToListAsync();
+                var themes = await mDb.Set<AppTheme>().AsNoTracking().ToArrayAsync();
+                var selectedTheme = await mDb.Set<SelectedTheme>().AsNoTracking().Where(st => st.UserID == user.ID).Select( st => st.AppThemeID).SingleOrDefaultAsync();
+                var purchasedThemes = await mDb.Set<PurchaseTheme>().AsNoTracking().Where(pt => pt.UserID == user.ID).Select(c => c.ThemeID).ToListAsync();
 
                 if(themes.Length > 0 && selectedTheme > 0 && purchasedThemes.Count >= 0)
                 {
@@ -74,27 +79,27 @@ namespace Falcon.Web.Api.Controllers.V1
         [HttpPost]
         public async Task<IHttpActionResult> SelectAppTheme(string UUID , int ThemeID)
         {
-            var user = await db.Users.AsNoTracking().SingleOrDefaultAsync(u => u.UUID == UUID);
+            var user = await mDb.Set<User>().AsNoTracking().SingleOrDefaultAsync(u => u.UUID == UUID);
             if(user != null)
             {
-                var userSelectedTheme = await db.SelectedThemes.SingleOrDefaultAsync(st => st.UserID == user.ID);
+                var userSelectedTheme = await mDb.Set<SelectedTheme>().SingleOrDefaultAsync(st => st.UserID == user.ID);
 
                 if(await AppThemeExists(ThemeID))
                 {
                     if (ThemeID == Constants.DefaultUser.AppThemeID) //TODO : think about changing default item Over Time :(
                     {
                         userSelectedTheme.AppThemeID = ThemeID;
-                        await db.SaveChangesAsync();
+                        await mDb.SaveChangesAsync();
                     }
                     else
                     {
-                        bool hasBoughtTheme = db.PurchaseThemes.AsNoTracking()
+                        bool hasBoughtTheme = mDb.Set<PurchaseTheme>().AsNoTracking()
                                                         .Count(ph => ph.UserID == user.ID && ph.ThemeID == ThemeID) == 
                                                         Constants.DefaultValues.PurchaseThemeNumberAllowedToBuy; // user has bought properly
                         if (hasBoughtTheme)
                         {
                             userSelectedTheme.AppThemeID = ThemeID;
-                            await db.SaveChangesAsync();
+                            await mDb.SaveChangesAsync();
                         }
                         else
                         {
@@ -114,12 +119,12 @@ namespace Falcon.Web.Api.Controllers.V1
                 }
                 else
                 {
-                    return NotFound(); // TODO : Change to UnAuthorized Request
+                    return Response(HttpStatusCode.Unauthorized) ; 
                 }
             }
             else
             {
-                return NotFound(); // TODO : Change with UnAuthorized
+                return Response(HttpStatusCode.Unauthorized); 
             }
 
         }
@@ -129,15 +134,15 @@ namespace Falcon.Web.Api.Controllers.V1
         [HttpPost]
         public async Task<IHttpActionResult> BuyTheme(string UUID , int ThemeID)
         {
-            var user = await db.Users.SingleOrDefaultAsync(u => u.UUID == UUID);
+            var user = await mDb.Set<User>().SingleOrDefaultAsync(u => u.UUID == UUID);
             if(user != null)
             {
                 bool bought = false;
-                var theme = await db.AppThemes.FindAsync(ThemeID);
-                var selectedTheme = await db.SelectedThemes.SingleOrDefaultAsync(sc => sc.UserID == user.ID);
+                var theme = await mDb.Set<AppTheme>().FindAsync(ThemeID);
+                var selectedTheme = await mDb.Set<SelectedTheme>().SingleOrDefaultAsync(sc => sc.UserID == user.ID);
                 if (theme != null)
                 {
-                    bool hasBought = (ThemeID == Constants.DefaultUser.AppThemeID) ? true : db.PurchaseThemes.Count(ph => ph.UserID == user.ID && ph.ThemeID == ThemeID) > 0;
+                    bool hasBought = (ThemeID == Constants.DefaultUser.AppThemeID) ? true : await mDb.Set<PurchaseTheme>().CountAsync(ph => ph.UserID == user.ID && ph.ThemeID == ThemeID) > 0;
                     if (hasBought)
                     {
                         //TODO : Log to system , unAuthorized Request
@@ -155,7 +160,7 @@ namespace Falcon.Web.Api.Controllers.V1
                                 PurchaseDate = mDateTime.Now
                             };
 
-                            db.PurchaseThemes.Add(newTheme);
+                            mDb.Set<PurchaseTheme>().Add(newTheme);
                             
                             //Select as the current theme
                             
@@ -163,7 +168,7 @@ namespace Falcon.Web.Api.Controllers.V1
 
                             bought = true;
 
-                            await db.SaveChangesAsync();
+                            await mDb.SaveChangesAsync();
                         }
                     }
                 }
@@ -184,18 +189,9 @@ namespace Falcon.Web.Api.Controllers.V1
         }
       
 
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
-        }
-
         private async Task<bool> AppThemeExists(int id)
         {
-            return await db.AppThemes.CountAsync(e => e.ID == id) > 0;
+            return await mDb.Set<AppTheme>().CountAsync(e => e.ID == id) > 0;
         }
     }
 }

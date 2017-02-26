@@ -13,20 +13,23 @@ using System.Web.Http.Results;
 using Falcon.Common;
 using System.Collections.Generic;
 using Falcon.Web.Api.Utilities.Extentions;
+using Falcon.Web.Common;
+using Falcon.EFCommonContext;
 
 namespace Falcon.Web.Api.Controllers.V1
 {
+    [UnitOfWorkActionFilter]
     public class AchievedPosessionsController : FalconApiController
     {
-        private DbEntity db = new DbEntity();
-
         private readonly IMapper mMapper;
         private readonly IDateTime mDateTime;
+        private readonly IDbContext mDb;
 
-        public AchievedPosessionsController(IMapper Mapper , IDateTime DateTime)
+        public AchievedPosessionsController(IMapper Mapper , IDateTime DateTime , IDbContext Database)
         {
             mMapper = Mapper;
             mDateTime = DateTime;
+            mDb = Database;
         }
 
         [Route("Achievements/{UUID}")]
@@ -34,10 +37,11 @@ namespace Falcon.Web.Api.Controllers.V1
         [HttpPost]
         public async Task<IHttpActionResult> GetAchievementList(string UUID)
         {
-            var userID = await db.Users.Where(u => u.UUID == UUID).Select(u => u.ID).SingleOrDefaultAsync();
+            var userID = await mDb.Set<User>().Where(u => u.UUID == UUID).Select(u => u.ID).SingleOrDefaultAsync();
             if(userID != 0) // user Exists
             {
-                var achievables = await db.AchievedPosessions.AsNoTracking()
+                var achievables = await mDb.Set<AchievedPosession>()
+                                                            .AsNoTracking()
                                                             .Include( Ap => Ap.Achievement)
                                                             .Where( ap => ap.UserID == userID && 
                                                                     ap.AchieveStateID == Constants.DefaultValues.AchievementDefaultAchievableID)
@@ -65,10 +69,10 @@ namespace Falcon.Web.Api.Controllers.V1
                 else
                 {
                     List<Achievement> newAchievables = new List<Achievement>();
-                    var userCurrentLevel = await db.Users.Where(u => u.ID == userID).Select(u => u.CurrentLevelID).SingleOrDefaultAsync();
+                    var userCurrentLevel = await mDb.Set<User>().Where(u => u.ID == userID).Select(u => u.CurrentLevelID).SingleOrDefaultAsync();
 
                     
-                    var achievableAndAchievedIDList = await db.AchievedPosessions
+                    var achievableAndAchievedIDList = await mDb.Set<AchievedPosession>()
                                             .AsNoTracking()
                                             .Include(ap => ap.Achievement)
                                             .Where(ap => ap.UserID == userID &&
@@ -78,7 +82,7 @@ namespace Falcon.Web.Api.Controllers.V1
                     achievableAndAchievedIDList.AddRange(achievables.Select( a => a.ID));
 
                     //Get list of Ad-hoc 
-                    adhoc = await db.Achievements.AsNoTracking()
+                    adhoc = await mDb.Set<Achievement>().AsNoTracking()
                         .Where( a => a.IsActive && 
                                 a.QueryTypeID == Constants.DefaultValues.AchievementAdHocQueryTypeID && 
                                 a.LevelID >= userCurrentLevel && 
@@ -90,7 +94,7 @@ namespace Falcon.Web.Api.Controllers.V1
                     {
                         if (!string.IsNullOrEmpty(adhoc[i].Query))
                         {
-                            int result = await db.Database.SqlQuery<int>(adhoc[i].Query, userID).SingleOrDefaultAsync();
+                            int result = await mDb.Database.SqlQuery<int>(adhoc[i].Query, userID).SingleOrDefaultAsync();
                             if (result >= 1)
                             {
                                 newAchievables.Add(adhoc[i]);
@@ -100,11 +104,8 @@ namespace Falcon.Web.Api.Controllers.V1
                         }
                     }
 
-                    //var purchasedCategories = await db.PurchaseCategories.AsNoTracking().Where(pc => pc.UserID == userID).Select( pc => pc.CategoryID).ToListAsync();
-                    //purchasedCategories.Add(Constants.DefaultUser.CategoryID); // Add Default CategoryID
-
                     // Get List of category base
-                    usuals = await db.Achievements.AsNoTracking()
+                    usuals = await mDb.Set<Achievement>().AsNoTracking()
                         .Where( a => a.IsActive && 
                                 a.QueryTypeID == Constants.DefaultValues.AchievementCategoryQueryTypeID &&
                                 !achievableAndAchievedIDList.Contains(a.ID))
@@ -118,7 +119,7 @@ namespace Falcon.Web.Api.Controllers.V1
                     {
                         int? value = usuals[i].CategoryID;
 
-                        var isAchievable = await db.Answers
+                        var isAchievable = await mDb.Set<Answer>()
                             .AsNoTracking()
                             .Include(a => a.Question)
                             .Where(u => u.UserID == userID && u.Question.Catgory_ID == (value ?? 0))
@@ -147,8 +148,8 @@ namespace Falcon.Web.Api.Controllers.V1
                     }
                     if(list.Count > 0 )
                     {
-                        db.AchievedPosessions.AddRange(list);
-                        await db.SaveChangesAsync();
+                        mDb.Set<AchievedPosession>().AddRange(list);
+                        await mDb.SaveChangesAsync();
                         achievables.AddRange(newAchievables);
                     }
                 }
@@ -251,11 +252,11 @@ namespace Falcon.Web.Api.Controllers.V1
         [HttpPost]
         public async Task<IHttpActionResult> ChangeAchievableToAchieved(string UUID, int AchievementID)
         {
-            var user = await db.Users.Where(u => u.UUID == UUID).Include( u => u.Level).SingleOrDefaultAsync();
+            var user = await mDb.Set<User>().Where(u => u.UUID == UUID).Include( u => u.Level).SingleOrDefaultAsync();
 
             if (user != null) //user Exists
             {
-                var achievable = await db.AchievedPosessions
+                var achievable = await mDb.Set<AchievedPosession>()
                                         .Include(ap => ap.Achievement)
                                         .Where(ap => ap.UserID == user.ID &&
                                                ap.AchievementID == AchievementID &&
@@ -272,7 +273,7 @@ namespace Falcon.Web.Api.Controllers.V1
                     int nextLevelId = await GetNextLevelID(user.Level.LevelNumber);
                     LevelUpChecking( ref user , user.Level.ScoreCeil, prize , nextLevelId);
 
-                    await db.SaveChangesAsync();
+                    await mDb.SaveChangesAsync();
                     return Response(HttpStatusCode.OK, user.TotalStars);
                 }
                 return Response(HttpStatusCode.Unauthorized);
@@ -289,10 +290,10 @@ namespace Falcon.Web.Api.Controllers.V1
         [HttpPost]
         public async Task<IHttpActionResult> GetAchievedList(string UUID)
         {
-            int userID = await db.Users.AsNoTracking().Where(u => u.UUID == UUID).Select(u => u.ID).SingleOrDefaultAsync();
+            int userID = await mDb.Set<User>().AsNoTracking().Where(u => u.UUID == UUID).Select(u => u.ID).SingleOrDefaultAsync();
             if(userID != 0) // User Exists
             {
-                var achievedList = await db.AchievedPosessions
+                var achievedList = await mDb.Set<AchievedPosession>()
                                                             .AsNoTracking()
                                                             .Include( ap => ap.Achievement)
                                                             .Where( ap => ap.UserID == userID && 
@@ -319,10 +320,10 @@ namespace Falcon.Web.Api.Controllers.V1
         [HttpPost]
         public async Task<IHttpActionResult> GetAchievableList(string UUID)
         {
-            var userID = await db.Users.AsNoTracking().Where(u => u.UUID == UUID).Select(u => u.ID).SingleOrDefaultAsync();
+            var userID = await mDb.Set<User>().AsNoTracking().Where(u => u.UUID == UUID).Select(u => u.ID).SingleOrDefaultAsync();
             if(userID != 0)
             {
-                var achievableList = await db.AchievedPosessions
+                var achievableList = await mDb.Set<AchievedPosession>()
                                                 .AsNoTracking()
                                                 .Include(ap => ap.Achievement)
                                                 .Where( ap => ap.UserID == userID &&  
@@ -343,20 +344,6 @@ namespace Falcon.Web.Api.Controllers.V1
             }
         }
 
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
-        }
-
-        private bool AchievedPosessionExists(int id)
-        {
-            return db.AchievedPosessions.Count(e => e.ID == id) > 0;
-        }
-
         private void LevelUpChecking(ref User user, int levelCeil ,  int Prize, int nextLevelID)
         {
             user.Score += Prize;
@@ -374,7 +361,7 @@ namespace Falcon.Web.Api.Controllers.V1
 
         private async Task<int> GetNextLevelID(int currnetLevelNumber)
         {
-            return await db.Levels.AsNoTracking().Where(l => l.LevelNumber == (currnetLevelNumber + 1)).Select(l => l.ID).SingleOrDefaultAsync();
+            return await mDb.Set<Level>().AsNoTracking().Where(l => l.LevelNumber == (currnetLevelNumber + 1)).Select(l => l.ID).SingleOrDefaultAsync();
         }
     }
 }

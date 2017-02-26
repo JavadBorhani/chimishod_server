@@ -12,19 +12,23 @@ using Falcon.Web.Models.Api;
 using System.Net.Mail;
 using System.Text.RegularExpressions;
 using Falcon.Web.Api.Utilities.Extentions;
+using Falcon.Web.Common;
+using Falcon.EFCommonContext;
 
 namespace Falcon.Web.Api.Controllers.V1
 {
+    [UnitOfWorkActionFilter]
     public class UserInfoesController : FalconApiController
     {
-        private DbEntity db = new DbEntity();
-
+        
+        private readonly IDbContext mDb;
 
         private readonly IDateTime mDateTime;
 
-        public UserInfoesController(IDateTime DateTime)
+        public UserInfoesController(IDateTime DateTime, IDbContext Database)
         {
             mDateTime = DateTime;
+            mDb = Database;
         }
 
         [ResponseType(typeof(SUserInfo))]
@@ -62,11 +66,11 @@ namespace Falcon.Web.Api.Controllers.V1
         [HttpPost]
         public async Task<IHttpActionResult> GetUserInfo(string UUID)
         {
-            var userID = await db.Users.AsNoTracking().Where(u => u.UUID == UUID).Select(u => u.ID).SingleOrDefaultAsync();
+            var userID = await mDb.Set<User>().AsNoTracking().Where(u => u.UUID == UUID).Select(u => u.ID).SingleOrDefaultAsync();
 
             if (userID != 0)
             {
-                var info = await db.UserInfoes.AsNoTracking()
+                var info = await mDb.Set<UserInfo>().AsNoTracking()
                     .Where(ui => ui.UserID == userID)
                     .Include(ui => ui.User)
                     .Select(ui => new 
@@ -100,11 +104,11 @@ namespace Falcon.Web.Api.Controllers.V1
         {
             if (ModelState.IsValid)
             {
-                var userID = await db.Users.AsNoTracking().Where(u => u.UUID == UUID).Select(u => u.ID).SingleOrDefaultAsync();
+                var userID = await mDb.Set<User>().AsNoTracking().Where(u => u.UUID == UUID).Select(u => u.ID).SingleOrDefaultAsync();
                 string EditSucceed;
                 if (userID != 0)
                 {
-                    var Info = await db.UserInfoes.Where(u => u.UserID == userID).Include(u => u.User).SingleOrDefaultAsync();
+                    var Info = await mDb.Set<UserInfo>().Where(u => u.UserID == userID).Include(u => u.User).SingleOrDefaultAsync();
                     if (Info.IsEditable > 0 && !string.IsNullOrEmpty(UserInfo.Email))
                     {
                         //TODO : Validate User information
@@ -117,7 +121,7 @@ namespace Falcon.Web.Api.Controllers.V1
                                 Info.User.UserName = UserInfo.UserName;
                                 Info.Password = UserInfo.Password;
                                 Info.ChangeInfoDate = mDateTime.Now;
-                                await db.SaveChangesAsync();
+                                await mDb.SaveChangesAsync();
                                 
                                 UserInfo.IsEditable = Info.IsEditable > 0 ? true : false;
                                 UserInfo.Password = null;
@@ -164,7 +168,7 @@ namespace Falcon.Web.Api.Controllers.V1
             UserInfo.Email = "one@one.com";
             if (ModelState.IsValid)
             {
-                var UUID = await db.UserInfoes.AsNoTracking()
+                var UUID = await mDb.Set<UserInfo>().AsNoTracking()
                     .Where(u => u.User.UserName == UserInfo.UserName && u.Password == UserInfo.Password)
                     .Select(u => u.User.UUID)
                     .SingleOrDefaultAsync();
@@ -193,7 +197,7 @@ namespace Falcon.Web.Api.Controllers.V1
             {
                 if (IsValidMail(Info.Email))
                 {
-                    var userInfo = await db.UserInfoes.AsNoTracking()
+                    var userInfo = await mDb.Set<UserInfo>().AsNoTracking()
                                                         .Where(u => u.Email == Info.Email)
                                                         .Select(u => new { u.User.UserName, u.Password })
                                                         .SingleOrDefaultAsync();
@@ -238,15 +242,6 @@ namespace Falcon.Web.Api.Controllers.V1
             SmtpServer.Send(mail);
         }
 
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
-        }
-
         private bool IsValidMail(string Mail)
         {
           return Regex.IsMatch(Mail, @"\A(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)\Z", RegexOptions.IgnoreCase);
@@ -254,24 +249,19 @@ namespace Falcon.Web.Api.Controllers.V1
 
         private async Task<bool> IsAbleToEditProfile(int userID)
         {
-            return await db.UserInfoes.Where(ui => ui.UserID == userID).Select(ui => ui.IsEditable).SingleOrDefaultAsync() > 0; 
-        }
-
-        private bool UserInfoExists(int id)
-        {
-            return db.UserInfoes.Count(e => e.ID == id) > 0;
+            return await mDb.Set<UserInfo>().Where(ui => ui.UserID == userID).Select(ui => ui.IsEditable).SingleOrDefaultAsync() > 0; 
         }
 
 
         private async Task<bool> UserNameIsAccessible(int UserID, string UserName)
         {
             //TODO : Move Email and password to User Table
-            return await db.Users.AsNoTracking().CountAsync(u => u.ID != UserID && u.UserName == UserName) == 0;
+            return await mDb.Set<User>().AsNoTracking().CountAsync(u => u.ID != UserID && u.UserName == UserName) == 0;
         }
         private async Task<bool> EmailIsAccessible(int UserInfoID, string Email)
         {
             //TODO : Move Email and password to User Table
-            return await db.UserInfoes.AsNoTracking().CountAsync(u => u.ID != UserInfoID && u.Email == Email) == 0;
+            return await mDb.Set<UserInfo>().AsNoTracking().CountAsync(u => u.ID != UserInfoID && u.Email == Email) == 0;
         }
     }
 }
