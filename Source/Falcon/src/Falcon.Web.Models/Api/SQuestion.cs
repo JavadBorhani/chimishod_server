@@ -5,6 +5,7 @@ namespace Falcon.Web.Models.Api
     public class SQuestion
     {
         public int ID { get; set; }
+        public string UserName { get; set; }
         public string What_if { get; set; }
         public string But { get; set; }
         public int Catgory_ID { get; set; }
@@ -13,8 +14,7 @@ namespace Falcon.Web.Models.Api
         public int Like_Count { get; set; }
         public int Dislike_Count { get; set; }
         public double Weight { get; set; }
-        public System.DateTime CreatedDate { get; set; }
-        public System.DateTime UpdateDate { get; set; }
         public bool Banned { get; set; }
+        
     }
 }

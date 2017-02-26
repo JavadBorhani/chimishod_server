@@ -231,37 +231,32 @@ namespace Falcon.Web.Api.Controllers.V1
                         CatToGet = await db.SelectedCategories.AsNoTracking().Where(sc => sc.UserID == user.ID).Select(sc => sc.CategoryID).SingleOrDefaultAsync();
                     }
 
-                    var result = await db.Questions.Where(question => question.Banned == false && question.Catgory_ID == CatToGet &&
+                    Questions = await db.Questions.Where(question => question.Banned == false && question.Catgory_ID == CatToGet &&
                                                    !db.Answers.Where(a => a.UserID == user.ID)
                                                    .Select(y => y.QuestionID)
                                                    .ToList()
                                                    .Contains(question.ID))
                                                    .OrderByDescending(question => question.Weight)
                                                    .Take(Constants.DefaultReturnAmounts.Question)
+                                                   .Join(db.Manufactures, question => question.ID, manu => manu.QuestionID, (question, manu) => new SQuestion
+                                                   {
+                                                       ID = question.ID,
+                                                       What_if = question.What_if,
+                                                       But = question.But,
+                                                       Catgory_ID = question.Catgory_ID,
+                                                       Yes_Count = question.Yes_Count,
+                                                       No_Count = question.No_Count,
+                                                       Like_Count = question.Like_Count,
+                                                       Dislike_Count = question.Dislike_Count,
+                                                       Weight = question.Weight,
+                                                       Banned = question.Banned,
+                                                       UserName = manu.User.UserName
+                                                   })
                                                    .ToArrayAsync();
 
-                    if (result.Length > 0)
+                    if (Questions.Length > 0)
                     {
-                        //TODO : Refactor SQuestion Data Model 
-                        Questions = new SQuestion[result.Length];
-                        for (int i = 0; i < Questions.Length; ++i)
-                        {
-                            Questions[i] = new SQuestion
-                            {
-                                ID = result[i].ID,
-                                What_if = result[i].What_if,
-                                But = result[i].But,
-                                Catgory_ID = result[i].Catgory_ID,
-                                Yes_Count = result[i].Yes_Count,
-                                No_Count = result[i].No_Count,
-                                Like_Count = result[i].Like_Count,
-                                Dislike_Count = result[i].Dislike_Count,
-                                Weight = result[i].Weight,
-                                CreatedDate = result[i].CreatedDate,
-                                UpdateDate = result[i].UpdateDate,
-                                Banned = result[i].Banned
-                            };
-                        }
+                      
                         return ResponseMessage(Request.CreateResponse(HttpStatusCode.OK, new { Questions, answer.QuestionID }));
                     }
 

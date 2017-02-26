@@ -125,6 +125,7 @@
     <Compile Include="AutoMappingConfiguration\ApplicationStateMap\ApplicationStateToSApplicationStateAutoTypeConfiguration.cs" />
     <Compile Include="AutoMappingConfiguration\CategoryMap\CategoryToSCategoryAutoTypeConfiguration.cs" />
     <Compile Include="AutoMappingConfiguration\LeaderBoard\UserToSLeaderBoardAutoTypeConfiguration.cs" />
+    <Compile Include="AutoMappingConfiguration\LevelMap\LevelToSLevelAutoTypeConfiguration.cs" />
     <Compile Include="AutoMappingConfiguration\NewCreatedQuestionsMap\CreatedQuestionToSNewCreatedQuestionsAutoTypeConfiguration.cs" />
     <Compile Include="AutoMappingConfiguration\NewCreatedQuestionsMap\QuestionToSNewCreatedQuestionsAutoTypeConfiguration.cs" />
     <Compile Include="AutoMappingConfiguration\QuestionBoostMap\QuestionBoostToSQuestionBoostAutoTypeConfiguration.cs" />

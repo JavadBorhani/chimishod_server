@@ -48,31 +48,24 @@ namespace Falcon.Web.Api.Controllers.V1
                                                .Contains(question.ID))
                                                .OrderByDescending(question => question.Weight)
                                                .Take(Constants.DefaultReturnAmounts.Question)
-                                               .ToArrayAsync();
+                                               .Join(db.Manufactures, question => question.ID , manu => manu.QuestionID ,  (question, manu) => new Models.Api.SQuestion
+                                               {
+                                                   ID = question.ID,
+                                                   What_if = question.What_if,
+                                                   But = question.But,
+                                                   Catgory_ID = question.Catgory_ID,
+                                                   Yes_Count = question.Yes_Count,
+                                                   No_Count = question.No_Count,
+                                                   Like_Count = question.Like_Count,
+                                                   Dislike_Count = question.Dislike_Count,
+                                                   Weight = question.Weight,
+                                                   Banned = question.Banned,
+                                                   UserName = manu.User.UserName
+                                               }).ToArrayAsync();
 
                 if (result.Length > 0)
                 {
-                    //TODO : Refactor SQuestion Data Model 
-                    Models.Api.SQuestion[] questions = new Models.Api.SQuestion[result.Length];
-                    for (int i = 0; i < questions.Length; ++i)
-                    {
-                        questions[i] = new Models.Api.SQuestion
-                        {
-                            ID = result[i].ID,
-                            What_if = result[i].What_if,
-                            But = result[i].But,
-                            Catgory_ID = result[i].Catgory_ID,
-                            Yes_Count = result[i].Yes_Count,
-                            No_Count = result[i].No_Count,
-                            Like_Count = result[i].Like_Count,
-                            Dislike_Count = result[i].Dislike_Count,
-                            Weight = result[i].Weight,
-                            CreatedDate = result[i].CreatedDate,
-                            UpdateDate = result[i].UpdateDate,
-                            Banned = result[i].Banned
-                        };
-                    }
-                    return Ok(questions);
+                    return Ok(result);
                 }
 
                 Models.Api.SQuestion[] noQuestion = new Models.Api.SQuestion[Constants.DefaultReturnAmounts.ServerBurntNumber];

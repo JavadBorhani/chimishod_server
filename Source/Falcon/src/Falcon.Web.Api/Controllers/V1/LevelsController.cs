@@ -10,96 +10,49 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
 using Falcon.EFCommonContext.DbModel;
+using Falcon.Web.Api.Utilities.Extentions;
+using Falcon.Web.Models.Api;
+using AutoMapper;
 
 namespace Falcon.Web.Api.Controllers.V1
 {
-    public class LevelsController : ApiController
+    public class LevelsController : FalconApiController
     {
         private DbEntity db = new DbEntity();
 
-        // GET: api/Levels
-        public IQueryable<Level> GetLevels()
+        private readonly IMapper mMapper;
+        public LevelsController(IMapper Mapper)
         {
-            return db.Levels;
+            mMapper = Mapper;
         }
 
-        // GET: api/Levels/5
-        [ResponseType(typeof(Level))]
-        public async Task<IHttpActionResult> GetLevel(int id)
+        [ResponseType(typeof(SLevel))]
+        [Route("Levels/{UUID}/{LevelNumber}")]
+        [HttpPost]
+        public async Task<IHttpActionResult> GetLevelInfo(string UUID , int LevelNumber)
         {
-            Level level = await db.Levels.FindAsync(id);
-            if (level == null)
+            var userID = await db.Users.AsNoTracking().Where(u => u.UUID == UUID).Select(a => a.ID).SingleOrDefaultAsync();
+            if(userID != 0)
             {
-                return NotFound();
-            }
-
-            return Ok(level);
-        }
-
-        // PUT: api/Levels/5
-        [ResponseType(typeof(void))]
-        public async Task<IHttpActionResult> PutLevel(int id, Level level)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            if (id != level.ID)
-            {
-                return BadRequest();
-            }
-
-            db.Entry(level).State = EntityState.Modified;
-
-            try
-            {
-                await db.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!LevelExists(id))
+                if(LevelNumber >= 0 )
                 {
-                    return NotFound();
+                    var levelinfo = await db.Levels.AsNoTracking().Where(l => l.LevelNumber == LevelNumber).SingleOrDefaultAsync();
+
+                    if(levelinfo != null)
+                    {
+                        return Response(HttpStatusCode.OK, mMapper.Map<Level, SLevel>(levelinfo));
+                    }
+                    else
+                    {
+                        return Response(HttpStatusCode.NotFound);
+                    }
                 }
                 else
                 {
-                    throw;
+                    return Response(HttpStatusCode.NotAcceptable);
                 }
             }
-
-            return StatusCode(HttpStatusCode.NoContent);
-        }
-
-        // POST: api/Levels
-        [ResponseType(typeof(Level))]
-        public async Task<IHttpActionResult> PostLevel(Level level)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            db.Levels.Add(level);
-            await db.SaveChangesAsync();
-
-            return CreatedAtRoute("DefaultApi", new { id = level.ID }, level);
-        }
-
-        // DELETE: api/Levels/5
-        [ResponseType(typeof(Level))]
-        public async Task<IHttpActionResult> DeleteLevel(int id)
-        {
-            Level level = await db.Levels.FindAsync(id);
-            if (level == null)
-            {
-                return NotFound();
-            }
-
-            db.Levels.Remove(level);
-            await db.SaveChangesAsync();
-
-            return Ok(level);
+            return Response(HttpStatusCode.Unauthorized);
         }
 
         protected override void Dispose(bool disposing)
