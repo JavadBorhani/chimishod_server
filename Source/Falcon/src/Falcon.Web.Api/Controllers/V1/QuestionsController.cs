@@ -19,6 +19,7 @@ namespace Falcon.Web.Api.Controllers.V1
     {
         private readonly IDbContext mDb;
 
+
         public QuestionsController(IDbContext Database)
         {
             mDb = Database;
@@ -31,7 +32,6 @@ namespace Falcon.Web.Api.Controllers.V1
         public  async Task<IHttpActionResult> GettingQuestion(string uuid , int CategoryID)
         {
             var user = await mDb.Set<User>().SingleOrDefaultAsync(u => u.UUID == uuid);
-            
             if(user != null)
             {
 
@@ -52,7 +52,7 @@ namespace Falcon.Web.Api.Controllers.V1
                 }
 
                 var result = await mDb.Set<Question>().Where(question => question.Banned == false && question.Catgory_ID == CatToGet &&
-                                               !mDb.Set<Answer>().Where(answer => answer.UserID == user.ID)
+                                               !mDb.Set<Answer>().AsNoTracking().Where(answer => answer.UserID == user.ID)
                                                .Select(y => y.QuestionID)
                                                .ToList()
                                                .Contains(question.ID))
