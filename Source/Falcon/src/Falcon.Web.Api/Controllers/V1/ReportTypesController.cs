@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿// Flapp Copyright 2017-2018
+
+using System.Linq;
 using System.Web.Http;
 using Falcon.EFCommonContext.DbModel;
 using System.Threading.Tasks;

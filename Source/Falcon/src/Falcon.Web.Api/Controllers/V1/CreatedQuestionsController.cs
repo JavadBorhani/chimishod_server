@@ -1,4 +1,6 @@
-﻿using System.Data.Entity;
+﻿// Flapp Copyright 2017-2018
+
+using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -9,7 +11,6 @@ using Falcon.Web.Common;
 using Falcon.Web.Models.Api;
 using Falcon.Common;
 using System.Net.Http;
-using System.Web.Http.Results;
 using System.Collections.Generic;
 using AutoMapper;
 using Falcon.Web.Api.Utilities.Extentions;

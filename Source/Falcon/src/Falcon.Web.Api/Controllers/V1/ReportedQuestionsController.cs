@@ -1,13 +1,13 @@
-﻿using System.Data;
+﻿// Flapp Copyright 2017-2018
+
+using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
 using Falcon.EFCommonContext.DbModel;
 using Falcon.Common;
-using System.Web.Http.Results;
 using Falcon.Web.Api.Utilities.Extentions;
 using Falcon.Web.Common;
 using Falcon.EFCommonContext;

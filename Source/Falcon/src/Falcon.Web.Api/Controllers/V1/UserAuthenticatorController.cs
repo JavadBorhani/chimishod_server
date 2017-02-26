@@ -1,4 +1,6 @@
-﻿using Falcon.Common;
+﻿// Flapp Copyright 2017-2018
+
+using Falcon.Common;
 using Falcon.Data.Exceptions;
 using Falcon.EFCommonContext;
 using Falcon.EFCommonContext.DbModel;
@@ -11,7 +13,6 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
-using System.Web.Http.Results;
 
 namespace Falcon.Web.Api.Controllers.V1
 {

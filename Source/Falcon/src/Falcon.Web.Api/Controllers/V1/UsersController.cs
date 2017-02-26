@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿// Flapp Copyright 2017-2018
+
 using System.Web.Http;
 using Falcon.Common;
 using Falcon.Web.Common;

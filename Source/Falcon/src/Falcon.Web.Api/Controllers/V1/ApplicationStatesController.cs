@@ -1,11 +1,11 @@
-﻿using System.Linq;
+﻿// Flapp Copyright 2017-2018
+
+using System.Linq;
 using System.Web.Http;
 using Falcon.EFCommonContext.DbModel;
 using AutoMapper;
 using System.Threading.Tasks;
 using System.Data.Entity;
-using System.Web.Http.Results;
-using System.Net.Http;
 using System.Net;
 using System.Web.Http.Description;
 using Falcon.Web.Models.Api;
