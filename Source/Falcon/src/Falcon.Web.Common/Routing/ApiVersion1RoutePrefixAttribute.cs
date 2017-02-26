@@ -1,4 +1,4 @@
-﻿// BMS-Studio Copyright 2017-2018
+﻿// Flapp Copyright 2017-2018
 
 using System;
 using System.Web.Http;

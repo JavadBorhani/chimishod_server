@@ -1,4 +1,6 @@
-﻿using System.Data;
+﻿// Flapp Copyright 2017-2018
+
+using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
@@ -6,29 +8,38 @@ using System.Web.Http;
 using System.Web.Http.Description;
 using Falcon.Common;
 using Falcon.EFCommonContext.DbModel;
+using Falcon.Web.Api.Utilities.Extentions;
+using Falcon.Web.Common;
+using Falcon.EFCommonContext;
 
 namespace Falcon.Web.Api.Controllers.V1
 {
-    public class QuestionsController : ApiController
+    [UnitOfWorkActionFilter]
+    public class QuestionsController : FalconApiController
     {
-        private DbEntity db = new DbEntity();
+        private readonly IDbContext mDb;
 
+        public QuestionsController(IDbContext Database)
+        {
+            mDb = Database;
+        }
 
         [ResponseType(typeof(Models.Api.SQuestion))]
         [Route("Questions/Question/{UUID}/{CategoryID}")]
         [HttpGet]
+
         public  async Task<IHttpActionResult> GettingQuestion(string uuid , int CategoryID)
         {
-            var user = await db.Users.SingleOrDefaultAsync(u => u.UUID == uuid);
+            var user = await mDb.Set<User>().SingleOrDefaultAsync(u => u.UUID == uuid);
             
             if(user != null)
             {
 
                 bool isAbleToGetCategory;
-                if (CategoryID == Constants.DefaulUser.CategoryID)
+                if (CategoryID == Constants.DefaultUser.CategoryID)
                     isAbleToGetCategory = true; 
                 else
-                    isAbleToGetCategory = await db.PurchaseCategories.AsNoTracking().CountAsync( pc => pc.UserID == user.ID && pc.CategoryID == CategoryID ) == 1;
+                    isAbleToGetCategory = await mDb.Set<PurchaseCategory>().AsNoTracking().CountAsync( pc => pc.UserID == user.ID && pc.CategoryID == CategoryID ) == 1;
 
                 int CatToGet = -1;
                 if (isAbleToGetCategory)
@@ -37,41 +48,34 @@ namespace Falcon.Web.Api.Controllers.V1
                 }
                 else
                 {
-                    CatToGet = await db.SelectedCategories.AsNoTracking().Where(sc => sc.UserID == user.ID).Select(sc => sc.CategoryID).SingleOrDefaultAsync();
+                    CatToGet = await mDb.Set<SelectedCategory>().AsNoTracking().Where(sc => sc.UserID == user.ID).Select(sc => sc.CategoryID).SingleOrDefaultAsync();
                 }
 
-                var result = await db.Questions.Where(question => question.Banned == false && question.Catgory_ID == CatToGet &&
-                                               !db.Answers.Where(answer => answer.UserID == user.ID)
+                var result = await mDb.Set<Question>().Where(question => question.Banned == false && question.Catgory_ID == CatToGet &&
+                                               !mDb.Set<Answer>().Where(answer => answer.UserID == user.ID)
                                                .Select(y => y.QuestionID)
                                                .ToList()
                                                .Contains(question.ID))
                                                .OrderByDescending(question => question.Weight)
                                                .Take(Constants.DefaultReturnAmounts.Question)
-                                               .ToArrayAsync();
+                                               .Join(mDb.Set<Manufacture>(), question => question.ID , manu => manu.QuestionID ,  (question, manu) => new Models.Api.SQuestion
+                                               {
+                                                   ID = question.ID,
+                                                   What_if = question.What_if,
+                                                   But = question.But,
+                                                   Catgory_ID = question.Catgory_ID,
+                                                   Yes_Count = question.Yes_Count,
+                                                   No_Count = question.No_Count,
+                                                   Like_Count = question.Like_Count,
+                                                   Dislike_Count = question.Dislike_Count,
+                                                   Weight = question.Weight,
+                                                   Banned = question.Banned,
+                                                   UserName = manu.User.UserName
+                                               }).ToArrayAsync();
 
                 if (result.Length > 0)
                 {
-                    //TODO : Refactor SQuestion Data Model 
-                    Models.Api.SQuestion[] questions = new Models.Api.SQuestion[result.Length];
-                    for (int i = 0; i < questions.Length; ++i)
-                    {
-                        questions[i] = new Models.Api.SQuestion
-                        {
-                            ID = result[i].ID,
-                            What_if = result[i].What_if,
-                            But = result[i].But,
-                            Catgory_ID = result[i].Catgory_ID,
-                            Yes_Count = result[i].Yes_Count,
-                            No_Count = result[i].No_Count,
-                            Like_Count = result[i].Like_Count,
-                            Dislike_Count = result[i].Dislike_Count,
-                            Weight = result[i].Weight,
-                            CreatedDate = result[i].CreatedDate,
-                            UpdateDate = result[i].UpdateDate,
-                            Banned = result[i].Banned
-                        };
-                    }
-                    return Ok(questions);
+                    return Ok(result);
                 }
 
                 Models.Api.SQuestion[] noQuestion = new Models.Api.SQuestion[Constants.DefaultReturnAmounts.ServerBurntNumber];
@@ -87,16 +91,6 @@ namespace Falcon.Web.Api.Controllers.V1
                 return Ok(noQuestion);
             }
             return NotFound();
-        }
-
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
         }
 
     }

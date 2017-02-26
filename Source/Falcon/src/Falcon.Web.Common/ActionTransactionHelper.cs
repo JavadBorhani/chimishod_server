@@ -1,4 +1,4 @@
-﻿// BMS-Studio Copyright 2017-2018
+﻿// Flapp Copyright 2017-2018
 using Falcon.EFCommonContext;
 using System;
 using System.Collections.Generic;

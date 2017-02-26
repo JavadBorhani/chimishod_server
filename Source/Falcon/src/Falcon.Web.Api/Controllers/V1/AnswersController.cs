@@ -1,4 +1,6 @@
-﻿using System.Data.Entity;
+﻿// Flapp Copyright 2017-2018
+
+using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -11,38 +13,42 @@ using log4net;
 using Falcon.EFCommonContext.DbModel;
 using AutoMapper;
 using Falcon.Web.Models.Api;
-using System.Web.Http.Results;
+using Falcon.Web.Api.Utilities.Extentions;
+using Falcon.EFCommonContext;
+using Falcon.Web.Common;
 
 namespace Falcon.Web.Api.Controllers.V1
 {
-    public class AnswersController : ApiController
+    [UnitOfWorkActionFilter]
+    public class AnswersController : FalconApiController
     {
-        private DbEntity db = new DbEntity();
         private readonly IDateTime mDateTime;
         private readonly ILog mLogManager;
         private readonly IMapper mMapper;
+        private readonly IDbContext mDb;
 
-        public AnswersController(IDateTime dateTime , ILogManager logManager , IMapper Mapper)
+        public AnswersController(IDateTime dateTime , ILogManager logManager , IMapper Mapper , IDbContext Database)
         {
             mDateTime = dateTime;
             mLogManager = logManager.GetLog(typeof(AnswersController));
             mMapper = Mapper;
+            mDb = Database;
         }
 
         public IQueryable<Answer> GetAnswers()
         {
-            return db.Answers;
+            return mDb.Set<Answer>();
         }
 
         [ResponseType(typeof(SAnswer))]
         public async Task<IHttpActionResult> GetAnswer(int id)
         {
-            Answer answer = await db.Answers.FindAsync(id);
+            Answer answer = await mDb.Set<Answer>().FindAsync(id);
             if (answer == null)
             {
                 return NotFound();
             }
-            var result = new Models.Api.SAnswer
+            var result = new SAnswer
             {
                 UserID = answer.UserID,
                 QuestionID = answer.QuestionID,
@@ -60,7 +66,7 @@ namespace Falcon.Web.Api.Controllers.V1
         [ResponseType(typeof(SUserStatistics))]
         public async Task<IHttpActionResult> GetStatistics(string UUID)
         {
-            var userID = await  db.Users.AsNoTracking().Where(u => u.UUID == UUID).Select( u => u.ID).SingleOrDefaultAsync();
+            var userID = await mDb.Set<User>().AsNoTracking().Where(u => u.UUID == UUID).Select( u => u.ID).SingleOrDefaultAsync();
 
             if(userID != 0)
             {
@@ -68,9 +74,10 @@ namespace Falcon.Web.Api.Controllers.V1
                 int userTotalNo = 0;
                 float userNormal = 0;
 
-                var userAndQuestion = await db.Answers.AsNoTracking()
+                var userAndQuestion = await mDb.Set<Answer>().AsNoTracking()
                                                     .Where( u => u.UserID == userID)
-                                                    .Select( u => new { u.YesNoState, u.Question.Yes_Count , u.Question.No_Count, u.Question.Banned }).ToArrayAsync(); 
+                                                    .Select( u => new { u.YesNoState, u.Question.Yes_Count , u.Question.No_Count, u.Question.Banned })
+                                                    .ToArrayAsync(); 
                 
                 if(userAndQuestion.Length >  0 )
                 {
@@ -102,28 +109,27 @@ namespace Falcon.Web.Api.Controllers.V1
             }
             else
             {
-                return ReturnResponse(HttpStatusCode.Unauthorized);
+                return Response(HttpStatusCode.Unauthorized);
             }
         }
 
         [Route("Answers/Answer/{UUID}")]
-        [ResponseType(typeof(SAnswer))]
         [HttpPost]
-        public async Task<IHttpActionResult> PostingAnswer(string UUID, [FromBody] Models.Api.SAnswer answer)
+        public async Task<IHttpActionResult> PostingAnswer(string UUID, [FromBody] SAnswer answer)
         {
-            var user = await db.Users.SingleOrDefaultAsync(u => u.UUID == UUID);
-
-            if(user != null)
+            var user = await mDb.Set<User>().SingleOrDefaultAsync(u => u.UUID == UUID);
+            //TODO : Remember to Remove Extar Save Changes on database ;
+            if (user != null)
             {
                 if (!ModelState.IsValid)
                 {
                     return BadRequest(ModelState);
                 }
 
-                if(await AnswerExists(user.ID , answer.QuestionID))
+                if (await AnswerExists(user.ID, answer.QuestionID))
                 {
-                    mLogManager.WarnFormat("Question ID {0} has a value in database" , answer.QuestionID);
-                    return Ok(answer.QuestionID);
+                    mLogManager.WarnFormat("Question ID {0} has a value in database", answer.QuestionID);
+                    return Response(HttpStatusCode.Unauthorized);
                 }
 
                 var newAnswer = new Answer
@@ -136,10 +142,11 @@ namespace Falcon.Web.Api.Controllers.V1
                     CreatedDate = mDateTime.Now
                 };
 
-                db.Answers.Add(newAnswer);
-                await db.SaveChangesAsync();
+                mDb.Set<Answer>().Add(newAnswer);
+                await mDb.SaveChangesAsync();
 
-                if(answer.IsFavorited == true) // means user favourited the current question
+
+                if (answer.IsFavorited == true) // means user favourited the current question
                 {
                     var favoriteCount = await FavoriteCount(user.ID);
                     if (favoriteCount < Constants.DefaultValues.FavoriteNumberOfFreeItems)
@@ -150,12 +157,12 @@ namespace Falcon.Web.Api.Controllers.V1
                             QuestionID = answer.QuestionID,
                             SelectedDate = mDateTime.Now
                         };
-                        db.Favorites.Add(newFavorite);
-                        await db.SaveChangesAsync();
+                        mDb.Set<Favorite>().Add(newFavorite);
+                        await mDb.SaveChangesAsync();
                     }
                     else
                     {
-                        if(user.TotalStars - Constants.DefaultValues.FavoriteDefaultPrice >= 0)
+                        if (user.TotalStars - Constants.DefaultValues.FavoriteDefaultPrice >= 0)
                         {
                             user.TotalStars -= Constants.DefaultValues.FavoriteDefaultPrice;
 
@@ -165,16 +172,16 @@ namespace Falcon.Web.Api.Controllers.V1
                                 QuestionID = answer.QuestionID,
                                 SelectedDate = mDateTime.Now
                             };
-                            db.Favorites.Add(newFavorite);
-                            await db.SaveChangesAsync();
+                            mDb.Set<Favorite>().Add(newFavorite);
+                            await mDb.SaveChangesAsync();
                         }
                     }
                 }
-                var questionToUpdate = await db.Questions.FindAsync(answer.QuestionID);
+                var questionToUpdate = await mDb.Set<Question>().Where(q => q.ID ==  answer.QuestionID).Include( q => q.Category).SingleOrDefaultAsync();
 
-                if(questionToUpdate != null)
+                if (questionToUpdate != null)
                 {
-                    if(answer.YesNoState)
+                    if (answer.YesNoState)
                     {
                         ++questionToUpdate.Yes_Count;
                     }
@@ -182,49 +189,135 @@ namespace Falcon.Web.Api.Controllers.V1
                     {
                         ++questionToUpdate.No_Count;
                     }
-                    if(answer.Liked != null)
+                    if (answer.Liked != null)
                     {
                         ++questionToUpdate.Like_Count;
+                        var otherUser = await mDb.Set<Manufacture>().Where(m => m.QuestionID == answer.QuestionID)
+                                                                .Include(m => m.User)
+                                                                .Select(m => m.User)
+                                                                .SingleOrDefaultAsync();
+                        if(otherUser != null)
+                        {
+                            otherUser.Score         += Constants.Prize.LikeQuestion;
+                            otherUser.LevelProgress += Constants.Prize.LikeQuestion;
+                        }
                     }
-                    else if(answer.Dislike != null)
+                    else if (answer.Dislike != null)
                     {
                         ++questionToUpdate.Dislike_Count;
                     }
-                    await db.SaveChangesAsync();
+                    await mDb.SaveChangesAsync();
                 }
-                return Ok(answer.QuestionID);                
-            }
-            return NotFound();
-        }
 
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
+                int prizeCoefficient = questionToUpdate.Category.PrizeCoefficient;
+                if (Constants.Prize.Answering > 0 && prizeCoefficient > 0 )
+                {
+                    int nextLevelId = await GetNextLevelID(user.Level.LevelNumber);
+                    LevelUpChecking(ref user, user.Level.ScoreCeil, Constants.Prize.Answering * prizeCoefficient, nextLevelId);
+                    await mDb.SaveChangesAsync();
+                }
+                
+                SQuestion[] Questions;
+                if (answer.SendQuestion)
+                {
+                    bool isAbleToGetCategory;
+
+                    if (answer.CategoryToGetQuestion == Constants.DefaultUser.CategoryID)
+                        isAbleToGetCategory = true;
+                    else
+                        isAbleToGetCategory = await mDb.Set<PurchaseCategory>().AsNoTracking().CountAsync(pc => pc.UserID == user.ID && pc.CategoryID == answer.CategoryToGetQuestion) == 1;
+
+                    int CatToGet = -1;
+                    if (isAbleToGetCategory)
+                    {
+                        CatToGet = answer.CategoryToGetQuestion;
+                    }
+                    else
+                    {
+                        CatToGet = await mDb.Set<SelectedCategory>().AsNoTracking().Where(sc => sc.UserID == user.ID).Select(sc => sc.CategoryID).SingleOrDefaultAsync();
+                    }
+
+                    Questions = await mDb.Set<Question>().Where(question => question.Banned == false && question.Catgory_ID == CatToGet &&
+                                                   !mDb.Set<Answer>().Where(a => a.UserID == user.ID)
+                                                   .Select(y => y.QuestionID)
+                                                   .ToList()
+                                                   .Contains(question.ID))
+                                                   .OrderByDescending(question => question.Weight)
+                                                   .Take(Constants.DefaultReturnAmounts.Question)
+                                                   .Join(mDb.Set<Manufacture>(), question => question.ID, manu => manu.QuestionID, (question, manu) => new SQuestion
+                                                   {
+                                                       ID = question.ID,
+                                                       What_if = question.What_if,
+                                                       But = question.But,
+                                                       Catgory_ID = question.Catgory_ID,
+                                                       Yes_Count = question.Yes_Count,
+                                                       No_Count = question.No_Count,
+                                                       Like_Count = question.Like_Count,
+                                                       Dislike_Count = question.Dislike_Count,
+                                                       Weight = question.Weight,
+                                                       Banned = question.Banned,
+                                                       UserName = manu.User.UserName
+                                                   })
+                                                   .ToArrayAsync();
+
+                    if (Questions.Length > 0)
+                    {
+                      
+                        return ResponseMessage(Request.CreateResponse(HttpStatusCode.OK, new { Questions, answer.QuestionID }));
+                    }
+
+                    Questions = new SQuestion[Constants.DefaultReturnAmounts.ServerBurntNumber];
+                    for (int i = 0; i < Constants.DefaultReturnAmounts.ServerBurntNumber; ++i)
+                    {
+                        Questions[i] = new SQuestion
+                        {
+                            ID = Constants.DefaultValues.NoQuestionID,
+                            What_if = Constants.DefaultValues.NoQuestionWhat,
+                            But = Constants.DefaultValues.NoQuestionBut
+                        };
+                    }
+                    return ResponseMessage(Request.CreateResponse(HttpStatusCode.OK, new { Questions, answer.QuestionID }));
+                }
+                else
+                {
+                    return Response(HttpStatusCode.OK, answer.QuestionID);
+                }
+
+            }
+            else
             {
-                db.Dispose();
+                return Response(HttpStatusCode.Unauthorized);
             }
-            base.Dispose(disposing);
-        }
-
-        private async Task<bool> AnswerExists(int id)
-        {
-            return await db.Answers.CountAsync(e => e.ID == id) > 0;
+            
         }
 
         private async Task<bool> AnswerExists(int userID , int questionID)
         {
-            return await db.Answers.CountAsync(e => e.UserID == userID && e.QuestionID == questionID) > 0;
+            return await mDb.Set<Answer>().CountAsync(e => e.UserID == userID && e.QuestionID == questionID) > 0;
         }
 
         private async Task<int> FavoriteCount(int userID)
         {
-            return await db.Favorites.CountAsync(e => e.UserID == userID);
+            return await mDb.Set<Favorite>().CountAsync(e => e.UserID == userID);
         }
-
-        private ResponseMessageResult ReturnResponse(HttpStatusCode Code)
+        private void LevelUpChecking(ref User user, int levelCeil, int Prize, int nextLevelID)
         {
-            return ResponseMessage(Request.CreateResponse(Code));
+            user.Score += Prize;
+            if (user.LevelProgress + Prize >= levelCeil)
+            {
+                user.CurrentLevelID = nextLevelID;
+                int remained = (user.LevelProgress + Prize) - levelCeil;
+                user.LevelProgress = remained;
+            }
+            else
+            {
+                user.LevelProgress += Prize;
+            }
         }
 
+        private async Task<int> GetNextLevelID(int currnetLevelNumber)
+        {
+            return await mDb.Set<Level>().AsNoTracking().Where(l => l.LevelNumber == (currnetLevelNumber + 1)).Select(l => l.ID).SingleOrDefaultAsync();
+        }
     }
 }

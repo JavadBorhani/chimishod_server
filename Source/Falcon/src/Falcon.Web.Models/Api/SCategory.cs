@@ -1,4 +1,4 @@
-﻿// BMS-Studio Copyright 2017-2018
+﻿// Flapp Copyright 2017-2018
 
 namespace Falcon.Web.Models.Api
 {
@@ -14,5 +14,6 @@ namespace Falcon.Web.Models.Api
         public int Price { get; set; }
         public bool IsActive { get; set; }
         public bool IsPurchased { get; set; }
+        public int PrizeCoefficient { get; set; }
     }
 }

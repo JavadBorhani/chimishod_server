@@ -33,6 +33,7 @@
           <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Description" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="Star" Type="int" Nullable="false" />
+          <Property Name="Prize" Type="int" Nullable="false" />
           <Property Name="Icon" Type="varchar" MaxLength="150" Nullable="false" />
           <Property Name="RectangleColor" Type="varchar" MaxLength="10" Nullable="false" />
           <Property Name="QueryTypeID" Type="int" />
@@ -40,9 +41,9 @@
           <Property Name="LevelID" Type="int" />
           <Property Name="CategoryID" Type="int" />
           <Property Name="CategoryQuantity" Type="int" />
-          <Property Name="IsActive" Type="bit" Nullable="false" />
           <Property Name="CreatedDate" Type="datetime" Nullable="false" />
           <Property Name="UpdatedDate" Type="datetime" Nullable="false" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="AchievementQueryType">
           <Key>
@@ -81,6 +82,9 @@
           <Property Name="DefaultUserName" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="DefaultUserCoin" Type="int" Nullable="false" />
           <Property Name="CreateQuestionPrice" Type="int" Nullable="false" />
+          <Property Name="AnswerPrize" Type="int" Nullable="false" />
+          <Property Name="LikePrize" Type="int" Nullable="false" />
+          <Property Name="CreateNewQuestionPrize" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="AppTheme">
           <Key>
@@ -109,6 +113,7 @@
           <Property Name="CircleColor" Type="varchar" MaxLength="10" Nullable="false" />
           <Property Name="RectangleColor" Type="varchar" MaxLength="10" Nullable="false" />
           <Property Name="Price" Type="int" Nullable="false" />
+          <Property Name="PrizeCoefficient" Type="int" Nullable="false" />
           <Property Name="CreatedDate" Type="datetime" Nullable="false" />
           <Property Name="UpdatedDate" Type="datetime" Nullable="false" />
         </EntityType>
@@ -130,12 +135,12 @@
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="UserID" Type="int" Nullable="false" />
-          <Property Name="QuestionBoostID" Type="int" />
           <Property Name="What_if" Type="nvarchar" MaxLength="250" Nullable="false" />
           <Property Name="But" Type="nvarchar" MaxLength="250" Nullable="false" />
           <Property Name="RegisterDateTime" Type="datetime" Nullable="false" />
           <Property Name="VerifyStateID" Type="int" Nullable="false" />
           <Property Name="CategoryID" Type="int" />
+          <Property Name="QuestionBoostID" Type="int" />
         </EntityType>
         <EntityType Name="CreatedQuestionsVerifyType">
           <Key>
@@ -172,9 +177,9 @@
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="LevelNumber" Type="int" Nullable="false" />
           <Property Name="Star" Type="int" Nullable="false" />
-          <Property Name="TotalQuestion" Type="int" Nullable="false" />
-          <Property Name="Avatar" Type="varchar" MaxLength="150" Nullable="false" />
+          <Property Name="ScoreCeil" Type="int" Nullable="false" />
           <Property Name="CreatedDate" Type="datetime" Nullable="false" />
           <Property Name="UpdatedDate" Type="datetime" Nullable="false" />
         </EntityType>
@@ -210,6 +215,15 @@
           <Property Name="CreatedDate" Type="datetime" Nullable="false" />
           <Property Name="UpdatedDate" Type="datetime" Nullable="false" />
         </EntityType>
+        <EntityType Name="PurchaseAvatar">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserAvatarID" Type="int" Nullable="false" />
+          <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="PurchasedDate" Type="datetime" Nullable="false" />
+        </EntityType>
         <EntityType Name="PurchaseCategory">
           <Key>
             <PropertyRef Name="ID" />
@@ -236,7 +250,6 @@
           <Property Name="What_if" Type="nvarchar" MaxLength="250" Nullable="false" />
           <Property Name="But" Type="nvarchar" MaxLength="250" Nullable="false" />
           <Property Name="Catgory_ID" Type="int" Nullable="false" />
-          <Property Name="QuestionBoostID" Type="int" />
           <Property Name="Yes_Count" Type="int" Nullable="false" />
           <Property Name="No_Count" Type="int" Nullable="false" />
           <Property Name="Like_Count" Type="int" Nullable="false" />
@@ -245,6 +258,7 @@
           <Property Name="CreatedDate" Type="datetime" Nullable="false" />
           <Property Name="UpdateDate" Type="datetime" Nullable="false" />
           <Property Name="Banned" Type="bit" Nullable="false" />
+          <Property Name="QuestionBoostID" Type="int" />
         </EntityType>
         <EntityType Name="QuestionBoost">
           <Key>
@@ -276,6 +290,14 @@
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="30" Nullable="false" />
           <Property Name="Description" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="SelectedAvatar">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="UserAvatarID" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="SelectedCategory">
           <Key>
@@ -323,13 +345,23 @@
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="UUID" Type="varchar" MaxLength="36" Nullable="false" />
-          <Property Name="UserName" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="UserName" Type="nvarchar" MaxLength="40" Nullable="false" />
           <Property Name="UserTypeID" Type="int" />
           <Property Name="TotalStars" Type="int" Nullable="false" />
-          <Property Name="LastSceneDateTime" Type="datetime" Nullable="false" />
-          <Property Name="LevelAnsweredNumber" Type="int" Nullable="false" />
-          <Property Name="CurrentLevelID" Type="int" Nullable="false" />
+          <Property Name="Score" Type="int" Nullable="false" />
+          <Property Name="LevelProgress" Type="int" Nullable="false" />
+          <Property Name="CurrentLevelID" Type="int" />
           <Property Name="IsAbleToWriteComment" Type="bit" Nullable="false" />
+          <Property Name="LastSceneDateTime" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="UserAvatar">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PicUrl" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="Price" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="UserInfo">
           <Key>
@@ -337,14 +369,15 @@
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="UserID" Type="int" Nullable="false" />
-          <Property Name="FirstName" Type="nvarchar" MaxLength="20" />
-          <Property Name="LastName" Type="nvarchar" MaxLength="30" />
           <Property Name="Email" Type="varchar" MaxLength="50" />
+          <Property Name="Password" Type="nvarchar" MaxLength="50" />
           <Property Name="PhoneNumber" Type="varchar" MaxLength="20" />
           <Property Name="GoogleID" Type="varchar" MaxLength="40" />
           <Property Name="IsVerified" Type="bit" Nullable="false" />
           <Property Name="IsBanned" Type="bit" Nullable="false" />
+          <Property Name="IsEditable" Type="int" Nullable="false" />
           <Property Name="RegisterDateTime" Type="datetime" Nullable="false" />
+          <Property Name="ChangeInfoDate" Type="datetime" />
         </EntityType>
         <EntityType Name="UserType">
           <Key>
@@ -648,6 +681,34 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_PurchaseAvatar_User">
+          <End Role="User" Type="Self.User" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="PurchaseAvatar" Type="Self.PurchaseAvatar" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="PurchaseAvatar">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PurchaseAvatar_UserAvatar">
+          <End Role="UserAvatar" Type="Self.UserAvatar" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="PurchaseAvatar" Type="Self.PurchaseAvatar" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserAvatar">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="PurchaseAvatar">
+              <PropertyRef Name="UserAvatarID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_PurchaseCategory_Category">
           <End Role="Category" Type="Self.Category" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -770,6 +831,34 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_SelectedAvatar_User">
+          <End Role="User" Type="Self.User" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="SelectedAvatar" Type="Self.SelectedAvatar" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="SelectedAvatar">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SelectedAvatar_UserAvatar">
+          <End Role="UserAvatar" Type="Self.UserAvatar" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="SelectedAvatar" Type="Self.SelectedAvatar" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserAvatar">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="SelectedAvatar">
+              <PropertyRef Name="UserAvatarID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_SelectedCategory_Category">
           <End Role="Category" Type="Self.Category" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -827,7 +916,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_User_Level">
-          <End Role="Level" Type="Self.Level" Multiplicity="1" />
+          <End Role="Level" Type="Self.Level" Multiplicity="0..1" />
           <End Role="User" Type="Self.User" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Level">
@@ -883,17 +972,20 @@
           <EntitySet Name="Manufacture" EntityType="Self.Manufacture" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Order" EntityType="Self.Order" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="OurAdvertisements" EntityType="Self.OurAdvertisements" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PurchaseAvatar" EntityType="Self.PurchaseAvatar" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PurchaseCategory" EntityType="Self.PurchaseCategory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PurchaseTheme" EntityType="Self.PurchaseTheme" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Question" EntityType="Self.Question" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="QuestionBoost" EntityType="Self.QuestionBoost" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ReportedQuestions" EntityType="Self.ReportedQuestions" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ReportType" EntityType="Self.ReportType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SelectedAvatar" EntityType="Self.SelectedAvatar" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SelectedCategory" EntityType="Self.SelectedCategory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SelectedTheme" EntityType="Self.SelectedTheme" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Store" EntityType="Self.Store" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserAvatar" EntityType="Self.UserAvatar" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserInfo" EntityType="Self.UserInfo" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserType" EntityType="Self.UserType" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_AchievedGifts_Gift" Association="Self.FK_AchievedGifts_Gift">
@@ -984,6 +1076,14 @@
             <End Role="User" EntitySet="User" />
             <End Role="Order" EntitySet="Order" />
           </AssociationSet>
+          <AssociationSet Name="FK_PurchaseAvatar_User" Association="Self.FK_PurchaseAvatar_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="PurchaseAvatar" EntitySet="PurchaseAvatar" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PurchaseAvatar_UserAvatar" Association="Self.FK_PurchaseAvatar_UserAvatar">
+            <End Role="UserAvatar" EntitySet="UserAvatar" />
+            <End Role="PurchaseAvatar" EntitySet="PurchaseAvatar" />
+          </AssociationSet>
           <AssociationSet Name="FK_PurchaseCategory_Category" Association="Self.FK_PurchaseCategory_Category">
             <End Role="Category" EntitySet="Category" />
             <End Role="PurchaseCategory" EntitySet="PurchaseCategory" />
@@ -1019,6 +1119,14 @@
           <AssociationSet Name="FK_ReportedQuestions_User" Association="Self.FK_ReportedQuestions_User">
             <End Role="User" EntitySet="User" />
             <End Role="ReportedQuestions" EntitySet="ReportedQuestions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SelectedAvatar_User" Association="Self.FK_SelectedAvatar_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="SelectedAvatar" EntitySet="SelectedAvatar" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SelectedAvatar_UserAvatar" Association="Self.FK_SelectedAvatar_UserAvatar">
+            <End Role="UserAvatar" EntitySet="UserAvatar" />
+            <End Role="SelectedAvatar" EntitySet="SelectedAvatar" />
           </AssociationSet>
           <AssociationSet Name="FK_SelectedCategory_Category" Association="Self.FK_SelectedCategory_Category">
             <End Role="Category" EntitySet="Category" />
@@ -1072,17 +1180,20 @@
           <EntitySet Name="Manufactures" EntityType="Falcon.DbModel.Manufacture" />
           <EntitySet Name="Orders" EntityType="Falcon.DbModel.Order" />
           <EntitySet Name="OurAdvertisements" EntityType="Falcon.DbModel.OurAdvertisement" />
+          <EntitySet Name="PurchaseAvatars" EntityType="Falcon.DbModel.PurchaseAvatar" />
           <EntitySet Name="PurchaseCategories" EntityType="Falcon.DbModel.PurchaseCategory" />
           <EntitySet Name="PurchaseThemes" EntityType="Falcon.DbModel.PurchaseTheme" />
           <EntitySet Name="Questions" EntityType="Falcon.DbModel.Question" />
           <EntitySet Name="QuestionBoosts" EntityType="Falcon.DbModel.QuestionBoost" />
           <EntitySet Name="ReportedQuestions" EntityType="Falcon.DbModel.ReportedQuestion" />
           <EntitySet Name="ReportTypes" EntityType="Falcon.DbModel.ReportType" />
+          <EntitySet Name="SelectedAvatars" EntityType="Falcon.DbModel.SelectedAvatar" />
           <EntitySet Name="SelectedCategories" EntityType="Falcon.DbModel.SelectedCategory" />
           <EntitySet Name="SelectedThemes" EntityType="Falcon.DbModel.SelectedTheme" />
           <EntitySet Name="Stores" EntityType="Falcon.DbModel.Store" />
           <EntitySet Name="sysdiagrams" EntityType="Falcon.DbModel.sysdiagram" />
           <EntitySet Name="Users" EntityType="Falcon.DbModel.User" />
+          <EntitySet Name="UserAvatars" EntityType="Falcon.DbModel.UserAvatar" />
           <EntitySet Name="UserInfoes" EntityType="Falcon.DbModel.UserInfo" />
           <EntitySet Name="UserTypes" EntityType="Falcon.DbModel.UserType" />
           <AssociationSet Name="FK_AchievedGifts_Gift" Association="Falcon.DbModel.FK_AchievedGifts_Gift">
@@ -1197,6 +1308,14 @@
             <End Role="User" EntitySet="Users" />
             <End Role="Order" EntitySet="Orders" />
           </AssociationSet>
+          <AssociationSet Name="FK_PurchaseAvatar_User" Association="Falcon.DbModel.FK_PurchaseAvatar_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="PurchaseAvatar" EntitySet="PurchaseAvatars" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PurchaseAvatar_UserAvatar" Association="Falcon.DbModel.FK_PurchaseAvatar_UserAvatar">
+            <End Role="UserAvatar" EntitySet="UserAvatars" />
+            <End Role="PurchaseAvatar" EntitySet="PurchaseAvatars" />
+          </AssociationSet>
           <AssociationSet Name="FK_PurchaseCategory_User" Association="Falcon.DbModel.FK_PurchaseCategory_User">
             <End Role="User" EntitySet="Users" />
             <End Role="PurchaseCategory" EntitySet="PurchaseCategories" />
@@ -1220,6 +1339,14 @@
           <AssociationSet Name="FK_ReportedQuestions_User" Association="Falcon.DbModel.FK_ReportedQuestions_User">
             <End Role="User" EntitySet="Users" />
             <End Role="ReportedQuestion" EntitySet="ReportedQuestions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SelectedAvatar_User" Association="Falcon.DbModel.FK_SelectedAvatar_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="SelectedAvatar" EntitySet="SelectedAvatars" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SelectedAvatar_UserAvatar" Association="Falcon.DbModel.FK_SelectedAvatar_UserAvatar">
+            <End Role="UserAvatar" EntitySet="UserAvatars" />
+            <End Role="SelectedAvatar" EntitySet="SelectedAvatars" />
           </AssociationSet>
           <AssociationSet Name="FK_SelectedCategory_User" Association="Falcon.DbModel.FK_SelectedCategory_User">
             <End Role="User" EntitySet="Users" />
@@ -1271,6 +1398,7 @@
           <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Description" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="Star" Type="Int32" Nullable="false" />
+          <Property Name="Prize" Type="Int32" Nullable="false" />
           <Property Name="Icon" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
           <Property Name="RectangleColor" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Name="QueryTypeID" Type="Int32" />
@@ -1278,9 +1406,9 @@
           <Property Name="LevelID" Type="Int32" />
           <Property Name="CategoryID" Type="Int32" />
           <Property Name="CategoryQuantity" Type="Int32" />
-          <Property Name="IsActive" Type="Boolean" Nullable="false" />
           <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="UpdatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="AchievedPosessions" Relationship="Falcon.DbModel.FK_AchievedQuests_Quest" FromRole="Achievement" ToRole="AchievedPosession" />
           <NavigationProperty Name="AchievementQueryType" Relationship="Falcon.DbModel.FK_Achievement_AchievementQueryType" FromRole="Achievement" ToRole="AchievementQueryType" />
           <NavigationProperty Name="Category" Relationship="Falcon.DbModel.FK_Achievement_Category" FromRole="Achievement" ToRole="Category" />
@@ -1327,6 +1455,9 @@
           <Property Name="DefaultUserName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="DefaultUserCoin" Type="Int32" Nullable="false" />
           <Property Name="CreateQuestionPrice" Type="Int32" Nullable="false" />
+          <Property Name="AnswerPrize" Type="Int32" Nullable="false" />
+          <Property Name="LikePrize" Type="Int32" Nullable="false" />
+          <Property Name="CreateNewQuestionPrize" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="AppTheme">
           <Key>
@@ -1357,6 +1488,7 @@
           <Property Name="CircleColor" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Name="RectangleColor" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Name="Price" Type="Int32" Nullable="false" />
+          <Property Name="PrizeCoefficient" Type="Int32" Nullable="false" />
           <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="UpdatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="Achievements" Relationship="Falcon.DbModel.FK_Achievement_Category" FromRole="Category" ToRole="Achievement" />
@@ -1385,12 +1517,12 @@
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="UserID" Type="Int32" Nullable="false" />
-          <Property Name="QuestionBoostID" Type="Int32" />
           <Property Name="What_if" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
           <Property Name="But" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
           <Property Name="RegisterDateTime" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="VerifyStateID" Type="Int32" Nullable="false" />
           <Property Name="CategoryID" Type="Int32" />
+          <Property Name="QuestionBoostID" Type="Int32" />
           <NavigationProperty Name="Category" Relationship="Falcon.DbModel.FK_CreatedQuestions_Category" FromRole="CreatedQuestion" ToRole="Category" />
           <NavigationProperty Name="CreatedQuestionsVerifyType" Relationship="Falcon.DbModel.FK_CreatedQuestions_CreatedQuestionsVerifyType" FromRole="CreatedQuestion" ToRole="CreatedQuestionsVerifyType" />
           <NavigationProperty Name="QuestionBoost" Relationship="Falcon.DbModel.FK_CreatedQuestions_QuestionBoost" FromRole="CreatedQuestion" ToRole="QuestionBoost" />
@@ -1435,9 +1567,9 @@
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="LevelNumber" Type="Int32" Nullable="false" />
           <Property Name="Star" Type="Int32" Nullable="false" />
-          <Property Name="TotalQuestion" Type="Int32" Nullable="false" />
-          <Property Name="Avatar" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="ScoreCeil" Type="Int32" Nullable="false" />
           <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="UpdatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="Achievements" Relationship="Falcon.DbModel.FK_Achievement_Level" FromRole="Level" ToRole="Achievement" />
@@ -1479,6 +1611,17 @@
           <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="UpdatedDate" Type="DateTime" Nullable="false" Precision="3" />
         </EntityType>
+        <EntityType Name="PurchaseAvatar">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserAvatarID" Type="Int32" Nullable="false" />
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="PurchasedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="User" Relationship="Falcon.DbModel.FK_PurchaseAvatar_User" FromRole="PurchaseAvatar" ToRole="User" />
+          <NavigationProperty Name="UserAvatar" Relationship="Falcon.DbModel.FK_PurchaseAvatar_UserAvatar" FromRole="PurchaseAvatar" ToRole="UserAvatar" />
+        </EntityType>
         <EntityType Name="PurchaseCategory">
           <Key>
             <PropertyRef Name="ID" />
@@ -1509,7 +1652,6 @@
           <Property Name="What_if" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
           <Property Name="But" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
           <Property Name="Catgory_ID" Type="Int32" Nullable="false" />
-          <Property Name="QuestionBoostID" Type="Int32" />
           <Property Name="Yes_Count" Type="Int32" Nullable="false" />
           <Property Name="No_Count" Type="Int32" Nullable="false" />
           <Property Name="Like_Count" Type="Int32" Nullable="false" />
@@ -1518,6 +1660,7 @@
           <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="UpdateDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="Banned" Type="Boolean" Nullable="false" />
+          <Property Name="QuestionBoostID" Type="Int32" />
           <NavigationProperty Name="Answers" Relationship="Falcon.DbModel.FK_Answer_Question" FromRole="Question" ToRole="Answer" />
           <NavigationProperty Name="Category" Relationship="Falcon.DbModel.FK_Question_Category" FromRole="Question" ToRole="Category" />
           <NavigationProperty Name="Comments" Relationship="Falcon.DbModel.FK_Comment_Question" FromRole="Question" ToRole="Comment" />
@@ -1562,6 +1705,16 @@
           <Property Name="Name" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="true" />
           <Property Name="Description" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="ReportedQuestions" Relationship="Falcon.DbModel.FK_ReportedQuestions_ReportType" FromRole="ReportType" ToRole="ReportedQuestion" />
+        </EntityType>
+        <EntityType Name="SelectedAvatar">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="UserAvatarID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="User" Relationship="Falcon.DbModel.FK_SelectedAvatar_User" FromRole="SelectedAvatar" ToRole="User" />
+          <NavigationProperty Name="UserAvatar" Relationship="Falcon.DbModel.FK_SelectedAvatar_UserAvatar" FromRole="SelectedAvatar" ToRole="UserAvatar" />
         </EntityType>
         <EntityType Name="SelectedCategory">
           <Key>
@@ -1614,13 +1767,14 @@
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="UUID" Type="String" Nullable="false" MaxLength="36" FixedLength="false" Unicode="false" />
-          <Property Name="UserName" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="UserName" Type="String" Nullable="false" MaxLength="40" FixedLength="false" Unicode="true" />
           <Property Name="UserTypeID" Type="Int32" />
           <Property Name="TotalStars" Type="Int32" Nullable="false" />
-          <Property Name="LastSceneDateTime" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="LevelAnsweredNumber" Type="Int32" Nullable="false" />
-          <Property Name="CurrentLevelID" Type="Int32" Nullable="false" />
+          <Property Name="Score" Type="Int32" Nullable="false" />
+          <Property Name="LevelProgress" Type="Int32" Nullable="false" />
+          <Property Name="CurrentLevelID" Type="Int32" />
           <Property Name="IsAbleToWriteComment" Type="Boolean" Nullable="false" />
+          <Property Name="LastSceneDateTime" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="AchievedGifts" Relationship="Falcon.DbModel.FK_AchievedGifts_User" FromRole="User" ToRole="AchievedGift" />
           <NavigationProperty Name="AchievedPosessions" Relationship="Falcon.DbModel.FK_AchievedQuests_User" FromRole="User" ToRole="AchievedPosession" />
           <NavigationProperty Name="Answers" Relationship="Falcon.DbModel.FK_Answer_User" FromRole="User" ToRole="Answer" />
@@ -1630,13 +1784,26 @@
           <NavigationProperty Name="Level" Relationship="Falcon.DbModel.FK_User_Level" FromRole="User" ToRole="Level" />
           <NavigationProperty Name="Manufactures" Relationship="Falcon.DbModel.FK_Manufacture_User" FromRole="User" ToRole="Manufacture" />
           <NavigationProperty Name="Orders" Relationship="Falcon.DbModel.FK_Order_User" FromRole="User" ToRole="Order" />
+          <NavigationProperty Name="PurchaseAvatars" Relationship="Falcon.DbModel.FK_PurchaseAvatar_User" FromRole="User" ToRole="PurchaseAvatar" />
           <NavigationProperty Name="PurchaseCategories" Relationship="Falcon.DbModel.FK_PurchaseCategory_User" FromRole="User" ToRole="PurchaseCategory" />
           <NavigationProperty Name="PurchaseThemes" Relationship="Falcon.DbModel.FK_PurchaseTheme_User" FromRole="User" ToRole="PurchaseTheme" />
           <NavigationProperty Name="ReportedQuestions" Relationship="Falcon.DbModel.FK_ReportedQuestions_User" FromRole="User" ToRole="ReportedQuestion" />
+          <NavigationProperty Name="SelectedAvatars" Relationship="Falcon.DbModel.FK_SelectedAvatar_User" FromRole="User" ToRole="SelectedAvatar" />
           <NavigationProperty Name="SelectedCategories" Relationship="Falcon.DbModel.FK_SelectedCategory_User" FromRole="User" ToRole="SelectedCategory" />
           <NavigationProperty Name="SelectedThemes" Relationship="Falcon.DbModel.FK_SelectedTheme_User" FromRole="User" ToRole="SelectedTheme" />
           <NavigationProperty Name="UserType" Relationship="Falcon.DbModel.FK_User_UserType" FromRole="User" ToRole="UserType" />
           <NavigationProperty Name="UserInfoes" Relationship="Falcon.DbModel.FK_UserInfo_User" FromRole="User" ToRole="UserInfo" />
+        </EntityType>
+        <EntityType Name="UserAvatar">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PicUrl" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="Price" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="PurchaseAvatars" Relationship="Falcon.DbModel.FK_PurchaseAvatar_UserAvatar" FromRole="UserAvatar" ToRole="PurchaseAvatar" />
+          <NavigationProperty Name="SelectedAvatars" Relationship="Falcon.DbModel.FK_SelectedAvatar_UserAvatar" FromRole="UserAvatar" ToRole="SelectedAvatar" />
         </EntityType>
         <EntityType Name="UserInfo">
           <Key>
@@ -1644,14 +1811,15 @@
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="UserID" Type="Int32" Nullable="false" />
-          <Property Name="FirstName" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="LastName" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
           <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="PhoneNumber" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="GoogleID" Type="String" MaxLength="40" FixedLength="false" Unicode="false" />
           <Property Name="IsVerified" Type="Boolean" Nullable="false" />
           <Property Name="IsBanned" Type="Boolean" Nullable="false" />
+          <Property Name="IsEditable" Type="Int32" Nullable="false" />
           <Property Name="RegisterDateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ChangeInfoDate" Type="DateTime" Precision="3" />
           <NavigationProperty Name="User" Relationship="Falcon.DbModel.FK_UserInfo_User" FromRole="UserInfo" ToRole="User" />
         </EntityType>
         <EntityType Name="UserType">
@@ -1972,7 +2140,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_User_Level">
-          <End Type="Falcon.DbModel.Level" Role="Level" Multiplicity="1" />
+          <End Type="Falcon.DbModel.Level" Role="Level" Multiplicity="0..1" />
           <End Type="Falcon.DbModel.User" Role="User" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Level">
@@ -2036,6 +2204,34 @@
             </Principal>
             <Dependent Role="Order">
               <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PurchaseAvatar_User">
+          <End Type="Falcon.DbModel.User" Role="User" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="Falcon.DbModel.PurchaseAvatar" Role="PurchaseAvatar" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="PurchaseAvatar">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PurchaseAvatar_UserAvatar">
+          <End Type="Falcon.DbModel.UserAvatar" Role="UserAvatar" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="Falcon.DbModel.PurchaseAvatar" Role="PurchaseAvatar" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserAvatar">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="PurchaseAvatar">
+              <PropertyRef Name="UserAvatarID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2116,6 +2312,34 @@
             </Principal>
             <Dependent Role="ReportedQuestion">
               <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SelectedAvatar_User">
+          <End Type="Falcon.DbModel.User" Role="User" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="Falcon.DbModel.SelectedAvatar" Role="SelectedAvatar" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="SelectedAvatar">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SelectedAvatar_UserAvatar">
+          <End Type="Falcon.DbModel.UserAvatar" Role="UserAvatar" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="Falcon.DbModel.SelectedAvatar" Role="SelectedAvatar" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserAvatar">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="SelectedAvatar">
+              <PropertyRef Name="UserAvatarID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2204,9 +2428,9 @@
           <EntitySetMapping Name="Achievements">
             <EntityTypeMapping TypeName="Falcon.DbModel.Achievement">
               <MappingFragment StoreEntitySet="Achievement">
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
                 <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
                 <ScalarProperty Name="CategoryQuantity" ColumnName="CategoryQuantity" />
                 <ScalarProperty Name="CategoryID" ColumnName="CategoryID" />
                 <ScalarProperty Name="LevelID" ColumnName="LevelID" />
@@ -2214,6 +2438,7 @@
                 <ScalarProperty Name="QueryTypeID" ColumnName="QueryTypeID" />
                 <ScalarProperty Name="RectangleColor" ColumnName="RectangleColor" />
                 <ScalarProperty Name="Icon" ColumnName="Icon" />
+                <ScalarProperty Name="Prize" ColumnName="Prize" />
                 <ScalarProperty Name="Star" ColumnName="Star" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
@@ -2255,6 +2480,9 @@
           <EntitySetMapping Name="ApplicationStates">
             <EntityTypeMapping TypeName="Falcon.DbModel.ApplicationState">
               <MappingFragment StoreEntitySet="ApplicationState">
+                <ScalarProperty Name="CreateNewQuestionPrize" ColumnName="CreateNewQuestionPrize" />
+                <ScalarProperty Name="LikePrize" ColumnName="LikePrize" />
+                <ScalarProperty Name="AnswerPrize" ColumnName="AnswerPrize" />
                 <ScalarProperty Name="CreateQuestionPrice" ColumnName="CreateQuestionPrice" />
                 <ScalarProperty Name="DefaultUserCoin" ColumnName="DefaultUserCoin" />
                 <ScalarProperty Name="DefaultUserName" ColumnName="DefaultUserName" />
@@ -2284,6 +2512,7 @@
               <MappingFragment StoreEntitySet="Category">
                 <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="PrizeCoefficient" ColumnName="PrizeCoefficient" />
                 <ScalarProperty Name="Price" ColumnName="Price" />
                 <ScalarProperty Name="RectangleColor" ColumnName="RectangleColor" />
                 <ScalarProperty Name="CircleColor" ColumnName="CircleColor" />
@@ -2311,12 +2540,12 @@
           <EntitySetMapping Name="CreatedQuestions">
             <EntityTypeMapping TypeName="Falcon.DbModel.CreatedQuestion">
               <MappingFragment StoreEntitySet="CreatedQuestions">
+                <ScalarProperty Name="QuestionBoostID" ColumnName="QuestionBoostID" />
                 <ScalarProperty Name="CategoryID" ColumnName="CategoryID" />
                 <ScalarProperty Name="VerifyStateID" ColumnName="VerifyStateID" />
                 <ScalarProperty Name="RegisterDateTime" ColumnName="RegisterDateTime" />
                 <ScalarProperty Name="But" ColumnName="But" />
                 <ScalarProperty Name="What_if" ColumnName="What_if" />
-                <ScalarProperty Name="QuestionBoostID" ColumnName="QuestionBoostID" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
@@ -2360,9 +2589,9 @@
               <MappingFragment StoreEntitySet="Level">
                 <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-                <ScalarProperty Name="Avatar" ColumnName="Avatar" />
-                <ScalarProperty Name="TotalQuestion" ColumnName="TotalQuestion" />
+                <ScalarProperty Name="ScoreCeil" ColumnName="ScoreCeil" />
                 <ScalarProperty Name="Star" ColumnName="Star" />
+                <ScalarProperty Name="LevelNumber" ColumnName="LevelNumber" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -2402,6 +2631,16 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="PurchaseAvatars">
+            <EntityTypeMapping TypeName="Falcon.DbModel.PurchaseAvatar">
+              <MappingFragment StoreEntitySet="PurchaseAvatar">
+                <ScalarProperty Name="PurchasedDate" ColumnName="PurchasedDate" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="UserAvatarID" ColumnName="UserAvatarID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="PurchaseCategories">
             <EntityTypeMapping TypeName="Falcon.DbModel.PurchaseCategory">
               <MappingFragment StoreEntitySet="PurchaseCategory">
@@ -2425,6 +2664,7 @@
           <EntitySetMapping Name="Questions">
             <EntityTypeMapping TypeName="Falcon.DbModel.Question">
               <MappingFragment StoreEntitySet="Question">
+                <ScalarProperty Name="QuestionBoostID" ColumnName="QuestionBoostID" />
                 <ScalarProperty Name="Banned" ColumnName="Banned" />
                 <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
@@ -2433,7 +2673,6 @@
                 <ScalarProperty Name="Like_Count" ColumnName="Like_Count" />
                 <ScalarProperty Name="No_Count" ColumnName="No_Count" />
                 <ScalarProperty Name="Yes_Count" ColumnName="Yes_Count" />
-                <ScalarProperty Name="QuestionBoostID" ColumnName="QuestionBoostID" />
                 <ScalarProperty Name="Catgory_ID" ColumnName="Catgory_ID" />
                 <ScalarProperty Name="But" ColumnName="But" />
                 <ScalarProperty Name="What_if" ColumnName="What_if" />
@@ -2471,6 +2710,15 @@
               <MappingFragment StoreEntitySet="ReportType">
                 <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SelectedAvatars">
+            <EntityTypeMapping TypeName="Falcon.DbModel.SelectedAvatar">
+              <MappingFragment StoreEntitySet="SelectedAvatar">
+                <ScalarProperty Name="UserAvatarID" ColumnName="UserAvatarID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -2522,10 +2770,11 @@
           <EntitySetMapping Name="Users">
             <EntityTypeMapping TypeName="Falcon.DbModel.User">
               <MappingFragment StoreEntitySet="User">
+                <ScalarProperty Name="LastSceneDateTime" ColumnName="LastSceneDateTime" />
                 <ScalarProperty Name="IsAbleToWriteComment" ColumnName="IsAbleToWriteComment" />
                 <ScalarProperty Name="CurrentLevelID" ColumnName="CurrentLevelID" />
-                <ScalarProperty Name="LevelAnsweredNumber" ColumnName="LevelAnsweredNumber" />
-                <ScalarProperty Name="LastSceneDateTime" ColumnName="LastSceneDateTime" />
+                <ScalarProperty Name="LevelProgress" ColumnName="LevelProgress" />
+                <ScalarProperty Name="Score" ColumnName="Score" />
                 <ScalarProperty Name="TotalStars" ColumnName="TotalStars" />
                 <ScalarProperty Name="UserTypeID" ColumnName="UserTypeID" />
                 <ScalarProperty Name="UserName" ColumnName="UserName" />
@@ -2534,17 +2783,28 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="UserAvatars">
+            <EntityTypeMapping TypeName="Falcon.DbModel.UserAvatar">
+              <MappingFragment StoreEntitySet="UserAvatar">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="PicUrl" ColumnName="PicUrl" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="UserInfoes">
             <EntityTypeMapping TypeName="Falcon.DbModel.UserInfo">
               <MappingFragment StoreEntitySet="UserInfo">
+                <ScalarProperty Name="ChangeInfoDate" ColumnName="ChangeInfoDate" />
                 <ScalarProperty Name="RegisterDateTime" ColumnName="RegisterDateTime" />
+                <ScalarProperty Name="IsEditable" ColumnName="IsEditable" />
                 <ScalarProperty Name="IsBanned" ColumnName="IsBanned" />
                 <ScalarProperty Name="IsVerified" ColumnName="IsVerified" />
                 <ScalarProperty Name="GoogleID" ColumnName="GoogleID" />
                 <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
                 <ScalarProperty Name="Email" ColumnName="Email" />
-                <ScalarProperty Name="LastName" ColumnName="LastName" />
-                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>

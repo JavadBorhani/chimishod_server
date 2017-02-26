@@ -1,4 +1,6 @@
-﻿using System.Data;
+﻿// Flapp Copyright 2017-2018
+
+using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
@@ -6,28 +8,32 @@ using System.Web.Http;
 using System.Web.Http.Description;
 using Falcon.Common;
 using Falcon.EFCommonContext.DbModel;
+using Falcon.Web.Api.Utilities.Extentions;
+using Falcon.Web.Common;
+using Falcon.EFCommonContext;
 
 namespace Falcon.Web.Api.Controllers.V1
 {
-    public class CommentsController : ApiController
+    [UnitOfWorkActionFilter]
+    public class CommentsController : FalconApiController
     {
-        private DbEntity db = new DbEntity();
-
+        private readonly IDbContext mDb;
         private readonly IDateTime mDateTime;
 
-        public CommentsController(IDateTime dateTime)
+        public CommentsController(IDateTime dateTime, IDbContext Database)
         {
             mDateTime = dateTime;
+            mDb = Database;
         }
 
         [Route("Comments/{UUID}/{QuestionID}")]
         [HttpGet]
         public async Task<IHttpActionResult> GettingComments(string UUID , int QuestionID)
         {
-            var user = await db.Users.SingleOrDefaultAsync(u => u.UUID == UUID);
+            var user = await mDb.Set<User>().SingleOrDefaultAsync(u => u.UUID == UUID);
             if(user != null)
             {
-                var result = await db.Comments.AsNoTracking()
+                var result = await mDb.Set<Comment>().AsNoTracking()
                                         .Where(comment => comment.QuestionID == QuestionID && comment.IsVerified == true)
                                         .Take(Constants.DefaultReturnAmounts.Comment).ToArrayAsync();
 
@@ -63,8 +69,8 @@ namespace Falcon.Web.Api.Controllers.V1
                 return BadRequest(ModelState);
             }
 
-            var user = await db.Users.SingleOrDefaultAsync(u => u.UUID == UUID);
-            var question = await db.Questions.FindAsync(QuestionID);
+            var user = await mDb.Set<User>().SingleOrDefaultAsync(u => u.UUID == UUID);
+            var question = await mDb.Set<Question>().FindAsync(QuestionID);
 
             if(user != null && question != null)
             {
@@ -78,27 +84,14 @@ namespace Falcon.Web.Api.Controllers.V1
                    InsertDate = mDateTime.Now
                 };
 
-                db.Comments.Add(comment);
-                await db.SaveChangesAsync();
+                mDb.Set<Comment>().Add(comment);
+                await mDb.SaveChangesAsync();
                 return Ok();
             }
             else
             {
                 return NotFound();
             }
-        }
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
-        }
-
-        private async Task<bool> CommentExists(int id)
-        {
-            return await db.Comments.CountAsync(e => e.ID == id) > 0;
         }
     }
 }

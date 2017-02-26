@@ -1,4 +1,4 @@
-﻿// BMS-Studio Copyright 2017-2018
+﻿// Flapp Copyright 2017-2018
 
 using System;
 using System.Collections.Generic;
@@ -23,6 +23,13 @@ namespace Falcon.Common
             get
             {
                 return DateTime.UtcNow; 
+            }
+        }
+        public long Ticks
+        {
+            get
+            {
+                return DateTime.Now.Ticks;
             }
         }
     }
