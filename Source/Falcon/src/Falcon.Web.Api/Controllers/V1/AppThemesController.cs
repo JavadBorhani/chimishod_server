@@ -61,6 +61,8 @@ namespace Falcon.Web.Api.Controllers.V1
                             SquareColor = themes[i].SquareColor,
                             CircleColor = themes[i].CircleColor,
                             Price = themes[i].Price,
+                            BackImage = themes[i].BackImage,
+                            DialogImage = themes[i].DialogImage,
                             IsPurchased = (themes[i].ID == Constants.DefaultUser.AppThemeID) ? true : purchasedThemes.Contains(themes[i].ID), // TODO : remember to remove what has checked to increase checking time
                             IsActive = (selectedTheme == themes[i].ID) ? true : false
                         };                        

@@ -4,6 +4,9 @@ using Falcon.Web.Common.ErrorHandling;
 
 using System.Web.Http;
 using System.Web.Http.ExceptionHandling;
+using System.Web.Http.Dispatcher;
+using System.Web.Http.Routing;
+using Falcon.Web.Common.Routing;
 
 namespace Falcon.Web.Api
 {
@@ -30,20 +33,17 @@ namespace Falcon.Web.Api
                 defaults: new { id = RouteParameter.Optional }
             );
 
-
-
-            //TODO : Adding Namespace routing to controller , Also remember to remove the above route codes, no more default controller based routing
-            //var constraintResolver = new DefaultInlineConstraintResolver();
-            //constraintResolver.ConstraintMap.Add("ApiVersionConstraint", typeof(ApiVersionConstraint));
-            //config.MapHttpAttributeRoutes(constraintResolver);
-
-
-            //config.Services.Replace(typeof(IHttpControllerSelector), new NamespaceHttpControllerSelector(config)); 
-
             //Summary : A Key to see exactly what's going on behind the scene step by step
             //config.Services.Replace(typeof(ITraceWriter), new SimpleTraceWriter(WebContainerManager.Get<ILogManager>()));
 
-            config.Services.Add(typeof(IExceptionLogger), new SimpleExceptionLogger(WebContainerManager.Get<ILogManager>()));
+
+            //TODO : Adding Namespace routing to controller , Also remember to remove the above route codes, no more default controller based routing
+
+            //var constraintResolver = new DefaultInlineConstraintResolver();
+            //constraintResolver.ConstraintMap.Add("apiVersionConstraint", typeof(ApiVersionConstraint));
+            //config.MapHttpAttributeRoutes(constraintResolver);
+            //config.Services.Replace(typeof(IHttpControllerSelector), new NamespaceHttpControllerSelector(config)); 
+
             config.Services.Replace(typeof(IExceptionHandler), new GlobalExceptionHandler());
             config.Services.Add(typeof(IExceptionLogger), new SimpleExceptionLogger(WebContainerManager.Get<ILogManager>()));
 

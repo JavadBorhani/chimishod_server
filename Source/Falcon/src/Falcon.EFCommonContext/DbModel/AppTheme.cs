@@ -28,7 +28,8 @@ namespace Falcon.EFCommonContext.DbModel
         public string SquareColor { get; set; }
         public string CircleColor { get; set; }
         public int Price { get; set; }
-        public string Style { get; set; }
+        public string BackImage { get; set; }
+        public string DialogImage { get; set; }
         public System.DateTime CreatedDate { get; set; }
         public System.DateTime UpdatedDate { get; set; }
     

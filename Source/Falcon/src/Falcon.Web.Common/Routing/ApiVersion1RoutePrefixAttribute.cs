@@ -7,7 +7,7 @@ namespace Falcon.Web.Common.Routing
 {
     public class ApiVersion1RoutePrefixAttribute : RoutePrefixAttribute
     {
-        private const string RouteBase = "api/{apiVersion:ApiVersionConstraint(V1)}";
+        private const string RouteBase = "api/{apiVersion:apiVersionConstraint(v1)}";
         private const string PrefixRouteBase = RouteBase + "/";
 
         public ApiVersion1RoutePrefixAttribute(string routePrefix) 

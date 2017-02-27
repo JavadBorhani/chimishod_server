@@ -11,7 +11,8 @@ namespace Falcon.Web.Models.Api
         public string SquareColor { get; set; }
         public string CircleColor { get; set; }
         public int Price { get; set; }
-        public string Style { get; set; }
+        public string BackImage { get; set; }
+        public string DialogImage { get; set; }
         public bool IsActive { get; set; }
         public bool IsPurchased { get; set; }
     }

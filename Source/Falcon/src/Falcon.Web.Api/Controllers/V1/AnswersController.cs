@@ -23,14 +23,14 @@ namespace Falcon.Web.Api.Controllers.V1
     public class AnswersController : FalconApiController
     {
         private readonly IDateTime mDateTime;
-        private readonly ILog mLogManager;
+        private readonly ILog mLogger;
         private readonly IMapper mMapper;
         private readonly IDbContext mDb;
 
         public AnswersController(IDateTime dateTime , ILogManager logManager , IMapper Mapper , IDbContext Database)
         {
             mDateTime = dateTime;
-            mLogManager = logManager.GetLog(typeof(AnswersController));
+            mLogger = logManager.GetLog(typeof(AnswersController));
             mMapper = Mapper;
             mDb = Database;
         }
@@ -128,7 +128,7 @@ namespace Falcon.Web.Api.Controllers.V1
 
                 if (await AnswerExists(user.ID, answer.QuestionID))
                 {
-                    mLogManager.WarnFormat("Question ID {0} has a value in database", answer.QuestionID);
+                    mLogger.WarnFormat("Question ID {0} has a value in database", answer.QuestionID);
                     return Response(HttpStatusCode.Unauthorized);
                 }
 

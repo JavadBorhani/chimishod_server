@@ -58,7 +58,7 @@ namespace Falcon.Common
         {
             public const string ApiSegmentName = "api";
             public const string ApiVersionSegmentName = "apiVersion";
-            public const string CurrentApiVersion = "V1";
+            public const string CurrentApiVersion = "v1";
         }
         public static class SchemeTypes
         {
