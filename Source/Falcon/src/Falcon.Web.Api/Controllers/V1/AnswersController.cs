@@ -237,14 +237,17 @@ namespace Falcon.Web.Api.Controllers.V1
                         CatToGet = await mDb.Set<SelectedCategory>().AsNoTracking().Where(sc => sc.UserID == user.ID).Select(sc => sc.CategoryID).SingleOrDefaultAsync();
                     }
 
-                    Questions = await mDb.Set<Question>().Where(question => question.Banned == false && question.Catgory_ID == CatToGet &&
-                                                   !mDb.Set<Answer>().Where(a => a.UserID == user.ID)
+                    var answerRef = mDb.Set<Answer>();
+                    var manuRef = mDb.Set<Manufacture>();
+
+                    Questions = await mDb.Set<Question>().AsNoTracking().Where(question => question.Banned == false && question.Catgory_ID == CatToGet &&
+                                                   !answerRef.Where(a => a.UserID == user.ID)
                                                    .Select(y => y.QuestionID)
                                                    .ToList()
                                                    .Contains(question.ID))
                                                    .OrderByDescending(question => question.Weight)
                                                    .Take(Constants.DefaultReturnAmounts.Question)
-                                                   .Join(mDb.Set<Manufacture>(), question => question.ID, manu => manu.QuestionID, (question, manu) => new SQuestion
+                                                   .Join(manuRef, question => question.ID, manu => manu.QuestionID, (question, manu) => new SQuestion
                                                    {
                                                        ID = question.ID,
                                                        What_if = question.What_if,

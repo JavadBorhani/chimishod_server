@@ -12,6 +12,8 @@ using Falcon.EFCommonContext.DbModel;
 using Falcon.Web.Api.Utilities.Extentions;
 using Falcon.EFCommonContext;
 using Falcon.Web.Common;
+using log4net;
+using Falcon.Common.Logging;
 
 namespace Falcon.Web.Api.Controllers.V1
 {
@@ -21,11 +23,13 @@ namespace Falcon.Web.Api.Controllers.V1
       
         private readonly IDateTime mDateTime;
         private readonly IDbContext mDb;
+        private readonly ILog mLogger;
 
-        public AppThemesController(IDateTime dateTime , IDbContext Database)
+        public AppThemesController(IDateTime dateTime , IDbContext Database , ILogManager LogManager)
         {
             mDateTime = dateTime;
             mDb = Database;
+            mLogger = LogManager.GetLog(typeof(AppThemesController));
         }
 
         [ResponseType(typeof(Models.Api.SAppTheme))]
@@ -68,7 +72,7 @@ namespace Falcon.Web.Api.Controllers.V1
                 return NotFound();
             }
 
-            return NotFound();  // TODO : Replace with UnAuthorized
+            return Response(HttpStatusCode.Unauthorized);  
         }
 
 
@@ -101,7 +105,7 @@ namespace Falcon.Web.Api.Controllers.V1
                         }
                         else
                         {
-                            //TODO : Logging UnAuthorized Request
+                            mLogger.Error("Item has not been purchased + " + UUID);
                         }
                     }
 
@@ -143,7 +147,7 @@ namespace Falcon.Web.Api.Controllers.V1
                     bool hasBought = (ThemeID == Constants.DefaultUser.AppThemeID) ? true : await mDb.Set<PurchaseTheme>().CountAsync(ph => ph.UserID == user.ID && ph.ThemeID == ThemeID) > 0;
                     if (hasBought)
                     {
-                        //TODO : Log to system , unAuthorized Request
+                        mLogger.Error("Trying to buy an item which has been purchased" + UUID);
                     }
                     else
                     {

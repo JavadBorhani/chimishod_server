@@ -81,16 +81,16 @@ namespace Falcon.Web.Api.App_Start
                         LevelUpChecking(ref user, user.Level.ScoreCeil, Constants.Prize.CreateQuestionPrize , nextLevelId);
 
 
-                        return ResponseMessage(Request.CreateResponse(HttpStatusCode.Created, user.TotalStars)); //TODO : Change this
+                        return Response(HttpStatusCode.Created, user.TotalStars);
                     }
                     else
                     {
-                        return ResponseMessage(Request.CreateResponse(HttpStatusCode.Unauthorized));
+                        return Response(HttpStatusCode.Unauthorized);
                     }
                 }
                 return NotFound();
             }
-            return ResponseMessage(Request.CreateResponse(HttpStatusCode.Unauthorized)); //TODO Change to global answer UnAuthoraized
+            return Response(HttpStatusCode.Unauthorized);
         }
 
         [ResponseType(typeof(SQuestion))]

@@ -86,7 +86,7 @@ namespace Falcon.Web.Api
                         profiles.Add((Profile)Activator.CreateInstance(m[i]));
                 }
             }
-            new AutoMapperConfiguration().Configure(profiles, container); //TODO : add list of profiles
+            new AutoMapperConfiguration().Configure(profiles, container); 
         }
 
     }

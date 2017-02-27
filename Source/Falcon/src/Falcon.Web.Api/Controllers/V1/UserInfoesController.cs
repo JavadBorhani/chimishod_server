@@ -113,7 +113,6 @@ namespace Falcon.Web.Api.Controllers.V1
                     var Info = await mDb.Set<UserInfo>().Where(u => u.UserID == userID).Include(u => u.User).SingleOrDefaultAsync();
                     if (Info.IsEditable > 0 && !string.IsNullOrEmpty(UserInfo.Email))
                     {
-                        //TODO : Validate User information
                         if(await UserNameIsAccessible(userID , UserInfo.UserName))
                         {
                             if(await EmailIsAccessible(Info.ID, UserInfo.Email))
