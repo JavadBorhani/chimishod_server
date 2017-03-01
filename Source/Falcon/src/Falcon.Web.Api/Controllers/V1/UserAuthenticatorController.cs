@@ -6,6 +6,7 @@ using Falcon.EFCommonContext;
 using Falcon.EFCommonContext.DbModel;
 using Falcon.Web.Api.Utilities.Extentions;
 using Falcon.Web.Common;
+using Falcon.Web.Models.Api;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
@@ -39,7 +40,7 @@ namespace Falcon.Web.Api.Controllers.V1
             var user = await mDb.Set<User>().AsNoTracking().Where(c => c.UUID == UUID).Include( c => c.Level).SingleOrDefaultAsync();
             if (user != null)
             {
-                var UserModel = new Models.Api.SUser
+                var UserModel = new SUser
                 {
                     ID = user.ID,
                     UserName = user.UserName,
@@ -61,7 +62,7 @@ namespace Falcon.Web.Api.Controllers.V1
 
                 var NextLevel = await mDb.Set<Level>().AsNoTracking()
                     .Where(l => l.LevelNumber == (CurrentLevel.LevelNumber + 1))
-                    .Select( l => new Models.Api.SLevel
+                    .Select( l => new SLevel
                     {
                         ID = l.ID,
                         LevelNumber = l.LevelNumber,
@@ -71,7 +72,18 @@ namespace Falcon.Web.Api.Controllers.V1
                     .SingleOrDefaultAsync();
 
 
-                var selectedThemeId = await mDb.Set<SelectedTheme>().AsNoTracking().Where(st => st.UserID == user.ID).Select(st => st.AppThemeID).SingleOrDefaultAsync();
+                var CurrentSelectedTheme = await mDb.Set<SelectedTheme>().AsNoTracking()
+                    .Include(st => st.AppTheme)
+                    .Where(st => st.UserID == user.ID)
+                    .Select(st =>  new SAppTheme
+                    {
+                        ID = st.AppTheme.ID,
+                        BackImage = st.AppTheme.BackImage,
+                        DialogImage = st.AppTheme.DialogImage,
+                        Price = st.AppTheme.Price,
+                        Name = st.AppTheme.Name,
+                    })
+                    .SingleOrDefaultAsync();
 
                 var selectedCat = await mDb.Set<SelectedCategory>().AsNoTracking()
                     .Where(sc => sc.UserID == user.ID)
@@ -79,13 +91,13 @@ namespace Falcon.Web.Api.Controllers.V1
                     .Select(u => new { u.Category.ID , u.Category.Name , u.Category.PrizeCoefficient })
                     .SingleOrDefaultAsync();
 
-                var UserState = new Models.Api.SUserState
+                var UserState = new SUserState
                 {
                     UserStar = user.TotalStars,
                     SelectedCategoryID = selectedCat.ID,
                     SelectedCategoryName = selectedCat.Name,
                     SelectedCategoryCoEfficient = selectedCat.PrizeCoefficient,
-                    SelectedThemeID = selectedThemeId
+                    SelectedThemeID = CurrentSelectedTheme.ID
                 };
 
                 var avatar = await mDb.Set<SelectedAvatar>().AsNoTracking()
@@ -94,7 +106,7 @@ namespace Falcon.Web.Api.Controllers.V1
                     .Select(u => new { u.UserAvatar.ID, u.UserAvatar.PicUrl })
                     .SingleOrDefaultAsync();
 
-                var UserAvatar = new Models.Api.SUserAvatar
+                var UserAvatar = new SUserAvatar
                 {
                     ID = avatar.ID,
                     PicUrl = avatar.PicUrl,
@@ -104,7 +116,7 @@ namespace Falcon.Web.Api.Controllers.V1
                 userLastScene = mDateTime.Now;
                 await mDb.SaveChangesAsync();
 
-                return ResponseMessage(Request.CreateResponse(HttpStatusCode.OK, new { UserModel, UserState , UserAvatar , CurrentLevel , NextLevel })); //TODO : Does not support xml change to something generic
+                return ResponseMessage(Request.CreateResponse(HttpStatusCode.OK, new { UserModel, UserState , UserAvatar , CurrentLevel , NextLevel , CurrentSelectedTheme })); //TODO : Does not support xml change to something generic
             }
             else
             {
@@ -169,7 +181,7 @@ namespace Falcon.Web.Api.Controllers.V1
 
             await mDb.SaveChangesAsync();
 
-            var UserModel = new Models.Api.SUser
+            var UserModel = new SUser
             {
                 ID = user.ID,
                 UserName = user.UserName,
@@ -179,6 +191,17 @@ namespace Falcon.Web.Api.Controllers.V1
                 LevelProgress = user.LevelProgress,
                 IsAbleToWriteComment = user.IsAbleToWriteComment,
             };
+            var CurrentSelectedTheme = await mDb.Set<AppTheme>().AsNoTracking()
+                                                                .Where(at => at.ID == Constants.DefaultUser.AppThemeID)
+                                                                .Select(at => new SAppTheme
+                                                                {
+                                                                    ID = at.ID,
+                                                                    BackImage = at.BackImage,
+                                                                    DialogImage = at.DialogImage,
+                                                                    Price = at.Price,
+                                                                    Name = at.Name,
+                                                                })
+                                                                .SingleOrDefaultAsync();
 
             int levelNumber = Constants.DefaultUser.LevelNumber;
 
@@ -191,7 +214,7 @@ namespace Falcon.Web.Api.Controllers.V1
             {
                 throw new ChildObjectNotFoundException("Level Number Should be 2 but it's " + levelsInfo.Length);
             }
-            var CurrentLevel = new Models.Api.SLevel
+            var CurrentLevel = new SLevel
             {
                 ID = levelsInfo[0].ID,
                 LevelNumber = levelsInfo[0].LevelNumber,
@@ -199,7 +222,7 @@ namespace Falcon.Web.Api.Controllers.V1
                 Coin = levelsInfo[0].Star,
             };
 
-            var NextLevel = new Models.Api.SLevel
+            var NextLevel = new SLevel
             {
                 ID = levelsInfo[1].ID,
                 LevelNumber = levelsInfo[1].LevelNumber,
@@ -218,7 +241,7 @@ namespace Falcon.Web.Api.Controllers.V1
                   .Select(u => new { u.UserAvatar.ID, u.UserAvatar.PicUrl })
                   .SingleOrDefaultAsync();
 
-            var UserAvatar = new Models.Api.SUserAvatar
+            var UserAvatar = new SUserAvatar
             {
                 ID = avatar.ID,
                 PicUrl = avatar.PicUrl,
@@ -226,7 +249,7 @@ namespace Falcon.Web.Api.Controllers.V1
 
             if (catInfo != null)
             {
-                var UserState = new Models.Api.SUserState
+                var UserState = new SUserState
                 {
                     UserStar = UserModel.TotalStars,
                     SelectedCategoryID = Constants.DefaultUser.CategoryID,
@@ -234,7 +257,15 @@ namespace Falcon.Web.Api.Controllers.V1
                     SelectedCategoryName = catInfo.Name,
                     SelectedCategoryCoEfficient = catInfo.PrizeCoefficient,
                 };
-                return ResponseMessage(Request.CreateResponse(HttpStatusCode.Created, new { UserModel, UserState , UserAvatar , CurrentLevel , NextLevel }));
+                return ResponseMessage(Request.CreateResponse(HttpStatusCode.Created, new
+                {
+                    UserModel,
+                    UserState ,
+                    UserAvatar ,
+                    CurrentLevel ,
+                    NextLevel,
+                    CurrentSelectedTheme
+                }));
             }
             else
             {

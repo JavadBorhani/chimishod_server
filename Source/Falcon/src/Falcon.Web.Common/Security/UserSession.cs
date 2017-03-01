@@ -2,45 +2,34 @@
 
 using Falcon.Common.Security;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web;
 
 namespace Falcon.Web.Common.Security
 {
     public class UserSession : IWebUserSession
     {
-        public string ApiVersionInUse
+        public string HttpRequestMethod
         {
             get
             {
-                int versionIndex = 2; 
-                if(HttpContext.Current.Request.Url.Segments.Count() < versionIndex + 1)
-                {
-                    return string.Empty;
-                }
-
-                var apiVersionInUse = HttpContext.Current.Request.Url.Segments[versionIndex].Replace("/", string.Empty);
-                return apiVersionInUse;
+                return HttpContext.Current.Request.HttpMethod;
             }
         }
 
-        public string FirstName
+        public Uri RequestUri
         {
             get
             {
-                return ((ClaimsPrincipal)HttpContext.Current.User).FindFirst(ClaimTypes.GivenName).Value;
+                return HttpContext.Current.Request.Url;
             }
         }
 
-        public string LastName
+        public int UserID
         {
             get
             {
-                return ((ClaimsPrincipal)HttpContext.Current.User).FindFirst(ClaimTypes.Surname).Value; 
+                return Convert.ToInt32(((ClaimsPrincipal)HttpContext.Current.User).FindFirst(ClaimTypes.NameIdentifier).Value);
             }
         }
 
@@ -52,33 +41,12 @@ namespace Falcon.Web.Common.Security
             }
         }
 
-        public string HttpRequestMethod
-        {
-            get
-            {
-                return HttpContext.Current.Request.HttpMethod; 
-            }
-        }
-       
-        public Uri RequestUri
-        {
-            get
-            {
-                return HttpContext.Current.Request.Url;
-            }
-        }
-
         public string UUID
         {
             get
             {
                 return HttpContext.Current.User.Identity.Name; //TODO : Solve This issue later
             }
-        }
-
-        public bool IsInRle(string roleName)
-        {
-            return HttpContext.Current.User.IsInRole(roleName);
         }
     }
 }
