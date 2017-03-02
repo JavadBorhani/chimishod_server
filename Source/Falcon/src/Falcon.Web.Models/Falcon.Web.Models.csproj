@@ -63,6 +63,8 @@
     <Compile Include="Api\SUserInfo.cs" />
     <Compile Include="Api\SUserState.cs" />
     <Compile Include="Api\SUserStatistics.cs" />
+    <Compile Include="IPageContaining.cs" />
+    <Compile Include="PagedDataInquiryResponse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Api\SQuestion.cs" />
     <Compile Include="Api\SUser.cs" />

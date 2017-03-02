@@ -16,6 +16,7 @@ using System.Linq;
 using AutoMapper;
 using System.Collections.Generic;
 using Falcon.Web.Api.App_Start;
+using Falcon.Web.Api.InquiryProcessing;
 
 namespace Falcon.Web.Api
 {
@@ -35,10 +36,9 @@ namespace Falcon.Web.Api
             ConfigureLog4Net(container);
             ConfigureAutoMapper(container);
             AddQueryProcessors(container);
-
-            container.Bind<IDateTime>().To<DateTimeAdapter>().InSingletonScope();
-
-
+            AddInquiryProcessors(container);
+            AddMaintenanceProcessors(container);
+            AddAdHoc(container);
         }
         private void ConfigureLog4Net(IKernel container)
         {
@@ -66,15 +66,31 @@ namespace Falcon.Web.Api
 
         private void AddQueryProcessors(IKernel container)
         {
-            container.Bind<IAchievementQueryProcessor>().To<AchievementQueryProcessor>().InRequestScope();
+
+            container.Bind<IAllCommentsQueryProcessor>().To<AllCommentsQueryProcessor>().InRequestScope();            
+        }
+
+        private void AddInquiryProcessors(IKernel container)
+        {
+            container.Bind<IPagedDataRequestFactory>().To<PagedDataRequestFactory>().InSingletonScope();
+
+            container.Bind<IAllCommentsInquiryProcessor>().To<AllCommentsInquiryProcessor>().InRequestScope();
+        }
+        private void  AddMaintenanceProcessors(IKernel container)
+        {
+            // add maintenance part separately
+        }
+
+        private void AddAdHoc(IKernel container)
+        {
+            container.Bind<IDateTime>().To<DateTimeAdapter>().InSingletonScope();
         }
 
         private void ConfigureAutoMapper(IKernel container)
         {
 
-
             var result = AppDomain.CurrentDomain.GetAssemblies()
-                                                .Where(r => r.FullName.Contains("Falcon"))
+                                                .Where(r => r.FullName.Contains("Falcon")) //TODO : think about design
                                                 .Select(r => r.GetTypes());
 
             List<Profile> profiles = new List<Profile>();
