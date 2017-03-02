@@ -6,17 +6,17 @@ using Falcon.EFCommonContext;
 
 namespace Falcon.Database.SqlServer.QueryProcessors
 {
-    public class AllCommentsQueryProcessor : IAllCommentsQueryProcessor
+    public class CommentsQueryProcessor : ICommentsQueryProcessor
     {
-        private readonly IDbContext _dbContext;
+        private readonly IDbContext mDb;
 
-        public AllCommentsQueryProcessor(IDbContext dbContext)
+        public CommentsQueryProcessor(IDbContext dbContext)
         {
-            _dbContext = dbContext;
+            mDb = dbContext;
         }
         public QueryResult<Comment> GetComments(PagedDataRequest requestInfo)
         {
-            var query = _dbContext.Set<Comment>();
+            var query = mDb.Set<Comment>();
 
             var totalItemCount = query.Count();
 

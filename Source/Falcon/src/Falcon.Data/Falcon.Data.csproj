@@ -45,7 +45,7 @@
     <Compile Include="Exceptions\RootObjectNotFoundException.cs" />
     <Compile Include="PagedDataRequest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="QueryProcessors\IAllCommentsQueryProcessor.cs" />
+    <Compile Include="QueryProcessors\ICommentsQueryProcessor.cs" />
     <Compile Include="QueryResult.cs" />
     <Compile Include="ResultPagingUtility.cs" />
   </ItemGroup>

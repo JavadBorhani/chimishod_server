@@ -142,8 +142,8 @@
     <Compile Include="AutoMappingConfiguration\UserInfoMap\UserInfoToSUserInfoAutoTypeConfiguration.cs" />
     <Compile Include="Controllers\V1\LeaderBoardController.cs" />
     <Compile Include="Controllers\V1\LevelsController.cs" />
-    <Compile Include="InquiryProcessing\AllCommentsInquiryProcessor.cs" />
-    <Compile Include="InquiryProcessing\IAllCommentsInquiryProcessor.cs" />
+    <Compile Include="InquiryProcessing\CommentsInquiryProcessor.cs" />
+    <Compile Include="InquiryProcessing\ICommentsInquiryProcessor.cs" />
     <Compile Include="InquiryProcessing\IPagedDataRequestFactory.cs" />
     <Compile Include="InquiryProcessing\PagedDataRequestFactory.cs" />
     <Compile Include="Utilities\Extensions\FalconApiController.cs" />

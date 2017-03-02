@@ -4,7 +4,7 @@ using Falcon.Web.Models.Api;
 
 namespace Falcon.Web.Api.InquiryProcessing
 {
-    public interface IAllCommentsInquiryProcessor
+    public interface ICommentsInquiryProcessor
     {
         PagedDataInquiryResponse<SComment> GetComments(PagedDataRequest requestInfo);
     }

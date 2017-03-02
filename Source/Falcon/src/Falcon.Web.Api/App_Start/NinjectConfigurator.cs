@@ -67,14 +67,14 @@ namespace Falcon.Web.Api
         private void AddQueryProcessors(IKernel container)
         {
 
-            container.Bind<IAllCommentsQueryProcessor>().To<AllCommentsQueryProcessor>().InRequestScope();            
+            container.Bind<ICommentsQueryProcessor>().To<CommentsQueryProcessor>().InRequestScope();            
         }
 
         private void AddInquiryProcessors(IKernel container)
         {
             container.Bind<IPagedDataRequestFactory>().To<PagedDataRequestFactory>().InSingletonScope();
 
-            container.Bind<IAllCommentsInquiryProcessor>().To<AllCommentsInquiryProcessor>().InRequestScope();
+            container.Bind<ICommentsInquiryProcessor>().To<CommentsInquiryProcessor>().InRequestScope();
         }
         private void  AddMaintenanceProcessors(IKernel container)
         {

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Falcon.Data.QueryProcessors
 {
-    public interface IAllCommentsQueryProcessor
+    public interface ICommentsQueryProcessor
     {
         QueryResult<Comment> GetComments(PagedDataRequest requestInfo);
     }
