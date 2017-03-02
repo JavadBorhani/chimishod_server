@@ -23,14 +23,14 @@ namespace Falcon.Web.Api.Controllers.V1
     public class AnswersController : FalconApiController
     {
         private readonly IDateTime mDateTime;
-        private readonly ILog mLogManager;
+        private readonly ILog mLogger;
         private readonly IMapper mMapper;
         private readonly IDbContext mDb;
 
         public AnswersController(IDateTime dateTime , ILogManager logManager , IMapper Mapper , IDbContext Database)
         {
             mDateTime = dateTime;
-            mLogManager = logManager.GetLog(typeof(AnswersController));
+            mLogger = logManager.GetLog(typeof(AnswersController));
             mMapper = Mapper;
             mDb = Database;
         }
@@ -128,7 +128,7 @@ namespace Falcon.Web.Api.Controllers.V1
 
                 if (await AnswerExists(user.ID, answer.QuestionID))
                 {
-                    mLogManager.WarnFormat("Question ID {0} has a value in database", answer.QuestionID);
+                    mLogger.WarnFormat("Question ID {0} has a value in database", answer.QuestionID);
                     return Response(HttpStatusCode.Unauthorized);
                 }
 
@@ -237,14 +237,17 @@ namespace Falcon.Web.Api.Controllers.V1
                         CatToGet = await mDb.Set<SelectedCategory>().AsNoTracking().Where(sc => sc.UserID == user.ID).Select(sc => sc.CategoryID).SingleOrDefaultAsync();
                     }
 
-                    Questions = await mDb.Set<Question>().Where(question => question.Banned == false && question.Catgory_ID == CatToGet &&
-                                                   !mDb.Set<Answer>().Where(a => a.UserID == user.ID)
+                    var answerRef = mDb.Set<Answer>();
+                    var manuRef = mDb.Set<Manufacture>();
+
+                    Questions = await mDb.Set<Question>().AsNoTracking().Where(question => question.Banned == false && question.Catgory_ID == CatToGet &&
+                                                   !answerRef.Where(a => a.UserID == user.ID)
                                                    .Select(y => y.QuestionID)
                                                    .ToList()
                                                    .Contains(question.ID))
                                                    .OrderByDescending(question => question.Weight)
                                                    .Take(Constants.DefaultReturnAmounts.Question)
-                                                   .Join(mDb.Set<Manufacture>(), question => question.ID, manu => manu.QuestionID, (question, manu) => new SQuestion
+                                                   .Join(manuRef, question => question.ID, manu => manu.QuestionID, (question, manu) => new SQuestion
                                                    {
                                                        ID = question.ID,
                                                        What_if = question.What_if,

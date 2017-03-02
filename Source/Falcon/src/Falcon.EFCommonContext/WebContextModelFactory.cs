@@ -42,7 +42,6 @@ namespace Falcon.EFCommonContext
                 context.Database.Connection.Open();
                 HttpContext.Current.Items[DbContextCacheKey] = context;
             }
-
             return (IDbContext) HttpContext.Current.Items[DbContextCacheKey];
         }
 

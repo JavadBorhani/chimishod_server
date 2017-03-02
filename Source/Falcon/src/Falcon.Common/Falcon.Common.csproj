@@ -55,6 +55,8 @@
     <Compile Include="Constants.cs" />
     <Compile Include="DateTimeAdapter.cs" />
     <Compile Include="Extentions\ContextExtensions.cs" />
+    <Compile Include="Extentions\IntExtensions.cs" />
+    <Compile Include="Extentions\UriExtensions.cs" />
     <Compile Include="IDateTime.cs" />
     <Compile Include="Logging\ILogManager.cs" />
     <Compile Include="Logging\LogManagerAdapter.cs" />

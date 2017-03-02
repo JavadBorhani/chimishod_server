@@ -19,6 +19,7 @@ namespace Falcon.Web.Api.Controllers.V1
     {
         private readonly IDbContext mDb;
 
+
         public QuestionsController(IDbContext Database)
         {
             mDb = Database;
@@ -31,7 +32,6 @@ namespace Falcon.Web.Api.Controllers.V1
         public  async Task<IHttpActionResult> GettingQuestion(string uuid , int CategoryID)
         {
             var user = await mDb.Set<User>().SingleOrDefaultAsync(u => u.UUID == uuid);
-            
             if(user != null)
             {
 
@@ -51,14 +51,17 @@ namespace Falcon.Web.Api.Controllers.V1
                     CatToGet = await mDb.Set<SelectedCategory>().AsNoTracking().Where(sc => sc.UserID == user.ID).Select(sc => sc.CategoryID).SingleOrDefaultAsync();
                 }
 
-                var result = await mDb.Set<Question>().Where(question => question.Banned == false && question.Catgory_ID == CatToGet &&
-                                               !mDb.Set<Answer>().Where(answer => answer.UserID == user.ID)
+                var answerRef = mDb.Set<Answer>();
+                var manuRef = mDb.Set<Manufacture>();
+
+                var result = await mDb.Set<Question>().AsNoTracking().Where(question => question.Banned == false && question.Catgory_ID == CatToGet &&
+                                               !answerRef.Where(answer => answer.UserID == user.ID)
                                                .Select(y => y.QuestionID)
                                                .ToList()
                                                .Contains(question.ID))
                                                .OrderByDescending(question => question.Weight)
                                                .Take(Constants.DefaultReturnAmounts.Question)
-                                               .Join(mDb.Set<Manufacture>(), question => question.ID , manu => manu.QuestionID ,  (question, manu) => new Models.Api.SQuestion
+                                               .Join(manuRef, question => question.ID , manu => manu.QuestionID ,  (question, manu) => new Models.Api.SQuestion
                                                {
                                                    ID = question.ID,
                                                    What_if = question.What_if,

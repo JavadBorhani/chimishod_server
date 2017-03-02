@@ -16,6 +16,8 @@ using System.Collections.Generic;
 using Falcon.Web.Api.Utilities.Extentions;
 using Falcon.EFCommonContext;
 using Falcon.Web.Common;
+using Falcon.Common.Logging;
+using log4net;
 
 namespace Falcon.Web.Api.Controllers.V1
 {
@@ -26,12 +28,14 @@ namespace Falcon.Web.Api.Controllers.V1
         private readonly IDateTime mDateTime;
         private readonly IMapper mMapper;
         private readonly IDbContext mDb;
+        private readonly ILog mLogger;
 
-        public CategoriesController(IDateTime dateTime , IMapper Mapper , IDbContext Database)
+        public CategoriesController(IDateTime dateTime , IMapper Mapper , IDbContext Database ,ILogManager LogManager)
         {
             mDateTime = dateTime;
             mMapper = Mapper;
             mDb = Database;
+            mLogger = LogManager.GetLog(typeof(CategoriesController));
         }
            
 
@@ -76,7 +80,7 @@ namespace Falcon.Web.Api.Controllers.V1
                 return NotFound();
             }
 
-            return Response(HttpStatusCode.Unauthorized);  // TODO : Replace with UnAuthorized
+            return Response(HttpStatusCode.Unauthorized); 
         }
 
         [ResponseType(typeof(Models.Api.SUserState))]
@@ -169,11 +173,11 @@ namespace Falcon.Web.Api.Controllers.V1
                         }
                         else
                         {
-                            //TODO : Logging UnAuthorized Request
+                            mLogger.Error("Trying to buy an item which has been purchased" + UUID);
                         }
                     }
 
-                    var userState = new Models.Api.SUserState
+                    var userState = new SUserState
                     {
                         UserStar = user.TotalStars,
                         SelectedThemeID = null,
@@ -185,12 +189,12 @@ namespace Falcon.Web.Api.Controllers.V1
                 }
                 else
                 {
-                    return Response(HttpStatusCode.Unauthorized); // TODO : Change to UnAuthorized Request
+                    return Response(HttpStatusCode.Unauthorized);
                 }
             }
             else
             {
-                return Response(HttpStatusCode.Unauthorized); // TODO : Change with UnAuthorized
+                return Response(HttpStatusCode.Unauthorized); 
             }
         }
 

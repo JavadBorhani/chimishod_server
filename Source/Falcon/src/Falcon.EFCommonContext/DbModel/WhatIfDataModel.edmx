@@ -97,7 +97,8 @@
           <Property Name="SquareColor" Type="varchar" MaxLength="10" Nullable="false" />
           <Property Name="CircleColor" Type="varchar" MaxLength="10" Nullable="false" />
           <Property Name="Price" Type="int" Nullable="false" />
-          <Property Name="Style" Type="text" />
+          <Property Name="BackImage" Type="nvarchar" MaxLength="50" />
+          <Property Name="DialogImage" Type="nvarchar" MaxLength="50" />
           <Property Name="CreatedDate" Type="datetime" Nullable="false" />
           <Property Name="UpdatedDate" Type="datetime" Nullable="false" />
         </EntityType>
@@ -1470,7 +1471,8 @@
           <Property Name="SquareColor" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Name="CircleColor" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Name="Price" Type="Int32" Nullable="false" />
-          <Property Name="Style" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="BackImage" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="DialogImage" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="UpdatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="PurchaseThemes" Relationship="Falcon.DbModel.FK_PurchaseTheme_AppTheme" FromRole="AppTheme" ToRole="PurchaseTheme" />
@@ -2496,7 +2498,8 @@
               <MappingFragment StoreEntitySet="AppTheme">
                 <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-                <ScalarProperty Name="Style" ColumnName="Style" />
+                <ScalarProperty Name="DialogImage" ColumnName="DialogImage" />
+                <ScalarProperty Name="BackImage" ColumnName="BackImage" />
                 <ScalarProperty Name="Price" ColumnName="Price" />
                 <ScalarProperty Name="CircleColor" ColumnName="CircleColor" />
                 <ScalarProperty Name="SquareColor" ColumnName="SquareColor" />

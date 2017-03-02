@@ -11,9 +11,7 @@ namespace Falcon.Common.Security
     public interface IUserSession
     {
         string UUID { get; }
-        string  FirstName { get; }
-        string  LastName { get; }
+        int  UserID { get; }
         string  UserName { get; }
-        bool IsInRle(string roleName);
     }
 }

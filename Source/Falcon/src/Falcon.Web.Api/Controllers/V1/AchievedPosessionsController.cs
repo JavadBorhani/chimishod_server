@@ -15,6 +15,7 @@ using System.Collections.Generic;
 using Falcon.Web.Api.Utilities.Extentions;
 using Falcon.Web.Common;
 using Falcon.EFCommonContext;
+using Falcon.Web.Common.Routing;
 
 namespace Falcon.Web.Api.Controllers.V1
 {
@@ -209,43 +210,6 @@ namespace Falcon.Web.Api.Controllers.V1
                 return Response(HttpStatusCode.Unauthorized);
             }
         }
-        private void AddRemainedResults(int RemainedNumber , ref List<Achievement>  Usuals, ref List<Achievement> AdHoc , ref List<Achievement> NotAchieved)
-        {
-            int counter = 0;
-            int adhocSize = AdHoc.Count;
-            int usualsSize = Usuals.Count;
-            int breakflag = 0;
-
-            for (int i = 0; i < RemainedNumber; ++i)
-            {
-                if (i < adhocSize)
-                {
-                    NotAchieved.Add(AdHoc[i]);
-                    ++counter;
-                }
-                else
-                {
-                    ++breakflag;
-                }
-                if (counter == RemainedNumber) break;
-
-                if (i < usualsSize)
-                {
-                    NotAchieved.Add(Usuals[i]);
-                    ++counter;
-                }
-                else
-                {
-                    ++breakflag;
-                }
-
-                if (counter == RemainedNumber) break;
-                if (breakflag == 2)
-                    break;
-                else
-                    breakflag = 0;
-            }
-        }
 
         [ResponseType(typeof(int))]
         [Route("Achievements/Change/{UUID}/{AchievementID}")]
@@ -283,7 +247,6 @@ namespace Falcon.Web.Api.Controllers.V1
                 return Response(HttpStatusCode.Unauthorized);
             }
         }
-
 
         [Route("Achievements/Achieved/{UUID}")]
         [ResponseType(typeof(SAchievement))]
@@ -356,6 +319,44 @@ namespace Falcon.Web.Api.Controllers.V1
             else
             {
                 user.LevelProgress += Prize;
+            }
+        }
+
+        private void AddRemainedResults(int RemainedNumber, ref List<Achievement> Usuals, ref List<Achievement> AdHoc, ref List<Achievement> NotAchieved)
+        {
+            int counter = 0;
+            int adhocSize = AdHoc.Count;
+            int usualsSize = Usuals.Count;
+            int breakflag = 0;
+
+            for (int i = 0; i < RemainedNumber; ++i)
+            {
+                if (i < adhocSize)
+                {
+                    NotAchieved.Add(AdHoc[i]);
+                    ++counter;
+                }
+                else
+                {
+                    ++breakflag;
+                }
+                if (counter == RemainedNumber) break;
+
+                if (i < usualsSize)
+                {
+                    NotAchieved.Add(Usuals[i]);
+                    ++counter;
+                }
+                else
+                {
+                    ++breakflag;
+                }
+
+                if (counter == RemainedNumber) break;
+                if (breakflag == 2)
+                    break;
+                else
+                    breakflag = 0;
             }
         }
 
