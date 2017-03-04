@@ -11,6 +11,8 @@ using Falcon.EFCommonContext.DbModel;
 using Falcon.Web.Api.Utilities.Extentions;
 using Falcon.Web.Common;
 using Falcon.EFCommonContext;
+using Falcon.Web.Api.InquiryProcessing;
+using System.Net.Http;
 
 namespace Falcon.Web.Api.Controllers.V1
 {
@@ -19,23 +21,33 @@ namespace Falcon.Web.Api.Controllers.V1
     {
         private readonly IDbContext mDb;
         private readonly IDateTime mDateTime;
+        private readonly ICommentsInquiryProcessor mCommentInquiryProcessor;
+        private readonly IPagedDataRequestFactory mPagedDataRequestFactory;
 
-        public CommentsController(IDateTime dateTime, IDbContext Database)
+        public CommentsController(IDateTime dateTime,
+                                    IDbContext Database,
+                                    ICommentsInquiryProcessor CommentsInquiryProcessor,
+                                    IPagedDataRequestFactory PagedDataRequestFactory)
         {
             mDateTime = dateTime;
             mDb = Database;
+            mCommentInquiryProcessor = CommentsInquiryProcessor;
+            mPagedDataRequestFactory = PagedDataRequestFactory;
         }
 
-        [Route("Comments/{UUID}/{QuestionID}")]
+        [Route("Comments/{UUID}/{QuestionID}/{PageNumber}/{PageSize}")]
         [HttpGet]
-        public async Task<IHttpActionResult> GettingComments(string UUID , int QuestionID)
+        public async Task<IHttpActionResult> GettingComments(HttpRequestMessage requestMessage, string UUID , int QuestionID , int PageNumber , int PageSize)
         {
             var user = await mDb.Set<User>().SingleOrDefaultAsync(u => u.UUID == UUID);
             if(user != null)
             {
+                var page = mPagedDataRequestFactory.Create(PageNumber , PageSize);
                 var result = await mDb.Set<Comment>().AsNoTracking()
                                         .Where(comment => comment.QuestionID == QuestionID && comment.IsVerified == true)
                                         .Take(Constants.DefaultReturnAmounts.Comment).ToArrayAsync();
+
+                var comments = await mCommentInquiryProcessor.GetComments(page);
 
                 if (result.Length > 0)
                 { 

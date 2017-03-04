@@ -9,6 +9,7 @@ using Falcon.Web.Models.Api;
 
 namespace Falcon.Web.Api.InquiryProcessing
 {
+    using System.Threading.Tasks;
     using PagedTaskDataInquiryResponse = PagedDataInquiryResponse<SComment>;
 
     public class CommentsInquiryProcessor : ICommentsInquiryProcessor
@@ -22,8 +23,37 @@ namespace Falcon.Web.Api.InquiryProcessing
             mQueryProcessor = queryProcessor;
             mMapper = Mapper;
         }
-        public PagedDataInquiryResponse<SComment> GetComments(PagedDataRequest requestInfo)
+        public async Task<PagedDataInquiryResponse<SComment>> GetComments(PagedDataRequest requestInfo)
         {
+            //if (user != null)
+            //{
+            //    
+            //    var result = await mDb.Set<Comment>().AsNoTracking()
+            //                            .Where(comment => comment.QuestionID == QuestionID && comment.IsVerified == true)
+            //                            .Take(Constants.DefaultReturnAmounts.Comment).ToArrayAsync();
+
+            //    if (result.Length > 0)
+            //    {
+            //        Models.Api.SComment[] commentList = new Models.Api.SComment[result.Length];
+
+            //        for (int i = 0; i < commentList.Length; ++i)
+            //        {
+            //            commentList[i] = new Models.Api.SComment
+            //            {
+            //                UserName = result[i].User.UserName,
+            //                Content = result[i].CommentContent,
+            //                Response = result[i].Response,
+            //                InsertDate = result[i].InsertDate
+            //            };
+            //        }
+            //        return Ok(commentList);
+            //    }
+            //    return Ok();
+            //}
+            //return NotFound();
+
+
+
             //TODO : change logic of this 
             var queryResult = mQueryProcessor.GetComments(requestInfo);
 

@@ -48,5 +48,18 @@ namespace Falcon.Web.Api.InquiryProcessing
 
             return new PagedDataRequest(pageNumber.Value, pageSize.Value);
         }
+        public PagedDataRequest Create(int PageNumber , int PageSize)
+        {
+            int? pageNumber;
+            int? pageSize;
+
+            pageNumber = PageNumber;
+            pageSize = PageSize;
+
+            pageNumber = pageNumber.GetBoundedValue(Constants.Paging.DefaultPageNumber, Constants.Paging.MinPageNumber);
+            pageSize = pageSize.GetBoundedValue(DefaultPageSize, Constants.Paging.MinPageSize, MaxPageSize);
+
+            return new PagedDataRequest(pageNumber.Value, pageSize.Value);
+        }
     }
 }

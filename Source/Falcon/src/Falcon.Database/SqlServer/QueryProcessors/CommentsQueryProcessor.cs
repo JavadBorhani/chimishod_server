@@ -3,6 +3,8 @@ using System.Linq;
 using Falcon.Data;
 using Falcon.EFCommonContext.DbModel;
 using Falcon.EFCommonContext;
+using System.Threading.Tasks;
+using System.Data.Entity;
 
 namespace Falcon.Database.SqlServer.QueryProcessors
 {
@@ -14,11 +16,11 @@ namespace Falcon.Database.SqlServer.QueryProcessors
         {
             mDb = dbContext;
         }
-        public QueryResult<Comment> GetComments(PagedDataRequest requestInfo)
+        public async Task<QueryResult<Comment>> GetComments(PagedDataRequest requestInfo)
         {
             var query = mDb.Set<Comment>();
 
-            var totalItemCount = query.Count();
+            var totalItemCount = await query.CountAsync();
 
             var startIndex = ResultPagingUtility.CalculateStartIndex(requestInfo.PageNumber, requestInfo.PageSize);
 
