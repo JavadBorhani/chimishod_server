@@ -15,6 +15,8 @@ using System.Collections.Generic;
 using AutoMapper;
 using Falcon.Web.Api.Utilities.Extentions;
 using Falcon.EFCommonContext;
+using Falcon.Web.Api.InquiryProcessing;
+using Falcon.Web.Models;
 
 namespace Falcon.Web.Api.App_Start
 {
@@ -24,16 +26,24 @@ namespace Falcon.Web.Api.App_Start
         private readonly IDbContext mDb;
         private readonly IDateTime mDateTime;
         private readonly IMapper mMapper;
+        private readonly ICreatedQuestionsInquiryProcessor mCreatedQuestionsInquiryProcessor;
+        private readonly IPagedDataRequestFactory mPagedDataRequestFactory;
 
-        public CreatedQuestionsController(IDateTime DateTime , IMapper Mapper, IDbContext Database)
+        public CreatedQuestionsController(IDateTime DateTime ,
+            IMapper Mapper, 
+            IDbContext Database , 
+            ICreatedQuestionsInquiryProcessor InquiryProcessor , 
+            IPagedDataRequestFactory PagedDataRequestFactory)
         {
             mDateTime = DateTime;
             mMapper = Mapper;
             mDb = Database;
+            mCreatedQuestionsInquiryProcessor = InquiryProcessor;
+            mPagedDataRequestFactory = PagedDataRequestFactory;
         }
 
         [ResponseType(typeof(SUserState))]
-        [Route("CreatedQuestions/{UUID}/{CategoryID}")]
+        [Route("CreatedQuestions/Create/{UUID}/{CategoryID}")]
         [HttpPost]
         public async Task<IHttpActionResult> CreateNewQuestion(string UUID , int CategoryID, [FromBody] SCreatedQuestion createdQuestion)
         {
@@ -95,36 +105,19 @@ namespace Falcon.Web.Api.App_Start
 
         [ResponseType(typeof(SQuestion))]
         [HttpPost]
-        [Route("CreatedQuestions/{UUID}")]
-        public async Task<IHttpActionResult> GetCreatedQuestionList(string UUID)
+        [Route("CreatedQuestions/Get/{UUID}/{PageNumber}")]
+        public async Task<PagedDataInquiryResponse<SNewCreatedQuestions>> GetCreatedQuestionList(string UUID , int PageNumber)
         {
             var userID = await mDb.Set<User>().AsNoTracking().Where(u => u.UUID == UUID).Select(u => u.ID).SingleOrDefaultAsync();
             if(userID != 0)
             {
-                List<SNewCreatedQuestions> output = new List<SNewCreatedQuestions>();
-
-                var questions = await mDb.Set<Manufacture>().AsNoTracking()
-                                                    .Where(u => u.UserID == userID)
-                                                    .Select(u => u.Question)
-                                                    .Where( u => u.Banned == false)
-                                                    .ToListAsync();
-
-                output.AddRange(mMapper.Map<List<Question>, List<SNewCreatedQuestions>>(questions));
-
-                var createdQuestions = await mDb.Set<CreatedQuestion>().AsNoTracking().Where(cq => cq.UserID == userID && 
-                                                                (   
-                                                                    cq.VerifyStateID == Constants.DefaultValues.CreatedQuestionIsInChecking || 
-                                                                    cq.VerifyStateID == Constants.DefaultValues.CreatedQuestionRejected
-                                                                ))
-                                                                .ToListAsync();
-
-                output.AddRange(mMapper.Map<List<CreatedQuestion>, List<SNewCreatedQuestions>>(createdQuestions));
-
-                return Ok(output);
+                var page = mPagedDataRequestFactory.Create(PageNumber, Constants.Paging.DefaultPageSize);
+                var createdQuestions = await mCreatedQuestionsInquiryProcessor.GetQuestionList(page , userID);
+                return createdQuestions;
             }
             else
             {
-                return Response(HttpStatusCode.Unauthorized);
+                return new PagedDataInquiryResponse<SNewCreatedQuestions>(); // TODO : Change to Unauthorized
             }
         }
 

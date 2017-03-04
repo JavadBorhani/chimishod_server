@@ -17,6 +17,7 @@ using AutoMapper;
 using System.Collections.Generic;
 using Falcon.Web.Api.App_Start;
 using Falcon.Web.Api.InquiryProcessing;
+using Falcon.Web.Api.InquiryProcessing.Private;
 
 namespace Falcon.Web.Api
 {
@@ -27,8 +28,7 @@ namespace Falcon.Web.Api
         {
             AddBindings(container);
             
-        }
-        
+        }      
         private void AddBindings(IKernel container)
         {
             ConfigureUserSession(container);
@@ -67,14 +67,16 @@ namespace Falcon.Web.Api
         private void AddQueryProcessors(IKernel container)
         {
 
-            container.Bind<ICommentsQueryProcessor>().To<CommentsQueryProcessor>().InRequestScope();            
+            container.Bind<ICommentsQueryProcessor>().To<CommentsQueryProcessor>().InRequestScope();
+            container.Bind<ICreatedQuestionsQueryProcessor>().To<CreatedQuestionsQueryProcessor>().InRequestScope();
+            
         }
 
         private void AddInquiryProcessors(IKernel container)
         {
             container.Bind<IPagedDataRequestFactory>().To<PagedDataRequestFactory>().InSingletonScope();
-
             container.Bind<ICommentsInquiryProcessor>().To<CommentsInquiryProcessor>().InRequestScope();
+            container.Bind<ICreatedQuestionsInquiryProcessor>().To<CreatedQuestionsInquiryProcessor>().InRequestScope();
         }
         private void  AddMaintenanceProcessors(IKernel container)
         {

@@ -40,6 +40,7 @@ namespace Falcon.Common
             public const int MinPageSize = 1;
             public const int MinPageNumber = 1;
             public const int DefaultPageNumber = 1;
+            public const int DefaultPageSize = 10;
         }
         public static class CommonParameterNames
         {

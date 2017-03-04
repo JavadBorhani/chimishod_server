@@ -132,6 +132,7 @@
     <Compile Include="App_Start\AutoMapperConfiguration.cs" />
     <Compile Include="AutoMappingConfiguration\ApplicationStateMap\ApplicationStateToSApplicationStateAutoTypeConfiguration.cs" />
     <Compile Include="AutoMappingConfiguration\CategoryMap\CategoryToSCategoryAutoTypeConfiguration.cs" />
+    <Compile Include="AutoMappingConfiguration\CommentsMap\CommentToSCommentAutoTypeConfiguration.cs" />
     <Compile Include="AutoMappingConfiguration\LeaderBoard\UserToSLeaderBoardAutoTypeConfiguration.cs" />
     <Compile Include="AutoMappingConfiguration\LevelMap\LevelToSLevelAutoTypeConfiguration.cs" />
     <Compile Include="AutoMappingConfiguration\NewCreatedQuestionsMap\CreatedQuestionToSNewCreatedQuestionsAutoTypeConfiguration.cs" />
@@ -142,10 +143,12 @@
     <Compile Include="AutoMappingConfiguration\UserInfoMap\UserInfoToSUserInfoAutoTypeConfiguration.cs" />
     <Compile Include="Controllers\V1\LeaderBoardController.cs" />
     <Compile Include="Controllers\V1\LevelsController.cs" />
-    <Compile Include="InquiryProcessing\CommentsInquiryProcessor.cs" />
+    <Compile Include="InquiryProcessing\Private\CommentsInquiryProcessor.cs" />
+    <Compile Include="InquiryProcessing\Private\CreatedQuestionsInquiryProcessor.cs" />
     <Compile Include="InquiryProcessing\ICommentsInquiryProcessor.cs" />
+    <Compile Include="InquiryProcessing\ICreatedQuestionsInquiryProcessor.cs" />
     <Compile Include="InquiryProcessing\IPagedDataRequestFactory.cs" />
-    <Compile Include="InquiryProcessing\PagedDataRequestFactory.cs" />
+    <Compile Include="InquiryProcessing\Private\PagedDataRequestFactory.cs" />
     <Compile Include="Utilities\Extensions\FalconApiController.cs" />
     <Compile Include="Utilities\ILevelManager.cs" />
     <Compile Include="Utilities\LevelManager.cs" />

@@ -54,6 +54,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SqlServer\Mapping\VersionedClassMap.cs" />
     <Compile Include="SqlServer\QueryProcessors\CommentsQueryProcessor.cs" />
+    <Compile Include="SqlServer\QueryProcessors\CreatedQuestionsQueryProcessor.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Falcon.Common\Falcon.Common.csproj">

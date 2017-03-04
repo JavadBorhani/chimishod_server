@@ -10,7 +10,7 @@ using System.Net.Http;
 using Falcon.Common.Logging;
 using log4net;
 
-namespace Falcon.Web.Api.InquiryProcessing
+namespace Falcon.Web.Api.InquiryProcessing.Private
 {
     public class PagedDataRequestFactory : IPagedDataRequestFactory
     {
@@ -42,6 +42,19 @@ namespace Falcon.Web.Api.InquiryProcessing
                 mLogger.Error("Error parsing input", e);
                     throw new HttpException((int)HttpStatusCode.BadRequest, e.Message);
             }
+
+            pageNumber = pageNumber.GetBoundedValue(Constants.Paging.DefaultPageNumber, Constants.Paging.MinPageNumber);
+            pageSize = pageSize.GetBoundedValue(DefaultPageSize, Constants.Paging.MinPageSize, MaxPageSize);
+
+            return new PagedDataRequest(pageNumber.Value, pageSize.Value);
+        }
+        public PagedDataRequest Create(int PageNumber , int PageSize)
+        {
+            int? pageNumber;
+            int? pageSize;
+
+            pageNumber = PageNumber;
+            pageSize = PageSize;
 
             pageNumber = pageNumber.GetBoundedValue(Constants.Paging.DefaultPageNumber, Constants.Paging.MinPageNumber);
             pageSize = pageSize.GetBoundedValue(DefaultPageSize, Constants.Paging.MinPageSize, MaxPageSize);

@@ -11,6 +11,10 @@ using Falcon.EFCommonContext.DbModel;
 using Falcon.Web.Api.Utilities.Extentions;
 using Falcon.Web.Common;
 using Falcon.EFCommonContext;
+using Falcon.Web.Api.InquiryProcessing;
+using System.Net.Http;
+using Falcon.Web.Models;
+using Falcon.Web.Models.Api;
 
 namespace Falcon.Web.Api.Controllers.V1
 {
@@ -19,49 +23,38 @@ namespace Falcon.Web.Api.Controllers.V1
     {
         private readonly IDbContext mDb;
         private readonly IDateTime mDateTime;
+        private readonly ICommentsInquiryProcessor mCommentInquiryProcessor;
+        private readonly IPagedDataRequestFactory mPagedDataRequestFactory;
 
-        public CommentsController(IDateTime dateTime, IDbContext Database)
+        public CommentsController(IDateTime dateTime,
+                                    IDbContext Database,
+                                    ICommentsInquiryProcessor CommentsInquiryProcessor,
+                                    IPagedDataRequestFactory PagedDataRequestFactory)
         {
             mDateTime = dateTime;
             mDb = Database;
+            mCommentInquiryProcessor = CommentsInquiryProcessor;
+            mPagedDataRequestFactory = PagedDataRequestFactory;
         }
 
-        [Route("Comments/{UUID}/{QuestionID}")]
-        [HttpGet]
-        public async Task<IHttpActionResult> GettingComments(string UUID , int QuestionID)
+        [Route("Comments/{UUID}/{QuestionID}/{PageNumber}")]
+        [HttpPost]
+        public async Task<PagedDataInquiryResponse<SComment>> GettingComments(string UUID , int QuestionID , int PageNumber)
         {
             var user = await mDb.Set<User>().SingleOrDefaultAsync(u => u.UUID == UUID);
             if(user != null)
             {
-                var result = await mDb.Set<Comment>().AsNoTracking()
-                                        .Where(comment => comment.QuestionID == QuestionID && comment.IsVerified == true)
-                                        .Take(Constants.DefaultReturnAmounts.Comment).ToArrayAsync();
-
-                if (result.Length > 0)
-                { 
-                    Models.Api.SComment[] commentList = new Models.Api.SComment[result.Length];
-
-                    for (int i = 0; i < commentList.Length; ++i)
-                    {
-                        commentList[i] = new Models.Api.SComment
-                        {
-                            UserName = result[i].User.UserName,
-                            Content = result[i].CommentContent,
-                            Response = result[i].Response,
-                            InsertDate = result[i].InsertDate
-                        };
-                    }
-                    return Ok(commentList);
-                }
-                return Ok();
+                var page = mPagedDataRequestFactory.Create(PageNumber , Constants.Paging.DefaultPageSize);
+                var comments = await mCommentInquiryProcessor.GetComments(page , QuestionID);
+                return comments;
             }
-            return NotFound();
+            return new PagedDataInquiryResponse<SComment>(); //TODO : remove this and find a solution to return global result
         }
 
-        [ResponseType(typeof(Models.Api.SComment))]
+        [ResponseType(typeof(SComment))]
         [Route("Comments/{UUID}/{QuestionID}")]
         [HttpPost]
-        public async Task<IHttpActionResult> PostingComment(string UUID , int QuestionID , [FromBody] Models.Api.SComment NewComment)
+        public async Task<IHttpActionResult> PostingComment(string UUID , int QuestionID , [FromBody] SComment NewComment)
         {
            
             if (!ModelState.IsValid)

@@ -3,14 +3,14 @@ using System.Linq;
 using Falcon.Data;
 using Falcon.Web.Models;
 using Falcon.Data.QueryProcessors;
-
+using System.Threading.Tasks;
 using AutoMapper;
 using Falcon.Web.Models.Api;
+using PagedTaskDataInquiryResponse = Falcon.Web.Models.PagedDataInquiryResponse<Falcon.Web.Models.Api.SComment>;
 
-namespace Falcon.Web.Api.InquiryProcessing
+namespace Falcon.Web.Api.InquiryProcessing.Private
 {
-    using PagedTaskDataInquiryResponse = PagedDataInquiryResponse<SComment>;
-
+   
     public class CommentsInquiryProcessor : ICommentsInquiryProcessor
     {
         
@@ -22,10 +22,11 @@ namespace Falcon.Web.Api.InquiryProcessing
             mQueryProcessor = queryProcessor;
             mMapper = Mapper;
         }
-        public PagedDataInquiryResponse<SComment> GetComments(PagedDataRequest requestInfo)
+        public async Task<PagedDataInquiryResponse<SComment>> GetComments(PagedDataRequest requestInfo , int QuestionID)
         {
+
             //TODO : change logic of this 
-            var queryResult = mQueryProcessor.GetComments(requestInfo);
+            var queryResult = await mQueryProcessor.GetComments(requestInfo , QuestionID);
 
             var comments = queryResult.QueriedItems.ToList();
 
