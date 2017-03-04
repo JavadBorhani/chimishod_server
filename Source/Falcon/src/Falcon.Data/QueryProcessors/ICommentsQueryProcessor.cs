@@ -5,6 +5,6 @@ namespace Falcon.Data.QueryProcessors
 {
     public interface ICommentsQueryProcessor
     {
-        Task<QueryResult<Comment>> GetComments(PagedDataRequest requestInfo);
+        Task<QueryResult<Comment>> GetComments(PagedDataRequest requestInfo , int QuestionID);
     }
 }

@@ -95,8 +95,8 @@ namespace Falcon.Web.Api.App_Start
 
         [ResponseType(typeof(SQuestion))]
         [HttpPost]
-        [Route("CreatedQuestions/{UUID}")]
-        public async Task<IHttpActionResult> GetCreatedQuestionList(string UUID)
+        [Route("CreatedQuestions/{UUID}/{PageNumber}")]
+        public async Task<IHttpActionResult> GetCreatedQuestionList(string UUID , int PageNumber)
         {
             var userID = await mDb.Set<User>().AsNoTracking().Where(u => u.UUID == UUID).Select(u => u.ID).SingleOrDefaultAsync();
             if(userID != 0)

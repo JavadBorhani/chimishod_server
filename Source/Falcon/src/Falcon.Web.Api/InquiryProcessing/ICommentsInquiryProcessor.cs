@@ -7,6 +7,6 @@ namespace Falcon.Web.Api.InquiryProcessing
 {
     public interface ICommentsInquiryProcessor
     {
-        Task<PagedDataInquiryResponse<SComment>> GetComments(PagedDataRequest requestInfo);
+        Task<PagedDataInquiryResponse<SComment>> GetComments(PagedDataRequest requestInfo , int QuestionID);
     }
 }

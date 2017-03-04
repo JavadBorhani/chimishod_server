@@ -10,7 +10,7 @@ using System.Net.Http;
 using Falcon.Common.Logging;
 using log4net;
 
-namespace Falcon.Web.Api.InquiryProcessing
+namespace Falcon.Web.Api.InquiryProcessing.Private
 {
     public class PagedDataRequestFactory : IPagedDataRequestFactory
     {
