@@ -3,15 +3,14 @@ using System.Linq;
 using Falcon.Data;
 using Falcon.Web.Models;
 using Falcon.Data.QueryProcessors;
-
+using System.Threading.Tasks;
 using AutoMapper;
 using Falcon.Web.Models.Api;
+using PagedTaskDataInquiryResponse = Falcon.Web.Models.PagedDataInquiryResponse<Falcon.Web.Models.Api.SComment>;
 
 namespace Falcon.Web.Api.InquiryProcessing.Private
 {
-    using System.Threading.Tasks;
-    using PagedTaskDataInquiryResponse = PagedDataInquiryResponse<SComment>;
-
+   
     public class CommentsInquiryProcessor : ICommentsInquiryProcessor
     {
         

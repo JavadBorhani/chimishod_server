@@ -11,6 +11,6 @@ namespace Falcon.Web.Api.InquiryProcessing
 {
     public interface ICreatedQuestionsInquiryProcessor
     {
-        Task<PagedDataInquiryResponse<SCreatedQuestion>> GetQuestionList(PagedDataRequest RequestInfo, int UserID);
+        Task<PagedDataInquiryResponse<SNewCreatedQuestions>> GetQuestionList(PagedDataRequest RequestInfo, int UserID);
     }
 }
