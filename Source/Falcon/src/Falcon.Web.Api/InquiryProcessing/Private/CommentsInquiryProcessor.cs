@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Falcon.Web.Models.Api;
 using PagedTaskDataInquiryResponse = Falcon.Web.Models.PagedDataInquiryResponse<Falcon.Web.Models.Api.SComment>;
+using Falcon.Web.Api.InquiryProcessing.Public;
 
 namespace Falcon.Web.Api.InquiryProcessing.Private
 {

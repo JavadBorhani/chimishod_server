@@ -17,6 +17,7 @@ using Falcon.Web.Api.Utilities.Extentions;
 using Falcon.EFCommonContext;
 using Falcon.Web.Api.InquiryProcessing;
 using Falcon.Web.Models;
+using Falcon.Web.Api.InquiryProcessing.Public;
 
 namespace Falcon.Web.Api.App_Start
 {
