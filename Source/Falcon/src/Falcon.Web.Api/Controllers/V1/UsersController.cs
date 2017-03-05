@@ -7,11 +7,12 @@ using Falcon.EFCommonContext;
 using Falcon.EFCommonContext.DbModel;
 using System.Data.Entity;
 using System.Threading.Tasks;
+using Falcon.Web.Api.Utilities.Base;
 
 namespace Falcon.Web.Api.Controllers.V1
 {
     [UnitOfWorkActionFilter]
-    public class UsersController : ApiController
+    public class UsersController : FalconApiController
     {
         private readonly IDbContext mDb;
         private readonly IDateTime mDateTime;

@@ -4,7 +4,7 @@ using Falcon.Common;
 using Falcon.Data.Exceptions;
 using Falcon.EFCommonContext;
 using Falcon.EFCommonContext.DbModel;
-using Falcon.Web.Api.Utilities.Extentions;
+using Falcon.Web.Api.Utilities.Base;
 using Falcon.Web.Common;
 using Falcon.Web.Models.Api;
 using System.Data.Entity;
