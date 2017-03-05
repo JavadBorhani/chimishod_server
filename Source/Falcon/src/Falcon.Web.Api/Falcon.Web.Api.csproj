@@ -149,6 +149,8 @@
     <Compile Include="InquiryProcessing\Public\ICreatedQuestionsInquiryProcessor.cs" />
     <Compile Include="InquiryProcessing\Public\IPagedDataRequestFactory.cs" />
     <Compile Include="InquiryProcessing\Private\PagedDataRequestFactory.cs" />
+    <Compile Include="Security\Private\BasicPrincipalSecurityService.cs" />
+    <Compile Include="Security\Public\IBasicPrincipalSecurityService.cs" />
     <Compile Include="Utilities\Base\FalconApiController.cs" />
     <Compile Include="Controllers\V1\AchievedPosessionsController.cs" />
     <Compile Include="Controllers\V1\ApplicationStatesController.cs" />
@@ -189,6 +191,8 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="MaintenanceProcessing\Private\" />
+    <Folder Include="MaintenanceProcessing\Public\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Falcon.Common\Falcon.Common.csproj">
