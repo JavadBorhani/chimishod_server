@@ -14,6 +14,7 @@ using Falcon.Web.Common;
 using log4net;
 using Falcon.Common.Logging;
 using Falcon.Web.Api.Utilities.Base;
+using Falcon.Common.Security;
 
 namespace Falcon.Web.Api.Controllers.V1
 {
@@ -24,12 +25,13 @@ namespace Falcon.Web.Api.Controllers.V1
         private readonly IDateTime mDateTime;
         private readonly IDbContext mDb;
         private readonly ILog mLogger;
-
-        public AppThemesController(IDateTime dateTime , IDbContext Database , ILogManager LogManager)
+        private readonly IWebUserSession mUserSessoin;
+        public AppThemesController(IDateTime dateTime , IDbContext Database , ILogManager LogManager , IWebUserSession UserSession)
         {
             mDateTime = dateTime;
             mDb = Database;
             mLogger = LogManager.GetLog(typeof(AppThemesController));
+            mUserSessoin = UserSession;
         }
 
         [ResponseType(typeof(Models.Api.SAppTheme))]

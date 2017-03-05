@@ -15,6 +15,7 @@ using log4net;
 using Falcon.Web.Common;
 using Falcon.EFCommonContext;
 using Falcon.Web.Api.Utilities.Base;
+using Falcon.Common.Security;
 
 namespace Falcon.Web.Api.Controllers.V1
 {
@@ -24,12 +25,13 @@ namespace Falcon.Web.Api.Controllers.V1
         private readonly IDbContext mDb;
         private readonly IMapper mMapper;
         private readonly ILog mLogManager;
-        
-        public FavoritesController(IMapper Mapper , ILogManager logManager, IDbContext Database)
+        private readonly IWebUserSession mUserSession;
+        public FavoritesController(IMapper Mapper , ILogManager logManager, IDbContext Database , IWebUserSession UserSession)
         {
             mMapper = Mapper;
             mLogManager = logManager.GetLog(typeof(FavoritesController));
             mDb = Database;
+            mUserSession = UserSession;
         }
 
         [ResponseType(typeof(SNewCreatedQuestions))]

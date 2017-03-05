@@ -12,6 +12,7 @@ using Falcon.Web.Models.Api;
 using Falcon.EFCommonContext;
 using Falcon.Web.Common;
 using Falcon.Web.Api.Utilities.Base;
+using Falcon.Common.Security;
 
 namespace Falcon.Web.Api.Controllers.V1
 {
@@ -21,11 +22,13 @@ namespace Falcon.Web.Api.Controllers.V1
         
         private readonly IMapper mMapper;
         private readonly IDbContext mDb;
+        private readonly IWebUserSession mUserSession;
 
-        public ApplicationStatesController(IMapper Mapper , IDbContext Database)
+        public ApplicationStatesController(IMapper Mapper , IDbContext Database , IWebUserSession UserSession)
         {
             mMapper = Mapper;
             mDb = Database;
+            mUserSession = UserSession;
         }
 
         [ResponseType(typeof(SApplicationState))]

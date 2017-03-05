@@ -11,6 +11,7 @@ using Falcon.EFCommonContext.DbModel;
 using Falcon.Web.Common;
 using Falcon.EFCommonContext;
 using Falcon.Web.Api.Utilities.Base;
+using Falcon.Common.Security;
 
 namespace Falcon.Web.Api.Controllers.V1
 {
@@ -18,11 +19,12 @@ namespace Falcon.Web.Api.Controllers.V1
     public class QuestionsController : FalconApiController
     {
         private readonly IDbContext mDb;
+        private readonly IWebUserSession mUserSession;
 
-
-        public QuestionsController(IDbContext Database)
+        public QuestionsController(IDbContext Database , IWebUserSession UserSession)
         {
             mDb = Database;
+            mUserSession = UserSession;
         }
 
         [ResponseType(typeof(Models.Api.SQuestion))]

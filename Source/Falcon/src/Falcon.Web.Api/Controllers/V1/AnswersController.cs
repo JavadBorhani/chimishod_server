@@ -16,6 +16,7 @@ using Falcon.Web.Models.Api;
 using Falcon.EFCommonContext;
 using Falcon.Web.Common;
 using Falcon.Web.Api.Utilities.Base;
+using Falcon.Common.Security;
 
 namespace Falcon.Web.Api.Controllers.V1
 {
@@ -26,13 +27,19 @@ namespace Falcon.Web.Api.Controllers.V1
         private readonly ILog mLogger;
         private readonly IMapper mMapper;
         private readonly IDbContext mDb;
+        private readonly IWebUserSession mUserSession;
 
-        public AnswersController(IDateTime dateTime , ILogManager logManager , IMapper Mapper , IDbContext Database)
+        public AnswersController(IDateTime dateTime , 
+            ILogManager logManager , 
+            IMapper Mapper , 
+            IDbContext Database , 
+            IWebUserSession UserSession)
         {
             mDateTime = dateTime;
             mLogger = logManager.GetLog(typeof(AnswersController));
             mMapper = Mapper;
             mDb = Database;
+            mUserSession = UserSession;
         }
 
         public IQueryable<Answer> GetAnswers()

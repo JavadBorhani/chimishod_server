@@ -18,6 +18,7 @@ using Falcon.Web.Common;
 using Falcon.Common.Logging;
 using log4net;
 using Falcon.Web.Api.Utilities.Base;
+using Falcon.Common.Security;
 
 namespace Falcon.Web.Api.Controllers.V1
 {
@@ -29,13 +30,15 @@ namespace Falcon.Web.Api.Controllers.V1
         private readonly IMapper mMapper;
         private readonly IDbContext mDb;
         private readonly ILog mLogger;
+        private readonly IWebUserSession mUserSession;
 
-        public CategoriesController(IDateTime dateTime , IMapper Mapper , IDbContext Database ,ILogManager LogManager)
+        public CategoriesController(IDateTime dateTime , IMapper Mapper , IDbContext Database ,ILogManager LogManager , IWebUserSession UserSession)
         {
             mDateTime = dateTime;
             mMapper = Mapper;
             mDb = Database;
             mLogger = LogManager.GetLog(typeof(CategoriesController));
+            mUserSession = UserSession;
         }
            
 

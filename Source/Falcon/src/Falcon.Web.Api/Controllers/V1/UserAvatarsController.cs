@@ -13,6 +13,7 @@ using Falcon.Web.Models.Api;
 using Falcon.Web.Common;
 using Falcon.EFCommonContext;
 using Falcon.Web.Api.Utilities.Base;
+using Falcon.Common.Security;
 
 namespace Falcon.Web.Api.Controllers.V1
 {
@@ -21,11 +22,13 @@ namespace Falcon.Web.Api.Controllers.V1
     {
         private readonly IDbContext mDb;
         private readonly IDateTime mDateTime;
+        private readonly IWebUserSession mUserSession;
 
-        public UserAvatarsController(IDateTime DateTime, IDbContext Database)
+        public UserAvatarsController(IDateTime DateTime, IDbContext Database , IWebUserSession UserSession)
         {
             mDateTime = DateTime;
             mDb = Database;
+            mUserSession = UserSession;
         }
 
 

@@ -12,6 +12,7 @@ using Falcon.Web.Models;
 using Falcon.Web.Models.Api;
 using Falcon.Web.Api.InquiryProcessing.Public;
 using Falcon.Web.Api.Utilities.Base;
+using Falcon.Common.Security;
 
 namespace Falcon.Web.Api.Controllers.V1
 {
@@ -22,6 +23,8 @@ namespace Falcon.Web.Api.Controllers.V1
         private readonly IDateTime mDateTime;
         private readonly ICommentsInquiryProcessor mCommentInquiryProcessor;
         private readonly IPagedDataRequestFactory mPagedDataRequestFactory;
+        private readonly IWebUserSession mUserSession;
+
         public IPagedDataRequestFactory MPagedDataRequestFactory
         {
             get
@@ -33,12 +36,14 @@ namespace Falcon.Web.Api.Controllers.V1
         public CommentsController(IDateTime dateTime,
                                     IDbContext Database,
                                     ICommentsInquiryProcessor CommentsInquiryProcessor,
-                                    IPagedDataRequestFactory PagedDataRequestFactory)
+                                    IPagedDataRequestFactory PagedDataRequestFactory , 
+                                    IWebUserSession UserSession)
         {
             mDateTime = dateTime;
             mDb = Database;
             mCommentInquiryProcessor = CommentsInquiryProcessor;
             mPagedDataRequestFactory = PagedDataRequestFactory;
+            mUserSession             = UserSession;
         }
 
         [Route("Comments/{UUID}/{QuestionID}/{PageNumber}")]

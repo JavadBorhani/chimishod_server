@@ -16,6 +16,7 @@ using Falcon.EFCommonContext;
 using Falcon.Web.Models;
 using Falcon.Web.Api.InquiryProcessing.Public;
 using Falcon.Web.Api.Utilities.Base;
+using Falcon.Common.Security;
 
 namespace Falcon.Web.Api.App_Start
 {
@@ -27,18 +28,21 @@ namespace Falcon.Web.Api.App_Start
         private readonly IMapper mMapper;
         private readonly ICreatedQuestionsInquiryProcessor mCreatedQuestionsInquiryProcessor;
         private readonly IPagedDataRequestFactory mPagedDataRequestFactory;
+        private readonly IWebUserSession mUserSession;
 
         public CreatedQuestionsController(IDateTime DateTime ,
             IMapper Mapper, 
             IDbContext Database , 
             ICreatedQuestionsInquiryProcessor InquiryProcessor , 
-            IPagedDataRequestFactory PagedDataRequestFactory)
+            IPagedDataRequestFactory PagedDataRequestFactory , 
+            IWebUserSession UserSession)
         {
             mDateTime = DateTime;
             mMapper = Mapper;
             mDb = Database;
             mCreatedQuestionsInquiryProcessor = InquiryProcessor;
             mPagedDataRequestFactory = PagedDataRequestFactory;
+            mUserSession = UserSession;
         }
 
         [ResponseType(typeof(SUserState))]

@@ -1,6 +1,7 @@
 ﻿// Flapp Copyright 2017-2018
 
 using Falcon.Common;
+using Falcon.Common.Security;
 using Falcon.Data.Exceptions;
 using Falcon.EFCommonContext;
 using Falcon.EFCommonContext.DbModel;
@@ -23,12 +24,14 @@ namespace Falcon.Web.Api.Controllers.V1
         private readonly IDbContext mDb;
         private readonly IDateTime mDateTime;
         private readonly IDbContext mDbContext;
+        private readonly IWebUserSession mUserSession;
 
-        public UserAuthenticatorController(IDbContext Context , IDateTime dateTime, IDbContext Database)
+        public UserAuthenticatorController(IDbContext Context , IDateTime dateTime, IDbContext Database , IWebUserSession UserSession)
         {
             mDateTime = dateTime;
             mDbContext = Context;
             mDb = Database;
+            mUserSession = UserSession;
         }
 
         [ResponseType(typeof(Models.Api.SUser))]

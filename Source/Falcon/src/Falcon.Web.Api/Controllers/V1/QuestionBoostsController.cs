@@ -14,6 +14,7 @@ using Falcon.Web.Models.Api;
 using Falcon.Web.Common;
 using Falcon.EFCommonContext;
 using Falcon.Web.Api.Utilities.Base;
+using Falcon.Common.Security;
 
 namespace Falcon.Web.Api.Controllers.V1
 {
@@ -22,11 +23,13 @@ namespace Falcon.Web.Api.Controllers.V1
     {
         private readonly IDbContext mDb;
         private readonly IMapper mMapper;
+        private readonly IWebUserSession mUserSession;
 
-        public QuestionBoostsController(IMapper Mapper, IDbContext Database)
+        public QuestionBoostsController(IMapper Mapper, IDbContext Database , IWebUserSession UserSession)
         {
             mMapper = Mapper;
-            mDb = Database; 
+            mDb = Database;
+            mUserSession = UserSession;
         }
        
         [ResponseType(typeof(SQuestionBoost))]

@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using Falcon.Web.Common;
 using Falcon.EFCommonContext;
 using Falcon.Web.Api.Utilities.Base;
+using Falcon.Common.Security;
 
 namespace Falcon.Web.Api.Controllers.V1
 {
@@ -21,11 +22,13 @@ namespace Falcon.Web.Api.Controllers.V1
     {
         private readonly IDbContext mDb;
         private readonly IMapper mMapper;
+        private readonly IWebUserSession mUserSession;
 
-        public ReportTypesController(IMapper Mapper, IDbContext Database)
+        public ReportTypesController(IMapper Mapper, IDbContext Database , IWebUserSession UserSession)
         {
             mMapper = Mapper;
             mDb = Database;
+            mUserSession = UserSession;
         }
 
         [ResponseType(typeof(SReportType))]

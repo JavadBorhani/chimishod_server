@@ -15,6 +15,7 @@ using System.Collections.Generic;
 using Falcon.Web.Common;
 using Falcon.EFCommonContext;
 using Falcon.Web.Api.Utilities.Base;
+using Falcon.Common.Security;
 
 namespace Falcon.Web.Api.Controllers.V1
 {
@@ -24,12 +25,14 @@ namespace Falcon.Web.Api.Controllers.V1
         private readonly IMapper mMapper;
         private readonly IDateTime mDateTime;
         private readonly IDbContext mDb;
+        private readonly IWebUserSession mUserSession;
 
-        public AchievedPosessionsController(IMapper Mapper , IDateTime DateTime , IDbContext Database)
+        public AchievedPosessionsController(IMapper Mapper , IDateTime DateTime , IDbContext Database , IWebUserSession UserSession)
         {
             mMapper = Mapper;
             mDateTime = DateTime;
             mDb = Database;
+            mUserSession = UserSession; 
         }
 
         [Route("Achievements/{UUID}")]
