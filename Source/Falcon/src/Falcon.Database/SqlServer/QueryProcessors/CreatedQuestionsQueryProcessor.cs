@@ -23,12 +23,13 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             var manu = mDb.Set<Manufacture>();
             var createdQuestion = mDb.Set<CreatedQuestion>();
 
+            //TODO : refactor this 
             var query = manu.AsNoTracking()
                 .Where(u => u.UserID == UserID)
                 .Include( c => c.Question)
                 .Select(u => u.Question)
                 .Where(u => u.Banned == false)
-                .Include( u => u.Category)
+                .Include( u => u.Category.Name)
                 .Select( u => new SNewCreatedQuestions
                 {
                     ID = u.ID,
@@ -45,7 +46,7 @@ namespace Falcon.Database.SqlServer.QueryProcessors
                 .Union(createdQuestion.AsNoTracking().Where(cq => cq.UserID == UserID && (
                         cq.VerifyStateID == Constants.DefaultValues.CreatedQuestionIsInChecking ||
                         cq.VerifyStateID == Constants.DefaultValues.CreatedQuestionRejected
-                    )).Include(cq => cq.Category).Select(cq => new SNewCreatedQuestions
+                    )).Include(cq => cq.Category.Name).Select(cq => new SNewCreatedQuestions
                     {
                         ID = cq.ID,
                         What_if = cq.What_if,
@@ -65,7 +66,7 @@ namespace Falcon.Database.SqlServer.QueryProcessors
 
             var startIndex = ResultPagingUtility.CalculateStartIndex(requestInfo.PageNumber, requestInfo.PageSize);
 
-            var createdQuestions = await query.OrderBy(x => x.ID).Skip(startIndex).Take(requestInfo.PageSize).ToListAsync();
+            var createdQuestions = await query.OrderBy(x => x.RegisterDateTime).Skip(startIndex).Take(requestInfo.PageSize).ToListAsync();
 
             var queryResult = new QueryResult<SNewCreatedQuestions>(createdQuestions, totalItemCount, requestInfo.PageSize);
 

@@ -145,13 +145,11 @@
     <Compile Include="Controllers\V1\LevelsController.cs" />
     <Compile Include="InquiryProcessing\Private\CommentsInquiryProcessor.cs" />
     <Compile Include="InquiryProcessing\Private\CreatedQuestionsInquiryProcessor.cs" />
-    <Compile Include="InquiryProcessing\ICommentsInquiryProcessor.cs" />
-    <Compile Include="InquiryProcessing\ICreatedQuestionsInquiryProcessor.cs" />
-    <Compile Include="InquiryProcessing\IPagedDataRequestFactory.cs" />
+    <Compile Include="InquiryProcessing\Public\ICommentsInquiryProcessor.cs" />
+    <Compile Include="InquiryProcessing\Public\ICreatedQuestionsInquiryProcessor.cs" />
+    <Compile Include="InquiryProcessing\Public\IPagedDataRequestFactory.cs" />
     <Compile Include="InquiryProcessing\Private\PagedDataRequestFactory.cs" />
-    <Compile Include="Utilities\Extensions\FalconApiController.cs" />
-    <Compile Include="Utilities\ILevelManager.cs" />
-    <Compile Include="Utilities\LevelManager.cs" />
+    <Compile Include="Utilities\Base\FalconApiController.cs" />
     <Compile Include="Controllers\V1\AchievedPosessionsController.cs" />
     <Compile Include="Controllers\V1\ApplicationStatesController.cs" />
     <Compile Include="Controllers\V1\CreatedQuestionsController.cs" />

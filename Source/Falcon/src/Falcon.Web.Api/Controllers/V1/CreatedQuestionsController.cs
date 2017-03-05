@@ -11,12 +11,11 @@ using Falcon.Web.Common;
 using Falcon.Web.Models.Api;
 using Falcon.Common;
 using System.Net.Http;
-using System.Collections.Generic;
 using AutoMapper;
-using Falcon.Web.Api.Utilities.Extentions;
 using Falcon.EFCommonContext;
-using Falcon.Web.Api.InquiryProcessing;
 using Falcon.Web.Models;
+using Falcon.Web.Api.InquiryProcessing.Public;
+using Falcon.Web.Api.Utilities.Base;
 
 namespace Falcon.Web.Api.App_Start
 {

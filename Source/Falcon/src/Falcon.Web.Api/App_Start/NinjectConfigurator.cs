@@ -18,6 +18,7 @@ using System.Collections.Generic;
 using Falcon.Web.Api.App_Start;
 using Falcon.Web.Api.InquiryProcessing;
 using Falcon.Web.Api.InquiryProcessing.Private;
+using Falcon.Web.Api.InquiryProcessing.Public;
 
 namespace Falcon.Web.Api
 {

@@ -3,7 +3,7 @@ using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Results;
 
-namespace Falcon.Web.Api.Utilities.Extentions
+namespace Falcon.Web.Api.Utilities.Base
 {
     public class FalconApiController : ApiController
     {

@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Web;
 using Falcon.Data;
 using System.Net;
@@ -9,6 +7,7 @@ using Falcon.Common.Extentions;
 using System.Net.Http;
 using Falcon.Common.Logging;
 using log4net;
+using Falcon.Web.Api.InquiryProcessing.Public;
 
 namespace Falcon.Web.Api.InquiryProcessing.Private
 {

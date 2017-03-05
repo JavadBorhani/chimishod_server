@@ -9,6 +9,7 @@ using Falcon.Web.Models.Api;
 using AutoMapper;
 using PagedQuestionDataInquiryResponse = Falcon.Web.Models.PagedDataInquiryResponse<Falcon.Web.Models.Api.SNewCreatedQuestions>;
 using Falcon.Data.QueryProcessors;
+using Falcon.Web.Api.InquiryProcessing.Public;
 
 namespace Falcon.Web.Api.InquiryProcessing.Private
 {

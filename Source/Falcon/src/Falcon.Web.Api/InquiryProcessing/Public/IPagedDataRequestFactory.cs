@@ -2,7 +2,7 @@
 using Falcon.Data;
 using System;
 
-namespace Falcon.Web.Api.InquiryProcessing
+namespace Falcon.Web.Api.InquiryProcessing.Public
 {
     public interface IPagedDataRequestFactory
     {
