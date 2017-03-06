@@ -2,9 +2,9 @@
 
 namespace Falcon.Web.Api.MaintenanceProcessing.Public
 {
-    interface IGlobalApplicationState
+    public interface IGlobalApplicationState
     {
-        SApplicationState GetState();
+        SApplicationState State();
         bool SetState(SApplicationState NewState);
         void ReadStateFromDatabase();
     }

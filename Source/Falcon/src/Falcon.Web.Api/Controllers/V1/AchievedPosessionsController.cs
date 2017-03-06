@@ -16,6 +16,7 @@ using Falcon.Web.Common;
 using Falcon.EFCommonContext;
 using Falcon.Web.Api.Utilities.Base;
 using Falcon.Common.Security;
+using Falcon.Web.Api.MaintenanceProcessing.Public;
 
 namespace Falcon.Web.Api.Controllers.V1
 {
@@ -26,13 +27,15 @@ namespace Falcon.Web.Api.Controllers.V1
         private readonly IDateTime mDateTime;
         private readonly IDbContext mDb;
         private readonly IWebUserSession mUserSession;
+        private readonly IGlobalApplicationState mAppState;
 
-        public AchievedPosessionsController(IMapper Mapper , IDateTime DateTime , IDbContext Database , IWebUserSession UserSession)
+        public AchievedPosessionsController(IMapper Mapper , IDateTime DateTime , IDbContext Database , IWebUserSession UserSession , IGlobalApplicationState AppState)
         {
             mMapper = Mapper;
             mDateTime = DateTime;
             mDb = Database;
-            mUserSession = UserSession; 
+            mUserSession = UserSession;
+            mAppState = AppState;
         }
 
         [Route("Achievements/")]

@@ -14,6 +14,7 @@ using Falcon.Web.Common;
 using Falcon.EFCommonContext;
 using Falcon.Web.Api.Utilities.Base;
 using Falcon.Common.Security;
+using Falcon.Web.Api.MaintenanceProcessing.Public;
 
 namespace Falcon.Web.Api.Controllers.V1
 {
@@ -24,11 +25,14 @@ namespace Falcon.Web.Api.Controllers.V1
         private readonly IMapper mMapper;
         private readonly IWebUserSession mUserSession;
 
-        public ReportTypesController(IMapper Mapper, IDbContext Database , IWebUserSession UserSession)
+        private readonly IGlobalApplicationState mAppState;
+
+        public ReportTypesController(IMapper Mapper, IDbContext Database , IWebUserSession UserSession , IGlobalApplicationState AppState)
         {
             mMapper = Mapper;
             mDb = Database;
             mUserSession = UserSession;
+            mAppState = AppState;
         }
 
         [ResponseType(typeof(SReportType))]
@@ -36,6 +40,8 @@ namespace Falcon.Web.Api.Controllers.V1
         [HttpPost]
         public async Task<IHttpActionResult> GetReportTypes()
         {
+            int value = mAppState.GetState().AnswerPrize;
+
             var reportTypes = await mDb.Set<ReportType>().ToListAsync();
             var result = mMapper.Map<List<ReportType>, List<SReportType>>(reportTypes);
 

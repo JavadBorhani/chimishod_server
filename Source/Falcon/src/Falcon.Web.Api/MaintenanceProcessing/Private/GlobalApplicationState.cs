@@ -28,7 +28,7 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
             }
         }
 
-        public SApplicationState GetApplicationState()
+        public SApplicationState State()
         {
             if(mCurrentApplicationState == null)
             {
@@ -46,7 +46,7 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
             }
         }
 
-        public bool SetApplicationState(SApplicationState NewState)
+        public bool SetState(SApplicationState NewState)
         {
             if(ModelIsValid(NewState))
             {

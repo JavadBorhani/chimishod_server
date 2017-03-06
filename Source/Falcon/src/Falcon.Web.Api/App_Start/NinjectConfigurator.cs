@@ -45,7 +45,7 @@ namespace Falcon.Web.Api
             AddMaintenanceProcessors(container);
             AddAdHoc(container);
 
-            container.Bind<IGlobalApplicationState>().To<GlobalApplicationState>().InSingletonScope();
+            
 
         }
         private void ConfigureLog4Net(IKernel container)
@@ -95,6 +95,9 @@ namespace Falcon.Web.Api
         {
             container.Bind<IDateTime>().To<DateTimeAdapter>().InSingletonScope();
             container.Bind<IBasicPrincipalSecurityService>().To<BasicPrincipalSecurityService>().InSingletonScope();
+
+            //Global Application State
+            container.Bind<IGlobalApplicationState>().To<GlobalApplicationState>().InSingletonScope();
         }
 
         private void ConfigureAutoMapper(IKernel container)
