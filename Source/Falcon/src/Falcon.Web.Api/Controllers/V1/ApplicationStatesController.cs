@@ -1,17 +1,16 @@
 ﻿// Flapp Copyright 2017-2018
 
-using System.Linq;
 using System.Web.Http;
 using Falcon.EFCommonContext.DbModel;
 using AutoMapper;
 using System.Threading.Tasks;
 using System.Data.Entity;
-using System.Net;
 using System.Web.Http.Description;
 using Falcon.Web.Models.Api;
 using Falcon.EFCommonContext;
 using Falcon.Web.Common;
 using Falcon.Web.Api.Utilities.Base;
+using Falcon.Common.Security;
 
 namespace Falcon.Web.Api.Controllers.V1
 {
@@ -21,29 +20,23 @@ namespace Falcon.Web.Api.Controllers.V1
         
         private readonly IMapper mMapper;
         private readonly IDbContext mDb;
+        private readonly IWebUserSession mUserSession;
 
-        public ApplicationStatesController(IMapper Mapper , IDbContext Database)
+        public ApplicationStatesController(IMapper Mapper , IDbContext Database , IWebUserSession UserSession)
         {
             mMapper = Mapper;
             mDb = Database;
+            mUserSession = UserSession;
         }
 
         [ResponseType(typeof(SApplicationState))]
-        [Route("ApplicationStates/{UUID}")]
+        [Route("ApplicationStates/")]
         [HttpPost]
-        public async Task<IHttpActionResult> GetApplicationStates(string UUID)
-        {
-            var user = await  mDb.Set<User>().AsNoTracking().Where(u => u.UUID == UUID).Select(u => u.ID).SingleOrDefaultAsync();
-            if(user != 0) // user exists
-            {
-                var dbApplicationState = await mDb.Set<ApplicationState>().SingleOrDefaultAsync();
-                var clientResult = mMapper.Map<ApplicationState , SApplicationState> (dbApplicationState);
-                return Ok(clientResult);
-            }
-            else
-            {
-                return Response(HttpStatusCode.Unauthorized);
-            }
+        public async Task<IHttpActionResult> GetApplicationStates()
+        {   
+            var dbApplicationState = await mDb.Set<ApplicationState>().SingleOrDefaultAsync();
+            var clientResult = mMapper.Map<ApplicationState , SApplicationState> (dbApplicationState);
+            return Ok(clientResult);
         }
         
     }

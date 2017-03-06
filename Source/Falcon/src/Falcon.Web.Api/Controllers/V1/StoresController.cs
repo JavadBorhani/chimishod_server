@@ -15,6 +15,7 @@ using Falcon.Web.Models.Api;
 using Falcon.Web.Common;
 using Falcon.EFCommonContext;
 using Falcon.Web.Api.Utilities.Base;
+using Falcon.Common.Security;
 
 namespace Falcon.Web.Api.Controllers.V1
 {
@@ -24,37 +25,31 @@ namespace Falcon.Web.Api.Controllers.V1
         private readonly IDbContext mDb;
         private readonly IMapper mMapper;
         private readonly IDateTime mDateTime;
+        private readonly IWebUserSession mUserSession;
 
-        public StoresController(IMapper Mapper , IDateTime DateTime, IDbContext Database)
+        public StoresController(IMapper Mapper , IDateTime DateTime, IDbContext Database , IWebUserSession UserSession)
         {
             mMapper = Mapper;
             mDateTime = DateTime;
-            mDb = Database; 
+            mDb = Database;
+            mUserSession = UserSession;
         }
 
         [ResponseType(typeof(SStore))]
-        [Route("Stores/{UUID}")]
+        [Route("Stores/")]
         [HttpPost]
-        public async Task<IHttpActionResult> GetStoreList(string UUID)
+        public async Task<IHttpActionResult> GetStoreList()
         {
-            var user = await mDb.Set<User>().AsNoTracking().Where(u => u.UUID == UUID).Select( u => u.ID).SingleOrDefaultAsync();
-            if(user != 0)
-            {
-                var storeList = await mDb.Set<Store>().Take(Constants.DefaultValues.StoreNumberToSend).ToListAsync();
+            var storeList = await mDb.Set<Store>().Take(Constants.DefaultValues.StoreNumberToSend).ToListAsync();
 
-                if (storeList.Count > 0)
-                {
-                    var clientList = mMapper.Map<List<Store>, List<SStore>>(storeList);
-                    return Ok(clientList);
-                }
-                else
-                {
-                    return Response(HttpStatusCode.NoContent);
-                }
+            if (storeList.Count > 0)
+            {
+                var clientList = mMapper.Map<List<Store>, List<SStore>>(storeList);
+                return Ok(clientList);
             }
             else
             {
-                return Response(HttpStatusCode.Unauthorized);
+                return Response(HttpStatusCode.NoContent);
             }
         }
 

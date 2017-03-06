@@ -11,6 +11,7 @@ using Falcon.Common;
 using Falcon.Web.Common;
 using Falcon.EFCommonContext;
 using Falcon.Web.Api.Utilities.Base;
+using Falcon.Common.Security;
 
 namespace Falcon.Web.Api.Controllers.V1
 {
@@ -19,54 +20,48 @@ namespace Falcon.Web.Api.Controllers.V1
     {
         private readonly IDbContext mDb;
         private readonly IDateTime mDateTime;
+        private readonly IWebUserSession mUserSession;
 
-        public ReportedQuestionsController(IDateTime DateTime, IDbContext Database)
+        public ReportedQuestionsController(IDateTime DateTime, IDbContext Database , IWebUserSession UserSession)
         {
             mDateTime = DateTime;
             mDb = Database;
+            mUserSession = UserSession;
         }
 
 
-        [Route("ReportedQuestions/{UUID}/{QuestionID}/{ReportID}")] //TODO Refactor this to packet
+        [Route("ReportedQuestions/{QuestionID}/{ReportID}")] //TODO Refactor this to packet
         [HttpPost]
-        public async Task<IHttpActionResult> ReportQuestion(string UUID , int QuestionID , int ReportID)
+        public async Task<IHttpActionResult> ReportQuestion(int QuestionID , int ReportID)
         {
-            var userID = await mDb.Set<User>().AsNoTracking().Where(u => u.UUID == UUID).Select(u => u.ID).SingleOrDefaultAsync();
-            if(userID != 0)
+            var reportExists = await mDb.Set<ReportedQuestion>().Where(rq => rq.UserID == mUserSession.UserID && rq.QuestionID == QuestionID).Select(rq => rq.ID).SingleOrDefaultAsync();
+            var questionIDExists = await mDb.Set<Question>().CountAsync( q=> q.ID == QuestionID) > 0;
+            var reportIDExists = await mDb.Set<ReportType>().CountAsync(rt => rt.ID == ReportID) > 0;
+
+            if (reportExists == 0)
             {
-                var reportExists = await mDb.Set<ReportedQuestion>().Where(rq => rq.UserID == userID && rq.QuestionID == QuestionID).Select(rq => rq.ID).SingleOrDefaultAsync();
-                var questionIDExists = await mDb.Set<Question>().CountAsync( q=> q.ID == QuestionID) > 0;
-                var reportIDExists = await mDb.Set<ReportType>().CountAsync(rt => rt.ID == ReportID) > 0;
-
-                if (reportExists == 0)
+                if (questionIDExists && reportIDExists)
                 {
-                    if (questionIDExists && reportIDExists)
+                    var newReport = new ReportedQuestion
                     {
-                        var newReport = new ReportedQuestion
-                        {
-                            QuestionID = QuestionID,
-                            UserID = userID,
-                            ReportTypeID = ReportID,
-                            CreatedDate = mDateTime.Now
-                        };
-                        mDb.Set<ReportedQuestion>().Add(newReport);
-                        await mDb.SaveChangesAsync();
+                        QuestionID = QuestionID,
+                        UserID = mUserSession.UserID,
+                        ReportTypeID = ReportID,
+                        CreatedDate = mDateTime.Now
+                    };
+                    mDb.Set<ReportedQuestion>().Add(newReport);
+                    await mDb.SaveChangesAsync();
 
-                        return Response(HttpStatusCode.OK);
-                    }
-                    else
-                    {
-                        return Response(HttpStatusCode.Unauthorized);
-                    }
+                    return Response(HttpStatusCode.OK);
                 }
                 else
                 {
-                    return Response(HttpStatusCode.Conflict);
+                    return Response(HttpStatusCode.Unauthorized);
                 }
             }
             else
             {
-                return Response(HttpStatusCode.Unauthorized);
+                return Response(HttpStatusCode.Conflict);
             }
         }
     }

@@ -16,6 +16,7 @@ using Falcon.EFCommonContext;
 using Falcon.Web.Models;
 using Falcon.Web.Api.InquiryProcessing.Public;
 using Falcon.Web.Api.Utilities.Base;
+using Falcon.Common.Security;
 
 namespace Falcon.Web.Api.App_Start
 {
@@ -27,26 +28,29 @@ namespace Falcon.Web.Api.App_Start
         private readonly IMapper mMapper;
         private readonly ICreatedQuestionsInquiryProcessor mCreatedQuestionsInquiryProcessor;
         private readonly IPagedDataRequestFactory mPagedDataRequestFactory;
+        private readonly IWebUserSession mUserSession;
 
         public CreatedQuestionsController(IDateTime DateTime ,
             IMapper Mapper, 
             IDbContext Database , 
             ICreatedQuestionsInquiryProcessor InquiryProcessor , 
-            IPagedDataRequestFactory PagedDataRequestFactory)
+            IPagedDataRequestFactory PagedDataRequestFactory , 
+            IWebUserSession UserSession)
         {
             mDateTime = DateTime;
             mMapper = Mapper;
             mDb = Database;
             mCreatedQuestionsInquiryProcessor = InquiryProcessor;
             mPagedDataRequestFactory = PagedDataRequestFactory;
+            mUserSession = UserSession;
         }
 
         [ResponseType(typeof(SUserState))]
         [Route("CreatedQuestions/Create/{UUID}/{CategoryID}")]
         [HttpPost]
-        public async Task<IHttpActionResult> CreateNewQuestion(string UUID , int CategoryID, [FromBody] SCreatedQuestion createdQuestion)
+        public async Task<IHttpActionResult> CreateNewQuestion(int CategoryID, [FromBody] SCreatedQuestion createdQuestion)
         {
-            var user = await mDb.Set<User>().SingleOrDefaultAsync(u => u.UUID == UUID);
+            var user = await mDb.Set<User>().SingleOrDefaultAsync(u => u.UUID == mUserSession.UUID);
 
             if(user != null)
             {
@@ -104,20 +108,12 @@ namespace Falcon.Web.Api.App_Start
 
         [ResponseType(typeof(SQuestion))]
         [HttpPost]
-        [Route("CreatedQuestions/Get/{UUID}/{PageNumber}")]
-        public async Task<PagedDataInquiryResponse<SNewCreatedQuestions>> GetCreatedQuestionList(string UUID , int PageNumber)
+        [Route("CreatedQuestions/Get/{PageNumber}")]
+        public async Task<PagedDataInquiryResponse<SNewCreatedQuestions>> GetCreatedQuestionList(int PageNumber)
         {
-            var userID = await mDb.Set<User>().AsNoTracking().Where(u => u.UUID == UUID).Select(u => u.ID).SingleOrDefaultAsync();
-            if(userID != 0)
-            {
-                var page = mPagedDataRequestFactory.Create(PageNumber, Constants.Paging.DefaultPageSize);
-                var createdQuestions = await mCreatedQuestionsInquiryProcessor.GetQuestionList(page , userID);
-                return createdQuestions;
-            }
-            else
-            {
-                return new PagedDataInquiryResponse<SNewCreatedQuestions>(); // TODO : Change to Unauthorized
-            }
+            var page = mPagedDataRequestFactory.Create(PageNumber, Constants.Paging.DefaultPageSize);
+            var createdQuestions = await mCreatedQuestionsInquiryProcessor.GetQuestionList(page , mUserSession.UserID);
+            return createdQuestions;
         }
 
         private bool HasEnoughMoney(int TotalStar , int QuestionPrice , int BoostPrice)

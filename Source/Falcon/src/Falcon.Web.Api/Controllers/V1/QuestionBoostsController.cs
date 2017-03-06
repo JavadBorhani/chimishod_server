@@ -14,6 +14,7 @@ using Falcon.Web.Models.Api;
 using Falcon.Web.Common;
 using Falcon.EFCommonContext;
 using Falcon.Web.Api.Utilities.Base;
+using Falcon.Common.Security;
 
 namespace Falcon.Web.Api.Controllers.V1
 {
@@ -22,37 +23,28 @@ namespace Falcon.Web.Api.Controllers.V1
     {
         private readonly IDbContext mDb;
         private readonly IMapper mMapper;
+        private readonly IWebUserSession mUserSession;
 
-        public QuestionBoostsController(IMapper Mapper, IDbContext Database)
+        public QuestionBoostsController(IMapper Mapper, IDbContext Database , IWebUserSession UserSession)
         {
             mMapper = Mapper;
-            mDb = Database; 
+            mDb = Database;
+            mUserSession = UserSession;
         }
        
         [ResponseType(typeof(SQuestionBoost))]
-        [Route("QuestionBoosts/{UUID}")]
+        [Route("QuestionBoosts/")]
         [HttpPost]
-        public async Task<IHttpActionResult> GetQuestionBoostList(string UUID)
+        public async Task<IHttpActionResult> GetQuestionBoostList()
         {
-            var user = await mDb.Set<User>().Where(u => u.UUID == UUID).Select( u => u.ID).SingleOrDefaultAsync();
+            var dbBoostList = await mDb.Set<QuestionBoost>().ToListAsync();
 
-            if(user != 0)
+            if(dbBoostList.Count > 0 )
             {
-                var dbBoostList = await mDb.Set<QuestionBoost>().ToListAsync();
-
-                if(dbBoostList.Count > 0 )
-                {
-                    var clientBoostLists = mMapper.Map<List<QuestionBoost>, List<SQuestionBoost>>(dbBoostList);
-                    return Ok(clientBoostLists);
-                }
-                return Response(HttpStatusCode.NoContent);
+                var clientBoostLists = mMapper.Map<List<QuestionBoost>, List<SQuestionBoost>>(dbBoostList);
+                return Ok(clientBoostLists);
             }
-            else
-            {
-                return Response(HttpStatusCode.Unauthorized);
-            }
+            return Response(HttpStatusCode.NoContent);
         }
-
-
     }
 }

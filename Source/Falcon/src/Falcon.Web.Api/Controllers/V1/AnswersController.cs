@@ -16,6 +16,7 @@ using Falcon.Web.Models.Api;
 using Falcon.EFCommonContext;
 using Falcon.Web.Common;
 using Falcon.Web.Api.Utilities.Base;
+using Falcon.Common.Security;
 
 namespace Falcon.Web.Api.Controllers.V1
 {
@@ -26,13 +27,19 @@ namespace Falcon.Web.Api.Controllers.V1
         private readonly ILog mLogger;
         private readonly IMapper mMapper;
         private readonly IDbContext mDb;
+        private readonly IWebUserSession mUserSession;
 
-        public AnswersController(IDateTime dateTime , ILogManager logManager , IMapper Mapper , IDbContext Database)
+        public AnswersController(IDateTime dateTime , 
+            ILogManager logManager , 
+            IMapper Mapper , 
+            IDbContext Database , 
+            IWebUserSession UserSession)
         {
             mDateTime = dateTime;
             mLogger = logManager.GetLog(typeof(AnswersController));
             mMapper = Mapper;
             mDb = Database;
+            mUserSession = UserSession;
         }
 
         public IQueryable<Answer> GetAnswers()
@@ -62,62 +69,54 @@ namespace Falcon.Web.Api.Controllers.V1
         }
 
         [HttpPost]
-        [Route("Statistics/{UUID}")]
+        [Route("Statistics/")]
         [ResponseType(typeof(SUserStatistics))]
-        public async Task<IHttpActionResult> GetStatistics(string UUID)
+        public async Task<IHttpActionResult> GetStatistics()
         {
-            var userID = await mDb.Set<User>().AsNoTracking().Where(u => u.UUID == UUID).Select( u => u.ID).SingleOrDefaultAsync();
+            
+            int userTotalYes = 0;
+            int userTotalNo = 0;
+            float userNormal = 0;
 
-            if(userID != 0)
-            {
-                int userTotalYes = 0;
-                int userTotalNo = 0;
-                float userNormal = 0;
-
-                var userAndQuestion = await mDb.Set<Answer>().AsNoTracking()
-                                                    .Where( u => u.UserID == userID)
-                                                    .Select( u => new { u.YesNoState, u.Question.Yes_Count , u.Question.No_Count, u.Question.Banned })
-                                                    .ToArrayAsync(); 
+            var userAndQuestion = await mDb.Set<Answer>().AsNoTracking()
+                                                .Where( u => u.UserID == mUserSession.UserID)
+                                                .Select( u => new { u.YesNoState, u.Question.Yes_Count , u.Question.No_Count, u.Question.Banned })
+                                                .ToArrayAsync(); 
                 
-                if(userAndQuestion.Length >  0 )
+            if(userAndQuestion.Length >  0 )
+            {
+                for (int i = 0; i < userAndQuestion.Length; ++i)
                 {
-                    for (int i = 0; i < userAndQuestion.Length; ++i)
+                    if (userAndQuestion[i].Banned == false)
                     {
-                        if (userAndQuestion[i].Banned == false)
-                        {
-                            userTotalYes = (userAndQuestion[i].YesNoState == true) ? (++userTotalYes) : userTotalYes;
-                            userTotalNo = (userAndQuestion[i].YesNoState == false) ? (++userTotalNo) : userTotalNo;
+                        userTotalYes = (userAndQuestion[i].YesNoState == true) ? (++userTotalYes) : userTotalYes;
+                        userTotalNo = (userAndQuestion[i].YesNoState == false) ? (++userTotalNo) : userTotalNo;
 
                             
-                            var total = userAndQuestion[i].Yes_Count + userAndQuestion[i].No_Count;
-                            total = (total == 0) ? 1 : total;
-                            float yesPercent = userAndQuestion[i].Yes_Count * 100.0f / total;
-                            float noPercent = userAndQuestion[i].No_Count * 100.0f / total;
+                        var total = userAndQuestion[i].Yes_Count + userAndQuestion[i].No_Count;
+                        total = (total == 0) ? 1 : total;
+                        float yesPercent = userAndQuestion[i].Yes_Count * 100.0f / total;
+                        float noPercent = userAndQuestion[i].No_Count * 100.0f / total;
 
-                            userNormal += ((userAndQuestion[i].YesNoState == true) ? yesPercent : noPercent);
-                        }
+                        userNormal += ((userAndQuestion[i].YesNoState == true) ? yesPercent : noPercent);
                     }
-                    userNormal = userNormal / userAndQuestion.Length;
                 }
-                SUserStatistics m = new SUserStatistics
-                {
-                    UserNormal = (int)userNormal,
-                    UserTotalNo = userTotalNo,
-                    UserTotalYes = userTotalYes
-                };
-                return Ok(m);
+                userNormal = userNormal / userAndQuestion.Length;
             }
-            else
+            SUserStatistics m = new SUserStatistics
             {
-                return Response(HttpStatusCode.Unauthorized);
-            }
+                UserNormal = (int)userNormal,
+                UserTotalNo = userTotalNo,
+                UserTotalYes = userTotalYes
+            };
+            return Ok(m);
         }
 
-        [Route("Answers/Answer/{UUID}")]
+        [Route("Answers/Answer/")]
         [HttpPost]
-        public async Task<IHttpActionResult> PostingAnswer(string UUID, [FromBody] SAnswer answer)
+        public async Task<IHttpActionResult> PostingAnswer([FromBody] SAnswer answer)
         {
-            var user = await mDb.Set<User>().SingleOrDefaultAsync(u => u.UUID == UUID);
+            var user = await mDb.Set<User>().SingleOrDefaultAsync(u => u.UUID == mUserSession.UUID);
             //TODO : Remember to Remove Extar Save Changes on database ;
             if (user != null)
             {
@@ -303,6 +302,7 @@ namespace Falcon.Web.Api.Controllers.V1
         {
             return await mDb.Set<Favorite>().CountAsync(e => e.UserID == userID);
         }
+
         private void LevelUpChecking(ref User user, int levelCeil, int Prize, int nextLevelID)
         {
             user.Score += Prize;

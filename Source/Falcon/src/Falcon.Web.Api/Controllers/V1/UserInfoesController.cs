@@ -16,6 +16,7 @@ using System.Text.RegularExpressions;
 using Falcon.Web.Common;
 using Falcon.EFCommonContext;
 using Falcon.Web.Api.Utilities.Base;
+using Falcon.Common.Security;
 
 namespace Falcon.Web.Api.Controllers.V1
 {
@@ -26,15 +27,17 @@ namespace Falcon.Web.Api.Controllers.V1
         private readonly IDbContext mDb;
 
         private readonly IDateTime mDateTime;
+        private readonly IWebUserSession mUserSession;
 
-        public UserInfoesController(IDateTime DateTime, IDbContext Database)
+        public UserInfoesController(IDateTime DateTime, IDbContext Database , IWebUserSession UserSession)
         {
             mDateTime = DateTime;
             mDb = Database;
+            mUserSession = UserSession;
         }
 
         [ResponseType(typeof(SUserInfo))]
-        [Route("UserInfo/GoogleSignIn/{UUID}")]
+        [Route("UserInfo/GoogleSignIn/")]
         [HttpPost]
         public async Task<IHttpActionResult> GoogleSignIn([FromBody] SGoogleAuthentication GoogleAuthentication) //TODO : Move to User Authenticator
         {
@@ -49,7 +52,7 @@ namespace Falcon.Web.Api.Controllers.V1
         }
 
         [ResponseType(typeof(SUserInfo))]
-        [Route("UserInfo/GoogleRecovery/{UUID}")]
+        [Route("UserInfo/GoogleRecovery/")]
         [HttpPost]
         public async Task<IHttpActionResult> GoogleRecovery([FromBody] SGoogleAuthentication GoogleAuthentication)
         {
@@ -64,94 +67,78 @@ namespace Falcon.Web.Api.Controllers.V1
         }
 
         [ResponseType(typeof(SUserInfo))]
-        [Route("UserInfo/{UUID}")]
+        [Route("UserInfo/")]
         [HttpPost]
-        public async Task<IHttpActionResult> GetUserInfo(string UUID)
+        public async Task<IHttpActionResult> GetUserInfo()
         {
-            var userID = await mDb.Set<User>().AsNoTracking().Where(u => u.UUID == UUID).Select(u => u.ID).SingleOrDefaultAsync();
-
-            if (userID != 0)
-            {
-                var info = await mDb.Set<UserInfo>().AsNoTracking()
-                    .Where(ui => ui.UserID == userID)
-                    .Include(ui => ui.User)
-                    .Select(ui => new 
-                    {
-                        Email = ui.Email,
-                        UserName = ui.User.UserName,
-                        IsEditable = ui.IsEditable > 0 ? true : false,
-                        ChangeInfoDate = ui.ChangeInfoDate,
-                    })
-                    .SingleOrDefaultAsync();
-
-                SUserInfo result = new SUserInfo
+            
+            var info = await mDb.Set<UserInfo>().AsNoTracking()
+                .Where(ui => ui.UserID == mUserSession.UserID)
+                .Include(ui => ui.User)
+                .Select(ui => new 
                 {
-                    UserName = info.UserName,
-                    Email = info.Email,
-                    HasRegistered = (info.ChangeInfoDate != null) ? true : false,
-                    IsEditable = info.IsEditable,
-                };
+                    Email = ui.Email,
+                    UserName = ui.User.UserName,
+                    IsEditable = ui.IsEditable > 0 ? true : false,
+                    ChangeInfoDate = ui.ChangeInfoDate,
+                })
+                .SingleOrDefaultAsync();
 
-                return Ok(result);
-            }
-            else
+            SUserInfo result = new SUserInfo
             {
-                return Response(HttpStatusCode.Unauthorized);
-            }
+                UserName = info.UserName,
+                Email = info.Email,
+                HasRegistered = (info.ChangeInfoDate != null) ? true : false,
+                IsEditable = info.IsEditable,
+            };
+
+            return Ok(result);
         }
 
-        [Route("UserInfo/Edit/{UUID}")]
+        [Route("UserInfo/Edit/")]
         [HttpPost]
-        public async Task<IHttpActionResult> EditUserInfo(string UUID, [FromBody] SUserInfo UserInfo)
+        public async Task<IHttpActionResult> EditUserInfo([FromBody] SUserInfo UserInfo)
         {
             if (ModelState.IsValid)
             {
-                var userID = await mDb.Set<User>().AsNoTracking().Where(u => u.UUID == UUID).Select(u => u.ID).SingleOrDefaultAsync();
                 string EditSucceed;
-                if (userID != 0)
+                var Info = await mDb.Set<UserInfo>().Where(u => u.UserID == mUserSession.UserID).Include(u => u.User).SingleOrDefaultAsync();
+                if (Info.IsEditable > 0 && !string.IsNullOrEmpty(UserInfo.Email))
                 {
-                    var Info = await mDb.Set<UserInfo>().Where(u => u.UserID == userID).Include(u => u.User).SingleOrDefaultAsync();
-                    if (Info.IsEditable > 0 && !string.IsNullOrEmpty(UserInfo.Email))
+                    if(await UserNameIsAccessible(mUserSession.UserID, UserInfo.UserName))
                     {
-                        if(await UserNameIsAccessible(userID , UserInfo.UserName))
+                        if(await EmailIsAccessible(Info.ID, UserInfo.Email))
                         {
-                            if(await EmailIsAccessible(Info.ID, UserInfo.Email))
-                            {
-                                --Info.IsEditable;
-                                Info.Email = UserInfo.Email;
-                                Info.User.UserName = UserInfo.UserName;
-                                Info.Password = UserInfo.Password;
-                                Info.ChangeInfoDate = mDateTime.Now;
-                                await mDb.SaveChangesAsync();
+                            --Info.IsEditable;
+                            Info.Email = UserInfo.Email;
+                            Info.User.UserName = UserInfo.UserName;
+                            Info.Password = UserInfo.Password;
+                            Info.ChangeInfoDate = mDateTime.Now;
+                            await mDb.SaveChangesAsync();
                                 
-                                UserInfo.IsEditable = Info.IsEditable > 0 ? true : false;
-                                UserInfo.Password = null;
-                                UserInfo.HasRegistered = true;
-                                //TODO, Refactor This
-                                EditSucceed = Constants.UserInfoStatusType.EditSucceed;
-                                return ResponseMessage(Request.CreateResponse(HttpStatusCode.OK, new { EditSucceed, UserInfo }));
-                            }
-                            else
-                            {
-                                EditSucceed = Constants.UserInfoStatusType.EmailConflict;
-                                return Response(HttpStatusCode.OK, new { EditSucceed });
-                            }
+                            UserInfo.IsEditable = Info.IsEditable > 0 ? true : false;
+                            UserInfo.Password = null;
+                            UserInfo.HasRegistered = true;
+                            //TODO, Refactor This
+                            EditSucceed = Constants.UserInfoStatusType.EditSucceed;
+                            return ResponseMessage(Request.CreateResponse(HttpStatusCode.OK, new { EditSucceed, UserInfo }));
                         }
                         else
                         {
-                            EditSucceed = Constants.UserInfoStatusType.UserNameConflict;
+                            EditSucceed = Constants.UserInfoStatusType.EmailConflict;
                             return Response(HttpStatusCode.OK, new { EditSucceed });
                         }
                     }
                     else
                     {
-                        EditSucceed = Constants.UserInfoStatusType.Error;
-                        return Response(HttpStatusCode.OK , new { EditSucceed });
+                        EditSucceed = Constants.UserInfoStatusType.UserNameConflict;
+                        return Response(HttpStatusCode.OK, new { EditSucceed });
                     }
                 }
                 else
                 {
-                    return Response(HttpStatusCode.Unauthorized);
+                    EditSucceed = Constants.UserInfoStatusType.Error;
+                    return Response(HttpStatusCode.OK , new { EditSucceed });
                 }
             }
             else

@@ -12,6 +12,7 @@ using Falcon.Web.Models;
 using Falcon.Web.Models.Api;
 using Falcon.Web.Api.InquiryProcessing.Public;
 using Falcon.Web.Api.Utilities.Base;
+using Falcon.Common.Security;
 
 namespace Falcon.Web.Api.Controllers.V1
 {
@@ -22,6 +23,8 @@ namespace Falcon.Web.Api.Controllers.V1
         private readonly IDateTime mDateTime;
         private readonly ICommentsInquiryProcessor mCommentInquiryProcessor;
         private readonly IPagedDataRequestFactory mPagedDataRequestFactory;
+        private readonly IWebUserSession mUserSession;
+
         public IPagedDataRequestFactory MPagedDataRequestFactory
         {
             get
@@ -33,32 +36,29 @@ namespace Falcon.Web.Api.Controllers.V1
         public CommentsController(IDateTime dateTime,
                                     IDbContext Database,
                                     ICommentsInquiryProcessor CommentsInquiryProcessor,
-                                    IPagedDataRequestFactory PagedDataRequestFactory)
+                                    IPagedDataRequestFactory PagedDataRequestFactory , 
+                                    IWebUserSession UserSession)
         {
             mDateTime = dateTime;
             mDb = Database;
             mCommentInquiryProcessor = CommentsInquiryProcessor;
             mPagedDataRequestFactory = PagedDataRequestFactory;
+            mUserSession             = UserSession;
         }
 
-        [Route("Comments/{UUID}/{QuestionID}/{PageNumber}")]
+        [Route("Comments/{QuestionID}/{PageNumber}")]
         [HttpPost]
-        public async Task<PagedDataInquiryResponse<SComment>> GettingComments(string UUID , int QuestionID , int PageNumber)
+        public async Task<PagedDataInquiryResponse<SComment>> GettingComments( int QuestionID , int PageNumber)
         {
-            var user = await mDb.Set<User>().SingleOrDefaultAsync(u => u.UUID == UUID);
-            if(user != null)
-            {
-                var page = MPagedDataRequestFactory.Create(PageNumber , Constants.Paging.DefaultPageSize);
-                var comments = await mCommentInquiryProcessor.GetComments(page , QuestionID);
-                return comments;
-            }
-            return new PagedDataInquiryResponse<SComment>(); //TODO : remove this and find a solution to return global result
+            var page = MPagedDataRequestFactory.Create(PageNumber , Constants.Paging.DefaultPageSize);
+            var comments = await mCommentInquiryProcessor.GetComments(page , QuestionID);
+            return comments;
         }
 
         [ResponseType(typeof(SComment))]
-        [Route("Comments/{UUID}/{QuestionID}")]
+        [Route("Comments/{QuestionID}")]
         [HttpPost]
-        public async Task<IHttpActionResult> PostingComment(string UUID , int QuestionID , [FromBody] SComment NewComment)
+        public async Task<IHttpActionResult> PostingComment(int QuestionID , [FromBody] SComment NewComment)
         {
            
             if (!ModelState.IsValid)
@@ -66,14 +66,13 @@ namespace Falcon.Web.Api.Controllers.V1
                 return BadRequest(ModelState);
             }
 
-            var user = await mDb.Set<User>().SingleOrDefaultAsync(u => u.UUID == UUID);
             var question = await mDb.Set<Question>().FindAsync(QuestionID);
 
-            if(user != null && question != null)
+            if(question != null)
             {
                 var comment = new Comment
                 {
-                   UserID = user.ID,
+                   UserID = mUserSession.UserID,
                    QuestionID = question.ID,
                    CommentContent = NewComment.Content,
                    Response = Constants.DefaultValues.CommentDefaultReponseMessage,

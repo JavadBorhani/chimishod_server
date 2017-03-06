@@ -1,6 +1,7 @@
 ﻿// Flapp Copyright 2017-2018
 
 using Falcon.Common;
+using Falcon.Common.Security;
 using Falcon.Data.Exceptions;
 using Falcon.EFCommonContext;
 using Falcon.EFCommonContext.DbModel;
@@ -23,21 +24,23 @@ namespace Falcon.Web.Api.Controllers.V1
         private readonly IDbContext mDb;
         private readonly IDateTime mDateTime;
         private readonly IDbContext mDbContext;
+        private readonly IWebUserSession mUserSession;
 
-        public UserAuthenticatorController(IDbContext Context , IDateTime dateTime, IDbContext Database)
+        public UserAuthenticatorController(IDbContext Context , IDateTime dateTime, IDbContext Database , IWebUserSession UserSession)
         {
             mDateTime = dateTime;
             mDbContext = Context;
             mDb = Database;
+            mUserSession = UserSession;
         }
 
-        [ResponseType(typeof(Models.Api.SUser))]
-        [Route("UserAuthenticator/UUID/{UUID}")]
-        public async Task<IHttpActionResult> GetUser(string UUID)
+        [ResponseType(typeof(SUser))]
+        [Route("UserAuthenticator/")]
+        public async Task<IHttpActionResult> GetUser()
         {
             //TODO : Validate User UUID and Add User Cellphone
 
-            var user = await mDb.Set<User>().AsNoTracking().Where(c => c.UUID == UUID).Include( c => c.Level).SingleOrDefaultAsync();
+            var user = await mDb.Set<User>().AsNoTracking().Where(c => c.UUID == mUserSession.UUID).Include( c => c.Level).SingleOrDefaultAsync();
             if (user != null)
             {
                 var UserModel = new SUser
@@ -120,7 +123,7 @@ namespace Falcon.Web.Api.Controllers.V1
             }
             else
             {
-                return await CreateNewUser(UUID);
+                return await CreateNewUser(mUserSession.UUID);
             }
         }
 

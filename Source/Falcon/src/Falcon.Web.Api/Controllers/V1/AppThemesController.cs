@@ -14,6 +14,7 @@ using Falcon.Web.Common;
 using log4net;
 using Falcon.Common.Logging;
 using Falcon.Web.Api.Utilities.Base;
+using Falcon.Common.Security;
 
 namespace Falcon.Web.Api.Controllers.V1
 {
@@ -24,66 +25,58 @@ namespace Falcon.Web.Api.Controllers.V1
         private readonly IDateTime mDateTime;
         private readonly IDbContext mDb;
         private readonly ILog mLogger;
-
-        public AppThemesController(IDateTime dateTime , IDbContext Database , ILogManager LogManager)
+        private readonly IWebUserSession mUserSessoin;
+        public AppThemesController(IDateTime dateTime , IDbContext Database , ILogManager LogManager , IWebUserSession UserSession)
         {
             mDateTime = dateTime;
             mDb = Database;
             mLogger = LogManager.GetLog(typeof(AppThemesController));
+            mUserSessoin = UserSession;
         }
 
         [ResponseType(typeof(Models.Api.SAppTheme))]
-        [Route("Themes/{UUID}")]
+        [Route("Themes/")]
         [HttpGet]
-        public async Task<IHttpActionResult> GetAppThemes(string UUID)
+        public async Task<IHttpActionResult> GetAppThemes()
         {
             //TODO : Convert Whole of this into one join 
-            
-            var user = await mDb.Set<User>().SingleOrDefaultAsync(u => u.UUID == UUID);
-            if(user != null)
+            var themes = await mDb.Set<AppTheme>().AsNoTracking().ToArrayAsync();
+            var selectedTheme = await mDb.Set<SelectedTheme>().AsNoTracking().Where(st => st.UserID == mUserSessoin.UserID).Select( st => st.AppThemeID).SingleOrDefaultAsync();
+            var purchasedThemes = await mDb.Set<PurchaseTheme>().AsNoTracking().Where(pt => pt.UserID == mUserSessoin.UserID).Select(c => c.ThemeID).ToListAsync();
+
+            if(themes.Length > 0 && selectedTheme > 0 && purchasedThemes.Count >= 0)
             {
-                var themes = await mDb.Set<AppTheme>().AsNoTracking().ToArrayAsync();
-                var selectedTheme = await mDb.Set<SelectedTheme>().AsNoTracking().Where(st => st.UserID == user.ID).Select( st => st.AppThemeID).SingleOrDefaultAsync();
-                var purchasedThemes = await mDb.Set<PurchaseTheme>().AsNoTracking().Where(pt => pt.UserID == user.ID).Select(c => c.ThemeID).ToListAsync();
+                Models.Api.SAppTheme[] userThemes = new Models.Api.SAppTheme[themes.Length];
 
-                if(themes.Length > 0 && selectedTheme > 0 && purchasedThemes.Count >= 0)
+                for (int i = 0; i < themes.Length; ++i)
                 {
-                    Models.Api.SAppTheme[] userThemes = new Models.Api.SAppTheme[themes.Length];
-
-                    for (int i = 0; i < themes.Length; ++i)
+                    userThemes[i] = new Models.Api.SAppTheme
                     {
-                        userThemes[i] = new Models.Api.SAppTheme
-                        {
-                            ID = themes[i].ID,
-                            Name = themes[i].Name,
-                            ShortDescription = themes[i].ShortDesciption,
-                            LongDescription = themes[i].LongDescription,
-                            SquareColor = themes[i].SquareColor,
-                            CircleColor = themes[i].CircleColor,
-                            Price = themes[i].Price,
-                            BackImage = themes[i].BackImage,
-                            DialogImage = themes[i].DialogImage,
-                            IsPurchased = (themes[i].ID == Constants.DefaultUser.AppThemeID) ? true : purchasedThemes.Contains(themes[i].ID), // TODO : remember to remove what has checked to increase checking time
-                            IsActive = (selectedTheme == themes[i].ID) ? true : false
-                        };                        
-                    }
-
-                    return Ok(userThemes);
+                        ID = themes[i].ID,
+                        Name = themes[i].Name,
+                        ShortDescription = themes[i].ShortDesciption,
+                        LongDescription = themes[i].LongDescription,
+                        SquareColor = themes[i].SquareColor,
+                        CircleColor = themes[i].CircleColor,
+                        Price = themes[i].Price,
+                        BackImage = themes[i].BackImage,
+                        DialogImage = themes[i].DialogImage,
+                        IsPurchased = (themes[i].ID == Constants.DefaultUser.AppThemeID) ? true : purchasedThemes.Contains(themes[i].ID), // TODO : remember to remove what has checked to increase checking time
+                        IsActive = (selectedTheme == themes[i].ID) ? true : false
+                    };                        
                 }
 
-                return NotFound();
+                return Ok(userThemes);
             }
 
-            return Response(HttpStatusCode.Unauthorized);  
+            return NotFound();
         }
-
-
         [ResponseType(typeof(Models.Api.SUserState))]
-        [Route("Themes/Select/{UUID}/{ThemeID}")] // TODO : Change To Action
+        [Route("Themes/Select/{ThemeID}")] // TODO : Change To Action
         [HttpPost]
-        public async Task<IHttpActionResult> SelectAppTheme(string UUID , int ThemeID)
+        public async Task<IHttpActionResult> SelectAppTheme(int ThemeID)
         {
-            var user = await mDb.Set<User>().AsNoTracking().SingleOrDefaultAsync(u => u.UUID == UUID);
+            var user = await mDb.Set<User>().AsNoTracking().SingleOrDefaultAsync(u => u.UUID == mUserSessoin.UUID);
             if(user != null)
             {
                 var userSelectedTheme = await mDb.Set<SelectedTheme>().SingleOrDefaultAsync(st => st.UserID == user.ID);
@@ -107,7 +100,7 @@ namespace Falcon.Web.Api.Controllers.V1
                         }
                         else
                         {
-                            mLogger.Error("Item has not been purchased + " + UUID);
+                            mLogger.Error("Item has not been purchased + " + mUserSessoin.UUID);
                         }
                     }
 
@@ -134,11 +127,11 @@ namespace Falcon.Web.Api.Controllers.V1
         }
 
         [ResponseType(typeof(Models.Api.SUserState))]
-        [Route("Themes/Buy/{UUID}/{ThemeID}")] // TODO : Change To Action
+        [Route("Themes/Buy/{ThemeID}")] // TODO : Change To Action
         [HttpPost]
-        public async Task<IHttpActionResult> BuyTheme(string UUID , int ThemeID)
+        public async Task<IHttpActionResult> BuyTheme(int ThemeID)
         {
-            var user = await mDb.Set<User>().SingleOrDefaultAsync(u => u.UUID == UUID);
+            var user = await mDb.Set<User>().SingleOrDefaultAsync(u => u.UUID == mUserSessoin.UUID);
             if(user != null)
             {
                 bool bought = false;
@@ -149,7 +142,7 @@ namespace Falcon.Web.Api.Controllers.V1
                     bool hasBought = (ThemeID == Constants.DefaultUser.AppThemeID) ? true : await mDb.Set<PurchaseTheme>().CountAsync(ph => ph.UserID == user.ID && ph.ThemeID == ThemeID) > 0;
                     if (hasBought)
                     {
-                        mLogger.Error("Trying to buy an item which has been purchased" + UUID);
+                        mLogger.Error("Trying to buy an item which has been purchased" + mUserSessoin.UUID);
                     }
                     else
                     {

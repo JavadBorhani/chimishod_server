@@ -21,7 +21,7 @@ namespace Falcon.Database.SqlServer.QueryProcessors
 
             var query = mDb.Set<Comment>().AsNoTracking()
                 .Where(comment => comment.QuestionID == QuestionID && comment.IsVerified == true)
-                .Include( comment => comment.User.UserName);
+                .Include( comment => comment.User);
 
             var totalItemCount = await query.CountAsync();
 

@@ -45,7 +45,7 @@ namespace Falcon.Web.Common.Security
         {
             get
             {
-                return HttpContext.Current.User.Identity.Name; //TODO : Solve This issue later
+                return ((ClaimsPrincipal)HttpContext.Current.User).FindFirst(ClaimTypes.Sid).Value; //TODO : Solve This issue later
             }
         }
     }

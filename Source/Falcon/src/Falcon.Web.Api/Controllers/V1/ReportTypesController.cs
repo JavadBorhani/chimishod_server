@@ -13,6 +13,8 @@ using System.Collections.Generic;
 using Falcon.Web.Common;
 using Falcon.EFCommonContext;
 using Falcon.Web.Api.Utilities.Base;
+using Falcon.Common.Security;
+using Falcon.Web.Api.MaintenanceProcessing.Public;
 
 namespace Falcon.Web.Api.Controllers.V1
 {
@@ -21,30 +23,29 @@ namespace Falcon.Web.Api.Controllers.V1
     {
         private readonly IDbContext mDb;
         private readonly IMapper mMapper;
+        private readonly IWebUserSession mUserSession;
 
-        public ReportTypesController(IMapper Mapper, IDbContext Database)
+        private readonly IGlobalApplicationState mAppState;
+
+        public ReportTypesController(IMapper Mapper, IDbContext Database , IWebUserSession UserSession , IGlobalApplicationState AppState)
         {
             mMapper = Mapper;
             mDb = Database;
+            mUserSession = UserSession;
+            mAppState = AppState;
         }
 
         [ResponseType(typeof(SReportType))]
-        [Route("ReportTypes/{UUID}")]
+        [Route("ReportTypes/")]
         [HttpPost]
-        public async Task<IHttpActionResult> GetReportTypes(string UUID)
+        public async Task<IHttpActionResult> GetReportTypes()
         {
-            var userID = await mDb.Set<User>().Where(u => u.UUID == UUID).Select(u => u.ID).SingleOrDefaultAsync();
-            if(userID != 0)
-            {
-                var reportTypes = await mDb.Set<ReportType>().ToListAsync();
-                var result = mMapper.Map<List<ReportType>, List<SReportType>>(reportTypes);
+            int value = mAppState.GetState().AnswerPrize;
 
-                return Response(HttpStatusCode.OK, result);
-            }
-            else
-            {
-                return Response(HttpStatusCode.Unauthorized);
-            }
+            var reportTypes = await mDb.Set<ReportType>().ToListAsync();
+            var result = mMapper.Map<List<ReportType>, List<SReportType>>(reportTypes);
+
+            return Response(HttpStatusCode.OK, result);
         }
     }
 }

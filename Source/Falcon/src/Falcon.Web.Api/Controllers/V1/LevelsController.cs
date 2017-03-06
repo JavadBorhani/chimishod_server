@@ -13,6 +13,7 @@ using AutoMapper;
 using Falcon.Web.Common;
 using Falcon.EFCommonContext;
 using Falcon.Web.Api.Utilities.Base;
+using Falcon.Common.Security;
 
 namespace Falcon.Web.Api.Controllers.V1
 {
@@ -20,41 +21,38 @@ namespace Falcon.Web.Api.Controllers.V1
     public class LevelsController : FalconApiController
     {
         private readonly IDbContext mDb;
-
         private readonly IMapper mMapper;
-        public LevelsController(IMapper Mapper, IDbContext Database)
+        private readonly IWebUserSession mUserSession;
+
+        public LevelsController(IMapper Mapper, IDbContext Database , IWebUserSession UserSession)
         {
             mMapper = Mapper;
-            mDb = Database; 
+            mDb = Database;
+            mUserSession = UserSession;
         }
 
         [ResponseType(typeof(SLevel))]
-        [Route("Levels/{UUID}/{LevelNumber}")]
+        [Route("Levels/{LevelNumber}")]
         [HttpPost]
-        public async Task<IHttpActionResult> GetLevelInfo(string UUID , int LevelNumber)
+        public async Task<IHttpActionResult> GetLevelInfo(int LevelNumber)
         {
-            var userID = await mDb.Set<User>().AsNoTracking().Where(u => u.UUID == UUID).Select(a => a.ID).SingleOrDefaultAsync();
-            if(userID != 0)
+            if(LevelNumber >= 0 )
             {
-                if(LevelNumber >= 0 )
-                {
-                    var levelinfo = await mDb.Set<Level>().AsNoTracking().Where(l => l.LevelNumber == LevelNumber).SingleOrDefaultAsync();
+                var levelinfo = await mDb.Set<Level>().AsNoTracking().Where(l => l.LevelNumber == LevelNumber).SingleOrDefaultAsync();
 
-                    if(levelinfo != null)
-                    {
-                        return Response(HttpStatusCode.OK, mMapper.Map<Level, SLevel>(levelinfo));
-                    }
-                    else
-                    {
-                        return Response(HttpStatusCode.NotFound);
-                    }
+                if(levelinfo != null)
+                {
+                    return Response(HttpStatusCode.OK, mMapper.Map<Level, SLevel>(levelinfo));
                 }
                 else
                 {
-                    return Response(HttpStatusCode.NotAcceptable);
+                    return Response(HttpStatusCode.NotFound);
                 }
             }
-            return Response(HttpStatusCode.Unauthorized);
+            else
+            {
+                return Response(HttpStatusCode.NotAcceptable);
+            }            
         }
     }
 }
