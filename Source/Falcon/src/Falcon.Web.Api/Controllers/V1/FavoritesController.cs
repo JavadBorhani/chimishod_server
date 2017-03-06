@@ -26,16 +26,17 @@ namespace Falcon.Web.Api.Controllers.V1
         private readonly IMapper mMapper;
         private readonly ILog mLogManager;
         private readonly IWebUserSession mUserSession;
+
         public FavoritesController(IMapper Mapper , ILogManager logManager, IDbContext Database , IWebUserSession UserSession)
         {
-            mMapper = Mapper;
             mLogManager = logManager.GetLog(typeof(FavoritesController));
+            mMapper = Mapper;
             mDb = Database;
             mUserSession = UserSession;
         }
 
         [ResponseType(typeof(SNewCreatedQuestions))]
-        [Route("Favorites/{UUID}")]
+        [Route("Favorites/")]
         [HttpPost]
         
         public async Task<IHttpActionResult> GetFavoriteList()
