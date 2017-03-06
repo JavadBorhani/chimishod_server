@@ -21,6 +21,8 @@ using Falcon.Web.Api.InquiryProcessing.Private;
 using Falcon.Web.Api.InquiryProcessing.Public;
 using Falcon.Web.Api.Security.Public;
 using Falcon.Web.Api.Security.Private;
+using Falcon.Web.Api.MaintenanceProcessing.Public;
+using Falcon.Web.Api.MaintenanceProcessing.Private;
 
 namespace Falcon.Web.Api
 {
@@ -42,6 +44,9 @@ namespace Falcon.Web.Api
             AddInquiryProcessors(container);
             AddMaintenanceProcessors(container);
             AddAdHoc(container);
+
+            container.Bind<IGlobalApplicationState>().To<GlobalApplicationState>().InSingletonScope();
+
         }
         private void ConfigureLog4Net(IKernel container)
         {

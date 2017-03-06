@@ -302,6 +302,7 @@ namespace Falcon.Web.Api.Controllers.V1
         {
             return await mDb.Set<Favorite>().CountAsync(e => e.UserID == userID);
         }
+
         private void LevelUpChecking(ref User user, int levelCeil, int Prize, int nextLevelID)
         {
             user.Score += Prize;
