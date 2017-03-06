@@ -34,13 +34,13 @@ namespace Falcon.Web.Api.Controllers.V1
             mUserSession = UserSession;
         }
 
-        [ResponseType(typeof(Models.Api.SUser))]
-        [Route("UserAuthenticator/UUID/{UUID}")]
-        public async Task<IHttpActionResult> GetUser(string UUID)
+        [ResponseType(typeof(SUser))]
+        [Route("UserAuthenticator/")]
+        public async Task<IHttpActionResult> GetUser()
         {
             //TODO : Validate User UUID and Add User Cellphone
 
-            var user = await mDb.Set<User>().AsNoTracking().Where(c => c.UUID == UUID).Include( c => c.Level).SingleOrDefaultAsync();
+            var user = await mDb.Set<User>().AsNoTracking().Where(c => c.UUID == mUserSession.UUID).Include( c => c.Level).SingleOrDefaultAsync();
             if (user != null)
             {
                 var UserModel = new SUser
@@ -123,7 +123,7 @@ namespace Falcon.Web.Api.Controllers.V1
             }
             else
             {
-                return await CreateNewUser(UUID);
+                return await CreateNewUser(mUserSession.UUID);
             }
         }
 

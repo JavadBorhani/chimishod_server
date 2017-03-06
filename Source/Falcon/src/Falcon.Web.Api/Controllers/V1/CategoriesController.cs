@@ -42,56 +42,49 @@ namespace Falcon.Web.Api.Controllers.V1
         }
            
 
-        [ResponseType(typeof(Models.Api.SCategory))]
-        [Route("Categories/{UUID}")]
+        [ResponseType(typeof(SCategory))]
+        [Route("Categories/")]
         [HttpGet]
-        public async Task<IHttpActionResult> GetCategoryList(string UUID)
+        public async Task<IHttpActionResult> GetCategoryList()
         {
-            var user = await mDb.Set<User>().SingleOrDefaultAsync(u => u.UUID == UUID);
+            var categories = await mDb.Set<Category>().AsNoTracking().ToArrayAsync();
+            var selectedCategory = await mDb.Set<SelectedCategory>().AsNoTracking().Where(st => st.UserID == mUserSession.UserID).Select( sc => sc.CategoryID).SingleOrDefaultAsync();
+            var purchasedCategories = await mDb.Set<PurchaseCategory>().AsNoTracking().Where(pt => pt.UserID == mUserSession.UserID).Select(c => c.CategoryID).ToListAsync();
 
-            if (user != null)
+            if (categories.Length > 0 && selectedCategory > 0 && purchasedCategories.Count >= 0)
             {
-                var categories = await mDb.Set<Category>().AsNoTracking().ToArrayAsync();
-                var selectedCategory = await mDb.Set<SelectedCategory>().AsNoTracking().Where(st => st.UserID == user.ID).Select( sc => sc.CategoryID).SingleOrDefaultAsync();
-                var purchasedCategories = await mDb.Set<PurchaseCategory>().AsNoTracking().Where(pt => pt.UserID == user.ID).Select(c => c.CategoryID).ToListAsync();
+                var userCategories = new SCategory[categories.Length];
 
-                if (categories.Length > 0 && selectedCategory > 0 && purchasedCategories.Count >= 0)
+                for (int i = 0; i < categories.Length; ++i)
                 {
-                    var userCategories = new SCategory[categories.Length];
-
-                    for (int i = 0; i < categories.Length; ++i)
+                    userCategories[i] = new SCategory
                     {
-                        userCategories[i] = new SCategory
-                        {
-                            ID = categories[i].ID,
-                            Name = categories[i].Name,
-                            ShortDescription = categories[i].ShortDescription,
-                            LongDescription = categories[i].LongDescription,
-                            SquareColor = categories[i].SquareColor,
-                            CircleColor = categories[i].CircleColor,
-                            RectangleColor = categories[i].RectangleColor,
-                            Price = categories[i].Price,
-                            PrizeCoefficient = categories[i].PrizeCoefficient,
-                            IsPurchased = (categories[i].ID == Constants.DefaultUser.CategoryID) ? true : purchasedCategories.Contains(categories[i].ID), // TODO : remember to remove what has checked to increase checking time
-                            IsActive = (selectedCategory == categories[i].ID) ? true : false
-                        };
-                    }
-
-                    return Ok(userCategories);
+                        ID = categories[i].ID,
+                        Name = categories[i].Name,
+                        ShortDescription = categories[i].ShortDescription,
+                        LongDescription = categories[i].LongDescription,
+                        SquareColor = categories[i].SquareColor,
+                        CircleColor = categories[i].CircleColor,
+                        RectangleColor = categories[i].RectangleColor,
+                        Price = categories[i].Price,
+                        PrizeCoefficient = categories[i].PrizeCoefficient,
+                        IsPurchased = (categories[i].ID == Constants.DefaultUser.CategoryID) ? true : purchasedCategories.Contains(categories[i].ID), // TODO : remember to remove what has checked to increase checking time
+                        IsActive = (selectedCategory == categories[i].ID) ? true : false
+                    };
                 }
 
-                return NotFound();
+                return Ok(userCategories);
             }
 
-            return Response(HttpStatusCode.Unauthorized); 
+            return NotFound();
         }
 
         [ResponseType(typeof(Models.Api.SUserState))]
-        [Route("Categories/Buy/{UUID}/{CategoryID}")]
+        [Route("Categories/Buy/{CategoryID}")]
         [HttpPost]
-        public async Task<IHttpActionResult> BuyCategory(string UUID, int CategoryID)
+        public async Task<IHttpActionResult> BuyCategory(int CategoryID)
         {
-            var user = await mDb.Set<User>().SingleOrDefaultAsync(u => u.UUID == UUID);
+            var user = await mDb.Set<User>().SingleOrDefaultAsync(u => u.UUID == mUserSession.UUID);
             if (user != null)
             {
                 bool bought = false;
@@ -148,11 +141,12 @@ namespace Falcon.Web.Api.Controllers.V1
 
 
         [ResponseType(typeof(Models.Api.SUserState))]
-        [Route("Categories/Select/{UUID}/{CategoryID}")]
+        [Route("Categories/Select/{CategoryID}")]
         [HttpPost]
-        public async Task<IHttpActionResult> SelectCategory(string UUID, int CategoryID)
+        public async Task<IHttpActionResult> SelectCategory(int CategoryID)
         {
-            var user = await mDb.Set<User>().AsNoTracking().SingleOrDefaultAsync(u => u.UUID == UUID);
+            //TODO : Refactor This
+            var user = await mDb.Set<User>().AsNoTracking().SingleOrDefaultAsync(u => u.UUID == mUserSession.UUID);
             if (user != null)
             {
                 var userSelectedCategory = await mDb.Set<SelectedCategory>().SingleOrDefaultAsync(st => st.UserID == user.ID);
@@ -176,7 +170,7 @@ namespace Falcon.Web.Api.Controllers.V1
                         }
                         else
                         {
-                            mLogger.Error("Trying to buy an item which has been purchased" + UUID);
+                            mLogger.Error("Trying to buy an item which has been purchased" + mUserSession.UUID);
                         }
                     }
 
@@ -203,35 +197,26 @@ namespace Falcon.Web.Api.Controllers.V1
 
 
         [ResponseType(typeof(SCategory))]
-        [Route("Categories/Purchased/{UUID}")]
+        [Route("Categories/Purchased")]
         [HttpPost]
-        public async Task<IHttpActionResult> GetPurchasedCategoryList(string UUID)
+        public async Task<IHttpActionResult> GetPurchasedCategoryList()
         {
-            var userID = await mDb.Set<User>().AsNoTracking().Where(u => u.UUID == UUID).Select(u => u.ID).SingleOrDefaultAsync();
-
-            if(userID != 0) // User Found
+            
+            var userActiveCategories = await mDb.Set<Category>().Where(c => c.ID == Constants.DefaultUser.CategoryID ||
+                                                                    mDb.Set<PurchaseCategory>().Where(pc => pc.UserID == mUserSession.UserID)
+                                                                                        .Select( pc => pc.CategoryID)
+                                                                                        .ToList()
+                                                                                        .Contains(c.ID))
+                                                                                        .ToListAsync();
+            if(userActiveCategories.Count > 0)
             {
 
-                var userActiveCategories = await mDb.Set<Category>().Where(c => c.ID == Constants.DefaultUser.CategoryID ||
-                                                                        mDb.Set<PurchaseCategory>().Where(pc => pc.UserID == userID)
-                                                                                            .Select( pc => pc.CategoryID)
-                                                                                            .ToList()
-                                                                                            .Contains(c.ID))
-                                                                                            .ToListAsync();
-                if(userActiveCategories.Count > 0)
-                {
-
-                    var result = mMapper.Map<List<Category>, List<SCategory>>(userActiveCategories);
-                    return Ok(result);
-                }
-                else
-                {
-                    return NotFound();
-                }
+                var result = mMapper.Map<List<Category>, List<SCategory>>(userActiveCategories);
+                return Ok(result);
             }
             else
             {
-                return ResponseMessage(Request.CreateResponse(HttpStatusCode.Unauthorized));
+                return NotFound();
             }
         }
 

@@ -33,17 +33,13 @@ namespace Falcon.Web.Api.Controllers.V1
 
 
         [ResponseType(typeof(SUserAvatar))]
-        [Route("UserAvatars/{UUID}")]
+        [Route("UserAvatars/")]
         [HttpPost]
-        public async Task<IHttpActionResult> GetUserFacePictureList(string UUID)
+        public async Task<IHttpActionResult> GetUserFacePictureList()
         {
-            var userId = await mDb.Set<User>().AsNoTracking().Where(u => u.UUID == UUID).Select( u => u.ID).SingleOrDefaultAsync();
-            //TODO : Refactor this to one query 
-            if (userId != 0)
-            {
                 var avatars = await mDb.Set<UserAvatar>().AsNoTracking().ToArrayAsync();
-                var selectedAvatar = await mDb.Set<SelectedAvatar>().AsNoTracking().Where(st => st.UserID == userId).Select(sc => sc.UserAvatarID).SingleOrDefaultAsync();
-                var purchasedAvatars = await mDb.Set<PurchaseAvatar>().AsNoTracking().Where(pt => pt.UserID == userId).Select(c => c.UserAvatarID).ToListAsync();
+                var selectedAvatar = await mDb.Set<SelectedAvatar>().AsNoTracking().Where(st => st.UserID == mUserSession.UserID).Select(sc => sc.UserAvatarID).SingleOrDefaultAsync();
+                var purchasedAvatars = await mDb.Set<PurchaseAvatar>().AsNoTracking().Where(pt => pt.UserID == mUserSession.UserID).Select(c => c.UserAvatarID).ToListAsync();
 
                 if (avatars.Length > 0 && selectedAvatar > 0 && purchasedAvatars.Count >= 0)
                 {
@@ -65,18 +61,15 @@ namespace Falcon.Web.Api.Controllers.V1
                 }
 
                 return Response(HttpStatusCode.NotFound);
-            }
-
-            return Response(HttpStatusCode.Unauthorized); 
         }
 
         [ResponseType(typeof(SAvatarState))]
-        [Route("UserAvatars/Select/{UUID}/{UserAvatarID}")]
+        [Route("UserAvatars/Select/{UserAvatarID}")]
         [HttpPost]
-        public async Task<IHttpActionResult> SelectUserFacePicture(string UUID, int UserAvatarID)
+        public async Task<IHttpActionResult> SelectUserFacePicture(int UserAvatarID)
         {
             var user = await mDb.Set<User>().AsNoTracking()
-                                        .Where(u => u.UUID == UUID)
+                                        .Where(u => u.UUID == mUserSession.UUID)
                                         .Select(u => new { u.ID, u.TotalStars })
                                         .SingleOrDefaultAsync();
 
@@ -129,11 +122,11 @@ namespace Falcon.Web.Api.Controllers.V1
         }
 
         [ResponseType(typeof(SAvatarState))]
-        [Route("UserAvatars/Purchase/{UUID}/{UserAvatarID}")]
+        [Route("UserAvatars/Purchase/{UserAvatarID}")]
         [HttpPost]
-        public async Task<IHttpActionResult> PurchaseUserAvatar(string UUID , int UserAvatarID)
+        public async Task<IHttpActionResult> PurchaseUserAvatar(int UserAvatarID)
         {
-            var user = await mDb.Set<User>().SingleOrDefaultAsync(u => u.UUID == UUID);
+            var user = await mDb.Set<User>().SingleOrDefaultAsync(u => u.UUID == mUserSession.UUID);
             if (user != null)
             {
                 bool bought = false;

@@ -32,22 +32,14 @@ namespace Falcon.Web.Api.Controllers.V1
         }
 
         [ResponseType(typeof(SReportType))]
-        [Route("ReportTypes/{UUID}")]
+        [Route("ReportTypes/")]
         [HttpPost]
-        public async Task<IHttpActionResult> GetReportTypes(string UUID)
+        public async Task<IHttpActionResult> GetReportTypes()
         {
-            var userID = await mDb.Set<User>().Where(u => u.UUID == UUID).Select(u => u.ID).SingleOrDefaultAsync();
-            if(userID != 0)
-            {
-                var reportTypes = await mDb.Set<ReportType>().ToListAsync();
-                var result = mMapper.Map<List<ReportType>, List<SReportType>>(reportTypes);
+            var reportTypes = await mDb.Set<ReportType>().ToListAsync();
+            var result = mMapper.Map<List<ReportType>, List<SReportType>>(reportTypes);
 
-                return Response(HttpStatusCode.OK, result);
-            }
-            else
-            {
-                return Response(HttpStatusCode.Unauthorized);
-            }
+            return Response(HttpStatusCode.OK, result);
         }
     }
 }

@@ -38,66 +38,50 @@ namespace Falcon.Web.Api.Controllers.V1
         [Route("Favorites/{UUID}")]
         [HttpPost]
         
-        public async Task<IHttpActionResult> GetFavoriteList(string UUID)
+        public async Task<IHttpActionResult> GetFavoriteList()
         {
-            var userID = await mDb.Set<User>().AsNoTracking().Where(u => u.UUID == UUID).Select(u => u.ID).SingleOrDefaultAsync();
+            
+            var favoritedQuestion = await mDb.Set<Favorite>().Where(f => f.UserID == mUserSession.UserID).Select(f => f.Question).ToListAsync();
 
-            if (userID != 0) // UserExists
+            if(favoritedQuestion.Count > 0 )
             {
-                var favoritedQuestion = await mDb.Set<Favorite>().Where(f => f.UserID == userID).Select(f => f.Question).ToListAsync();
-
-                if(favoritedQuestion.Count > 0 )
-                {
-                    var result = mMapper.Map<List<Question>, List<SNewCreatedQuestions>>(favoritedQuestion);
-                    return Ok(result);
-                }
-                else
-                {
-                    return Response(HttpStatusCode.NoContent);
-                }
+                var result = mMapper.Map<List<Question>, List<SNewCreatedQuestions>>(favoritedQuestion);
+                return Ok(result);
             }
             else
             {
-                return Response(HttpStatusCode.Unauthorized);
+                return Response(HttpStatusCode.NoContent);
             }
         }
 
         [ResponseType(typeof(SNewCreatedQuestions))]
-        [Route("Favorites/{UUID}/{QuestionID}")]
+        [Route("Favorites/{QuestionID}")]
         [HttpPost]
 
-        public async Task<IHttpActionResult> RemoveFavoritedQuestion(string UUID , int QuestionID)
+        public async Task<IHttpActionResult> RemoveFavoritedQuestion(int QuestionID)
         {
-            var userID = await mDb.Set<User>().AsNoTracking().Where(u => u.UUID == UUID).Select(u => u.ID).SingleOrDefaultAsync();
+            
+            var favoritedQuestions = await mDb.Set<Favorite>().Where( f => f.UserID == mUserSession.UserID && f.QuestionID == QuestionID).ToArrayAsync();
 
-            if (userID != 0) // UserExists
+            if (favoritedQuestions != null)
             {
-                var favoritedQuestions = await mDb.Set<Favorite>().Where( f => f.UserID == userID && f.QuestionID == QuestionID).ToArrayAsync();
-
-                if (favoritedQuestions != null)
+                if(favoritedQuestions.Length > 1)
                 {
-                    if(favoritedQuestions.Length > 1)
-                    {
-                        mLogManager.Error("More than one favorite");
-                        mDb.Set<Favorite>().RemoveRange(favoritedQuestions);
-                        await mDb.SaveChangesAsync();
-                    }
-                    else if( favoritedQuestions.Length == 1)
-                    {
-                        mDb.Set<Favorite>().Remove(favoritedQuestions[0]);
-                        await mDb.SaveChangesAsync();
-                    }
+                    mLogManager.Error("More than one favorite");
+                    mDb.Set<Favorite>().RemoveRange(favoritedQuestions);
+                    await mDb.SaveChangesAsync();
+                }
+                else if( favoritedQuestions.Length == 1)
+                {
+                    mDb.Set<Favorite>().Remove(favoritedQuestions[0]);
+                    await mDb.SaveChangesAsync();
+                }
                    
-                    return Response(HttpStatusCode.OK , QuestionID);
-                }
-                else
-                {
-                    return Response(HttpStatusCode.NoContent);
-                }
+                return Response(HttpStatusCode.OK , QuestionID);
             }
             else
             {
-                return Response(HttpStatusCode.Unauthorized);
+                return Response(HttpStatusCode.NoContent);
             }
         }
     }
