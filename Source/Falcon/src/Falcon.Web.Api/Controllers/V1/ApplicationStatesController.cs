@@ -20,22 +20,20 @@ namespace Falcon.Web.Api.Controllers.V1
         
         private readonly IMapper mMapper;
         private readonly IDbContext mDb;
-        private readonly IWebUserSession mUserSession;
 
-        public ApplicationStatesController(IMapper Mapper , IDbContext Database , IWebUserSession UserSession)
+        public ApplicationStatesController(IMapper Mapper , IDbContext Database)
         {
             mMapper = Mapper;
             mDb = Database;
-            mUserSession = UserSession;
         }
 
-        [ResponseType(typeof(SApplicationState))]
+        [ResponseType(typeof(ClientAppState))]
         [Route("ApplicationStates/")]
         [HttpPost]
         public async Task<IHttpActionResult> GetApplicationStates()
         {   
-            var dbApplicationState = await mDb.Set<ApplicationState>().SingleOrDefaultAsync();
-            var clientResult = mMapper.Map<ApplicationState , SApplicationState> (dbApplicationState);
+            var dbApplicationState = await mDb.Set<ApplicationState>().AsNoTracking().SingleOrDefaultAsync();
+            var clientResult = mMapper.Map<ApplicationState , ClientAppState> (dbApplicationState);
             return Ok(clientResult);
         }
         
