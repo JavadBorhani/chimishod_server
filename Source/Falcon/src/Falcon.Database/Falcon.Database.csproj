@@ -69,6 +69,10 @@
       <Project>{3c3db492-5ec4-459a-9dc3-0c083277b6f4}</Project>
       <Name>Falcon.EFCommonContext</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Falcon.Web.Common\Falcon.Web.Common.csproj">
+      <Project>{749D066B-57A0-49E7-8107-4DB2D1CFF935}</Project>
+      <Name>Falcon.Web.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Falcon.Web.Models\Falcon.Web.Models.csproj">
       <Project>{E4A55063-CBC8-4B7F-A1A6-C4F70F789DF0}</Project>
       <Name>Falcon.Web.Models</Name>

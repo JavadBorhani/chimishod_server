@@ -25,13 +25,7 @@ namespace Falcon.Web.Api.Controllers.V1
         private readonly IPagedDataRequestFactory mPagedDataRequestFactory;
         private readonly IWebUserSession mUserSession;
 
-        public IPagedDataRequestFactory MPagedDataRequestFactory
-        {
-            get
-            {
-                return mPagedDataRequestFactory;
-            }
-        }
+
 
         public CommentsController(IDateTime dateTime,
                                     IDbContext Database,
@@ -50,7 +44,7 @@ namespace Falcon.Web.Api.Controllers.V1
         [HttpPost]
         public async Task<PagedDataInquiryResponse<SComment>> GettingComments( int QuestionID , int PageNumber)
         {
-            var page = MPagedDataRequestFactory.Create(PageNumber , Constants.Paging.DefaultPageSize);
+            var page = mPagedDataRequestFactory.Create(PageNumber , Constants.Paging.DefaultPageSize);
             var comments = await mCommentInquiryProcessor.GetComments(page , QuestionID);
             return comments;
         }

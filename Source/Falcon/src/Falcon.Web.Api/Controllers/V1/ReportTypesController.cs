@@ -25,14 +25,11 @@ namespace Falcon.Web.Api.Controllers.V1
         private readonly IMapper mMapper;
         private readonly IWebUserSession mUserSession;
 
-        private readonly IGlobalApplicationState mAppState;
-
-        public ReportTypesController(IMapper Mapper, IDbContext Database , IWebUserSession UserSession , IGlobalApplicationState AppState)
+        public ReportTypesController(IMapper Mapper, IDbContext Database , IWebUserSession UserSession)
         {
             mMapper = Mapper;
             mDb = Database;
             mUserSession = UserSession;
-            mAppState = AppState;
         }
 
         [ResponseType(typeof(SReportType))]
@@ -40,7 +37,6 @@ namespace Falcon.Web.Api.Controllers.V1
         [HttpPost]
         public async Task<IHttpActionResult> GetReportTypes()
         {
-            int value = mAppState.GetState().AnswerPrize;
 
             var reportTypes = await mDb.Set<ReportType>().ToListAsync();
             var result = mMapper.Map<List<ReportType>, List<SReportType>>(reportTypes);

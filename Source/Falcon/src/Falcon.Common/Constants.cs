@@ -128,6 +128,11 @@ namespace Falcon.Common
             public const int LikeQuestion = 1;
             public const int Answering = 1; 
         }
+        public static class RoutesToIgnoreAuthentication
+        {
+            public const string UserAuthenticator = "UserAuthenticator";
+            public const string UserInfo = "UserInfo";
+        }
 
         public const string DefaultLegacyNamespaces = "http://vglr.ir";
     }

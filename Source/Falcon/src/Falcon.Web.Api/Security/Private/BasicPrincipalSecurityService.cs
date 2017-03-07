@@ -48,6 +48,14 @@ namespace Falcon.Web.Api.Security.Private
             return new ClaimsPrincipal(identity);
         }
 
+        public virtual IPrincipal GetUserPrincipal(string UUID)
+        {
+            var identity = new GenericIdentity("RAW", Constants.SchemeTypes.Basic);
+            identity.AddClaim(new Claim(ClaimTypes.Sid, UUID));
+
+            return new ClaimsPrincipal(identity);
+        }
+
         public bool SetPrincipal(string UUID)
         {
             var user = GetUser(UUID);
@@ -59,6 +67,23 @@ namespace Falcon.Web.Api.Security.Private
                 mLogger.ErrorFormat("Unauthorized User Access UUID : {0} , IP:{1}", UUID, HttpContext.Current.Request.UserHostName);
                 return false;   
             }
+
+            Thread.CurrentPrincipal = principal;
+            if(HttpContext.Current != null)
+            {
+                HttpContext.Current.User = principal;
+            }
+            return true;
+        }
+
+        public bool SetRawPrincipal(string UUID)
+        {
+            if(string.IsNullOrEmpty(UUID))
+            {
+                return false;
+            }
+
+            IPrincipal principal = GetUserPrincipal(UUID);
 
             Thread.CurrentPrincipal = principal;
             if(HttpContext.Current != null)

@@ -30,6 +30,8 @@ namespace Falcon.Web.Api.Security.Private
 
        protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
+            bool isGranted = IsGranted(request);            
+
             if(HttpContext.Current.User.Identity.IsAuthenticated)
             {
                 return await base.SendAsync(request, cancellationToken);
@@ -44,7 +46,7 @@ namespace Falcon.Web.Api.Security.Private
             bool isAuthenticated;
             try
             {
-                isAuthenticated = Authenticate(request);
+                isAuthenticated = Authenticate(request , isGranted);
             }
             catch
             {
@@ -58,26 +60,47 @@ namespace Falcon.Web.Api.Security.Private
             return CreateUnauthorizedResponse();
         }
 
-        private bool CanHandleAuthentication(HttpRequestMessage request)
+        private bool CanHandleAuthentication(HttpRequestMessage request )
         {
             return (request.Headers != null && 
                 request.Headers.Authorization != null && 
                 request.Headers.Authorization.Scheme.ToLowerInvariant() == Constants.SchemeTypes.Basic);
         }
-        private bool Authenticate(HttpRequestMessage request)
+        private bool Authenticate(HttpRequestMessage request , bool IsGranted)
         {
             var authHeader = request.Headers.Authorization;
             if(authHeader == null)
             {
                 return false;   
             }
-            var credentialParts = GetCredentialParts(authHeader);
-            if(credentialParts.Length != ExpectedCredentialCount )
+
+
+            if (!IsGranted)
             {
-                return false;   
+                var credentialParts = GetCredentialParts(authHeader);
+
+                if (credentialParts.Length != ExpectedCredentialCount)
+                {
+                    return false;
+                }
+                return mBasicPrincipalSecurityService.SetPrincipal(credentialParts[UUIDIndex]);
             }
-            mBasicPrincipalSecurityService.SetPrincipal(credentialParts[UUIDIndex]);
-            return true;
+            else
+            {
+                if(authHeader.Parameter == null)
+                {
+                    return true;
+                }
+
+                var credentialParts = GetCredentialParts(authHeader);
+
+                if (credentialParts.Length != ExpectedCredentialCount)
+                {
+                    return false;
+                }
+
+                return mBasicPrincipalSecurityService.SetRawPrincipal(credentialParts[UUIDIndex]);
+            }
         }
         private string[] GetCredentialParts(AuthenticationHeaderValue authValue)
         {
@@ -93,6 +116,18 @@ namespace Falcon.Web.Api.Security.Private
             var response = new HttpResponseMessage(HttpStatusCode.Unauthorized);
             response.Headers.WwwAuthenticate.Add(new AuthenticationHeaderValue(Constants.SchemeTypes.Basic));
             return response;
+        }
+
+        private bool IsGranted(HttpRequestMessage request)
+        {
+            //TODO : Implement a better approach 
+            var controllerBaseRoute = request.RequestUri.AbsolutePath.Split('/')[1];
+
+            if (controllerBaseRoute == Constants.RoutesToIgnoreAuthentication.UserAuthenticator ||
+                controllerBaseRoute == Constants.RoutesToIgnoreAuthentication.UserInfo)
+                return true;
+
+            return false;   
         }
 
     }

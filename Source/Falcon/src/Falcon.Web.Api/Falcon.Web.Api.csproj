@@ -131,6 +131,7 @@
   <ItemGroup>
     <Compile Include="App_Start\AutoMapperConfiguration.cs" />
     <Compile Include="AutoMappingConfiguration\ApplicationStateMap\ApplicationStateToSApplicationStateAutoTypeConfiguration.cs" />
+    <Compile Include="AutoMappingConfiguration\ApplicationStateMap\SApplicationStateToAplicationStateAutoTypeConfiguration.cs" />
     <Compile Include="AutoMappingConfiguration\CategoryMap\CategoryToSCategoryAutoTypeConfiguration.cs" />
     <Compile Include="AutoMappingConfiguration\CommentsMap\CommentToSCommentAutoTypeConfiguration.cs" />
     <Compile Include="AutoMappingConfiguration\LeaderBoard\UserToSLeaderBoardAutoTypeConfiguration.cs" />

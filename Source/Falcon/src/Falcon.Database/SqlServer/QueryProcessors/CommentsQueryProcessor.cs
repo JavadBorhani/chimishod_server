@@ -5,24 +5,24 @@ using Falcon.EFCommonContext.DbModel;
 using Falcon.EFCommonContext;
 using System.Threading.Tasks;
 using System.Data.Entity;
+using Falcon.Web.Common;
 
 namespace Falcon.Database.SqlServer.QueryProcessors
 {
     public class CommentsQueryProcessor : ICommentsQueryProcessor
     {
-        private readonly IDbContext mDb;
+        private IDbContext mDb;
 
-        public CommentsQueryProcessor(IDbContext dbContext)
+        public CommentsQueryProcessor(IDbContext Database)
         {
-            mDb = dbContext;
+            mDb = Database;
         }
         public async Task<QueryResult<Comment>> GetComments(PagedDataRequest requestInfo , int QuestionID)
         {
-
             var query = mDb.Set<Comment>().AsNoTracking()
                 .Where(comment => comment.QuestionID == QuestionID && comment.IsVerified == true)
                 .Include( comment => comment.User);
-
+            
             var totalItemCount = await query.CountAsync();
 
             var startIndex = ResultPagingUtility.CalculateStartIndex(requestInfo.PageNumber, requestInfo.PageSize);
