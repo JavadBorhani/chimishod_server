@@ -21,13 +21,13 @@ namespace Falcon.Web.Api.Controllers.V1
         
         private readonly IMapper mMapper;
         private readonly IDbContext mDb;
-        private readonly SApplicationState mAppState;
+        private readonly IGlobalApplicationState mAppState;
 
         public ApplicationStatesController(IMapper Mapper , IDbContext Database , IGlobalApplicationState AppState)
         {
             mMapper = Mapper;
             mDb = Database;
-            mAppState = AppState.State();
+            mAppState = AppState;
         }
 
         [ResponseType(typeof(ClientAppState))]
@@ -35,9 +35,33 @@ namespace Falcon.Web.Api.Controllers.V1
         [HttpPost]
         public IHttpActionResult GetApplicationStates()
         {   
-            var clientResult = mMapper.Map<SApplicationState , ClientAppState> (mAppState);
+            var clientResult = mMapper.Map<SApplicationState , ClientAppState> (mAppState.State());
             return Ok(clientResult);
         }
-        
+
+        [ResponseType(typeof(ClientAppState))]
+        [Route("ApplicationStates/Refresh/")]
+        [HttpGet]
+        public IHttpActionResult RefreshAppState()
+        {
+            mAppState.ReadStateFromDatabase();
+            return Ok();
+        }
+
+        [ResponseType(typeof(ClientAppState))]
+        [Route("ApplicationStates/Set/")]
+        [HttpPost]
+        public IHttpActionResult SetAppState([FromBody] SApplicationState NewAppState)
+        {
+            if(ModelState.IsValid)
+            {
+                mAppState.SetState(NewAppState);
+                return Ok();
+            }
+            else
+            {
+                return Response(System.Net.HttpStatusCode.BadRequest);
+            }
+        }
     }
 }

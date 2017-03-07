@@ -91,7 +91,6 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
                 model.User_DefaultUserCoin >= 0 &&
                 !string.IsNullOrEmpty(model.User_DefaultUserName));
 
-
         }
     }
 }
