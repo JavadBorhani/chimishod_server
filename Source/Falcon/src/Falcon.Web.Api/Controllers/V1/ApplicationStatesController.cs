@@ -11,6 +11,7 @@ using Falcon.EFCommonContext;
 using Falcon.Web.Common;
 using Falcon.Web.Api.Utilities.Base;
 using Falcon.Common.Security;
+using Falcon.Web.Api.MaintenanceProcessing.Public;
 
 namespace Falcon.Web.Api.Controllers.V1
 {
@@ -20,20 +21,21 @@ namespace Falcon.Web.Api.Controllers.V1
         
         private readonly IMapper mMapper;
         private readonly IDbContext mDb;
+        private readonly SApplicationState mAppState;
 
-        public ApplicationStatesController(IMapper Mapper , IDbContext Database)
+        public ApplicationStatesController(IMapper Mapper , IDbContext Database , IGlobalApplicationState AppState)
         {
             mMapper = Mapper;
             mDb = Database;
+            mAppState = AppState.State();
         }
 
         [ResponseType(typeof(ClientAppState))]
         [Route("ApplicationStates/")]
         [HttpPost]
-        public async Task<IHttpActionResult> GetApplicationStates()
+        public IHttpActionResult GetApplicationStates()
         {   
-            var dbApplicationState = await mDb.Set<ApplicationState>().AsNoTracking().SingleOrDefaultAsync();
-            var clientResult = mMapper.Map<ApplicationState , ClientAppState> (dbApplicationState);
+            var clientResult = mMapper.Map<SApplicationState , ClientAppState> (mAppState);
             return Ok(clientResult);
         }
         

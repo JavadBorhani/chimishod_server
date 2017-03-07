@@ -133,6 +133,7 @@
     <Compile Include="AutoMappingConfiguration\ApplicationStateMap\ApplicationStateToClientAppStateAutoTypeConfiguration.cs" />
     <Compile Include="AutoMappingConfiguration\ApplicationStateMap\ApplicationStateToSApplicationStateAutoTypeConfiguration.cs" />
     <Compile Include="AutoMappingConfiguration\ApplicationStateMap\SApplicationStateToAplicationStateAutoTypeConfiguration.cs" />
+    <Compile Include="AutoMappingConfiguration\ApplicationStateMap\SApplicationStateToClientAppStateAutoTypeConfiguration.cs" />
     <Compile Include="AutoMappingConfiguration\CategoryMap\CategoryToSCategoryAutoTypeConfiguration.cs" />
     <Compile Include="AutoMappingConfiguration\CommentsMap\CommentToSCommentAutoTypeConfiguration.cs" />
     <Compile Include="AutoMappingConfiguration\LeaderBoard\UserToSLeaderBoardAutoTypeConfiguration.cs" />
