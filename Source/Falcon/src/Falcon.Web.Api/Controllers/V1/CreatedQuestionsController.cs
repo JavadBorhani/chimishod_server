@@ -17,6 +17,7 @@ using Falcon.Web.Models;
 using Falcon.Web.Api.InquiryProcessing.Public;
 using Falcon.Web.Api.Utilities.Base;
 using Falcon.Common.Security;
+using Falcon.Web.Api.MaintenanceProcessing.Public;
 
 namespace Falcon.Web.Api.App_Start
 {
@@ -29,13 +30,15 @@ namespace Falcon.Web.Api.App_Start
         private readonly ICreatedQuestionsInquiryProcessor mCreatedQuestionsInquiryProcessor;
         private readonly IPagedDataRequestFactory mPagedDataRequestFactory;
         private readonly IWebUserSession mUserSession;
+        private readonly IGlobalApplicationState mAppState;
 
         public CreatedQuestionsController(IDateTime DateTime ,
             IMapper Mapper, 
             IDbContext Database , 
             ICreatedQuestionsInquiryProcessor InquiryProcessor , 
             IPagedDataRequestFactory PagedDataRequestFactory , 
-            IWebUserSession UserSession)
+            IWebUserSession UserSession , 
+            IGlobalApplicationState AppState)
         {
             mDateTime = DateTime;
             mMapper = Mapper;
@@ -43,6 +46,7 @@ namespace Falcon.Web.Api.App_Start
             mCreatedQuestionsInquiryProcessor = InquiryProcessor;
             mPagedDataRequestFactory = PagedDataRequestFactory;
             mUserSession = UserSession;
+            mAppState = AppState;
         }
 
         [ResponseType(typeof(SUserState))]
@@ -72,9 +76,12 @@ namespace Falcon.Web.Api.App_Start
                     int boostPrice = (boost != null) ? boost.Price : 0;
                     int? boostID = (boost == null) ? (int?)null : boost.ID;
 
-                    if (HasEnoughMoney(user.TotalStars, Constants.DefaultValues.CreateNewQuestionPrice, boostPrice)) //TODO Change Create Question Price to get from appState
+                    int newQuestionPrice = mAppState.State().Question_CreateQuestionPrice;
+                    int newQuestionPrize = mAppState.State().Prize_CreateNewQuestionPrize;
+
+                    if (HasEnoughMoney(user.TotalStars, newQuestionPrice, boostPrice)) //TODO Change Create Question Price to get from appState
                     {
-                        user.TotalStars -= (Constants.DefaultValues.CreateNewQuestionPrice + boostPrice);
+                        user.TotalStars -= (newQuestionPrice + boostPrice);
 
                         var newQuestion = new CreatedQuestion
                         {
@@ -91,7 +98,7 @@ namespace Falcon.Web.Api.App_Start
                         await mDb.SaveChangesAsync();
 
                         int nextLevelId = await GetNextLevelID(user.Level.LevelNumber);
-                        LevelUpChecking(ref user, user.Level.ScoreCeil, Constants.Prize.CreateQuestionPrize , nextLevelId);
+                        LevelUpChecking(ref user, user.Level.ScoreCeil, newQuestionPrize, nextLevelId);
 
 
                         return Response(HttpStatusCode.Created, user.TotalStars);
@@ -111,7 +118,7 @@ namespace Falcon.Web.Api.App_Start
         [Route("CreatedQuestions/Get/{PageNumber}")]
         public async Task<PagedDataInquiryResponse<SNewCreatedQuestions>> GetCreatedQuestionList(int PageNumber)
         {
-            var page = mPagedDataRequestFactory.Create(PageNumber, Constants.Paging.DefaultPageSize);
+            var page = mPagedDataRequestFactory.Create(PageNumber, mAppState.State().Paging_DefaultPageSize);
             var createdQuestions = await mCreatedQuestionsInquiryProcessor.GetQuestionList(page , mUserSession.UserID);
             return createdQuestions;
         }

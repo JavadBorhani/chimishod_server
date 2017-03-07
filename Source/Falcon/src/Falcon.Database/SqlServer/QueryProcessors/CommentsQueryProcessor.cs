@@ -5,13 +5,12 @@ using Falcon.EFCommonContext.DbModel;
 using Falcon.EFCommonContext;
 using System.Threading.Tasks;
 using System.Data.Entity;
-using Falcon.Web.Common;
 
 namespace Falcon.Database.SqlServer.QueryProcessors
 {
     public class CommentsQueryProcessor : ICommentsQueryProcessor
     {
-        private IDbContext mDb;
+        private readonly IDbContext mDb;
 
         public CommentsQueryProcessor(IDbContext Database)
         {

@@ -36,7 +36,6 @@ namespace Falcon.EFCommonContext.DbModel
         public virtual DbSet<AchievementQueryType> AchievementQueryTypes { get; set; }
         public virtual DbSet<AchieveStateType> AchieveStateTypes { get; set; }
         public virtual DbSet<Answer> Answers { get; set; }
-        public virtual DbSet<ApplicationState> ApplicationStates { get; set; }
         public virtual DbSet<AppTheme> AppThemes { get; set; }
         public virtual DbSet<Category> Categories { get; set; }
         public virtual DbSet<Comment> Comments { get; set; }
@@ -64,5 +63,6 @@ namespace Falcon.EFCommonContext.DbModel
         public virtual DbSet<UserAvatar> UserAvatars { get; set; }
         public virtual DbSet<UserInfo> UserInfoes { get; set; }
         public virtual DbSet<UserType> UserTypes { get; set; }
+        public virtual DbSet<ApplicationState> ApplicationStates { get; set; }
     }
 }

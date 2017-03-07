@@ -5,6 +5,7 @@ using Falcon.Common.Security;
 using Falcon.Data.Exceptions;
 using Falcon.EFCommonContext;
 using Falcon.EFCommonContext.DbModel;
+using Falcon.Web.Api.MaintenanceProcessing.Public;
 using Falcon.Web.Api.Utilities.Base;
 using Falcon.Web.Common;
 using Falcon.Web.Models.Api;
@@ -25,13 +26,19 @@ namespace Falcon.Web.Api.Controllers.V1
         private readonly IDateTime mDateTime;
         private readonly IDbContext mDbContext;
         private readonly IWebUserSession mUserSession;
+        private readonly IGlobalApplicationState mAppState;
 
-        public UserAuthenticatorController(IDbContext Context , IDateTime dateTime, IDbContext Database , IWebUserSession UserSession)
+        public UserAuthenticatorController(IDbContext Context , 
+            IDateTime dateTime, 
+            IDbContext Database , 
+            IWebUserSession UserSession , 
+            IGlobalApplicationState AppState)
         {
             mDateTime = dateTime;
             mDbContext = Context;
             mDb = Database;
             mUserSession = UserSession;
+            mAppState = AppState;
         }
 
         [ResponseType(typeof(SUser))]
@@ -133,9 +140,9 @@ namespace Falcon.Web.Api.Controllers.V1
             User user = new User
             {
                 UUID = UUID,
-                UserName = Constants.DefaultUser.UserName + uniqueNumber.Substring(uniqueNumber.Length - 7),
+                UserName = mAppState.State().User_DefaultUserName + uniqueNumber.Substring(uniqueNumber.Length - 7),
                 UserTypeID = Constants.DefaultUser.UserTypeID,
-                TotalStars = Constants.DefaultUser.TotalStar,
+                TotalStars = mAppState.State().User_DefaultUserCoin,
                 Score = Constants.DefaultUser.Score,
                 LevelProgress = Constants.DefaultUser.LevelProgress,
                 CurrentLevelID = Constants.DefaultUser.CurrentLevelD,

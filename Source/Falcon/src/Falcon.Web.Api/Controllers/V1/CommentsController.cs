@@ -13,6 +13,7 @@ using Falcon.Web.Models.Api;
 using Falcon.Web.Api.InquiryProcessing.Public;
 using Falcon.Web.Api.Utilities.Base;
 using Falcon.Common.Security;
+using Falcon.Web.Api.MaintenanceProcessing.Public;
 
 namespace Falcon.Web.Api.Controllers.V1
 {
@@ -24,6 +25,7 @@ namespace Falcon.Web.Api.Controllers.V1
         private readonly ICommentsInquiryProcessor mCommentInquiryProcessor;
         private readonly IPagedDataRequestFactory mPagedDataRequestFactory;
         private readonly IWebUserSession mUserSession;
+        private readonly IGlobalApplicationState mAppState;
 
 
 
@@ -31,20 +33,22 @@ namespace Falcon.Web.Api.Controllers.V1
                                     IDbContext Database,
                                     ICommentsInquiryProcessor CommentsInquiryProcessor,
                                     IPagedDataRequestFactory PagedDataRequestFactory , 
-                                    IWebUserSession UserSession)
+                                    IWebUserSession UserSession , 
+                                    IGlobalApplicationState AppState)
         {
             mDateTime = dateTime;
             mDb = Database;
             mCommentInquiryProcessor = CommentsInquiryProcessor;
             mPagedDataRequestFactory = PagedDataRequestFactory;
             mUserSession             = UserSession;
+            mAppState = AppState;
         }
 
         [Route("Comments/{QuestionID}/{PageNumber}")]
         [HttpPost]
         public async Task<PagedDataInquiryResponse<SComment>> GettingComments( int QuestionID , int PageNumber)
         {
-            var page = mPagedDataRequestFactory.Create(PageNumber , Constants.Paging.DefaultPageSize);
+            var page = mPagedDataRequestFactory.Create(PageNumber , mAppState.State().Paging_DefaultPageSize);
             var comments = await mCommentInquiryProcessor.GetComments(page , QuestionID);
             return comments;
         }
@@ -70,7 +74,7 @@ namespace Falcon.Web.Api.Controllers.V1
                    QuestionID = question.ID,
                    CommentContent = NewComment.Content,
                    Response = Constants.DefaultValues.CommentDefaultReponseMessage,
-                   IsVerified = Constants.DefaultValues.CommentDefaultVerify,
+                   IsVerified = mAppState.State().Comment_DefaultVerifyState,
                    InsertDate = mDateTime.Now
                 };
 
