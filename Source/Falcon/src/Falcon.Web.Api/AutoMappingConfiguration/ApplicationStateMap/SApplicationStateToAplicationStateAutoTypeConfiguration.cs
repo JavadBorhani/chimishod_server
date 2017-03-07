@@ -1,14 +1,18 @@
 ﻿using AutoMapper;
 using Falcon.EFCommonContext.DbModel;
 using Falcon.Web.Models.Api;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
 
 namespace Falcon.Web.Api.AutoMappingConfiguration.ApplicationStateMap
 {
-    public class ApplicationStateToSApplicationStateAutoTypeConfiguration : Profile
+    public class SApplicationStateToAplicationStateAutoTypeConfiguration : Profile
     {
-        public ApplicationStateToSApplicationStateAutoTypeConfiguration()
+        public SApplicationStateToAplicationStateAutoTypeConfiguration()
         {
-            CreateMap<ApplicationState, SApplicationState>()
+            CreateMap<SApplicationState , ApplicationState>()
 
                 //Favorite
                 .ForMember(s => s.Favorite_FavoritePrice, ca => ca.MapFrom(y => y.Favorite_FavoritePrice))
@@ -48,8 +52,9 @@ namespace Falcon.Web.Api.AutoMappingConfiguration.ApplicationStateMap
                 .ForMember(s => s.Host_WebSiteNoReplyMailPassword, ca => ca.MapFrom(y => y.Host_WebSiteNoReplyMailPassword))
                 .ForMember(s => s.Host_SupportMail, ca => ca.MapFrom(y => y.Host_SupportMail))
                 .ForMember(s => s.Host_SupportMailPassword, ca => ca.MapFrom(y => y.Host_SupportMailPassword))
-                .ForMember(s => s.Host_SmtpServer, ca => ca.MapFrom(y => y.Host_SmtpServer));
+                .ForMember(s => s.Host_SmtpServer, ca => ca.MapFrom(y => y.Host_SmtpServer))
 
+                .ForMember(s => s.ID , ca => ca.Ignore());
         }
     }
 }

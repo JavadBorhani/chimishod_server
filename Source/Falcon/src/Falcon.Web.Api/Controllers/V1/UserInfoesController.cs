@@ -17,6 +17,7 @@ using Falcon.Web.Common;
 using Falcon.EFCommonContext;
 using Falcon.Web.Api.Utilities.Base;
 using Falcon.Common.Security;
+using Falcon.Web.Api.MaintenanceProcessing.Public;
 
 namespace Falcon.Web.Api.Controllers.V1
 {
@@ -25,15 +26,16 @@ namespace Falcon.Web.Api.Controllers.V1
     {
         
         private readonly IDbContext mDb;
-
         private readonly IDateTime mDateTime;
         private readonly IWebUserSession mUserSession;
+        private readonly IGlobalApplicationState mAppState;
 
-        public UserInfoesController(IDateTime DateTime, IDbContext Database , IWebUserSession UserSession)
+        public UserInfoesController(IDateTime DateTime, IDbContext Database , IWebUserSession UserSession , IGlobalApplicationState AppState)
         {
             mDateTime = DateTime;
             mDb = Database;
             mUserSession = UserSession;
+            mAppState = AppState;
         }
 
         [ResponseType(typeof(SUserInfo))]
@@ -214,18 +216,20 @@ namespace Falcon.Web.Api.Controllers.V1
 
         private void SendVerificationEmailViaWebApi(string EmailToSend, string UserName, string Password)
         {
+            SApplicationState state= mAppState.State();
+
             string subject = "Verification Mail";
             string body = string.Format("Flapp Studio - What if Game \n This is password Recovery \n UserName : '{0}' \n Password : '{1}'", UserName, Password);
-            string FromMail = Constants.DefaultHostConfig.WebSiteNoReplyMail;
+            string FromMail = state.Host_WebSiteNoReplyMail;
             string emailTo = EmailToSend;
             MailMessage mail = new MailMessage();
-            SmtpClient SmtpServer = new SmtpClient(Constants.DefaultHostConfig.HostSmtpServer);
+            SmtpClient SmtpServer = new SmtpClient(state.Host_SmtpServer);
             mail.From = new MailAddress(FromMail);
             mail.To.Add(emailTo);
             mail.Subject = subject;
             mail.Body = body;
             SmtpServer.Port = 8383;
-            SmtpServer.Credentials = new NetworkCredential(Constants.DefaultHostConfig.WebSiteNoReplyMail, Constants.DefaultHostConfig.WebSiteNoReplyMailPassword);
+            SmtpServer.Credentials = new NetworkCredential(state.Host_WebSiteNoReplyMail, state.Host_WebSiteNoReplyMailPassword);
             SmtpServer.EnableSsl = false;
             SmtpServer.Send(mail);
         }

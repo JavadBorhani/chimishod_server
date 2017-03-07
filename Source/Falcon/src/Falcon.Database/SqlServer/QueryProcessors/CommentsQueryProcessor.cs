@@ -12,17 +12,16 @@ namespace Falcon.Database.SqlServer.QueryProcessors
     {
         private readonly IDbContext mDb;
 
-        public CommentsQueryProcessor(IDbContext dbContext)
+        public CommentsQueryProcessor(IDbContext Database)
         {
-            mDb = dbContext;
+            mDb = Database;
         }
         public async Task<QueryResult<Comment>> GetComments(PagedDataRequest requestInfo , int QuestionID)
         {
-
             var query = mDb.Set<Comment>().AsNoTracking()
                 .Where(comment => comment.QuestionID == QuestionID && comment.IsVerified == true)
                 .Include( comment => comment.User);
-
+            
             var totalItemCount = await query.CountAsync();
 
             var startIndex = ResultPagingUtility.CalculateStartIndex(requestInfo.PageNumber, requestInfo.PageSize);

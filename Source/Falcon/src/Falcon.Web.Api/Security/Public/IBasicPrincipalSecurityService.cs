@@ -9,5 +9,6 @@ namespace Falcon.Web.Api.Security.Public
     public interface IBasicPrincipalSecurityService
     {
         bool SetPrincipal(string UUID);
+        bool SetRawPrincipal(string UUID);
     }
 }

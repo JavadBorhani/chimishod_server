@@ -6,7 +6,7 @@ namespace Falcon.Common
     {
         public static class DefaultUser
         {
-            public const string UserName = "Guest_";
+            //public const string UserName = "Guest_"; is in db
             public const string Email     = null;
             public const string PhoneNumber = null;
             public const string GoogleID = null;
@@ -15,7 +15,7 @@ namespace Falcon.Common
             public const bool IsAbleToWriteComment = true;
             public const int Score = 0;
             public const int UserTypeID = 1;
-            public const int TotalStar = 200;
+            //public const int TotalStar = 200; is in db
             public const int LevelProgress = 0; 
             public const int LevelAnswerdNumber = 0;
             public const int CurrentLevelD = 1;
@@ -36,11 +36,11 @@ namespace Falcon.Common
 
         public static class Paging
         {
-            public const int UserNumberToShow = 20;
+            //public const int UserNumberToShow = 20; LeaderBoard_NumberToShow
             public const int MinPageSize = 1;
             public const int MinPageNumber = 1;
             public const int DefaultPageNumber = 1;
-            public const int DefaultPageSize = 5;
+            //public const int DefaultPageSize = 5;
         }
         public static class CommonParameterNames
         {
@@ -73,10 +73,10 @@ namespace Falcon.Common
         }
         public static class DefaultReturnAmounts
         {
-            public const int Comment = 20;
-            public const int Question = 5;
-            public const int QuestionsToSkip = 2;
-            public const int ServerBurntNumber = 1;  
+            //public const int Comment = 20;
+            //public const int Question = 5;
+            //public const int QuestionsToSkip = 2;
+            //public const int ServerBurntNumber = 1;  
         }
 
         public static class UserInfoStatusType
@@ -89,22 +89,22 @@ namespace Falcon.Common
         }
         public static class DefaultValues
         {
-            public const bool CommentDefaultVerify = true;
+            //public const bool CommentDefaultVerify = true;
             public const string CommentDefaultReponseMessage = null;
-            public const int FavoriteNumberOfFreeItems = 3;
-            public const int FavoriteDefaultPrice = 5;
-            public const int NoQuestionID = -1;
-            public const string NoQuestionWhat = "داداش خوردی سرور ما رو";
-            public const string NoQuestionBut = "سرورمون آب شد";
+            //public const int FavoriteNumberOfFreeItems = 3;
+            //public const int FavoriteDefaultPrice = 5; is in db
+            //public const int NoQuestionID = -1;
+            //public const string NoQuestionWhat = "داداش خوردی سرور ما رو";
+            //public const string NoQuestionBut = "سرورمون آب شد";
             public const int PurchaseThemeNumberAllowedToBuy = 1;
             public const int PurchaseCategoryNumberAllowedToBuy = 1;
             public const int CategoryNumberOfSelectAllowed = 1;
             public const int ThemeNumberOfSelectAllowed = 1;
-            public const int CreateNewQuestionPrice = 30;
+            //public const int CreateNewQuestionPrice = 30;
             public const int CreatedQuestionsVerified = 3;
             public const int CreatedQuestionIsInChecking = 2;
             public const int CreatedQuestionRejected = 1;
-            public const int StoreNumberToSend = 20;
+            //public const int StoreNumberToSend = 20;
             public const int CreatedQuestionsDefaultID = -1;
             public const int AchievementsMinimumAchievables = 5;
             public const int AchievementDefaultNotAchievedID = 1;
@@ -115,18 +115,23 @@ namespace Falcon.Common
         }
         public static class DefaultHostConfig
         {
-            public const string WebSiteNoReplyMail = "noreply@vglr.ir";
-            public const string WebSiteNoReplyMailPassword = "@@@Visualbasic7";
-            public const string WebSiteSupportMail = "";
-            public const string WebSiteSupportMailPassword = "";
-            public const string HostSmtpServer = "31.25.89.211"; 
+            //public const string WebSiteNoReplyMail = "noreply@vglr.ir";
+            //public const string WebSiteNoReplyMailPassword = "@@@Visualbasic7";
+            //public const string WebSiteSupportMail = "";
+            //public const string WebSiteSupportMailPassword = "";
+            //public const string HostSmtpServer = "31.25.89.211"; 
         }
         public static class Prize
         {
-            public const int CreateQuestionPrize = 10;
-            public const int CreatedQuestionAccepted = 10;
-            public const int LikeQuestion = 1;
-            public const int Answering = 1; 
+            //public const int CreateQuestionPrize = 10; is in database
+            //public const int CreatedQuestionAccepted = 10;
+            //public const int LikeQuestion = 1; in db
+            //public const int Answering = 1; is in db
+        }
+        public static class RoutesToIgnoreAuthentication
+        {
+            public const string UserAuthenticator = "UserAuthenticator";
+            public const string UserInfo = "UserInfo";
         }
 
         public const string DefaultLegacyNamespaces = "http://vglr.ir";

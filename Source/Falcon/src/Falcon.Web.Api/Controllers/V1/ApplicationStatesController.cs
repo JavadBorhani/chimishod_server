@@ -11,6 +11,7 @@ using Falcon.EFCommonContext;
 using Falcon.Web.Common;
 using Falcon.Web.Api.Utilities.Base;
 using Falcon.Common.Security;
+using Falcon.Web.Api.MaintenanceProcessing.Public;
 
 namespace Falcon.Web.Api.Controllers.V1
 {
@@ -20,24 +21,47 @@ namespace Falcon.Web.Api.Controllers.V1
         
         private readonly IMapper mMapper;
         private readonly IDbContext mDb;
-        private readonly IWebUserSession mUserSession;
+        private readonly IGlobalApplicationState mAppState;
 
-        public ApplicationStatesController(IMapper Mapper , IDbContext Database , IWebUserSession UserSession)
+        public ApplicationStatesController(IMapper Mapper , IDbContext Database , IGlobalApplicationState AppState)
         {
             mMapper = Mapper;
             mDb = Database;
-            mUserSession = UserSession;
+            mAppState = AppState;
         }
 
-        [ResponseType(typeof(SApplicationState))]
+        [ResponseType(typeof(ClientAppState))]
         [Route("ApplicationStates/")]
         [HttpPost]
-        public async Task<IHttpActionResult> GetApplicationStates()
+        public IHttpActionResult GetApplicationStates()
         {   
-            var dbApplicationState = await mDb.Set<ApplicationState>().SingleOrDefaultAsync();
-            var clientResult = mMapper.Map<ApplicationState , SApplicationState> (dbApplicationState);
+            var clientResult = mMapper.Map<SApplicationState , ClientAppState> (mAppState.State());
             return Ok(clientResult);
         }
-        
+
+        [ResponseType(typeof(ClientAppState))]
+        [Route("ApplicationStates/Refresh/")]
+        [HttpGet]
+        public IHttpActionResult RefreshAppState()
+        {
+            mAppState.ReadStateFromDatabase();
+            return Ok();
+        }
+
+        [ResponseType(typeof(ClientAppState))]
+        [Route("ApplicationStates/Set/")]
+        [HttpPost]
+        public IHttpActionResult SetAppState([FromBody] SApplicationState NewAppState)
+        {
+            if(ModelState.IsValid)
+            {
+                mAppState.SetState(NewAppState);
+                return Ok();
+            }
+            else
+            {
+                return Response(System.Net.HttpStatusCode.BadRequest);
+            }
+        }
     }
 }

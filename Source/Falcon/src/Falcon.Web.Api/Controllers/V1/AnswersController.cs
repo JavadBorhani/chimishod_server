@@ -17,6 +17,7 @@ using Falcon.EFCommonContext;
 using Falcon.Web.Common;
 using Falcon.Web.Api.Utilities.Base;
 using Falcon.Common.Security;
+using Falcon.Web.Api.MaintenanceProcessing.Public;
 
 namespace Falcon.Web.Api.Controllers.V1
 {
@@ -28,18 +29,21 @@ namespace Falcon.Web.Api.Controllers.V1
         private readonly IMapper mMapper;
         private readonly IDbContext mDb;
         private readonly IWebUserSession mUserSession;
+        private readonly SApplicationState mAppState;
 
         public AnswersController(IDateTime dateTime , 
             ILogManager logManager , 
             IMapper Mapper , 
             IDbContext Database , 
-            IWebUserSession UserSession)
+            IWebUserSession UserSession , 
+            IGlobalApplicationState AppState)
         {
             mDateTime = dateTime;
             mLogger = logManager.GetLog(typeof(AnswersController));
             mMapper = Mapper;
             mDb = Database;
             mUserSession = UserSession;
+            mAppState = AppState.State();
         }
 
         public IQueryable<Answer> GetAnswers()
@@ -148,7 +152,7 @@ namespace Falcon.Web.Api.Controllers.V1
                 if (answer.IsFavorited == true) // means user favourited the current question
                 {
                     var favoriteCount = await FavoriteCount(user.ID);
-                    if (favoriteCount < Constants.DefaultValues.FavoriteNumberOfFreeItems)
+                    if (favoriteCount < mAppState.Favorite_FreeNumberToFavorite)
                     {
                         var newFavorite = new Favorite
                         {
@@ -161,9 +165,9 @@ namespace Falcon.Web.Api.Controllers.V1
                     }
                     else
                     {
-                        if (user.TotalStars - Constants.DefaultValues.FavoriteDefaultPrice >= 0)
+                        if (user.TotalStars - mAppState.Favorite_FavoritePrice >= 0)
                         {
-                            user.TotalStars -= Constants.DefaultValues.FavoriteDefaultPrice;
+                            user.TotalStars -= mAppState.Favorite_FavoritePrice;
 
                             var newFavorite = new Favorite
                             {
@@ -197,8 +201,8 @@ namespace Falcon.Web.Api.Controllers.V1
                                                                 .SingleOrDefaultAsync();
                         if(otherUser != null)
                         {
-                            otherUser.Score         += Constants.Prize.LikeQuestion;
-                            otherUser.LevelProgress += Constants.Prize.LikeQuestion;
+                            otherUser.Score         += mAppState.Prize_LikePrize;
+                            otherUser.LevelProgress += mAppState.Prize_LikePrize;
                         }
                     }
                     else if (answer.Dislike != null)
@@ -209,10 +213,10 @@ namespace Falcon.Web.Api.Controllers.V1
                 }
 
                 int prizeCoefficient = questionToUpdate.Category.PrizeCoefficient;
-                if (Constants.Prize.Answering > 0 && prizeCoefficient > 0 )
+                if (mAppState.Prize_AnswerPrize > 0 && prizeCoefficient > 0 )
                 {
                     int nextLevelId = await GetNextLevelID(user.Level.LevelNumber);
-                    LevelUpChecking(ref user, user.Level.ScoreCeil, Constants.Prize.Answering * prizeCoefficient, nextLevelId);
+                    LevelUpChecking(ref user, user.Level.ScoreCeil, mAppState.Prize_AnswerPrize * prizeCoefficient, nextLevelId);
                     await mDb.SaveChangesAsync();
                 }
                 
@@ -245,7 +249,7 @@ namespace Falcon.Web.Api.Controllers.V1
                                                    .ToList()
                                                    .Contains(question.ID))
                                                    .OrderByDescending(question => question.Weight)
-                                                   .Take(Constants.DefaultReturnAmounts.Question)
+                                                   .Take(mAppState.Question_DefaultReturnAmount)
                                                    .Join(manuRef, question => question.ID, manu => manu.QuestionID, (question, manu) => new SQuestion
                                                    {
                                                        ID = question.ID,
@@ -268,14 +272,14 @@ namespace Falcon.Web.Api.Controllers.V1
                         return ResponseMessage(Request.CreateResponse(HttpStatusCode.OK, new { Questions, answer.QuestionID }));
                     }
 
-                    Questions = new SQuestion[Constants.DefaultReturnAmounts.ServerBurntNumber];
-                    for (int i = 0; i < Constants.DefaultReturnAmounts.ServerBurntNumber; ++i)
+                    Questions = new SQuestion[mAppState.Question_ServerBurntReturnAmount];
+                    for (int i = 0; i < mAppState.Question_ServerBurntReturnAmount; ++i)
                     {
                         Questions[i] = new SQuestion
                         {
-                            ID = Constants.DefaultValues.NoQuestionID,
-                            What_if = Constants.DefaultValues.NoQuestionWhat,
-                            But = Constants.DefaultValues.NoQuestionBut
+                            ID = mAppState.Question_NoQuestionFoundID,
+                            What_if = mAppState.Question_NoQuestionFoundWhat,
+                            But = mAppState.Question_NoQuestionFoundBut
                         };
                     }
                     return ResponseMessage(Request.CreateResponse(HttpStatusCode.OK, new { Questions, answer.QuestionID }));

@@ -14,6 +14,7 @@ using Falcon.Web.Common;
 using Falcon.EFCommonContext;
 using Falcon.Web.Api.Utilities.Base;
 using Falcon.Common.Security;
+using Falcon.Web.Api.MaintenanceProcessing.Public;
 
 namespace Falcon.Web.Api.Controllers.V1
 {
@@ -23,22 +24,26 @@ namespace Falcon.Web.Api.Controllers.V1
         private readonly IDbContext mDb;
         private readonly IMapper mMapper;
         private readonly IWebUserSession mUserSession;
+        private readonly IGlobalApplicationState mAppState;
 
-        public LeaderBoardController(IMapper Mapper, IDbContext Database , IWebUserSession UserSession)
+        public LeaderBoardController(IMapper Mapper, IDbContext Database , IWebUserSession UserSession , IGlobalApplicationState AppState)
         {
             mMapper = Mapper;
             mDb = Database;
             mUserSession = UserSession;
+            mAppState = AppState;
         }
 
         [Route("LeaderBoard/")]
         [HttpPost]
         public async Task<IHttpActionResult> GetLeaderBoardList()
         {
+
+            int topNumberToShow = mAppState.State().Leader_TopNumberToShow;
             var leaderboard = await mDb.Set<User>().AsNoTracking()
                                         .OrderByDescending(u => u.Score)
                                         .Include(u => u.Level)
-                                        .Take(Constants.Paging.UserNumberToShow)
+                                        .Take(topNumberToShow)
                                         .Select(u => new SLeaderBoard
                                         {
                                             UserID = u.ID,

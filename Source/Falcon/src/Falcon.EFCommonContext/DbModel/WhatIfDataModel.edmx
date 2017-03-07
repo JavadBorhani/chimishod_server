@@ -33,17 +33,17 @@
           <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Description" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="Star" Type="int" Nullable="false" />
-          <Property Name="Prize" Type="int" Nullable="false" />
           <Property Name="Icon" Type="varchar" MaxLength="150" Nullable="false" />
           <Property Name="RectangleColor" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+          <Property Name="UpdatedDate" Type="datetime" Nullable="false" />
           <Property Name="QueryTypeID" Type="int" />
           <Property Name="Query" Type="nvarchar" MaxLength="1000" />
           <Property Name="LevelID" Type="int" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
           <Property Name="CategoryID" Type="int" />
           <Property Name="CategoryQuantity" Type="int" />
-          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
-          <Property Name="UpdatedDate" Type="datetime" Nullable="false" />
-          <Property Name="IsActive" Type="bit" Nullable="false" />
+          <Property Name="Prize" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="AchievementQueryType">
           <Key>
@@ -78,13 +78,31 @@
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="FavoritePrice" Type="int" Nullable="false" />
-          <Property Name="DefaultUserName" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="DefaultUserCoin" Type="int" Nullable="false" />
-          <Property Name="CreateQuestionPrice" Type="int" Nullable="false" />
-          <Property Name="AnswerPrize" Type="int" Nullable="false" />
-          <Property Name="LikePrize" Type="int" Nullable="false" />
-          <Property Name="CreateNewQuestionPrize" Type="int" Nullable="false" />
+          <Property Name="Favorite_FavoritePrice" Type="int" Nullable="false" />
+          <Property Name="Favorite_FreeNumberToFavorite" Type="int" Nullable="false" />
+          <Property Name="User_DefaultUserName" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="User_DefaultUserCoin" Type="int" Nullable="false" />
+          <Property Name="Question_CreateQuestionPrice" Type="int" Nullable="false" />
+          <Property Name="Question_DefaultReturnAmount" Type="int" Nullable="false" />
+          <Property Name="Question_NumberToSkip" Type="int" Nullable="false" />
+          <Property Name="Question_NoQuestionFoundWhat" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Question_NoQuestionFoundBut" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Question_NoQuestionFoundID" Type="int" Nullable="false" />
+          <Property Name="Question_ServerBurntReturnAmount" Type="int" Nullable="false" />
+          <Property Name="Prize_AnswerPrize" Type="int" Nullable="false" />
+          <Property Name="Prize_LikePrize" Type="int" Nullable="false" />
+          <Property Name="Prize_CreateNewQuestionPrize" Type="int" Nullable="false" />
+          <Property Name="Prize_NewQuestionAcceptedPrize" Type="int" Nullable="false" />
+          <Property Name="Paging_DefaultPageSize" Type="int" Nullable="false" />
+          <Property Name="Leader_TopNumberToShow" Type="int" Nullable="false" />
+          <Property Name="Comment_DefaultNumberAmount" Type="int" Nullable="false" />
+          <Property Name="Comment_DefaultVerifyState" Type="bit" Nullable="false" />
+          <Property Name="Host_WebSiteNoReplyMail" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Host_WebSiteNoReplyMailPassword" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Host_SupportMail" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Host_SupportMailPassword" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Host_SmtpServer" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Store_DefaultReturnAmount" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="AppTheme">
           <Key>
@@ -114,9 +132,9 @@
           <Property Name="CircleColor" Type="varchar" MaxLength="10" Nullable="false" />
           <Property Name="RectangleColor" Type="varchar" MaxLength="10" Nullable="false" />
           <Property Name="Price" Type="int" Nullable="false" />
-          <Property Name="PrizeCoefficient" Type="int" Nullable="false" />
           <Property Name="CreatedDate" Type="datetime" Nullable="false" />
           <Property Name="UpdatedDate" Type="datetime" Nullable="false" />
+          <Property Name="PrizeCoefficient" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Comment">
           <Key>
@@ -1169,7 +1187,6 @@
           <EntitySet Name="AchievementQueryTypes" EntityType="Falcon.DbModel.AchievementQueryType" />
           <EntitySet Name="AchieveStateTypes" EntityType="Falcon.DbModel.AchieveStateType" />
           <EntitySet Name="Answers" EntityType="Falcon.DbModel.Answer" />
-          <EntitySet Name="ApplicationStates" EntityType="Falcon.DbModel.ApplicationState" />
           <EntitySet Name="AppThemes" EntityType="Falcon.DbModel.AppTheme" />
           <EntitySet Name="Categories" EntityType="Falcon.DbModel.Category" />
           <EntitySet Name="Comments" EntityType="Falcon.DbModel.Comment" />
@@ -1365,6 +1382,7 @@
             <End Role="User" EntitySet="Users" />
             <End Role="UserInfo" EntitySet="UserInfoes" />
           </AssociationSet>
+          <EntitySet Name="ApplicationStates" EntityType="Falcon.DbModel.ApplicationState" />
         </EntityContainer>
         <EntityType Name="AchievedGift">
           <Key>
@@ -1446,19 +1464,6 @@
           <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="Question" Relationship="Falcon.DbModel.FK_Answer_Question" FromRole="Answer" ToRole="Question" />
           <NavigationProperty Name="User" Relationship="Falcon.DbModel.FK_Answer_User" FromRole="Answer" ToRole="User" />
-        </EntityType>
-        <EntityType Name="ApplicationState">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="FavoritePrice" Type="Int32" Nullable="false" />
-          <Property Name="DefaultUserName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="DefaultUserCoin" Type="Int32" Nullable="false" />
-          <Property Name="CreateQuestionPrice" Type="Int32" Nullable="false" />
-          <Property Name="AnswerPrize" Type="Int32" Nullable="false" />
-          <Property Name="LikePrize" Type="Int32" Nullable="false" />
-          <Property Name="CreateNewQuestionPrize" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="AppTheme">
           <Key>
@@ -2399,6 +2404,37 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="ApplicationState">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Favorite_FavoritePrice" Type="Int32" Nullable="false" />
+          <Property Name="Favorite_FreeNumberToFavorite" Type="Int32" Nullable="false" />
+          <Property Name="User_DefaultUserName" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="User_DefaultUserCoin" Type="Int32" Nullable="false" />
+          <Property Name="Question_CreateQuestionPrice" Type="Int32" Nullable="false" />
+          <Property Name="Question_DefaultReturnAmount" Type="Int32" Nullable="false" />
+          <Property Name="Question_NumberToSkip" Type="Int32" Nullable="false" />
+          <Property Name="Question_NoQuestionFoundWhat" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Question_NoQuestionFoundBut" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Question_NoQuestionFoundID" Type="Int32" Nullable="false" />
+          <Property Name="Question_ServerBurntReturnAmount" Type="Int32" Nullable="false" />
+          <Property Name="Prize_AnswerPrize" Type="Int32" Nullable="false" />
+          <Property Name="Prize_LikePrize" Type="Int32" Nullable="false" />
+          <Property Name="Prize_CreateNewQuestionPrize" Type="Int32" Nullable="false" />
+          <Property Name="Prize_NewQuestionAcceptedPrize" Type="Int32" Nullable="false" />
+          <Property Name="Paging_DefaultPageSize" Type="Int32" Nullable="false" />
+          <Property Name="Leader_TopNumberToShow" Type="Int32" Nullable="false" />
+          <Property Name="Comment_DefaultNumberAmount" Type="Int32" Nullable="false" />
+          <Property Name="Comment_DefaultVerifyState" Type="Boolean" Nullable="false" />
+          <Property Name="Host_WebSiteNoReplyMail" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Host_WebSiteNoReplyMailPassword" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Host_SupportMail" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Host_SupportMailPassword" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Host_SmtpServer" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Store_DefaultReturnAmount" Type="Int32" Nullable="false" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -2475,20 +2511,6 @@
                 <ScalarProperty Name="Liked" ColumnName="Liked" />
                 <ScalarProperty Name="QuestionID" ColumnName="QuestionID" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ApplicationStates">
-            <EntityTypeMapping TypeName="Falcon.DbModel.ApplicationState">
-              <MappingFragment StoreEntitySet="ApplicationState">
-                <ScalarProperty Name="CreateNewQuestionPrize" ColumnName="CreateNewQuestionPrize" />
-                <ScalarProperty Name="LikePrize" ColumnName="LikePrize" />
-                <ScalarProperty Name="AnswerPrize" ColumnName="AnswerPrize" />
-                <ScalarProperty Name="CreateQuestionPrice" ColumnName="CreateQuestionPrice" />
-                <ScalarProperty Name="DefaultUserCoin" ColumnName="DefaultUserCoin" />
-                <ScalarProperty Name="DefaultUserName" ColumnName="DefaultUserName" />
-                <ScalarProperty Name="FavoritePrice" ColumnName="FavoritePrice" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -2818,6 +2840,38 @@
               <MappingFragment StoreEntitySet="UserType">
                 <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ApplicationStates">
+            <EntityTypeMapping TypeName="Falcon.DbModel.ApplicationState">
+              <MappingFragment StoreEntitySet="ApplicationState">
+                <ScalarProperty Name="Store_DefaultReturnAmount" ColumnName="Store_DefaultReturnAmount" />
+                <ScalarProperty Name="Host_SmtpServer" ColumnName="Host_SmtpServer" />
+                <ScalarProperty Name="Host_SupportMailPassword" ColumnName="Host_SupportMailPassword" />
+                <ScalarProperty Name="Host_SupportMail" ColumnName="Host_SupportMail" />
+                <ScalarProperty Name="Host_WebSiteNoReplyMailPassword" ColumnName="Host_WebSiteNoReplyMailPassword" />
+                <ScalarProperty Name="Host_WebSiteNoReplyMail" ColumnName="Host_WebSiteNoReplyMail" />
+                <ScalarProperty Name="Comment_DefaultVerifyState" ColumnName="Comment_DefaultVerifyState" />
+                <ScalarProperty Name="Comment_DefaultNumberAmount" ColumnName="Comment_DefaultNumberAmount" />
+                <ScalarProperty Name="Leader_TopNumberToShow" ColumnName="Leader_TopNumberToShow" />
+                <ScalarProperty Name="Paging_DefaultPageSize" ColumnName="Paging_DefaultPageSize" />
+                <ScalarProperty Name="Prize_NewQuestionAcceptedPrize" ColumnName="Prize_NewQuestionAcceptedPrize" />
+                <ScalarProperty Name="Prize_CreateNewQuestionPrize" ColumnName="Prize_CreateNewQuestionPrize" />
+                <ScalarProperty Name="Prize_LikePrize" ColumnName="Prize_LikePrize" />
+                <ScalarProperty Name="Prize_AnswerPrize" ColumnName="Prize_AnswerPrize" />
+                <ScalarProperty Name="Question_ServerBurntReturnAmount" ColumnName="Question_ServerBurntReturnAmount" />
+                <ScalarProperty Name="Question_NoQuestionFoundID" ColumnName="Question_NoQuestionFoundID" />
+                <ScalarProperty Name="Question_NoQuestionFoundBut" ColumnName="Question_NoQuestionFoundBut" />
+                <ScalarProperty Name="Question_NoQuestionFoundWhat" ColumnName="Question_NoQuestionFoundWhat" />
+                <ScalarProperty Name="Question_NumberToSkip" ColumnName="Question_NumberToSkip" />
+                <ScalarProperty Name="Question_DefaultReturnAmount" ColumnName="Question_DefaultReturnAmount" />
+                <ScalarProperty Name="Question_CreateQuestionPrice" ColumnName="Question_CreateQuestionPrice" />
+                <ScalarProperty Name="User_DefaultUserCoin" ColumnName="User_DefaultUserCoin" />
+                <ScalarProperty Name="User_DefaultUserName" ColumnName="User_DefaultUserName" />
+                <ScalarProperty Name="Favorite_FreeNumberToFavorite" ColumnName="Favorite_FreeNumberToFavorite" />
+                <ScalarProperty Name="Favorite_FavoritePrice" ColumnName="Favorite_FavoritePrice" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>

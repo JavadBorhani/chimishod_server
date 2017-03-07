@@ -26,7 +26,6 @@ namespace Falcon.Web.Api.Controllers.V1
 
         private async Task<bool> UserExists(int id)
         {
-            
             return await mDb.Set<User>().CountAsync(e => e.ID == id) > 0;
         }
     }

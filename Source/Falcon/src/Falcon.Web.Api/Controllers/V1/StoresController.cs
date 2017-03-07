@@ -1,7 +1,6 @@
 ﻿// Flapp Copyright 2017-2018
 
 using System.Collections.Generic;
-using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
@@ -15,7 +14,7 @@ using Falcon.Web.Models.Api;
 using Falcon.Web.Common;
 using Falcon.EFCommonContext;
 using Falcon.Web.Api.Utilities.Base;
-using Falcon.Common.Security;
+using Falcon.Web.Api.MaintenanceProcessing.Public;
 
 namespace Falcon.Web.Api.Controllers.V1
 {
@@ -25,14 +24,17 @@ namespace Falcon.Web.Api.Controllers.V1
         private readonly IDbContext mDb;
         private readonly IMapper mMapper;
         private readonly IDateTime mDateTime;
-        private readonly IWebUserSession mUserSession;
+        private readonly IGlobalApplicationState mAppState;
 
-        public StoresController(IMapper Mapper , IDateTime DateTime, IDbContext Database , IWebUserSession UserSession)
+        public StoresController(IMapper Mapper , 
+            IDateTime DateTime, 
+            IDbContext Database , 
+            IGlobalApplicationState AppState)
         {
             mMapper = Mapper;
             mDateTime = DateTime;
             mDb = Database;
-            mUserSession = UserSession;
+            mAppState = AppState;
         }
 
         [ResponseType(typeof(SStore))]
@@ -40,7 +42,9 @@ namespace Falcon.Web.Api.Controllers.V1
         [HttpPost]
         public async Task<IHttpActionResult> GetStoreList()
         {
-            var storeList = await mDb.Set<Store>().Take(Constants.DefaultValues.StoreNumberToSend).ToListAsync();
+            int storeDefaultReturnAmount = mAppState.State().Store_DefaultReturnAmount;
+
+            var storeList = await mDb.Set<Store>().Take(storeDefaultReturnAmount).ToListAsync();
 
             if (storeList.Count > 0)
             {

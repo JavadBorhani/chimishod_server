@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Api\ClientAppState.cs" />
     <Compile Include="Api\SApplicationState.cs" />
     <Compile Include="Api\SAvatarState.cs" />
     <Compile Include="Api\SCreatedQuestion.cs" />
