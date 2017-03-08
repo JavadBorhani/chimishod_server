@@ -69,7 +69,7 @@ namespace Falcon.Web.Api.Controllers.V1
         }
 
         [ResponseType(typeof(SUserInfo))]
-        [Route("UserInfo/")]
+        [Route("UserInfoChange/")] //TODO : Refactor This 
         [HttpPost]
         public async Task<IHttpActionResult> GetUserInfo()
         {
@@ -97,8 +97,8 @@ namespace Falcon.Web.Api.Controllers.V1
             return Ok(result);
         }
 
-        [Route("UserInfo/Edit/")]
-        [HttpPost]
+        [Route("UserInfoChange/Edit/")] //TODO : Refactor This
+        [HttpPost] 
         public async Task<IHttpActionResult> EditUserInfo([FromBody] SUserInfo UserInfo)
         {
             if (ModelState.IsValid)
