@@ -24,17 +24,17 @@ namespace Falcon.EFCommonContext.DbModel
         public string Name { get; set; }
         public string Description { get; set; }
         public int Star { get; set; }
-        public int Prize { get; set; }
         public string Icon { get; set; }
         public string RectangleColor { get; set; }
+        public System.DateTime CreatedDate { get; set; }
+        public System.DateTime UpdatedDate { get; set; }
         public Nullable<int> QueryTypeID { get; set; }
         public string Query { get; set; }
         public Nullable<int> LevelID { get; set; }
+        public bool IsActive { get; set; }
         public Nullable<int> CategoryID { get; set; }
         public Nullable<int> CategoryQuantity { get; set; }
-        public System.DateTime CreatedDate { get; set; }
-        public System.DateTime UpdatedDate { get; set; }
-        public bool IsActive { get; set; }
+        public int Prize { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<AchievedPosession> AchievedPosessions { get; set; }

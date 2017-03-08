@@ -17,6 +17,7 @@ namespace Falcon.EFCommonContext.DbModel
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public User()
         {
+            this.AchievedCodeGifts = new HashSet<AchievedCodeGift>();
             this.AchievedGifts = new HashSet<AchievedGift>();
             this.AchievedPosessions = new HashSet<AchievedPosession>();
             this.Answers = new HashSet<Answer>();
@@ -46,6 +47,8 @@ namespace Falcon.EFCommonContext.DbModel
         public bool IsAbleToWriteComment { get; set; }
         public System.DateTime LastSceneDateTime { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<AchievedCodeGift> AchievedCodeGifts { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<AchievedGift> AchievedGifts { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

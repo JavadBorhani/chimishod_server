@@ -19,25 +19,23 @@ namespace Falcon.EFCommonContext.DbModel
             : base("name=DbEntity")
         {
         }
-
-        public DbEntity(string NameOrConnectionString)
-            : base(NameOrConnectionString)
-        {
-        }
-
+    
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             throw new UnintentionalCodeFirstException();
         }
     
+        public virtual DbSet<AchievedCodeGift> AchievedCodeGifts { get; set; }
         public virtual DbSet<AchievedGift> AchievedGifts { get; set; }
         public virtual DbSet<AchievedPosession> AchievedPosessions { get; set; }
         public virtual DbSet<Achievement> Achievements { get; set; }
         public virtual DbSet<AchievementQueryType> AchievementQueryTypes { get; set; }
         public virtual DbSet<AchieveStateType> AchieveStateTypes { get; set; }
         public virtual DbSet<Answer> Answers { get; set; }
+        public virtual DbSet<ApplicationState> ApplicationStates { get; set; }
         public virtual DbSet<AppTheme> AppThemes { get; set; }
         public virtual DbSet<Category> Categories { get; set; }
+        public virtual DbSet<CodeGift> CodeGifts { get; set; }
         public virtual DbSet<Comment> Comments { get; set; }
         public virtual DbSet<CreatedQuestion> CreatedQuestions { get; set; }
         public virtual DbSet<CreatedQuestionsVerifyType> CreatedQuestionsVerifyTypes { get; set; }
@@ -63,6 +61,5 @@ namespace Falcon.EFCommonContext.DbModel
         public virtual DbSet<UserAvatar> UserAvatars { get; set; }
         public virtual DbSet<UserInfo> UserInfoes { get; set; }
         public virtual DbSet<UserType> UserTypes { get; set; }
-        public virtual DbSet<ApplicationState> ApplicationStates { get; set; }
     }
 }

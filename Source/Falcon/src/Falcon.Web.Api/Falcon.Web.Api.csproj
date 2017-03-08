@@ -144,6 +144,7 @@
     <Compile Include="AutoMappingConfiguration\ReportTypeMap\ReportTypeToSReportTypeAutoTypeConfiguration.cs" />
     <Compile Include="AutoMappingConfiguration\StoreMap\StoreToSStoreAutoTypeConfiguration.cs" />
     <Compile Include="AutoMappingConfiguration\UserInfoMap\UserInfoToSUserInfoAutoTypeConfiguration.cs" />
+    <Compile Include="Controllers\V1\CodeGiftsController.cs" />
     <Compile Include="Controllers\V1\LeaderBoardController.cs" />
     <Compile Include="Controllers\V1\LevelsController.cs" />
     <Compile Include="InquiryProcessing\Private\CommentsInquiryProcessor.cs" />
