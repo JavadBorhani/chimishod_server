@@ -47,6 +47,7 @@
     <Compile Include="Api\ClientAppState.cs" />
     <Compile Include="Api\SApplicationState.cs" />
     <Compile Include="Api\SAvatarState.cs" />
+    <Compile Include="Api\SCodeGift.cs" />
     <Compile Include="Api\SCreatedQuestion.cs" />
     <Compile Include="Api\SAchievement.cs" />
     <Compile Include="Api\SAnswer.cs" />
