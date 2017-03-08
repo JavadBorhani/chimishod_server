@@ -54,6 +54,9 @@
   <ItemGroup>
     <Compile Include="CommonCodeFirstDbContext.cs" />
     <Compile Include="CommonModelFirstDbContext.cs" />
+    <Compile Include="DbModel\AchievedCodeGift.cs">
+      <DependentUpon>WhatIfDataModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="DbModel\AchievedGift.cs">
       <DependentUpon>WhatIfDataModel.tt</DependentUpon>
     </Compile>
@@ -79,6 +82,9 @@
       <DependentUpon>WhatIfDataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="DbModel\Category.cs">
+      <DependentUpon>WhatIfDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DbModel\CodeGift.cs">
       <DependentUpon>WhatIfDataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="DbModel\Comment.cs">

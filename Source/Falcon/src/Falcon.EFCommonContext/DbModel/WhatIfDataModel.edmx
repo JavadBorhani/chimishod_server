@@ -5,6 +5,15 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="Falcon.DbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="AchievedCodeGift">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="CodeGiftID" Type="int" Nullable="false" />
+          <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="AchievedDate" Type="int" Nullable="false" />
+        </EntityType>
         <EntityType Name="AchievedGifts">
           <Key>
             <PropertyRef Name="ID" />
@@ -136,6 +145,20 @@
           <Property Name="UpdatedDate" Type="datetime" Nullable="false" />
           <Property Name="PrizeCoefficient" Type="int" Nullable="false" />
         </EntityType>
+        <EntityType Name="CodeGift">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="CompanyName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Serial" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Prize" Type="int" Nullable="false" />
+          <Property Name="UserCount" Type="int" Nullable="false" />
+          <Property Name="StartDate" Type="int" Nullable="false" />
+          <Property Name="ExpireDate" Type="int" Nullable="false" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+          <Property Name="UpdatedDate" Type="datetime" Nullable="false" />
+        </EntityType>
         <EntityType Name="Comment">
           <Key>
             <PropertyRef Name="ID" />
@@ -183,11 +206,14 @@
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Icon" Type="varchar" MaxLength="150" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Description" Type="nvarchar" MaxLength="100" Nullable="false" />
-          <Property Name="Star" Type="int" Nullable="false" />
-          <Property Name="Icon" Type="varchar" MaxLength="150" Nullable="false" />
-          <Property Name="RectangleColor" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="GiftTypeID" Type="int" Nullable="false" />
+          <Property Name="Prize" Type="int" Nullable="false" />
+          <Property Name="Day" Type="int" />
+          <Property Name="StartDate" Type="datetime" />
+          <Property Name="ExpireDate" Type="datetime" />
           <Property Name="CreatedDate" Type="datetime" Nullable="false" />
           <Property Name="UpdatedDate" Type="datetime" Nullable="false" />
         </EntityType>
@@ -406,6 +432,34 @@
           <Property Name="Name" Type="varchar" MaxLength="20" Nullable="false" />
           <Property Name="Description" Type="varchar" MaxLength="50" />
         </EntityType>
+        <Association Name="FK_AchievedCodeGift_CodeGift">
+          <End Role="CodeGift" Type="Self.CodeGift" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="AchievedCodeGift" Type="Self.AchievedCodeGift" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CodeGift">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="AchievedCodeGift">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AchievedCodeGift_User">
+          <End Role="User" Type="Self.User" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="AchievedCodeGift" Type="Self.AchievedCodeGift" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="AchievedCodeGift">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_AchievedGifts_Gift">
           <End Role="Gift" Type="Self.Gift" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -973,6 +1027,7 @@
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="FalconDbModelStoreContainer">
+          <EntitySet Name="AchievedCodeGift" EntityType="Self.AchievedCodeGift" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AchievedGifts" EntityType="Self.AchievedGifts" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AchievedPosession" EntityType="Self.AchievedPosession" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Achievement" EntityType="Self.Achievement" Schema="dbo" store:Type="Tables" />
@@ -982,6 +1037,7 @@
           <EntitySet Name="ApplicationState" EntityType="Self.ApplicationState" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AppTheme" EntityType="Self.AppTheme" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Category" EntityType="Self.Category" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CodeGift" EntityType="Self.CodeGift" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Comment" EntityType="Self.Comment" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CreatedQuestions" EntityType="Self.CreatedQuestions" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CreatedQuestionsVerifyType" EntityType="Self.CreatedQuestionsVerifyType" Schema="dbo" store:Type="Tables" />
@@ -1007,6 +1063,14 @@
           <EntitySet Name="UserAvatar" EntityType="Self.UserAvatar" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserInfo" EntityType="Self.UserInfo" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserType" EntityType="Self.UserType" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_AchievedCodeGift_CodeGift" Association="Self.FK_AchievedCodeGift_CodeGift">
+            <End Role="CodeGift" EntitySet="CodeGift" />
+            <End Role="AchievedCodeGift" EntitySet="AchievedCodeGift" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AchievedCodeGift_User" Association="Self.FK_AchievedCodeGift_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="AchievedCodeGift" EntitySet="AchievedCodeGift" />
+          </AssociationSet>
           <AssociationSet Name="FK_AchievedGifts_Gift" Association="Self.FK_AchievedGifts_Gift">
             <End Role="Gift" EntitySet="Gift" />
             <End Role="AchievedGifts" EntitySet="AchievedGifts" />
@@ -1181,14 +1245,17 @@
     <edmx:ConceptualModels>
       <Schema Namespace="Falcon.DbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="DbEntity" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="AchievedCodeGifts" EntityType="Falcon.DbModel.AchievedCodeGift" />
           <EntitySet Name="AchievedGifts" EntityType="Falcon.DbModel.AchievedGift" />
           <EntitySet Name="AchievedPosessions" EntityType="Falcon.DbModel.AchievedPosession" />
           <EntitySet Name="Achievements" EntityType="Falcon.DbModel.Achievement" />
           <EntitySet Name="AchievementQueryTypes" EntityType="Falcon.DbModel.AchievementQueryType" />
           <EntitySet Name="AchieveStateTypes" EntityType="Falcon.DbModel.AchieveStateType" />
           <EntitySet Name="Answers" EntityType="Falcon.DbModel.Answer" />
+          <EntitySet Name="ApplicationStates" EntityType="Falcon.DbModel.ApplicationState" />
           <EntitySet Name="AppThemes" EntityType="Falcon.DbModel.AppTheme" />
           <EntitySet Name="Categories" EntityType="Falcon.DbModel.Category" />
+          <EntitySet Name="CodeGifts" EntityType="Falcon.DbModel.CodeGift" />
           <EntitySet Name="Comments" EntityType="Falcon.DbModel.Comment" />
           <EntitySet Name="CreatedQuestions" EntityType="Falcon.DbModel.CreatedQuestion" />
           <EntitySet Name="CreatedQuestionsVerifyTypes" EntityType="Falcon.DbModel.CreatedQuestionsVerifyType" />
@@ -1214,6 +1281,14 @@
           <EntitySet Name="UserAvatars" EntityType="Falcon.DbModel.UserAvatar" />
           <EntitySet Name="UserInfoes" EntityType="Falcon.DbModel.UserInfo" />
           <EntitySet Name="UserTypes" EntityType="Falcon.DbModel.UserType" />
+          <AssociationSet Name="FK_AchievedCodeGift_CodeGift" Association="Falcon.DbModel.FK_AchievedCodeGift_CodeGift">
+            <End Role="CodeGift" EntitySet="CodeGifts" />
+            <End Role="AchievedCodeGift" EntitySet="AchievedCodeGifts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AchievedCodeGift_User" Association="Falcon.DbModel.FK_AchievedCodeGift_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="AchievedCodeGift" EntitySet="AchievedCodeGifts" />
+          </AssociationSet>
           <AssociationSet Name="FK_AchievedGifts_Gift" Association="Falcon.DbModel.FK_AchievedGifts_Gift">
             <End Role="Gift" EntitySet="Gifts" />
             <End Role="AchievedGift" EntitySet="AchievedGifts" />
@@ -1382,8 +1457,18 @@
             <End Role="User" EntitySet="Users" />
             <End Role="UserInfo" EntitySet="UserInfoes" />
           </AssociationSet>
-          <EntitySet Name="ApplicationStates" EntityType="Falcon.DbModel.ApplicationState" />
         </EntityContainer>
+        <EntityType Name="AchievedCodeGift">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="CodeGiftID" Type="Int32" Nullable="false" />
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="AchievedDate" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="CodeGift" Relationship="Falcon.DbModel.FK_AchievedCodeGift_CodeGift" FromRole="AchievedCodeGift" ToRole="CodeGift" />
+          <NavigationProperty Name="User" Relationship="Falcon.DbModel.FK_AchievedCodeGift_User" FromRole="AchievedCodeGift" ToRole="User" />
+        </EntityType>
         <EntityType Name="AchievedGift">
           <Key>
             <PropertyRef Name="ID" />
@@ -1417,17 +1502,17 @@
           <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Description" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="Star" Type="Int32" Nullable="false" />
-          <Property Name="Prize" Type="Int32" Nullable="false" />
           <Property Name="Icon" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
           <Property Name="RectangleColor" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UpdatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="QueryTypeID" Type="Int32" />
           <Property Name="Query" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
           <Property Name="LevelID" Type="Int32" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
           <Property Name="CategoryID" Type="Int32" />
           <Property Name="CategoryQuantity" Type="Int32" />
-          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="UpdatedDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="Prize" Type="Int32" Nullable="false" />
           <NavigationProperty Name="AchievedPosessions" Relationship="Falcon.DbModel.FK_AchievedQuests_Quest" FromRole="Achievement" ToRole="AchievedPosession" />
           <NavigationProperty Name="AchievementQueryType" Relationship="Falcon.DbModel.FK_Achievement_AchievementQueryType" FromRole="Achievement" ToRole="AchievementQueryType" />
           <NavigationProperty Name="Category" Relationship="Falcon.DbModel.FK_Achievement_Category" FromRole="Achievement" ToRole="Category" />
@@ -1465,6 +1550,37 @@
           <NavigationProperty Name="Question" Relationship="Falcon.DbModel.FK_Answer_Question" FromRole="Answer" ToRole="Question" />
           <NavigationProperty Name="User" Relationship="Falcon.DbModel.FK_Answer_User" FromRole="Answer" ToRole="User" />
         </EntityType>
+        <EntityType Name="ApplicationState">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Favorite_FavoritePrice" Type="Int32" Nullable="false" />
+          <Property Name="Favorite_FreeNumberToFavorite" Type="Int32" Nullable="false" />
+          <Property Name="User_DefaultUserName" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="User_DefaultUserCoin" Type="Int32" Nullable="false" />
+          <Property Name="Question_CreateQuestionPrice" Type="Int32" Nullable="false" />
+          <Property Name="Question_DefaultReturnAmount" Type="Int32" Nullable="false" />
+          <Property Name="Question_NumberToSkip" Type="Int32" Nullable="false" />
+          <Property Name="Question_NoQuestionFoundWhat" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Question_NoQuestionFoundBut" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Question_NoQuestionFoundID" Type="Int32" Nullable="false" />
+          <Property Name="Question_ServerBurntReturnAmount" Type="Int32" Nullable="false" />
+          <Property Name="Prize_AnswerPrize" Type="Int32" Nullable="false" />
+          <Property Name="Prize_LikePrize" Type="Int32" Nullable="false" />
+          <Property Name="Prize_CreateNewQuestionPrize" Type="Int32" Nullable="false" />
+          <Property Name="Prize_NewQuestionAcceptedPrize" Type="Int32" Nullable="false" />
+          <Property Name="Paging_DefaultPageSize" Type="Int32" Nullable="false" />
+          <Property Name="Leader_TopNumberToShow" Type="Int32" Nullable="false" />
+          <Property Name="Comment_DefaultNumberAmount" Type="Int32" Nullable="false" />
+          <Property Name="Comment_DefaultVerifyState" Type="Boolean" Nullable="false" />
+          <Property Name="Host_WebSiteNoReplyMail" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Host_WebSiteNoReplyMailPassword" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Host_SupportMail" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Host_SupportMailPassword" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Host_SmtpServer" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Store_DefaultReturnAmount" Type="Int32" Nullable="false" />
+        </EntityType>
         <EntityType Name="AppTheme">
           <Key>
             <PropertyRef Name="ID" />
@@ -1495,14 +1611,29 @@
           <Property Name="CircleColor" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Name="RectangleColor" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Name="Price" Type="Int32" Nullable="false" />
-          <Property Name="PrizeCoefficient" Type="Int32" Nullable="false" />
           <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="UpdatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="PrizeCoefficient" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Achievements" Relationship="Falcon.DbModel.FK_Achievement_Category" FromRole="Category" ToRole="Achievement" />
           <NavigationProperty Name="CreatedQuestions" Relationship="Falcon.DbModel.FK_CreatedQuestions_Category" FromRole="Category" ToRole="CreatedQuestion" />
           <NavigationProperty Name="PurchaseCategories" Relationship="Falcon.DbModel.FK_PurchaseCategory_Category" FromRole="Category" ToRole="PurchaseCategory" />
           <NavigationProperty Name="Questions" Relationship="Falcon.DbModel.FK_Question_Category" FromRole="Category" ToRole="Question" />
           <NavigationProperty Name="SelectedCategories" Relationship="Falcon.DbModel.FK_SelectedCategory_Category" FromRole="Category" ToRole="SelectedCategory" />
+        </EntityType>
+        <EntityType Name="CodeGift">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="CompanyName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Serial" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Prize" Type="Int32" Nullable="false" />
+          <Property Name="UserCount" Type="Int32" Nullable="false" />
+          <Property Name="StartDate" Type="Int32" Nullable="false" />
+          <Property Name="ExpireDate" Type="Int32" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UpdatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="AchievedCodeGifts" Relationship="Falcon.DbModel.FK_AchievedCodeGift_CodeGift" FromRole="CodeGift" ToRole="AchievedCodeGift" />
         </EntityType>
         <EntityType Name="Comment">
           <Key>
@@ -1560,11 +1691,14 @@
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Icon" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
           <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Description" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="Star" Type="Int32" Nullable="false" />
-          <Property Name="Icon" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
-          <Property Name="RectangleColor" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="GiftTypeID" Type="Int32" Nullable="false" />
+          <Property Name="Prize" Type="Int32" Nullable="false" />
+          <Property Name="Day" Type="Int32" />
+          <Property Name="StartDate" Type="DateTime" Precision="3" />
+          <Property Name="ExpireDate" Type="DateTime" Precision="3" />
           <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="UpdatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="AchievedGifts" Relationship="Falcon.DbModel.FK_AchievedGifts_Gift" FromRole="Gift" ToRole="AchievedGift" />
@@ -1782,6 +1916,7 @@
           <Property Name="CurrentLevelID" Type="Int32" />
           <Property Name="IsAbleToWriteComment" Type="Boolean" Nullable="false" />
           <Property Name="LastSceneDateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="AchievedCodeGifts" Relationship="Falcon.DbModel.FK_AchievedCodeGift_User" FromRole="User" ToRole="AchievedCodeGift" />
           <NavigationProperty Name="AchievedGifts" Relationship="Falcon.DbModel.FK_AchievedGifts_User" FromRole="User" ToRole="AchievedGift" />
           <NavigationProperty Name="AchievedPosessions" Relationship="Falcon.DbModel.FK_AchievedQuests_User" FromRole="User" ToRole="AchievedPosession" />
           <NavigationProperty Name="Answers" Relationship="Falcon.DbModel.FK_Answer_User" FromRole="User" ToRole="Answer" />
@@ -1838,6 +1973,34 @@
           <Property Name="Description" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Users" Relationship="Falcon.DbModel.FK_User_UserType" FromRole="UserType" ToRole="User" />
         </EntityType>
+        <Association Name="FK_AchievedCodeGift_CodeGift">
+          <End Type="Falcon.DbModel.CodeGift" Role="CodeGift" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="Falcon.DbModel.AchievedCodeGift" Role="AchievedCodeGift" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CodeGift">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="AchievedCodeGift">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AchievedCodeGift_User">
+          <End Type="Falcon.DbModel.User" Role="User" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="Falcon.DbModel.AchievedCodeGift" Role="AchievedCodeGift" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="AchievedCodeGift">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_AchievedGifts_Gift">
           <End Type="Falcon.DbModel.Gift" Role="Gift" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -2404,43 +2567,22 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="ApplicationState">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Favorite_FavoritePrice" Type="Int32" Nullable="false" />
-          <Property Name="Favorite_FreeNumberToFavorite" Type="Int32" Nullable="false" />
-          <Property Name="User_DefaultUserName" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="User_DefaultUserCoin" Type="Int32" Nullable="false" />
-          <Property Name="Question_CreateQuestionPrice" Type="Int32" Nullable="false" />
-          <Property Name="Question_DefaultReturnAmount" Type="Int32" Nullable="false" />
-          <Property Name="Question_NumberToSkip" Type="Int32" Nullable="false" />
-          <Property Name="Question_NoQuestionFoundWhat" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Question_NoQuestionFoundBut" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Question_NoQuestionFoundID" Type="Int32" Nullable="false" />
-          <Property Name="Question_ServerBurntReturnAmount" Type="Int32" Nullable="false" />
-          <Property Name="Prize_AnswerPrize" Type="Int32" Nullable="false" />
-          <Property Name="Prize_LikePrize" Type="Int32" Nullable="false" />
-          <Property Name="Prize_CreateNewQuestionPrize" Type="Int32" Nullable="false" />
-          <Property Name="Prize_NewQuestionAcceptedPrize" Type="Int32" Nullable="false" />
-          <Property Name="Paging_DefaultPageSize" Type="Int32" Nullable="false" />
-          <Property Name="Leader_TopNumberToShow" Type="Int32" Nullable="false" />
-          <Property Name="Comment_DefaultNumberAmount" Type="Int32" Nullable="false" />
-          <Property Name="Comment_DefaultVerifyState" Type="Boolean" Nullable="false" />
-          <Property Name="Host_WebSiteNoReplyMail" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Host_WebSiteNoReplyMailPassword" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Host_SupportMail" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Host_SupportMailPassword" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Host_SmtpServer" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="Store_DefaultReturnAmount" Type="Int32" Nullable="false" />
-        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="FalconDbModelStoreContainer" CdmEntityContainer="DbEntity">
+          <EntitySetMapping Name="AchievedCodeGifts">
+            <EntityTypeMapping TypeName="Falcon.DbModel.AchievedCodeGift">
+              <MappingFragment StoreEntitySet="AchievedCodeGift">
+                <ScalarProperty Name="AchievedDate" ColumnName="AchievedDate" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="CodeGiftID" ColumnName="CodeGiftID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="AchievedGifts">
             <EntityTypeMapping TypeName="Falcon.DbModel.AchievedGift">
               <MappingFragment StoreEntitySet="AchievedGifts">
@@ -2466,17 +2608,17 @@
           <EntitySetMapping Name="Achievements">
             <EntityTypeMapping TypeName="Falcon.DbModel.Achievement">
               <MappingFragment StoreEntitySet="Achievement">
-                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
-                <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
-                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="Prize" ColumnName="Prize" />
                 <ScalarProperty Name="CategoryQuantity" ColumnName="CategoryQuantity" />
                 <ScalarProperty Name="CategoryID" ColumnName="CategoryID" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
                 <ScalarProperty Name="LevelID" ColumnName="LevelID" />
                 <ScalarProperty Name="Query" ColumnName="Query" />
                 <ScalarProperty Name="QueryTypeID" ColumnName="QueryTypeID" />
+                <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
                 <ScalarProperty Name="RectangleColor" ColumnName="RectangleColor" />
                 <ScalarProperty Name="Icon" ColumnName="Icon" />
-                <ScalarProperty Name="Prize" ColumnName="Prize" />
                 <ScalarProperty Name="Star" ColumnName="Star" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
@@ -2515,6 +2657,38 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="ApplicationStates">
+            <EntityTypeMapping TypeName="Falcon.DbModel.ApplicationState">
+              <MappingFragment StoreEntitySet="ApplicationState">
+                <ScalarProperty Name="Store_DefaultReturnAmount" ColumnName="Store_DefaultReturnAmount" />
+                <ScalarProperty Name="Host_SmtpServer" ColumnName="Host_SmtpServer" />
+                <ScalarProperty Name="Host_SupportMailPassword" ColumnName="Host_SupportMailPassword" />
+                <ScalarProperty Name="Host_SupportMail" ColumnName="Host_SupportMail" />
+                <ScalarProperty Name="Host_WebSiteNoReplyMailPassword" ColumnName="Host_WebSiteNoReplyMailPassword" />
+                <ScalarProperty Name="Host_WebSiteNoReplyMail" ColumnName="Host_WebSiteNoReplyMail" />
+                <ScalarProperty Name="Comment_DefaultVerifyState" ColumnName="Comment_DefaultVerifyState" />
+                <ScalarProperty Name="Comment_DefaultNumberAmount" ColumnName="Comment_DefaultNumberAmount" />
+                <ScalarProperty Name="Leader_TopNumberToShow" ColumnName="Leader_TopNumberToShow" />
+                <ScalarProperty Name="Paging_DefaultPageSize" ColumnName="Paging_DefaultPageSize" />
+                <ScalarProperty Name="Prize_NewQuestionAcceptedPrize" ColumnName="Prize_NewQuestionAcceptedPrize" />
+                <ScalarProperty Name="Prize_CreateNewQuestionPrize" ColumnName="Prize_CreateNewQuestionPrize" />
+                <ScalarProperty Name="Prize_LikePrize" ColumnName="Prize_LikePrize" />
+                <ScalarProperty Name="Prize_AnswerPrize" ColumnName="Prize_AnswerPrize" />
+                <ScalarProperty Name="Question_ServerBurntReturnAmount" ColumnName="Question_ServerBurntReturnAmount" />
+                <ScalarProperty Name="Question_NoQuestionFoundID" ColumnName="Question_NoQuestionFoundID" />
+                <ScalarProperty Name="Question_NoQuestionFoundBut" ColumnName="Question_NoQuestionFoundBut" />
+                <ScalarProperty Name="Question_NoQuestionFoundWhat" ColumnName="Question_NoQuestionFoundWhat" />
+                <ScalarProperty Name="Question_NumberToSkip" ColumnName="Question_NumberToSkip" />
+                <ScalarProperty Name="Question_DefaultReturnAmount" ColumnName="Question_DefaultReturnAmount" />
+                <ScalarProperty Name="Question_CreateQuestionPrice" ColumnName="Question_CreateQuestionPrice" />
+                <ScalarProperty Name="User_DefaultUserCoin" ColumnName="User_DefaultUserCoin" />
+                <ScalarProperty Name="User_DefaultUserName" ColumnName="User_DefaultUserName" />
+                <ScalarProperty Name="Favorite_FreeNumberToFavorite" ColumnName="Favorite_FreeNumberToFavorite" />
+                <ScalarProperty Name="Favorite_FavoritePrice" ColumnName="Favorite_FavoritePrice" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="AppThemes">
             <EntityTypeMapping TypeName="Falcon.DbModel.AppTheme">
               <MappingFragment StoreEntitySet="AppTheme">
@@ -2535,9 +2709,9 @@
           <EntitySetMapping Name="Categories">
             <EntityTypeMapping TypeName="Falcon.DbModel.Category">
               <MappingFragment StoreEntitySet="Category">
+                <ScalarProperty Name="PrizeCoefficient" ColumnName="PrizeCoefficient" />
                 <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-                <ScalarProperty Name="PrizeCoefficient" ColumnName="PrizeCoefficient" />
                 <ScalarProperty Name="Price" ColumnName="Price" />
                 <ScalarProperty Name="RectangleColor" ColumnName="RectangleColor" />
                 <ScalarProperty Name="CircleColor" ColumnName="CircleColor" />
@@ -2545,6 +2719,21 @@
                 <ScalarProperty Name="LongDescription" ColumnName="LongDescription" />
                 <ScalarProperty Name="ShortDescription" ColumnName="ShortDescription" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CodeGifts">
+            <EntityTypeMapping TypeName="Falcon.DbModel.CodeGift">
+              <MappingFragment StoreEntitySet="CodeGift">
+                <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="ExpireDate" ColumnName="ExpireDate" />
+                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+                <ScalarProperty Name="UserCount" ColumnName="UserCount" />
+                <ScalarProperty Name="Prize" ColumnName="Prize" />
+                <ScalarProperty Name="Serial" ColumnName="Serial" />
+                <ScalarProperty Name="CompanyName" ColumnName="CompanyName" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -2600,11 +2789,14 @@
               <MappingFragment StoreEntitySet="Gift">
                 <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-                <ScalarProperty Name="RectangleColor" ColumnName="RectangleColor" />
-                <ScalarProperty Name="Icon" ColumnName="Icon" />
-                <ScalarProperty Name="Star" ColumnName="Star" />
+                <ScalarProperty Name="ExpireDate" ColumnName="ExpireDate" />
+                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+                <ScalarProperty Name="Day" ColumnName="Day" />
+                <ScalarProperty Name="Prize" ColumnName="Prize" />
+                <ScalarProperty Name="GiftTypeID" ColumnName="GiftTypeID" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Icon" ColumnName="Icon" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -2840,38 +3032,6 @@
               <MappingFragment StoreEntitySet="UserType">
                 <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ApplicationStates">
-            <EntityTypeMapping TypeName="Falcon.DbModel.ApplicationState">
-              <MappingFragment StoreEntitySet="ApplicationState">
-                <ScalarProperty Name="Store_DefaultReturnAmount" ColumnName="Store_DefaultReturnAmount" />
-                <ScalarProperty Name="Host_SmtpServer" ColumnName="Host_SmtpServer" />
-                <ScalarProperty Name="Host_SupportMailPassword" ColumnName="Host_SupportMailPassword" />
-                <ScalarProperty Name="Host_SupportMail" ColumnName="Host_SupportMail" />
-                <ScalarProperty Name="Host_WebSiteNoReplyMailPassword" ColumnName="Host_WebSiteNoReplyMailPassword" />
-                <ScalarProperty Name="Host_WebSiteNoReplyMail" ColumnName="Host_WebSiteNoReplyMail" />
-                <ScalarProperty Name="Comment_DefaultVerifyState" ColumnName="Comment_DefaultVerifyState" />
-                <ScalarProperty Name="Comment_DefaultNumberAmount" ColumnName="Comment_DefaultNumberAmount" />
-                <ScalarProperty Name="Leader_TopNumberToShow" ColumnName="Leader_TopNumberToShow" />
-                <ScalarProperty Name="Paging_DefaultPageSize" ColumnName="Paging_DefaultPageSize" />
-                <ScalarProperty Name="Prize_NewQuestionAcceptedPrize" ColumnName="Prize_NewQuestionAcceptedPrize" />
-                <ScalarProperty Name="Prize_CreateNewQuestionPrize" ColumnName="Prize_CreateNewQuestionPrize" />
-                <ScalarProperty Name="Prize_LikePrize" ColumnName="Prize_LikePrize" />
-                <ScalarProperty Name="Prize_AnswerPrize" ColumnName="Prize_AnswerPrize" />
-                <ScalarProperty Name="Question_ServerBurntReturnAmount" ColumnName="Question_ServerBurntReturnAmount" />
-                <ScalarProperty Name="Question_NoQuestionFoundID" ColumnName="Question_NoQuestionFoundID" />
-                <ScalarProperty Name="Question_NoQuestionFoundBut" ColumnName="Question_NoQuestionFoundBut" />
-                <ScalarProperty Name="Question_NoQuestionFoundWhat" ColumnName="Question_NoQuestionFoundWhat" />
-                <ScalarProperty Name="Question_NumberToSkip" ColumnName="Question_NumberToSkip" />
-                <ScalarProperty Name="Question_DefaultReturnAmount" ColumnName="Question_DefaultReturnAmount" />
-                <ScalarProperty Name="Question_CreateQuestionPrice" ColumnName="Question_CreateQuestionPrice" />
-                <ScalarProperty Name="User_DefaultUserCoin" ColumnName="User_DefaultUserCoin" />
-                <ScalarProperty Name="User_DefaultUserName" ColumnName="User_DefaultUserName" />
-                <ScalarProperty Name="Favorite_FreeNumberToFavorite" ColumnName="Favorite_FreeNumberToFavorite" />
-                <ScalarProperty Name="Favorite_FavoritePrice" ColumnName="Favorite_FavoritePrice" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
