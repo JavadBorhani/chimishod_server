@@ -23,6 +23,7 @@ namespace Falcon.Database.SqlServer.QueryProcessors
         public async Task<CodeGift> GetCodeGift(int ID)
         {
             var query = await mDb.Set<CodeGift>().AsNoTracking().Where(cg => cg.ID == ID).SingleOrDefaultAsync();
+            return new CodeGift(); 
         }
     }
 }
