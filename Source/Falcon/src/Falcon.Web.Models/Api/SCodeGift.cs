@@ -6,14 +6,17 @@ using System.Threading.Tasks;
 
 namespace Falcon.Web.Models.Api
 {
+    public enum ResponseState
+    {
+        IsExpired = 1 , 
+        HasGot = 2 , 
+        Ok = 3 ,
+    }
     public class SCodeGift
     {
         public int ID { get; set; }
-        public string CompanyName { get; set; }
-        public string Serial { get; set; }
-        public int Prize { get; set; }
-        public int UserCount { get; set; }
-        public int StartDate { get; set; }
-        public int ExpireDate { get; set; }
+        public int TotalCoin { get; set; }        
+        public ResponseState ResponseCode { get; set; }
     }
 }
+    

@@ -24,9 +24,10 @@ namespace Falcon.EFCommonContext.DbModel
         public string CompanyName { get; set; }
         public string Serial { get; set; }
         public int Prize { get; set; }
-        public int UserCount { get; set; }
-        public int StartDate { get; set; }
-        public int ExpireDate { get; set; }
+        public int TotalUserCount { get; set; }
+        public int TotalUserRegistered { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime ExpireDate { get; set; }
         public System.DateTime CreatedDate { get; set; }
         public System.DateTime UpdatedDate { get; set; }
     

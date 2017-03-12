@@ -48,6 +48,7 @@
     <Compile Include="QueryProcessors\ICodeGiftsQueryProcessor.cs" />
     <Compile Include="QueryProcessors\ICommentsQueryProcessor.cs" />
     <Compile Include="QueryProcessors\ICreatedQuestionsQueryProcessor.cs" />
+    <Compile Include="QueryProcessors\IUserQueryProcessor.cs" />
     <Compile Include="QueryResult.cs" />
     <Compile Include="ResultPagingUtility.cs" />
   </ItemGroup>

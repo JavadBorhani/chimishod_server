@@ -1,5 +1,8 @@
-﻿using Falcon.Database.SqlServer.QueryProcessors;
+﻿using AutoMapper;
+using Falcon.Data.QueryProcessors;
+using Falcon.Database.SqlServer.QueryProcessors;
 using Falcon.Web.Api.MaintenanceProcessing.Public;
+using Falcon.Web.Models.Api;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,13 +15,47 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
     {
 
         private readonly ICodeGiftsQueryProcessor mCodeGiftsQueryProcessor;
-        public CodeGiftsMaintenanceProcessor(ICodeGiftsQueryProcessor CodeGiftsQueryProcessor)
-        {
+        private readonly IUserQueryProcessor mUserQueryProcessor;
+        private readonly IMapper mMapper;
 
-        }
-        public async Task<bool> GetCodeGiftPrize()
+        public CodeGiftsMaintenanceProcessor(ICodeGiftsQueryProcessor CodeGiftsQueryProcessor, IUserQueryProcessor UserQueryProcessor, IMapper Mapper)
         {
-            throw new NotImplementedException();
+            mCodeGiftsQueryProcessor = CodeGiftsQueryProcessor;
+            mUserQueryProcessor = UserQueryProcessor;
+            mMapper = Mapper;
+        }
+        public async Task<SCodeGift> RegisterGiftCodePrize(int GiftCodeID)
+        {
+            SCodeGift result = new SCodeGift();
+
+            var GotCodeGift = await mCodeGiftsQueryProcessor.HasGotCodeGift(GiftCodeID);
+            if (!GotCodeGift)
+            {
+                var expired = await mCodeGiftsQueryProcessor.IsExpired(GiftCodeID);
+                if (!expired)
+                {
+                    var codeGiftAdded = await mCodeGiftsQueryProcessor.AddCodeGiftByID(GiftCodeID);
+                    if (codeGiftAdded)
+                    {
+                        var codeGift = await mCodeGiftsQueryProcessor.GetCodeGiftByID(GiftCodeID);
+                        var totalCoin = await mUserQueryProcessor.AddCoin(codeGift.Prize);
+
+                        result.ID = GiftCodeID;
+                        result.TotalCoin = totalCoin;
+                        result.ResponseCode = ResponseState.Ok;
+                        return result;
+                    }
+                }
+                else
+                {
+                    result.ResponseCode = ResponseState.IsExpired;
+                }
+            }
+            else
+            {
+                result.ResponseCode = ResponseState.HasGot;
+            }
+            return result;
         }
     }
 }

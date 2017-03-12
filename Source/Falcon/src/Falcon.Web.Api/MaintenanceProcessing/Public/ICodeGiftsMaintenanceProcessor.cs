@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Falcon.Web.Models.Api;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,6 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Public
 {
     public interface ICodeGiftsMaintenanceProcessor
     {
-        Task<bool> GetCodeGiftPrize();
+        Task<SCodeGift> RegisterGiftCodePrize(int GiftCodeID);
     }
 }
