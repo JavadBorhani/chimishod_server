@@ -21,39 +21,33 @@ namespace Falcon.Database.SqlServer.QueryProcessors
         {
             mDb = Database;
             mUserSession = UserSession;
+            mDateTime = DateTime;
         }
-        public async Task<bool> HasGotCodeGift(int ID)
+        public async Task<bool> Registered(int ID)
         {
             return await mDb.Set<AchievedCodeGift>()
                 .AsNoTracking().
                 CountAsync(cg => cg.UserID == mUserSession.UserID && cg.CodeGiftID == ID ) > 0;
         }
-        public async Task<bool> AddCodeGiftByID(int ID)
+        public async Task<bool> AddByID(int ID)
         {
             //TODO : Write trigger to increase and decrease number of added
-            if (await CodeGiftExists(ID))
+            mDb.Set<AchievedCodeGift>().Add(new AchievedCodeGift
             {
-                mDb.Set<AchievedCodeGift>().Add(new AchievedCodeGift
-                {
-                    UserID = mUserSession.UserID,
-                    CodeGiftID = ID,
-                    AchievedDate = mDateTime.Now
-                });
-                mDb.SaveChanges();
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+                UserID = mUserSession.UserID,
+                CodeGiftID = ID,
+                AchievedDate = mDateTime.Now
+            });
+            await mDb.SaveChangesAsync();
+            return true;
         }
 
-        private async Task<bool> CodeGiftExists(int ID)
+        public async Task<bool> Exists(int ID)
         {
             return await mDb.Set<CodeGift>().CountAsync(cg => cg.ID == ID) > 0;
         }
 
-        public async Task<CodeGift> GetCodeGiftByID(int ID)
+        public async Task<CodeGift> GetByID(int ID)
         {
             return await mDb.Set<CodeGift>().AsNoTracking().Where(cg => cg.ID == ID).SingleOrDefaultAsync();
         }

@@ -27,34 +27,42 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
         public async Task<SCodeGift> RegisterGiftCodePrize(int GiftCodeID)
         {
             SCodeGift result = new SCodeGift();
-
-            var GotCodeGift = await mCodeGiftsQueryProcessor.HasGotCodeGift(GiftCodeID);
-            if (!GotCodeGift)
+            var exists = await mCodeGiftsQueryProcessor.Exists(GiftCodeID);
+            if(exists)
             {
-                var expired = await mCodeGiftsQueryProcessor.IsExpired(GiftCodeID);
-                if (!expired)
+                var registered = await mCodeGiftsQueryProcessor.Registered(GiftCodeID);
+                if (!registered)
                 {
-                    var codeGiftAdded = await mCodeGiftsQueryProcessor.AddCodeGiftByID(GiftCodeID);
-                    if (codeGiftAdded)
+                    var expired = await mCodeGiftsQueryProcessor.IsExpired(GiftCodeID);
+                    if (!expired)
                     {
-                        var codeGift = await mCodeGiftsQueryProcessor.GetCodeGiftByID(GiftCodeID);
-                        var totalCoin = await mUserQueryProcessor.AddCoin(codeGift.Prize);
+                        var codeGiftAdded = await mCodeGiftsQueryProcessor.AddByID(GiftCodeID);
+                        if (codeGiftAdded)
+                        {
+                            var codeGift = await mCodeGiftsQueryProcessor.GetByID(GiftCodeID);
+                            var totalCoin = await mUserQueryProcessor.AddCoin(codeGift.Prize);
 
-                        result.ID = GiftCodeID;
-                        result.TotalCoin = totalCoin;
-                        result.ResponseCode = ResponseState.Ok;
-                        return result;
+                            result.ID = GiftCodeID;
+                            result.TotalCoin = totalCoin;
+                            result.ResponseCode = ResponseState.Ok;
+                            return result;
+                        }
+                    }
+                    else
+                    {
+                        result.ResponseCode = ResponseState.IsExpired;
                     }
                 }
                 else
                 {
-                    result.ResponseCode = ResponseState.IsExpired;
+                    result.ResponseCode = ResponseState.HasGot;
                 }
             }
             else
             {
-                result.ResponseCode = ResponseState.HasGot;
+                result.ResponseCode = ResponseState.NotExists;
             }
+            
             return result;
         }
     }

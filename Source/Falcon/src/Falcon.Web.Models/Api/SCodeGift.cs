@@ -11,6 +11,7 @@ namespace Falcon.Web.Models.Api
         IsExpired = 1 , 
         HasGot = 2 , 
         Ok = 3 ,
+        NotExists = 4 , 
     }
     public class SCodeGift
     {

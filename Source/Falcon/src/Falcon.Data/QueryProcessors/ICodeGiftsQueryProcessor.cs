@@ -7,9 +7,10 @@ namespace Falcon.Database.SqlServer.QueryProcessors
 {
     public interface ICodeGiftsQueryProcessor
     {
-        Task<bool> HasGotCodeGift(int ID);
-        Task<bool> AddCodeGiftByID(int ID);
-        Task<CodeGift> GetCodeGiftByID(int ID);
+        Task<bool> Registered(int ID);
+        Task<bool> AddByID(int ID);
+        Task<CodeGift> GetByID(int ID);
         Task<bool> IsExpired(int ID);
+        Task<bool> Exists(int ID);
     }
 }
