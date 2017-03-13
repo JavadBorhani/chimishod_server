@@ -56,7 +56,7 @@
     <Compile Include="SqlServer\QueryProcessors\CodeGiftsQueryProcessor.cs" />
     <Compile Include="SqlServer\QueryProcessors\CommentsQueryProcessor.cs" />
     <Compile Include="SqlServer\QueryProcessors\CreatedQuestionsQueryProcessor.cs" />
-    <Compile Include="SqlServer\QueryProcessors\ICodeGiftsQueryProcessor.cs" />
+    <Compile Include="SqlServer\QueryProcessors\UserQueryProcessor.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Falcon.Common\Falcon.Common.csproj">

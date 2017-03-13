@@ -77,6 +77,7 @@ namespace Falcon.Web.Api
 
             container.Bind<ICommentsQueryProcessor>().To<CommentsQueryProcessor>().InRequestScope();
             container.Bind<ICreatedQuestionsQueryProcessor>().To<CreatedQuestionsQueryProcessor>().InRequestScope();
+            container.Bind<IUserQueryProcessor>().To<UserQueryProcessor>().InRequestScope();
             
         }
 
@@ -89,6 +90,7 @@ namespace Falcon.Web.Api
         private void  AddMaintenanceProcessors(IKernel container)
         {
             // add maintenance part separately
+            container.Bind<ICodeGiftsMaintenanceProcessor>().To<CodeGiftsMaintenanceProcessor>().InRequestScope();
         }
 
         private void AddAdHoc(IKernel container)

@@ -1,12 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using Falcon.Data;
+using Falcon.EFCommonContext.DbModel;
+using Falcon.Web.Models.Api;
 using System.Threading.Tasks;
 
-namespace Falcon.Data.QueryProcessors
+namespace Falcon.Database.SqlServer.QueryProcessors
 {
-    interface ICodeGiftsQueryProcessor
+    public interface ICodeGiftsQueryProcessor
     {
+        Task<bool> Registered(int ID);
+        Task<bool> AddByID(int ID);
+        Task<CodeGift> GetByID(int ID);
+        Task<bool> IsExpired(int ID);
+        Task<bool> Exists(int ID);
     }
 }
