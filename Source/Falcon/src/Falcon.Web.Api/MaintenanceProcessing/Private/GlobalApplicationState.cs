@@ -59,13 +59,6 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
 
         private bool ModelIsValid(SApplicationState model)
         {
-            //return (model.AnswerPrize > 0 &&
-            //    model.CreateNewQuestionPrize > 0 &&
-            //    model.DefaultUserCoin > 0 &&
-            //    model.LikePrize > 0 &&
-            //    model.FavoritePrice > 0 &&
-            //    model.CreateQuestionPrice > 0);
-
             return (model.Comment_DefaultNumberAmount > 0 &&
                 model.Favorite_FavoritePrice > 0 &&
                 model.Favorite_FreeNumberToFavorite > 0 &&

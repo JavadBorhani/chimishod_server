@@ -42,9 +42,9 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             return true;
         }
 
-        public async Task<bool> Exists(int ID)
+        public async Task<CodeGift> ReturnIfExists(string CodeGift)
         {
-            return await mDb.Set<CodeGift>().CountAsync(cg => cg.ID == ID) > 0;
+            return await mDb.Set<CodeGift>().AsNoTracking().Where(cg => cg.Serial == CodeGift).SingleOrDefaultAsync();
         }
 
         public async Task<CodeGift> GetByID(int ID)
@@ -66,11 +66,11 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             if(time >= result.StartDate &&  time <= result.ExpireDate && 
                 result.TotalUserRegistered < result.TotalUserCount)
             {
-                return true;
+                return false;
             }
             else
             {
-                return false; 
+                return true; 
             }
         }
     }

@@ -9,10 +9,10 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="CodeGiftID" Type="int" Nullable="false" />
           <Property Name="UserID" Type="int" Nullable="false" />
-          <Property Name="AchievedDate" Type="int" Nullable="false" />
+          <Property Name="AchievedDate" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="AchievedGifts">
           <Key>
@@ -149,13 +149,14 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="CompanyName" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Serial" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="Prize" Type="int" Nullable="false" />
-          <Property Name="UserCount" Type="int" Nullable="false" />
-          <Property Name="StartDate" Type="int" Nullable="false" />
-          <Property Name="ExpireDate" Type="int" Nullable="false" />
+          <Property Name="TotalUserCount" Type="int" Nullable="false" />
+          <Property Name="TotalUserRegistered" Type="int" Nullable="false" />
+          <Property Name="StartDate" Type="datetime" Nullable="false" />
+          <Property Name="ExpireDate" Type="datetime" Nullable="false" />
           <Property Name="CreatedDate" Type="datetime" Nullable="false" />
           <Property Name="UpdatedDate" Type="datetime" Nullable="false" />
         </EntityType>
@@ -442,7 +443,7 @@
               <PropertyRef Name="ID" />
             </Principal>
             <Dependent Role="AchievedCodeGift">
-              <PropertyRef Name="UserID" />
+              <PropertyRef Name="CodeGiftID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1462,10 +1463,10 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="CodeGiftID" Type="Int32" Nullable="false" />
           <Property Name="UserID" Type="Int32" Nullable="false" />
-          <Property Name="AchievedDate" Type="Int32" Nullable="false" />
+          <Property Name="AchievedDate" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="CodeGift" Relationship="Falcon.DbModel.FK_AchievedCodeGift_CodeGift" FromRole="AchievedCodeGift" ToRole="CodeGift" />
           <NavigationProperty Name="User" Relationship="Falcon.DbModel.FK_AchievedCodeGift_User" FromRole="AchievedCodeGift" ToRole="User" />
         </EntityType>
@@ -1624,13 +1625,14 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="CompanyName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Serial" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Prize" Type="Int32" Nullable="false" />
-          <Property Name="UserCount" Type="Int32" Nullable="false" />
-          <Property Name="StartDate" Type="Int32" Nullable="false" />
-          <Property Name="ExpireDate" Type="Int32" Nullable="false" />
+          <Property Name="TotalUserCount" Type="Int32" Nullable="false" />
+          <Property Name="TotalUserRegistered" Type="Int32" Nullable="false" />
+          <Property Name="StartDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ExpireDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="UpdatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="AchievedCodeGifts" Relationship="Falcon.DbModel.FK_AchievedCodeGift_CodeGift" FromRole="CodeGift" ToRole="AchievedCodeGift" />
@@ -1983,7 +1985,7 @@
               <PropertyRef Name="ID" />
             </Principal>
             <Dependent Role="AchievedCodeGift">
-              <PropertyRef Name="UserID" />
+              <PropertyRef Name="CodeGiftID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2730,7 +2732,8 @@
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
                 <ScalarProperty Name="ExpireDate" ColumnName="ExpireDate" />
                 <ScalarProperty Name="StartDate" ColumnName="StartDate" />
-                <ScalarProperty Name="UserCount" ColumnName="UserCount" />
+                <ScalarProperty Name="TotalUserRegistered" ColumnName="TotalUserRegistered" />
+                <ScalarProperty Name="TotalUserCount" ColumnName="TotalUserCount" />
                 <ScalarProperty Name="Prize" ColumnName="Prize" />
                 <ScalarProperty Name="Serial" ColumnName="Serial" />
                 <ScalarProperty Name="CompanyName" ColumnName="CompanyName" />

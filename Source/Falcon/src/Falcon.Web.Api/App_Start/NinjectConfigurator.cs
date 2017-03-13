@@ -78,6 +78,7 @@ namespace Falcon.Web.Api
             container.Bind<ICommentsQueryProcessor>().To<CommentsQueryProcessor>().InRequestScope();
             container.Bind<ICreatedQuestionsQueryProcessor>().To<CreatedQuestionsQueryProcessor>().InRequestScope();
             container.Bind<IUserQueryProcessor>().To<UserQueryProcessor>().InRequestScope();
+            container.Bind<ICodeGiftsQueryProcessor>().To<CodeGiftsQueryProcessor>().InRequestScope();
             
         }
 

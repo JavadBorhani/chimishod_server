@@ -11,6 +11,6 @@ namespace Falcon.Database.SqlServer.QueryProcessors
         Task<bool> AddByID(int ID);
         Task<CodeGift> GetByID(int ID);
         Task<bool> IsExpired(int ID);
-        Task<bool> Exists(int ID);
+        Task<CodeGift> ReturnIfExists(string Code);
     }
 }

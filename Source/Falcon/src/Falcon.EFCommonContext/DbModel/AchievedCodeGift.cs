@@ -17,7 +17,7 @@ namespace Falcon.EFCommonContext.DbModel
         public int ID { get; set; }
         public int CodeGiftID { get; set; }
         public int UserID { get; set; }
-        public DateTime AchievedDate { get; set; }
+        public System.DateTime AchievedDate { get; set; }
     
         public virtual CodeGift CodeGift { get; set; }
         public virtual User User { get; set; }

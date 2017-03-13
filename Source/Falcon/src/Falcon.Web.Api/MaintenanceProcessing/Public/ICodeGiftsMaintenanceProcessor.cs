@@ -9,6 +9,6 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Public
 {
     public interface ICodeGiftsMaintenanceProcessor
     {
-        Task<SCodeGift> RegisterGiftCodePrize(int GiftCodeID);
+        Task<SCodeGift> RegisterGiftCodePrize(string GiftCodeSerial);
     }
 }

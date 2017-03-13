@@ -1,12 +1,9 @@
 ﻿using AutoMapper;
 using Falcon.Data.QueryProcessors;
 using Falcon.Database.SqlServer.QueryProcessors;
+using Falcon.EFCommonContext.DbModel;
 using Falcon.Web.Api.MaintenanceProcessing.Public;
 using Falcon.Web.Models.Api;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Falcon.Web.Api.MaintenanceProcessing.Private
@@ -24,27 +21,28 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
             mUserQueryProcessor = UserQueryProcessor;
             mMapper = Mapper;
         }
-        public async Task<SCodeGift> RegisterGiftCodePrize(int GiftCodeID)
+
+        public async Task<SCodeGift> RegisterGiftCodePrize(string GiftCodeSerial)
         {
             SCodeGift result = new SCodeGift();
-            var exists = await mCodeGiftsQueryProcessor.Exists(GiftCodeID);
-            if(exists)
+            CodeGift codeGift = await mCodeGiftsQueryProcessor.ReturnIfExists(GiftCodeSerial);
+
+            if (codeGift != null)
             {
-                var registered = await mCodeGiftsQueryProcessor.Registered(GiftCodeID);
+                var registered = await mCodeGiftsQueryProcessor.Registered(codeGift.ID);
                 if (!registered)
                 {
-                    var expired = await mCodeGiftsQueryProcessor.IsExpired(GiftCodeID);
+                    var expired = await mCodeGiftsQueryProcessor.IsExpired(codeGift.ID);
                     if (!expired)
                     {
-                        var codeGiftAdded = await mCodeGiftsQueryProcessor.AddByID(GiftCodeID);
+                        var codeGiftAdded = await mCodeGiftsQueryProcessor.AddByID(codeGift.ID);
                         if (codeGiftAdded)
                         {
-                            var codeGift = await mCodeGiftsQueryProcessor.GetByID(GiftCodeID);
                             var totalCoin = await mUserQueryProcessor.AddCoin(codeGift.Prize);
 
-                            result.ID = GiftCodeID;
                             result.TotalCoin = totalCoin;
                             result.ResponseCode = ResponseState.Ok;
+
                             return result;
                         }
                     }

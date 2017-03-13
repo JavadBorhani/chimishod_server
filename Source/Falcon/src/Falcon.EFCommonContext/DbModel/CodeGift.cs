@@ -26,8 +26,8 @@ namespace Falcon.EFCommonContext.DbModel
         public int Prize { get; set; }
         public int TotalUserCount { get; set; }
         public int TotalUserRegistered { get; set; }
-        public DateTime StartDate { get; set; }
-        public DateTime ExpireDate { get; set; }
+        public System.DateTime StartDate { get; set; }
+        public System.DateTime ExpireDate { get; set; }
         public System.DateTime CreatedDate { get; set; }
         public System.DateTime UpdatedDate { get; set; }
     
