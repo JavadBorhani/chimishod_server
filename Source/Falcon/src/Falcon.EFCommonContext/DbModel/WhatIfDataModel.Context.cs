@@ -22,6 +22,7 @@ namespace Falcon.EFCommonContext.DbModel
         public DbEntity(string NameOrConnectionString) : base(NameOrConnectionString)
         {
         }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             throw new UnintentionalCodeFirstException();
@@ -43,6 +44,7 @@ namespace Falcon.EFCommonContext.DbModel
         public virtual DbSet<CreatedQuestionsVerifyType> CreatedQuestionsVerifyTypes { get; set; }
         public virtual DbSet<Favorite> Favorites { get; set; }
         public virtual DbSet<Gift> Gifts { get; set; }
+        public virtual DbSet<GiftType> GiftTypes { get; set; }
         public virtual DbSet<Level> Levels { get; set; }
         public virtual DbSet<Manufacture> Manufactures { get; set; }
         public virtual DbSet<Order> Orders { get; set; }

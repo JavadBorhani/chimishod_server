@@ -23,7 +23,7 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             if (Coin < 0)
                 return -1; 
             //TODO : Checkout Threading 
-            var userCoin = await mDb.Set<User>().Where(u => u.ID == mUserSession.UserID).Select(u => u.TotalStars).SingleOrDefaultAsync();
+            var userCoin = await mDb.Set<User>().Where(u => u.ID == mUserSession.ID).Select(u => u.TotalStars).SingleOrDefaultAsync();
             userCoin += Coin;
 
             await mDb.SaveChangesAsync();

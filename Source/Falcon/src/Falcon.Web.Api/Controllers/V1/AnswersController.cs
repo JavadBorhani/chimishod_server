@@ -83,7 +83,7 @@ namespace Falcon.Web.Api.Controllers.V1
             float userNormal = 0;
 
             var userAndQuestion = await mDb.Set<Answer>().AsNoTracking()
-                                                .Where( u => u.UserID == mUserSession.UserID)
+                                                .Where( u => u.UserID == mUserSession.ID)
                                                 .Select( u => new { u.YesNoState, u.Question.Yes_Count , u.Question.No_Count, u.Question.Banned })
                                                 .ToArrayAsync(); 
                 

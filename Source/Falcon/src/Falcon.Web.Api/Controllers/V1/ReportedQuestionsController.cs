@@ -34,7 +34,7 @@ namespace Falcon.Web.Api.Controllers.V1
         [HttpPost]
         public async Task<IHttpActionResult> ReportQuestion(int QuestionID , int ReportID)
         {
-            var reportExists = await mDb.Set<ReportedQuestion>().Where(rq => rq.UserID == mUserSession.UserID && rq.QuestionID == QuestionID).Select(rq => rq.ID).SingleOrDefaultAsync();
+            var reportExists = await mDb.Set<ReportedQuestion>().Where(rq => rq.UserID == mUserSession.ID && rq.QuestionID == QuestionID).Select(rq => rq.ID).SingleOrDefaultAsync();
             var questionIDExists = await mDb.Set<Question>().CountAsync( q=> q.ID == QuestionID) > 0;
             var reportIDExists = await mDb.Set<ReportType>().CountAsync(rt => rt.ID == ReportID) > 0;
 
@@ -45,7 +45,7 @@ namespace Falcon.Web.Api.Controllers.V1
                     var newReport = new ReportedQuestion
                     {
                         QuestionID = QuestionID,
-                        UserID = mUserSession.UserID,
+                        UserID = mUserSession.ID,
                         ReportTypeID = ReportID,
                         CreatedDate = mDateTime.Now
                     };

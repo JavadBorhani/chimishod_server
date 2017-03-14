@@ -27,14 +27,14 @@ namespace Falcon.Database.SqlServer.QueryProcessors
         {
             return await mDb.Set<AchievedCodeGift>()
                 .AsNoTracking().
-                CountAsync(cg => cg.UserID == mUserSession.UserID && cg.CodeGiftID == ID ) > 0;
+                CountAsync(cg => cg.UserID == mUserSession.ID && cg.CodeGiftID == ID ) > 0;
         }
         public async Task<bool> AddByID(int ID)
         {
             //TODO : Write trigger to increase and decrease number of added
             mDb.Set<AchievedCodeGift>().Add(new AchievedCodeGift
             {
-                UserID = mUserSession.UserID,
+                UserID = mUserSession.ID,
                 CodeGiftID = ID,
                 AchievedDate = mDateTime.Now
             });

@@ -24,6 +24,7 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
 
         public async Task<SCodeGift> RegisterGiftCodePrize(string GiftCodeSerial)
         {
+            //TODO : Add Increment in Database 
             SCodeGift result = new SCodeGift();
             CodeGift codeGift = await mCodeGiftsQueryProcessor.ReturnIfExists(GiftCodeSerial);
 

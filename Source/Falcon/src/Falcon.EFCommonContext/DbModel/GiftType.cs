@@ -12,28 +12,19 @@ namespace Falcon.EFCommonContext.DbModel
     using System;
     using System.Collections.Generic;
     
-    public partial class Gift
+    public partial class GiftType
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Gift()
+        public GiftType()
         {
-            this.AchievedGifts = new HashSet<AchievedGift>();
+            this.Gifts = new HashSet<Gift>();
         }
     
         public int ID { get; set; }
-        public string Image { get; set; }
         public string Name { get; set; }
-        public string Description { get; set; }
-        public int GiftTypeID { get; set; }
-        public int Prize { get; set; }
-        public Nullable<int> Day { get; set; }
-        public Nullable<System.DateTime> StartDate { get; set; }
-        public Nullable<System.DateTime> ExpireDate { get; set; }
-        public System.DateTime CreatedDate { get; set; }
-        public System.DateTime UpdatedDate { get; set; }
+        public int Priority { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<AchievedGift> AchievedGifts { get; set; }
-        public virtual GiftType GiftType { get; set; }
+        public virtual ICollection<Gift> Gifts { get; set; }
     }
 }

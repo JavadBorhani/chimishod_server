@@ -79,6 +79,7 @@ namespace Falcon.Web.Api
             container.Bind<ICreatedQuestionsQueryProcessor>().To<CreatedQuestionsQueryProcessor>().InRequestScope();
             container.Bind<IUserQueryProcessor>().To<UserQueryProcessor>().InRequestScope();
             container.Bind<ICodeGiftsQueryProcessor>().To<CodeGiftsQueryProcessor>().InRequestScope();
+            container.Bind<IGiftQueryProcessor>().To<GiftQueryProcessor>().InRequestScope();
             
         }
 
@@ -87,6 +88,7 @@ namespace Falcon.Web.Api
             container.Bind<IPagedDataRequestFactory>().To<PagedDataRequestFactory>().InSingletonScope();
             container.Bind<ICommentsInquiryProcessor>().To<CommentsInquiryProcessor>().InRequestScope();
             container.Bind<ICreatedQuestionsInquiryProcessor>().To<CreatedQuestionsInquiryProcessor>().InRequestScope();
+            container.Bind<INotificationInquiryProcessor>().To<NotificationInquiryProcessor>().InRequestScope();
         }
         private void  AddMaintenanceProcessors(IKernel container)
         {

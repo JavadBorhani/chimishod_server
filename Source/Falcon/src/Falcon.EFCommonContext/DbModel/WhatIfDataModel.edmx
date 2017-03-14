@@ -207,7 +207,7 @@
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Icon" Type="varchar" MaxLength="150" Nullable="false" />
+          <Property Name="Image" Type="varchar" MaxLength="150" />
           <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Description" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="GiftTypeID" Type="int" Nullable="false" />
@@ -217,6 +217,14 @@
           <Property Name="ExpireDate" Type="datetime" />
           <Property Name="CreatedDate" Type="datetime" Nullable="false" />
           <Property Name="UpdatedDate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="GiftType">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Priority" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Level">
           <Key>
@@ -699,6 +707,20 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Gift_GiftType">
+          <End Role="GiftType" Type="Self.GiftType" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Gift" Type="Self.Gift" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GiftType">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Gift">
+              <PropertyRef Name="GiftTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Manufacture_Question">
           <End Role="Question" Type="Self.Question" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -1044,6 +1066,7 @@
           <EntitySet Name="CreatedQuestionsVerifyType" EntityType="Self.CreatedQuestionsVerifyType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Favorite" EntityType="Self.Favorite" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Gift" EntityType="Self.Gift" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="GiftType" EntityType="Self.GiftType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Level" EntityType="Self.Level" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Manufacture" EntityType="Self.Manufacture" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Order" EntityType="Self.Order" Schema="dbo" store:Type="Tables" />
@@ -1143,6 +1166,10 @@
           <AssociationSet Name="FK_Favorite_User" Association="Self.FK_Favorite_User">
             <End Role="User" EntitySet="User" />
             <End Role="Favorite" EntitySet="Favorite" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Gift_GiftType" Association="Self.FK_Gift_GiftType">
+            <End Role="GiftType" EntitySet="GiftType" />
+            <End Role="Gift" EntitySet="Gift" />
           </AssociationSet>
           <AssociationSet Name="FK_Manufacture_Question" Association="Self.FK_Manufacture_Question">
             <End Role="Question" EntitySet="Question" />
@@ -1262,6 +1289,7 @@
           <EntitySet Name="CreatedQuestionsVerifyTypes" EntityType="Falcon.DbModel.CreatedQuestionsVerifyType" />
           <EntitySet Name="Favorites" EntityType="Falcon.DbModel.Favorite" />
           <EntitySet Name="Gifts" EntityType="Falcon.DbModel.Gift" />
+          <EntitySet Name="GiftTypes" EntityType="Falcon.DbModel.GiftType" />
           <EntitySet Name="Levels" EntityType="Falcon.DbModel.Level" />
           <EntitySet Name="Manufactures" EntityType="Falcon.DbModel.Manufacture" />
           <EntitySet Name="Orders" EntityType="Falcon.DbModel.Order" />
@@ -1381,6 +1409,10 @@
           <AssociationSet Name="FK_Favorite_User" Association="Falcon.DbModel.FK_Favorite_User">
             <End Role="User" EntitySet="Users" />
             <End Role="Favorite" EntitySet="Favorites" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Gift_GiftType" Association="Falcon.DbModel.FK_Gift_GiftType">
+            <End Role="GiftType" EntitySet="GiftTypes" />
+            <End Role="Gift" EntitySet="Gifts" />
           </AssociationSet>
           <AssociationSet Name="FK_User_Level" Association="Falcon.DbModel.FK_User_Level">
             <End Role="Level" EntitySet="Levels" />
@@ -1693,7 +1725,7 @@
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Icon" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="Image" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
           <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Description" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="GiftTypeID" Type="Int32" Nullable="false" />
@@ -1704,6 +1736,16 @@
           <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="UpdatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="AchievedGifts" Relationship="Falcon.DbModel.FK_AchievedGifts_Gift" FromRole="Gift" ToRole="AchievedGift" />
+          <NavigationProperty Name="GiftType" Relationship="Falcon.DbModel.FK_Gift_GiftType" FromRole="Gift" ToRole="GiftType" />
+        </EntityType>
+        <EntityType Name="GiftType">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Priority" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Gifts" Relationship="Falcon.DbModel.FK_Gift_GiftType" FromRole="GiftType" ToRole="Gift" />
         </EntityType>
         <EntityType Name="Level">
           <Key>
@@ -2311,6 +2353,20 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Gift_GiftType">
+          <End Type="Falcon.DbModel.GiftType" Role="GiftType" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="Falcon.DbModel.Gift" Role="Gift" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GiftType">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Gift">
+              <PropertyRef Name="GiftTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_User_Level">
           <End Type="Falcon.DbModel.Level" Role="Level" Multiplicity="0..1" />
           <End Type="Falcon.DbModel.User" Role="User" Multiplicity="*" />
@@ -2799,7 +2855,16 @@
                 <ScalarProperty Name="GiftTypeID" ColumnName="GiftTypeID" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Icon" ColumnName="Icon" />
+                <ScalarProperty Name="Image" ColumnName="Image" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="GiftTypes">
+            <EntityTypeMapping TypeName="Falcon.DbModel.GiftType">
+              <MappingFragment StoreEntitySet="GiftType">
+                <ScalarProperty Name="Priority" ColumnName="Priority" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>

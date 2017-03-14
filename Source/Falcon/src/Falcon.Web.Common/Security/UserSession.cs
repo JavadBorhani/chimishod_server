@@ -25,7 +25,7 @@ namespace Falcon.Web.Common.Security
             }
         }
 
-        public int UserID
+        public int ID
         {
             get
             {
