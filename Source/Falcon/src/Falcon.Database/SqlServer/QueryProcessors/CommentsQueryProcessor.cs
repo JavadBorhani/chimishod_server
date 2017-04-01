@@ -26,7 +26,7 @@ namespace Falcon.Database.SqlServer.QueryProcessors
 
             var startIndex = ResultPagingUtility.CalculateStartIndex(requestInfo.PageNumber, requestInfo.PageSize);
 
-            var comments = await query.OrderBy(x => x.ID).Skip(startIndex).Take(requestInfo.PageSize).ToListAsync();
+            var comments = await query.OrderByDescending(x => x.InsertDate).Skip(startIndex).Take(requestInfo.PageSize).ToListAsync();
 
             var queryResult = new QueryResult<Comment>(comments, totalItemCount, requestInfo.PageSize);
 

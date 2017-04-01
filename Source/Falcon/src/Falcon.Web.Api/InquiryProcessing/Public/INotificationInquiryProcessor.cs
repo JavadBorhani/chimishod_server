@@ -10,5 +10,6 @@ namespace Falcon.Web.Api.InquiryProcessing.Public
     public interface INotificationInquiryProcessor
     {
         Task<SNotify> GetNotification();
+        Task<int> RegisterNotification(int NotificationID);
     }
 }

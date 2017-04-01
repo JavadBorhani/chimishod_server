@@ -29,20 +29,15 @@ namespace Falcon.Database.SqlServer.QueryProcessors
 
         public async Task<bool> AddAchievedGift(int ID)
         {
-            var result = await Exists(ID);
-            if(result)
+            mDb.Set<AchievedGift>().Add(new AchievedGift
             {
-                mDb.Set<AchievedGift>().Add(new AchievedGift
-                {
-                    GiftID = ID,
-                    UserID = mUserSession.ID,
-                    AchievedDate = mDateTime.Now
-                });
-                await mDb.SaveChangesAsync();
+                GiftID = ID,
+                UserID = mUserSession.ID,
+                AchievedDate = mDateTime.Now
+            });
+            await mDb.SaveChangesAsync();
 
-                return true;
-            }
-            return false;
+            return true;
         }
 
         public async Task<Gift> GetByID(int ID)
@@ -55,7 +50,7 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             return await mDb.Set<Gift>().AsNoTracking().CountAsync(g => g.ID == ID) > 0; 
         }
 
-        public async Task<List<SGift>> TodayList()
+        public async Task<List<SGift>> TodayGiftList()
         {
             var date = mDateTime.Now;
             var giftType = mDb.Set<GiftType>();
@@ -64,16 +59,17 @@ namespace Falcon.Database.SqlServer.QueryProcessors
 
             var result = await mDb.Set<Gift>()
                 .AsNoTracking()
-                .Where(g => g.StartDate <= date && g.ExpireDate >= date && !achievedGift.Contains(g.ID))
-                .Join(giftType , g => g.GiftTypeID , gt => gt.ID , (g , gt ) => new SGift
+                .Where(g => (g.StartDate <= date && g.ExpireDate >= date) && !achievedGift.Contains(g.ID))
+                .Join(giftType, g => g.GiftTypeID, gt => gt.ID, (g, gt) => new SGift
                 {
-                    ID = g.ID, 
+                    ID = g.ID,
                     Name = g.Name,
-                    Image = g.Image , 
-                    Prize = g.Prize ,
+                    Image = g.Image,
+                    Prize = g.Prize,
                     Day = g.Day,
                     Priority = gt.Priority,
                     Description = g.Description,
+                    GiftType = (GiftTypes)Enum.Parse(typeof(GiftTypes) , g.GiftType.Name)
                 })
                 .OrderBy(m => m.Priority)
                 .ToListAsync();
@@ -95,6 +91,46 @@ namespace Falcon.Database.SqlServer.QueryProcessors
                 .Where(ag => ag.UserID == mUserSession.ID)
                 .Select(u => u.GiftID)
                 .ToListAsync();
+        }
+
+        public bool CheckGiftLogic(SGift CurrentGift)
+        {
+            switch (CurrentGift.GiftType)
+            {
+                case GiftTypes.Daily:
+                    if ((mDateTime.Now - mUserSession.LastSeenDateTime).Days > CurrentGift.Day)
+                        return true;
+                    break;
+
+                case GiftTypes.DateTime:
+                case GiftTypes.Message:
+                    return true;
+            }
+            return false;
+        }
+
+        public bool CheckGiftLogic(SGift CurrentGift, Gift Gift, DateTime DateTime)
+        {
+            switch (CurrentGift.GiftType)
+            {
+                case GiftTypes.Daily:
+
+                    if ((DateTime - mUserSession.LastSeenDateTime).Days > CurrentGift.Day)
+                        return true;
+
+                    break;
+
+                case GiftTypes.DateTime:
+
+                    if ((Gift.StartDate <= DateTime && Gift.ExpireDate >= DateTime))
+                        return false;
+
+                    break;
+
+                default:
+                    return false;
+            }
+            return false;
         }
     }
 }

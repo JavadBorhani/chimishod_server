@@ -13,5 +13,6 @@ namespace Falcon.Common.Security
         string UUID { get; }
         int  ID { get; }
         string  UserName { get; }
+        DateTime LastSeenDateTime { get; }
     }
 }

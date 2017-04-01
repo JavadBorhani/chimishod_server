@@ -3,9 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Runtime.Serialization;
 
 namespace Falcon.Web.Models.Api
 {
+    public enum GiftTypes
+    {
+        Daily,
+        DateTime, 
+        Message, 
+    };
+
     public class SGift
     {
         public int ID { get; set; }
@@ -15,5 +23,8 @@ namespace Falcon.Web.Models.Api
         public int Priority { get; set; }
         public int Prize { get; set; }
         public int? Day { get; set; }
+
+        [IgnoreDataMember]
+        public GiftTypes GiftType { get; set; }
     }
 }

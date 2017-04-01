@@ -11,10 +11,12 @@ namespace Falcon.Data.QueryProcessors
     public interface IGiftQueryProcessor
     {
         Task<bool> Exists(int ID);
-        Task<List<SGift>> TodayList();
+        Task<List<SGift>> TodayGiftList();
         Task<Gift> GetByID(int ID);
         Task<bool> AddAchievedGift(int ID);
         Task<bool> IsAchieved(int ID);
         Task<List<int>> GetAchievedIdList();
+        bool CheckGiftLogic(SGift CurrentGift);
+        bool CheckGiftLogic(SGift CurrentGift, Gift Gift, DateTime DateTime);
     }
 }

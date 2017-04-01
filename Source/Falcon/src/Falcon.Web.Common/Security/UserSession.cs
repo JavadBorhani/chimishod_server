@@ -48,5 +48,13 @@ namespace Falcon.Web.Common.Security
                 return ((ClaimsPrincipal)HttpContext.Current.User).FindFirst(ClaimTypes.Sid).Value; //TODO : Solve This issue later
             }
         }
+
+        public DateTime LastSeenDateTime
+        {
+            get
+            {
+                return Convert.ToDateTime(((ClaimsPrincipal)HttpContext.Current.User).FindFirst(ClaimTypes.DateOfBirth).Value);
+            }
+        }
     }
 }

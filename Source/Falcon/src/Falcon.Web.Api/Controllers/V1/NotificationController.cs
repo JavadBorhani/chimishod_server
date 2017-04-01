@@ -11,10 +11,12 @@ namespace Falcon.Web.Api.Controllers.V1
     public class NotificationController : ApiController
     {
         private readonly INotificationInquiryProcessor mNotificationInquiryProcessor;
+        private readonly IUsersInquiryProcessor mUsersInquiryProcessor;
 
-        public NotificationController(INotificationInquiryProcessor NotificationInquiryProcessor)
+        public NotificationController(INotificationInquiryProcessor NotificationInquiryProcessor , IUsersInquiryProcessor UsersInquiryProcessor)
         {
-            mNotificationInquiryProcessor = NotificationInquiryProcessor; 
+            mNotificationInquiryProcessor = NotificationInquiryProcessor;
+            mUsersInquiryProcessor = UsersInquiryProcessor;
         }
 
         [Route("Notification/")]
@@ -24,6 +26,15 @@ namespace Falcon.Web.Api.Controllers.V1
         {
             SNotify result = await mNotificationInquiryProcessor.GetNotification();
             return result;
+        }
+
+        [Route("Notification/Register/{NotificationID}")]
+        [ResponseType(typeof(int))]
+        [HttpPost]
+        public async Task<int> RegisterNotification(int NotificationID)
+        {
+            int totalCoin = await mNotificationInquiryProcessor.RegisterNotification(NotificationID);
+            return totalCoin; 
         }
 
     }

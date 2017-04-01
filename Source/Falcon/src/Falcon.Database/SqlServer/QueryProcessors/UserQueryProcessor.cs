@@ -5,6 +5,7 @@ using Falcon.EFCommonContext.DbModel;
 using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
+using System;
 
 namespace Falcon.Database.SqlServer.QueryProcessors
 {
@@ -28,6 +29,11 @@ namespace Falcon.Database.SqlServer.QueryProcessors
 
             await mDb.SaveChangesAsync();
             return user.TotalStars;
+        }
+
+        public async Task<int> GetTotalCoin()
+        {
+            return await mDb.Set<User>().AsNoTracking().Where(u => u.ID == mUserSession.ID).Select(u => u.TotalStars).SingleOrDefaultAsync();
         }
     }
 }
