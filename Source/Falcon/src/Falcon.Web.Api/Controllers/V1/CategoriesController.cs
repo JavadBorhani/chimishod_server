@@ -48,8 +48,8 @@ namespace Falcon.Web.Api.Controllers.V1
         public async Task<IHttpActionResult> GetCategoryList()
         {
             var categories = await mDb.Set<Category>().AsNoTracking().ToArrayAsync();
-            var selectedCategory = await mDb.Set<SelectedCategory>().AsNoTracking().Where(st => st.UserID == mUserSession.UserID).Select( sc => sc.CategoryID).SingleOrDefaultAsync();
-            var purchasedCategories = await mDb.Set<PurchaseCategory>().AsNoTracking().Where(pt => pt.UserID == mUserSession.UserID).Select(c => c.CategoryID).ToListAsync();
+            var selectedCategory = await mDb.Set<SelectedCategory>().AsNoTracking().Where(st => st.UserID == mUserSession.ID).Select( sc => sc.CategoryID).SingleOrDefaultAsync();
+            var purchasedCategories = await mDb.Set<PurchaseCategory>().AsNoTracking().Where(pt => pt.UserID == mUserSession.ID).Select(c => c.CategoryID).ToListAsync();
 
             if (categories.Length > 0 && selectedCategory > 0 && purchasedCategories.Count >= 0)
             {
@@ -203,7 +203,7 @@ namespace Falcon.Web.Api.Controllers.V1
         {
             
             var userActiveCategories = await mDb.Set<Category>().Where(c => c.ID == Constants.DefaultUser.CategoryID ||
-                                                                    mDb.Set<PurchaseCategory>().Where(pc => pc.UserID == mUserSession.UserID)
+                                                                    mDb.Set<PurchaseCategory>().Where(pc => pc.UserID == mUserSession.ID)
                                                                                         .Select( pc => pc.CategoryID)
                                                                                         .ToList()
                                                                                         .Contains(c.ID))

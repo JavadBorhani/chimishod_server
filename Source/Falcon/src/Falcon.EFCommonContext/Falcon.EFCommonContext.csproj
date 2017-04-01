@@ -102,6 +102,9 @@
     <Compile Include="DbModel\Gift.cs">
       <DependentUpon>WhatIfDataModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="DbModel\GiftType.cs">
+      <DependentUpon>WhatIfDataModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="DbModel\Level.cs">
       <DependentUpon>WhatIfDataModel.tt</DependentUpon>
     </Compile>

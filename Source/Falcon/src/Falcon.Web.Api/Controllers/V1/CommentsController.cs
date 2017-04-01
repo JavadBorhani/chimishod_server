@@ -70,7 +70,7 @@ namespace Falcon.Web.Api.Controllers.V1
             {
                 var comment = new Comment
                 {
-                   UserID = mUserSession.UserID,
+                   UserID = mUserSession.ID,
                    QuestionID = question.ID,
                    CommentContent = NewComment.Content,
                    Response = Constants.DefaultValues.CommentDefaultReponseMessage,

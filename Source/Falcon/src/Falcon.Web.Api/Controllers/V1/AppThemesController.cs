@@ -41,8 +41,8 @@ namespace Falcon.Web.Api.Controllers.V1
         {
             //TODO : Convert Whole of this into one join 
             var themes = await mDb.Set<AppTheme>().AsNoTracking().ToArrayAsync();
-            var selectedTheme = await mDb.Set<SelectedTheme>().AsNoTracking().Where(st => st.UserID == mUserSessoin.UserID).Select( st => st.AppThemeID).SingleOrDefaultAsync();
-            var purchasedThemes = await mDb.Set<PurchaseTheme>().AsNoTracking().Where(pt => pt.UserID == mUserSessoin.UserID).Select(c => c.ThemeID).ToListAsync();
+            var selectedTheme = await mDb.Set<SelectedTheme>().AsNoTracking().Where(st => st.UserID == mUserSessoin.ID).Select( st => st.AppThemeID).SingleOrDefaultAsync();
+            var purchasedThemes = await mDb.Set<PurchaseTheme>().AsNoTracking().Where(pt => pt.UserID == mUserSessoin.ID).Select(c => c.ThemeID).ToListAsync();
 
             if(themes.Length > 0 && selectedTheme > 0 && purchasedThemes.Count >= 0)
             {

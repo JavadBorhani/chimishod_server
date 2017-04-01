@@ -11,7 +11,8 @@ namespace Falcon.Common.Security
     public interface IUserSession
     {
         string UUID { get; }
-        int  UserID { get; }
+        int  ID { get; }
         string  UserName { get; }
+        DateTime LastSeenDateTime { get; }
     }
 }

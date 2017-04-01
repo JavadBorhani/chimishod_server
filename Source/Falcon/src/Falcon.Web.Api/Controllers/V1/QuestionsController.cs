@@ -42,7 +42,7 @@ namespace Falcon.Web.Api.Controllers.V1
             if (CategoryID == Constants.DefaultUser.CategoryID)
                 isAbleToGetCategory = true; 
             else
-                isAbleToGetCategory = await mDb.Set<PurchaseCategory>().AsNoTracking().CountAsync( pc => pc.UserID == mUserSession.UserID && pc.CategoryID == CategoryID ) == 1;
+                isAbleToGetCategory = await mDb.Set<PurchaseCategory>().AsNoTracking().CountAsync( pc => pc.UserID == mUserSession.ID && pc.CategoryID == CategoryID ) == 1;
 
             int CatToGet = -1;
             if (isAbleToGetCategory)
@@ -51,14 +51,14 @@ namespace Falcon.Web.Api.Controllers.V1
             }
             else
             {
-                CatToGet = await mDb.Set<SelectedCategory>().AsNoTracking().Where(sc => sc.UserID == mUserSession.UserID).Select(sc => sc.CategoryID).SingleOrDefaultAsync();
+                CatToGet = await mDb.Set<SelectedCategory>().AsNoTracking().Where(sc => sc.UserID == mUserSession.ID).Select(sc => sc.CategoryID).SingleOrDefaultAsync();
             }
 
             var answerRef = mDb.Set<Answer>();
             var manuRef = mDb.Set<Manufacture>();
 
             var result = await mDb.Set<Question>().AsNoTracking().Where(question => question.Banned == false && question.Catgory_ID == CatToGet &&
-                                            !answerRef.Where(answer => answer.UserID == mUserSession.UserID)
+                                            !answerRef.Where(answer => answer.UserID == mUserSession.ID)
                                             .Select(y => y.QuestionID)
                                             .ToList()
                                             .Contains(question.ID))

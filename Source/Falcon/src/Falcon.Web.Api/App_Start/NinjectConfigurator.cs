@@ -45,8 +45,6 @@ namespace Falcon.Web.Api
             AddMaintenanceProcessors(container);
             AddAdHoc(container);
 
-            
-
         }
         private void ConfigureLog4Net(IKernel container)
         {
@@ -78,6 +76,8 @@ namespace Falcon.Web.Api
             container.Bind<ICommentsQueryProcessor>().To<CommentsQueryProcessor>().InRequestScope();
             container.Bind<ICreatedQuestionsQueryProcessor>().To<CreatedQuestionsQueryProcessor>().InRequestScope();
             container.Bind<IUserQueryProcessor>().To<UserQueryProcessor>().InRequestScope();
+            container.Bind<ICodeGiftsQueryProcessor>().To<CodeGiftsQueryProcessor>().InRequestScope();
+            container.Bind<IGiftQueryProcessor>().To<GiftQueryProcessor>().InRequestScope();
             
         }
 
@@ -86,6 +86,8 @@ namespace Falcon.Web.Api
             container.Bind<IPagedDataRequestFactory>().To<PagedDataRequestFactory>().InSingletonScope();
             container.Bind<ICommentsInquiryProcessor>().To<CommentsInquiryProcessor>().InRequestScope();
             container.Bind<ICreatedQuestionsInquiryProcessor>().To<CreatedQuestionsInquiryProcessor>().InRequestScope();
+            container.Bind<INotificationInquiryProcessor>().To<NotificationInquiryProcessor>().InRequestScope();
+            container.Bind<IUsersInquiryProcessor>().To<UsersInquiryProcessor>().InRequestScope();
         }
         private void  AddMaintenanceProcessors(IKernel container)
         {

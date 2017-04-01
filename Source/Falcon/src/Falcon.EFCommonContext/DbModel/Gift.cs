@@ -21,7 +21,7 @@ namespace Falcon.EFCommonContext.DbModel
         }
     
         public int ID { get; set; }
-        public string Icon { get; set; }
+        public string Image { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public int GiftTypeID { get; set; }
@@ -34,5 +34,6 @@ namespace Falcon.EFCommonContext.DbModel
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<AchievedGift> AchievedGifts { get; set; }
+        public virtual GiftType GiftType { get; set; }
     }
 }

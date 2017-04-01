@@ -27,14 +27,14 @@ namespace Falcon.Database.SqlServer.QueryProcessors
         {
             return await mDb.Set<AchievedCodeGift>()
                 .AsNoTracking().
-                CountAsync(cg => cg.UserID == mUserSession.UserID && cg.CodeGiftID == ID ) > 0;
+                CountAsync(cg => cg.UserID == mUserSession.ID && cg.CodeGiftID == ID ) > 0;
         }
         public async Task<bool> AddByID(int ID)
         {
             //TODO : Write trigger to increase and decrease number of added
             mDb.Set<AchievedCodeGift>().Add(new AchievedCodeGift
             {
-                UserID = mUserSession.UserID,
+                UserID = mUserSession.ID,
                 CodeGiftID = ID,
                 AchievedDate = mDateTime.Now
             });
@@ -42,9 +42,9 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             return true;
         }
 
-        public async Task<bool> Exists(int ID)
+        public async Task<CodeGift> ReturnIfExists(string CodeGift)
         {
-            return await mDb.Set<CodeGift>().CountAsync(cg => cg.ID == ID) > 0;
+            return await mDb.Set<CodeGift>().AsNoTracking().Where(cg => cg.Serial == CodeGift).SingleOrDefaultAsync();
         }
 
         public async Task<CodeGift> GetByID(int ID)
@@ -66,11 +66,11 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             if(time >= result.StartDate &&  time <= result.ExpireDate && 
                 result.TotalUserRegistered < result.TotalUserCount)
             {
-                return true;
+                return false;
             }
             else
             {
-                return false; 
+                return true; 
             }
         }
     }

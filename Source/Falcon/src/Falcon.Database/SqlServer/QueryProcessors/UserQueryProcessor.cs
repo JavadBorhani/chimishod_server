@@ -5,6 +5,7 @@ using Falcon.EFCommonContext.DbModel;
 using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
+using System;
 
 namespace Falcon.Database.SqlServer.QueryProcessors
 {
@@ -23,11 +24,16 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             if (Coin < 0)
                 return -1; 
             //TODO : Checkout Threading 
-            var userCoin = await mDb.Set<User>().Where(u => u.ID == mUserSession.UserID).Select(u => u.TotalStars).SingleOrDefaultAsync();
-            userCoin += Coin;
+            var user = await mDb.Set<User>().Where(u => u.ID == mUserSession.ID).SingleOrDefaultAsync();
+            user.TotalStars += Coin;
 
             await mDb.SaveChangesAsync();
-            return userCoin;
+            return user.TotalStars;
+        }
+
+        public async Task<int> GetTotalCoin()
+        {
+            return await mDb.Set<User>().AsNoTracking().Where(u => u.ID == mUserSession.ID).Select(u => u.TotalStars).SingleOrDefaultAsync();
         }
     }
 }

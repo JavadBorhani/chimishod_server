@@ -25,7 +25,7 @@ namespace Falcon.Web.Common.Security
             }
         }
 
-        public int UserID
+        public int ID
         {
             get
             {
@@ -46,6 +46,14 @@ namespace Falcon.Web.Common.Security
             get
             {
                 return ((ClaimsPrincipal)HttpContext.Current.User).FindFirst(ClaimTypes.Sid).Value; //TODO : Solve This issue later
+            }
+        }
+
+        public DateTime LastSeenDateTime
+        {
+            get
+            {
+                return Convert.ToDateTime(((ClaimsPrincipal)HttpContext.Current.User).FindFirst(ClaimTypes.DateOfBirth).Value);
             }
         }
     }

@@ -42,7 +42,7 @@ namespace Falcon.Web.Api.Controllers.V1
         public async Task<IHttpActionResult> GetFavoriteList()
         {
             
-            var favoritedQuestion = await mDb.Set<Favorite>().Where(f => f.UserID == mUserSession.UserID).Select(f => f.Question).ToListAsync();
+            var favoritedQuestion = await mDb.Set<Favorite>().Where(f => f.UserID == mUserSession.ID).Select(f => f.Question).ToListAsync();
 
             if(favoritedQuestion.Count > 0 )
             {
@@ -62,7 +62,7 @@ namespace Falcon.Web.Api.Controllers.V1
         public async Task<IHttpActionResult> RemoveFavoritedQuestion(int QuestionID)
         {
             
-            var favoritedQuestions = await mDb.Set<Favorite>().Where( f => f.UserID == mUserSession.UserID && f.QuestionID == QuestionID).ToArrayAsync();
+            var favoritedQuestions = await mDb.Set<Favorite>().Where( f => f.UserID == mUserSession.ID && f.QuestionID == QuestionID).ToArrayAsync();
 
             if (favoritedQuestions != null)
             {

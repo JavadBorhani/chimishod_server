@@ -38,8 +38,8 @@ namespace Falcon.Web.Api.Controllers.V1
         public async Task<IHttpActionResult> GetUserFacePictureList()
         {
                 var avatars = await mDb.Set<UserAvatar>().AsNoTracking().ToArrayAsync();
-                var selectedAvatar = await mDb.Set<SelectedAvatar>().AsNoTracking().Where(st => st.UserID == mUserSession.UserID).Select(sc => sc.UserAvatarID).SingleOrDefaultAsync();
-                var purchasedAvatars = await mDb.Set<PurchaseAvatar>().AsNoTracking().Where(pt => pt.UserID == mUserSession.UserID).Select(c => c.UserAvatarID).ToListAsync();
+                var selectedAvatar = await mDb.Set<SelectedAvatar>().AsNoTracking().Where(st => st.UserID == mUserSession.ID).Select(sc => sc.UserAvatarID).SingleOrDefaultAsync();
+                var purchasedAvatars = await mDb.Set<PurchaseAvatar>().AsNoTracking().Where(pt => pt.UserID == mUserSession.ID).Select(c => c.UserAvatarID).ToListAsync();
 
                 if (avatars.Length > 0 && selectedAvatar > 0 && purchasedAvatars.Count >= 0)
                 {

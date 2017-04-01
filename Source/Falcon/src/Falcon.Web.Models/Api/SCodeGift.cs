@@ -15,7 +15,6 @@ namespace Falcon.Web.Models.Api
     }
     public class SCodeGift
     {
-        public int ID { get; set; }
         public int TotalCoin { get; set; }        
         public ResponseState ResponseCode { get; set; }
     }

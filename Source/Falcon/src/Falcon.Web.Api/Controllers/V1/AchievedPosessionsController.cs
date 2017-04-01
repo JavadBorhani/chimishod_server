@@ -46,7 +46,7 @@ namespace Falcon.Web.Api.Controllers.V1
             var achievables = await mDb.Set<AchievedPosession>()
                                                         .AsNoTracking()
                                                         .Include( Ap => Ap.Achievement)
-                                                        .Where( ap => ap.UserID == mUserSession.UserID && 
+                                                        .Where( ap => ap.UserID == mUserSession.ID && 
                                                                 ap.AchieveStateID == Constants.DefaultValues.AchievementDefaultAchievableID)
                                                         .Select( ap => ap.Achievement)
                                                         .OrderBy( ap => ap.ID)
@@ -72,13 +72,13 @@ namespace Falcon.Web.Api.Controllers.V1
             else
             {
                 List<Achievement> newAchievables = new List<Achievement>();
-                var userCurrentLevel = await mDb.Set<User>().Where(u => u.ID == mUserSession.UserID).Select(u => u.CurrentLevelID).SingleOrDefaultAsync();
+                var userCurrentLevel = await mDb.Set<User>().Where(u => u.ID == mUserSession.ID).Select(u => u.CurrentLevelID).SingleOrDefaultAsync();
 
                     
                 var achievableAndAchievedIDList = await mDb.Set<AchievedPosession>()
                                         .AsNoTracking()
                                         .Include(ap => ap.Achievement)
-                                        .Where(ap => ap.UserID == mUserSession.UserID &&
+                                        .Where(ap => ap.UserID == mUserSession.ID &&
                                                 ap.AchieveStateID == Constants.DefaultValues.AchievementDefaultAchievedID)
                                         .Select(ap => ap.Achievement.ID).ToListAsync();
 
@@ -97,7 +97,7 @@ namespace Falcon.Web.Api.Controllers.V1
                 {
                     if (!string.IsNullOrEmpty(adhoc[i].Query))
                     {
-                        int result = await mDb.Database.SqlQuery<int>(adhoc[i].Query, mUserSession.UserID).SingleOrDefaultAsync();
+                        int result = await mDb.Database.SqlQuery<int>(adhoc[i].Query, mUserSession.ID).SingleOrDefaultAsync();
                         if (result >= 1)
                         {
                             newAchievables.Add(adhoc[i]);
@@ -125,7 +125,7 @@ namespace Falcon.Web.Api.Controllers.V1
                     var isAchievable = await mDb.Set<Answer>()
                         .AsNoTracking()
                         .Include(a => a.Question)
-                        .Where(u => u.UserID == mUserSession.UserID && u.Question.Catgory_ID == (value ?? 0))
+                        .Where(u => u.UserID == mUserSession.ID && u.Question.Catgory_ID == (value ?? 0))
                         .CountAsync() >= usuals[i].CategoryQuantity;
 
                     if (isAchievable)
@@ -142,7 +142,7 @@ namespace Falcon.Web.Api.Controllers.V1
                 {
                     list.Add(new AchievedPosession
                     {
-                        UserID = mUserSession.UserID,
+                        UserID = mUserSession.ID,
                         AchievementID = newAchievables[i].ID,
                         AchieveStateID = Constants.DefaultValues.AchievementDefaultAchievableID,
                         AchievedDate = null,    
@@ -253,7 +253,7 @@ namespace Falcon.Web.Api.Controllers.V1
             var achievedList = await mDb.Set<AchievedPosession>()
                                                         .AsNoTracking()
                                                         .Include( ap => ap.Achievement)
-                                                        .Where( ap => ap.UserID == mUserSession.UserID && 
+                                                        .Where( ap => ap.UserID == mUserSession.ID && 
                                                                 ap.AchieveStateID == Constants.DefaultValues.AchievementDefaultAchievedID)
                                                         .Select(ap => ap.Achievement)
                                                         .ToListAsync();
@@ -275,7 +275,7 @@ namespace Falcon.Web.Api.Controllers.V1
             var achievableList = await mDb.Set<AchievedPosession>()
                                             .AsNoTracking()
                                             .Include(ap => ap.Achievement)
-                                            .Where( ap => ap.UserID == mUserSession.UserID &&  
+                                            .Where( ap => ap.UserID == mUserSession.ID &&  
                                                     ap.AchieveStateID == Constants.DefaultValues.AchievementDefaultAchievableID)
                                             .Select(ap => ap.Achievement)
                                             .ToListAsync();

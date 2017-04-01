@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 
-namespace Falcon.Data.QueryProcessors
+namespace Falcon.Web.Api.InquiryProcessing.Public
 {
-    public interface IUserQueryProcessor
+    public interface IUsersInquiryProcessor
     {
-        Task<int> AddCoin(int Coin);
         Task<int> GetTotalCoin();
     }
 }

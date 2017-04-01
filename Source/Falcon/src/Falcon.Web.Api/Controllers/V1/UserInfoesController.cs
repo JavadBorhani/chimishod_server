@@ -75,7 +75,7 @@ namespace Falcon.Web.Api.Controllers.V1
         {
             
             var info = await mDb.Set<UserInfo>().AsNoTracking()
-                .Where(ui => ui.UserID == mUserSession.UserID)
+                .Where(ui => ui.UserID == mUserSession.ID)
                 .Include(ui => ui.User)
                 .Select(ui => new 
                 {
@@ -104,10 +104,10 @@ namespace Falcon.Web.Api.Controllers.V1
             if (ModelState.IsValid)
             {
                 string EditSucceed;
-                var Info = await mDb.Set<UserInfo>().Where(u => u.UserID == mUserSession.UserID).Include(u => u.User).SingleOrDefaultAsync();
+                var Info = await mDb.Set<UserInfo>().Where(u => u.UserID == mUserSession.ID).Include(u => u.User).SingleOrDefaultAsync();
                 if (Info.IsEditable > 0 && !string.IsNullOrEmpty(UserInfo.Email))
                 {
-                    if(await UserNameIsAccessible(mUserSession.UserID, UserInfo.UserName))
+                    if(await UserNameIsAccessible(mUserSession.ID, UserInfo.UserName))
                     {
                         if(await EmailIsAccessible(Info.ID, UserInfo.Email))
                         {

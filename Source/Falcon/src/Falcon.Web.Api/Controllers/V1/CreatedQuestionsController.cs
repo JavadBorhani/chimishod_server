@@ -119,7 +119,7 @@ namespace Falcon.Web.Api.App_Start
         public async Task<PagedDataInquiryResponse<SNewCreatedQuestions>> GetCreatedQuestionList(int PageNumber)
         {
             var page = mPagedDataRequestFactory.Create(PageNumber, mAppState.State().Paging_DefaultPageSize);
-            var createdQuestions = await mCreatedQuestionsInquiryProcessor.GetQuestionList(page , mUserSession.UserID);
+            var createdQuestions = await mCreatedQuestionsInquiryProcessor.GetQuestionList(page , mUserSession.ID);
             return createdQuestions;
         }
 
