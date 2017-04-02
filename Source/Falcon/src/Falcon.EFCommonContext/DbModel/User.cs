@@ -45,7 +45,8 @@ namespace Falcon.EFCommonContext.DbModel
         public int LevelProgress { get; set; }
         public Nullable<int> CurrentLevelID { get; set; }
         public bool IsAbleToWriteComment { get; set; }
-        public System.DateTime LastSceneDateTime { get; set; }
+        public System.DateTime LastSeenDateTime { get; set; }
+        public System.DateTime PrevLastSeenDateTime { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<AchievedCodeGift> AchievedCodeGifts { get; set; }

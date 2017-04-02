@@ -56,5 +56,13 @@ namespace Falcon.Web.Common.Security
                 return Convert.ToDateTime(((ClaimsPrincipal)HttpContext.Current.User).FindFirst(ClaimTypes.DateOfBirth).Value);
             }
         }
+
+        public DateTime PrevLastSeenDateTime
+        {
+            get
+            {
+                return Convert.ToDateTime(((ClaimsPrincipal)HttpContext.Current.User).FindFirst(ClaimTypes.UserData).Value);
+            }
+        }
     }
 }

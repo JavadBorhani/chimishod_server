@@ -406,7 +406,8 @@
           <Property Name="LevelProgress" Type="int" Nullable="false" />
           <Property Name="CurrentLevelID" Type="int" />
           <Property Name="IsAbleToWriteComment" Type="bit" Nullable="false" />
-          <Property Name="LastSceneDateTime" Type="datetime" Nullable="false" />
+          <Property Name="LastSeenDateTime" Type="datetime" Nullable="false" />
+          <Property Name="PrevLastSeenDateTime" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="UserAvatar">
           <Key>
@@ -1959,7 +1960,8 @@
           <Property Name="LevelProgress" Type="Int32" Nullable="false" />
           <Property Name="CurrentLevelID" Type="Int32" />
           <Property Name="IsAbleToWriteComment" Type="Boolean" Nullable="false" />
-          <Property Name="LastSceneDateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="LastSeenDateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="PrevLastSeenDateTime" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="AchievedCodeGifts" Relationship="Falcon.DbModel.FK_AchievedCodeGift_User" FromRole="User" ToRole="AchievedCodeGift" />
           <NavigationProperty Name="AchievedGifts" Relationship="Falcon.DbModel.FK_AchievedGifts_User" FromRole="User" ToRole="AchievedGift" />
           <NavigationProperty Name="AchievedPosessions" Relationship="Falcon.DbModel.FK_AchievedQuests_User" FromRole="User" ToRole="AchievedPosession" />
@@ -3055,7 +3057,8 @@
           <EntitySetMapping Name="Users">
             <EntityTypeMapping TypeName="Falcon.DbModel.User">
               <MappingFragment StoreEntitySet="User">
-                <ScalarProperty Name="LastSceneDateTime" ColumnName="LastSceneDateTime" />
+                <ScalarProperty Name="PrevLastSeenDateTime" ColumnName="PrevLastSeenDateTime" />
+                <ScalarProperty Name="LastSeenDateTime" ColumnName="LastSeenDateTime" />
                 <ScalarProperty Name="IsAbleToWriteComment" ColumnName="IsAbleToWriteComment" />
                 <ScalarProperty Name="CurrentLevelID" ColumnName="CurrentLevelID" />
                 <ScalarProperty Name="LevelProgress" ColumnName="LevelProgress" />

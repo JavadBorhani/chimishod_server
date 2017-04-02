@@ -69,7 +69,7 @@ namespace Falcon.Database.SqlServer.QueryProcessors
                     Day = g.Day,
                     Priority = gt.Priority,
                     Description = g.Description,
-                    GiftType = (GiftTypes)Enum.Parse(typeof(GiftTypes) , g.GiftType.Name)
+                    GiftTypeString = gt.Name
                 })
                 .OrderBy(m => m.Priority)
                 .ToListAsync();
@@ -95,6 +95,7 @@ namespace Falcon.Database.SqlServer.QueryProcessors
 
         public bool CheckGiftLogic(SGift CurrentGift)
         {
+            CurrentGift.GiftType = (GiftTypes)Enum.Parse(typeof(GiftTypes), CurrentGift.GiftTypeString);
             switch (CurrentGift.GiftType)
             {
                 case GiftTypes.Daily:
@@ -111,11 +112,12 @@ namespace Falcon.Database.SqlServer.QueryProcessors
 
         public bool CheckGiftLogic(SGift CurrentGift, Gift Gift, DateTime DateTime)
         {
+            CurrentGift.GiftType = (GiftTypes)Enum.Parse(typeof(GiftTypes), CurrentGift.GiftTypeString);
             switch (CurrentGift.GiftType)
             {
                 case GiftTypes.Daily:
 
-                    if ((DateTime - mUserSession.LastSeenDateTime).Days > CurrentGift.Day)
+                    if ((DateTime - mUserSession.PrevLastSeenDateTime).Days > CurrentGift.Day)
                         return true;
 
                     break;
@@ -123,7 +125,7 @@ namespace Falcon.Database.SqlServer.QueryProcessors
                 case GiftTypes.DateTime:
 
                     if ((Gift.StartDate <= DateTime && Gift.ExpireDate >= DateTime))
-                        return false;
+                        return true;
 
                     break;
 

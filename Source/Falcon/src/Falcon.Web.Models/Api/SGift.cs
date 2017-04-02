@@ -26,5 +26,7 @@ namespace Falcon.Web.Models.Api
 
         [IgnoreDataMember]
         public GiftTypes GiftType { get; set; }
+        [IgnoreDataMember]
+        public string GiftTypeString { get; set; }
     }
 }

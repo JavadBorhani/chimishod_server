@@ -14,5 +14,6 @@ namespace Falcon.Common.Security
         int  ID { get; }
         string  UserName { get; }
         DateTime LastSeenDateTime { get; }
+        DateTime PrevLastSeenDateTime { get; }
     }
 }

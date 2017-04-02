@@ -122,8 +122,9 @@ namespace Falcon.Web.Api.Controllers.V1
                     PicUrl = avatar.PicUrl,
                 };
 
-                var userLastScene = await mDb.Set<User>().Where(c => c.ID == user.ID).Select(c => c.LastSceneDateTime).SingleOrDefaultAsync();
-                userLastScene = mDateTime.Now;
+                var Seen = await mDb.Set<User>().Where(c => c.ID == user.ID).SingleOrDefaultAsync();
+                Seen.PrevLastSeenDateTime = Seen.LastSeenDateTime; 
+                Seen.LastSeenDateTime = mDateTime.Now;
                 await mDb.SaveChangesAsync();
 
                 return ResponseMessage(Request.CreateResponse(HttpStatusCode.OK, new { UserModel, UserState , UserAvatar , CurrentLevel , NextLevel , CurrentSelectedTheme })); //TODO : Does not support xml change to something generic
@@ -147,7 +148,8 @@ namespace Falcon.Web.Api.Controllers.V1
                 LevelProgress = Constants.DefaultUser.LevelProgress,
                 CurrentLevelID = Constants.DefaultUser.CurrentLevelD,
                 IsAbleToWriteComment = Constants.DefaultUser.IsAbleToWriteComment,
-                LastSceneDateTime = mDateTime.Now,
+                LastSeenDateTime = mDateTime.Now,
+                PrevLastSeenDateTime = mDateTime.Now,
             };
 
             var registeredUser = mDb.Set<User>().Add(user);
