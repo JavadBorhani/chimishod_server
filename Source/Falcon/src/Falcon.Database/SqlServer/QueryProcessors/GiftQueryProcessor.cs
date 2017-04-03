@@ -81,7 +81,7 @@ namespace Falcon.Database.SqlServer.QueryProcessors
         {
             return await mDb.Set<AchievedGift>()
                 .AsNoTracking()
-                .CountAsync(ag => ag.GiftID == ID) > 0;
+                .CountAsync(ag => ag.GiftID == ID && ag.UserID == mUserSession.ID) > 0;
         }
 
         public async Task<List<int>> GetAchievedIdList()

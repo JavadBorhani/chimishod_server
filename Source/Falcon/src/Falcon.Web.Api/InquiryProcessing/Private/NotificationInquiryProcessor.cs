@@ -69,6 +69,11 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
                             var coin = await mUserQueryProcessor.AddCoin(sGift.Prize);
                             return coin;
                         }
+                    }
+                    else
+                    {
+                        var coin = await mUserQueryProcessor.GetTotalCoin();
+                        return coin;
                     }    
                 }
             }
