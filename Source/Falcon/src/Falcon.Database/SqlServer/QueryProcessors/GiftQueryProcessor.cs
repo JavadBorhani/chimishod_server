@@ -129,6 +129,9 @@ namespace Falcon.Database.SqlServer.QueryProcessors
 
                     break;
 
+                case GiftTypes.Message:
+                    return true;
+
                 default:
                     return false;
             }

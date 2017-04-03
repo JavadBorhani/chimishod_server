@@ -4,6 +4,7 @@ namespace Falcon.Common
 {
     public static class Constants
     {
+        //TODO : Default CategoryID should move to application state 
         public static class DefaultUser
         {
             //public const string UserName = "Guest_"; is in db

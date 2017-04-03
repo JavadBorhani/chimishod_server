@@ -50,7 +50,7 @@ namespace Falcon.Web.Api.App_Start
         }
 
         [ResponseType(typeof(SUserState))]
-        [Route("CreatedQuestions/Create/{UUID}/{CategoryID}")]
+        [Route("CreatedQuestions/Create/{CategoryID}")]
         [HttpPost]
         public async Task<IHttpActionResult> CreateNewQuestion(int CategoryID, [FromBody] SCreatedQuestion createdQuestion)
         {

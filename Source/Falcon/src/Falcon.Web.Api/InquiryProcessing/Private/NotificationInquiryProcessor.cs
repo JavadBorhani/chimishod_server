@@ -61,20 +61,21 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
                 var achieved = await mGiftQueryProcessor.IsAchieved(NotificationID);
                 if (!achieved)
                 {
-                    if(sGift.GiftType != GiftTypes.Message)
+                    if (mGiftQueryProcessor.CheckGiftLogic(sGift, gift, mDateTime.Now))
                     {
-                        if (mGiftQueryProcessor.CheckGiftLogic(sGift, gift, mDateTime.Now))
+                        var result = await mGiftQueryProcessor.AddAchievedGift(NotificationID);
+
+                        if (sGift.GiftType != GiftTypes.Message)
                         {
-                            var result = await mGiftQueryProcessor.AddAchievedGift(NotificationID);
                             var coin = await mUserQueryProcessor.AddCoin(sGift.Prize);
                             return coin;
                         }
+                        else
+                        {
+                            var coin = await mUserQueryProcessor.GetTotalCoin();
+                            return coin;
+                        }
                     }
-                    else
-                    {
-                        var coin = await mUserQueryProcessor.GetTotalCoin();
-                        return coin;
-                    }    
                 }
             }
             return 0;   
