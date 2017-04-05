@@ -16,9 +16,11 @@ namespace Falcon.EFCommonContext.DbModel
     {
         public int ID { get; set; }
         public int UserID { get; set; }
-        public int StoreItemID { get; set; }
-        public System.DateTime OrderDate { get; set; }
-        public string OrderKey { get; set; }
+        public int StoreID { get; set; }
+        public System.DateTime PurchasedDate { get; set; }
+        public string PurchasedToken { get; set; }
+        public int PurchaseState { get; set; }
+        public int ConsumptionState { get; set; }
     
         public virtual Store Store { get; set; }
         public virtual User User { get; set; }

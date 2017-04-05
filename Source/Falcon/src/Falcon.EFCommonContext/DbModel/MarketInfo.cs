@@ -12,29 +12,29 @@ namespace Falcon.EFCommonContext.DbModel
     using System;
     using System.Collections.Generic;
     
-    public partial class Store
+    public partial class MarketInfo
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Store()
+        public MarketInfo()
         {
-            this.Orders = new HashSet<Order>();
+            this.Stores = new HashSet<Store>();
         }
     
         public int ID { get; set; }
-        public string Name { get; set; }
-        public string Description { get; set; }
-        public int MarketID { get; set; }
-        public int Price { get; set; }
-        public string SKU { get; set; }
-        public int Star { get; set; }
-        public bool IsAccessibleInAllStores { get; set; }
-        public string Icon { get; set; }
-        public string RectangleColor { get; set; }
+        public string MarketName { get; set; }
+        public string AppPackageName { get; set; }
+        public string PaymentVerificationLink { get; set; }
+        public string LinkToAuthorize { get; set; }
+        public string ClientID { get; set; }
+        public string ClientSecret { get; set; }
+        public string AccessToken { get; set; }
+        public string RefreshToken { get; set; }
+        public string RedirectURI { get; set; }
+        public Nullable<System.DateTime> ExpireAt { get; set; }
         public System.DateTime CreatedDate { get; set; }
         public System.DateTime UpdatedDate { get; set; }
     
-        public virtual MarketInfo MarketInfo { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Order> Orders { get; set; }
+        public virtual ICollection<Store> Stores { get; set; }
     }
 }

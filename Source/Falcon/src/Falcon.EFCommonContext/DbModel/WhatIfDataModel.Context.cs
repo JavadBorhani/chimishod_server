@@ -46,6 +46,7 @@ namespace Falcon.EFCommonContext.DbModel
         public virtual DbSet<GiftType> GiftTypes { get; set; }
         public virtual DbSet<Level> Levels { get; set; }
         public virtual DbSet<Manufacture> Manufactures { get; set; }
+        public virtual DbSet<MarketInfo> MarketInfoes { get; set; }
         public virtual DbSet<Order> Orders { get; set; }
         public virtual DbSet<OurAdvertisement> OurAdvertisements { get; set; }
         public virtual DbSet<PurchaseAvatar> PurchaseAvatars { get; set; }

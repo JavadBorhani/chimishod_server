@@ -9,6 +9,7 @@ namespace Falcon.Web.Models.Api
     public class SStore
     {
         public int ID { get; set; }
+        public string SKU { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public int Star { get; set; }

@@ -15,6 +15,7 @@ using Falcon.Web.Common;
 using Falcon.EFCommonContext;
 using Falcon.Web.Api.Utilities.Base;
 using Falcon.Web.Api.MaintenanceProcessing.Public;
+using System.Net.Http;
 
 namespace Falcon.Web.Api.Controllers.V1
 {
@@ -57,6 +58,19 @@ namespace Falcon.Web.Api.Controllers.V1
             }
         }
 
+        [HttpPost]
+        [Route("Stores/ValidatePurchase")]
+        public async Task<IHttpActionResult> PurchaseHardCurrency(SHardCurrency HardCurrency)
+        {
+            
+            // check token expiration time 
+            // get new access token if expired
+            // send validation request  
+            // if purchased add defined coin to database
+            // if not return not purchased 
+
+                return Ok();
+        }
 
         private bool StoreExists(int id)
         {
