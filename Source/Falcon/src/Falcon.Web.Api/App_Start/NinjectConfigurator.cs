@@ -97,11 +97,15 @@ namespace Falcon.Web.Api
 
         private void AddAdHoc(IKernel container)
         {
+            container.Bind<IMarketVerificationProcessor>().To<MarketVerificationProcessor>().InRequestScope();
+
             container.Bind<IDateTime>().To<DateTimeAdapter>().InSingletonScope();
             container.Bind<IBasicPrincipalSecurityService>().To<BasicPrincipalSecurityService>().InSingletonScope();
 
             //Global Application State
             container.Bind<IGlobalApplicationState>().To<GlobalApplicationState>().InSingletonScope();
+            
+
         }
 
         private void ConfigureAutoMapper(IKernel container)
