@@ -59,6 +59,7 @@
     <Compile Include="Api\SHardCurrency.cs" />
     <Compile Include="Api\SLeaderBoard.cs" />
     <Compile Include="Api\SLevel.cs" />
+    <Compile Include="Api\SMarketInfo.cs" />
     <Compile Include="Api\SNewCreatedQuestions.cs" />
     <Compile Include="Api\SNotify.cs" />
     <Compile Include="Api\SQuestionBoost.cs" />

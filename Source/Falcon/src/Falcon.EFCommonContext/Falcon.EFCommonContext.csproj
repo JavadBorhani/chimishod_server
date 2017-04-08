@@ -120,6 +120,9 @@
     <Compile Include="DbModel\OurAdvertisement.cs">
       <DependentUpon>WhatIfDataModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="DbModel\PriceList.cs">
+      <DependentUpon>WhatIfDataModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="DbModel\PurchaseAvatar.cs">
       <DependentUpon>WhatIfDataModel.tt</DependentUpon>
     </Compile>

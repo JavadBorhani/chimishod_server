@@ -49,6 +49,8 @@
     <Compile Include="QueryProcessors\ICommentsQueryProcessor.cs" />
     <Compile Include="QueryProcessors\ICreatedQuestionsQueryProcessor.cs" />
     <Compile Include="QueryProcessors\IGiftQueryProcessor.cs" />
+    <Compile Include="QueryProcessors\IMarketInfoQueryProcessor.cs" />
+    <Compile Include="QueryProcessors\IStoresQueryProcessor.cs" />
     <Compile Include="QueryProcessors\IUserQueryProcessor.cs" />
     <Compile Include="QueryResult.cs" />
     <Compile Include="ResultPagingUtility.cs" />

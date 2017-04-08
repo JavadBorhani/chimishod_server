@@ -18,6 +18,7 @@ namespace Falcon.EFCommonContext.DbModel
         public Store()
         {
             this.Orders = new HashSet<Order>();
+            this.PriceLists = new HashSet<PriceList>();
         }
     
         public int ID { get; set; }
@@ -36,5 +37,7 @@ namespace Falcon.EFCommonContext.DbModel
         public virtual MarketInfo MarketInfo { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Order> Orders { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<PriceList> PriceLists { get; set; }
     }
 }

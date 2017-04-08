@@ -57,6 +57,8 @@
     <Compile Include="SqlServer\QueryProcessors\CommentsQueryProcessor.cs" />
     <Compile Include="SqlServer\QueryProcessors\CreatedQuestionsQueryProcessor.cs" />
     <Compile Include="SqlServer\QueryProcessors\GiftQueryProcessor.cs" />
+    <Compile Include="SqlServer\QueryProcessors\MarketInfoQueryProcessor.cs" />
+    <Compile Include="SqlServer\QueryProcessors\StoresQueryProcessor.cs" />
     <Compile Include="SqlServer\QueryProcessors\UserQueryProcessor.cs" />
   </ItemGroup>
   <ItemGroup>

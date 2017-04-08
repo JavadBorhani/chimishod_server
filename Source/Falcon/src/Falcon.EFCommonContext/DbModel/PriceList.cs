@@ -12,19 +12,21 @@ namespace Falcon.EFCommonContext.DbModel
     using System;
     using System.Collections.Generic;
     
-    public partial class Order
+    public partial class PriceList
     {
-        public int ID { get; set; }
-        public int UserID { get; set; }
-        public int StoreID { get; set; }
-        public int PriceID { get; set; }
-        public System.DateTime PurchasedDate { get; set; }
-        public string PurchasedToken { get; set; }
-        public int PurchaseState { get; set; }
-        public int ConsumptionState { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public PriceList()
+        {
+            this.Orders = new HashSet<Order>();
+        }
     
-        public virtual PriceList PriceList { get; set; }
+        public int ID { get; set; }
+        public int StoreID { get; set; }
+        public int Price { get; set; }
+        public System.DateTime InsertDate { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Order> Orders { get; set; }
         public virtual Store Store { get; set; }
-        public virtual User User { get; set; }
     }
 }
