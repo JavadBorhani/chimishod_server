@@ -23,6 +23,7 @@ using Falcon.Web.Api.Security.Public;
 using Falcon.Web.Api.Security.Private;
 using Falcon.Web.Api.MaintenanceProcessing.Public;
 using Falcon.Web.Api.MaintenanceProcessing.Private;
+using Falcon.Common.Serialization;
 
 namespace Falcon.Web.Api
 {
@@ -100,12 +101,13 @@ namespace Falcon.Web.Api
             container.Bind<IMarketVerificationProcessor>().To<MarketVerificationProcessor>().InRequestScope();
 
             container.Bind<IDateTime>().To<DateTimeAdapter>().InSingletonScope();
+            container.Bind<IJsonManager>().To<JsonManager>().InSingletonScope();
+
             container.Bind<IBasicPrincipalSecurityService>().To<BasicPrincipalSecurityService>().InSingletonScope();
 
             //Global Application State
             container.Bind<IGlobalApplicationState>().To<GlobalApplicationState>().InSingletonScope();
             
-
         }
 
         private void ConfigureAutoMapper(IKernel container)

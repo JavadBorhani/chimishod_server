@@ -5,7 +5,7 @@ using System.Web;
 
 namespace Falcon.Web.Api.Security
 {
-    public class TokenError
+    public class PurchaseVerificationError : PurchaseVerificationResponse
     {
         public string error { get; set; }
         public string error_description { get; set; }

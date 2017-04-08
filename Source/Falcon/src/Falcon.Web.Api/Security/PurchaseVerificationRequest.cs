@@ -7,6 +7,7 @@ namespace Falcon.Web.Api.Security
 {
     public class PurchaseVerificationRequest
     {
+        public string AccessToken { get; set; }
         public string VerificationLink { get; set; }
         public string AppPackageName { get; set; }
         public string ProductID { get; set; }

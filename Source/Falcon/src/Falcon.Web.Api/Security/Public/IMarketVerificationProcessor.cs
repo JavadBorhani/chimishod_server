@@ -8,8 +8,8 @@ namespace Falcon.Web.Api.Security.Public
 {
     public interface IMarketVerificationProcessor
     {
-        Task<TokenResponse> GetFirstHandShaking(TokenRequest TokenRequest);
-        Task<TokenResponse> GetTokenWithRefreshToken(RefreshTokenRequest RefreshTokenRequest);
+        Task<TokenResponse> GetFirstHandShaking(string MarketTokenVerifierUri, TokenRequest TokenRequest);
+        Task<TokenResponse> GetTokenWithRefreshToken(string MarketTokenVerifierUri , RefreshTokenRequest RefreshTokenRequest);
         Task<PurchaseVerificationResponse> VerifyPurchase(PurchaseVerificationRequest PurchaseVerificationRequest);
     }
 }
