@@ -26,16 +26,19 @@ namespace Falcon.Web.Api.Controllers.V1
         private readonly IMapper mMapper;
         private readonly IDateTime mDateTime;
         private readonly IGlobalApplicationState mAppState;
+        private readonly IStoresMaintenanceProcessor mStoreMaintenanceProcessor;
 
         public StoresController(IMapper Mapper , 
             IDateTime DateTime, 
             IDbContext Database , 
-            IGlobalApplicationState AppState)
+            IGlobalApplicationState AppState, 
+            IStoresMaintenanceProcessor StoresMaintenanceProcessor)
         {
             mMapper = Mapper;
             mDateTime = DateTime;
             mDb = Database;
             mAppState = AppState;
+            mStoreMaintenanceProcessor = StoresMaintenanceProcessor;
         }
 
         [ResponseType(typeof(SStore))]
@@ -62,14 +65,12 @@ namespace Falcon.Web.Api.Controllers.V1
         [Route("Stores/ValidatePurchase")]
         public async Task<IHttpActionResult> PurchaseHardCurrency(SHardCurrency HardCurrency)
         {
-            
-            // check token expiration time 
-            // get new access token if expired
-            // send validation request  
-            // if purchased add defined coin to database
-            // if not return not purchased 
 
-                return Ok();
+            if (!ModelState.IsValid || HardCurrency.StoreItemID <= 0)
+                return null;
+             bool result = await mStoreMaintenanceProcessor.VerifyPurchase(HardCurrency);
+
+            return Ok();
         }
 
         private bool StoreExists(int id)

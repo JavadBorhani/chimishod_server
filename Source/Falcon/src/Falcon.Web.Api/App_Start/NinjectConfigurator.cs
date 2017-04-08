@@ -79,6 +79,7 @@ namespace Falcon.Web.Api
             container.Bind<IUserQueryProcessor>().To<UserQueryProcessor>().InRequestScope();
             container.Bind<ICodeGiftsQueryProcessor>().To<CodeGiftsQueryProcessor>().InRequestScope();
             container.Bind<IGiftQueryProcessor>().To<GiftQueryProcessor>().InRequestScope();
+            container.Bind<IStoresQueryProcessor>().To<StoresQueryProcessor>().InRequestScope();
             
         }
 
