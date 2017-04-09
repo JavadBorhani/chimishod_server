@@ -32,5 +32,14 @@ namespace Falcon.Common
                 return DateTime.Now.Ticks;
             }
         }
+        public DateTime ConvertEpochToUTCHumanReadable(long TimeInMilliseconds)
+        {
+            return new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddMilliseconds(TimeInMilliseconds);
+        }
+
+        public DateTime ConvertEpochToLocalHumanReadable(long TimeInMilliseconds)
+        {
+            return TimeZoneInfo.ConvertTime(ConvertEpochToUTCHumanReadable(TimeInMilliseconds), TimeZoneInfo.Local);
+        }
     }
 }

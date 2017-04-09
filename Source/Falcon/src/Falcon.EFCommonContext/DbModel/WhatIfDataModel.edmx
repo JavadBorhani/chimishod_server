@@ -298,7 +298,7 @@
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="int" Nullable="false" />
-          <Property Name="StoreID" Type="int" />
+          <Property Name="StoreID" Type="int" Nullable="false" />
           <Property Name="Price" Type="int" Nullable="false" />
           <Property Name="InsertDate" Type="datetime" Nullable="false" />
         </EntityType>
@@ -412,9 +412,9 @@
           <Property Name="MarketID" Type="int" Nullable="false" />
           <Property Name="Price" Type="int" Nullable="false" />
           <Property Name="SKU" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="Star" Type="int" Nullable="false" />
+          <Property Name="Coin" Type="int" Nullable="false" />
           <Property Name="IsAccessibleInAllStores" Type="bit" Nullable="false" />
-          <Property Name="IsInOff" Type="bit" Nullable="false" />
+          <Property Name="DiscountAmount" Type="int" Nullable="false" />
           <Property Name="Icon" Type="nvarchar" MaxLength="150" Nullable="false" />
           <Property Name="RectangleColor" Type="varchar" MaxLength="10" Nullable="false" />
           <Property Name="CreatedDate" Type="datetime" Nullable="false" />
@@ -816,7 +816,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_PriceList_Store">
-          <End Role="Store" Type="Self.Store" Multiplicity="0..1">
+          <End Role="Store" Type="Self.Store" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
           <End Role="PriceHistory" Type="Self.PriceHistory" Multiplicity="*" />
@@ -1912,7 +1912,7 @@
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" />
-          <Property Name="StoreID" Type="Int32" />
+          <Property Name="StoreID" Type="Int32" Nullable="false" />
           <Property Name="Price" Type="Int32" Nullable="false" />
           <Property Name="InsertDate" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="Store" Relationship="Falcon.DbModel.FK_PriceList_Store" FromRole="PriceHistory" ToRole="Store" />
@@ -2052,9 +2052,9 @@
           <Property Name="MarketID" Type="Int32" Nullable="false" />
           <Property Name="Price" Type="Int32" Nullable="false" />
           <Property Name="SKU" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Star" Type="Int32" Nullable="false" />
+          <Property Name="Coin" Type="Int32" Nullable="false" />
           <Property Name="IsAccessibleInAllStores" Type="Boolean" Nullable="false" />
-          <Property Name="IsInOff" Type="Boolean" Nullable="false" />
+          <Property Name="DiscountAmount" Type="Int32" Nullable="false" />
           <Property Name="Icon" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
           <Property Name="RectangleColor" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
@@ -2578,7 +2578,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_PriceList_Store">
-          <End Type="Falcon.DbModel.Store" Role="Store" Multiplicity="0..1">
+          <End Type="Falcon.DbModel.Store" Role="Store" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
           <End Type="Falcon.DbModel.PriceHistory" Role="PriceHistory" Multiplicity="*" />
@@ -3224,9 +3224,9 @@
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
                 <ScalarProperty Name="RectangleColor" ColumnName="RectangleColor" />
                 <ScalarProperty Name="Icon" ColumnName="Icon" />
-                <ScalarProperty Name="IsInOff" ColumnName="IsInOff" />
+                <ScalarProperty Name="DiscountAmount" ColumnName="DiscountAmount" />
                 <ScalarProperty Name="IsAccessibleInAllStores" ColumnName="IsAccessibleInAllStores" />
-                <ScalarProperty Name="Star" ColumnName="Star" />
+                <ScalarProperty Name="Coin" ColumnName="Coin" />
                 <ScalarProperty Name="SKU" ColumnName="SKU" />
                 <ScalarProperty Name="Price" ColumnName="Price" />
                 <ScalarProperty Name="MarketID" ColumnName="MarketID" />

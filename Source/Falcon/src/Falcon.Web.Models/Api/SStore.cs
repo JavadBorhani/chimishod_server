@@ -16,5 +16,6 @@ namespace Falcon.Web.Models.Api
         public int Price { get; set; }
         public string Icon { get; set; }
         public string RectangleColor { get; set; }
+        public int DiscountAmount { get; set; }
     }
 }

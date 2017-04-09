@@ -18,6 +18,7 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
     {
 
         private readonly IStoresQueryProcessor mStoresQueryProcessor;
+        private readonly IUserQueryProcessor mUserQueryProcessor;
         private readonly IDateTime mDateTime;
         private readonly IMarketManager mMarketManager;
         private readonly IMapper mMapper;
@@ -29,14 +30,16 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
             IMarketInfoQueryProcessor MarketInfoQueryProcessor , 
             IMarketManager MarketManager , 
             IMapper Mapper ,
-            IWebUserSession UserSession)
+            IWebUserSession UserSession , 
+            IUserQueryProcessor UserQueryProcessor)
         {
         
             mStoresQueryProcessor = StoresQueryProcessor;
             mDateTime = DateTime;
             mMarketManager = MarketManager;
             mMapper = Mapper;
-            mUserSession = UserSession; 
+            mUserSession = UserSession;
+            mUserQueryProcessor = UserQueryProcessor;
         }
 
         public async Task<bool> VerifyPurchase(SHardCurrency HardCurrency)
@@ -60,19 +63,27 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
 
                     if (response is PurchaseVerificationSuccessful)
                     {
-                        var info = (PurchaseVerificationSuccessful) response;
-                        //var result = await mStoresQueryProcessor.SaveNewPurchase(new EFCommonContext.DbModel.Order
-                        //{
-                        //    ConsumptionState = info.consumptionState,
-                        //    PurchasedToken = HardCurrency.PurchasedToken,
-                        //    StoreID = HardCurrency.StoreItemID,
-                        //    UserID = mUserSession.ID,
-                        //    PriceID = 2000
-                        //});
+                        var info = (PurchaseVerificationSuccessful)response;
+                        if(info.purchaseTime <= 0 || string.IsNullOrEmpty(info.kind))
+                        {
+                            return false;
+                        }
+                        var result = await mStoresQueryProcessor.SaveNewPurchase(new EFCommonContext.DbModel.Order
+                        {
+                            UserID = mUserSession.ID,
+                            StoreID = HardCurrency.StoreItemID,
+                            ClientPrice = HardCurrency.ClientPrice,
+                            ServerPrice = item.Price,
+                            PurchasedDate = mDateTime.ConvertEpochToLocalHumanReadable(info.purchaseTime),
+                            PurchasedToken = HardCurrency.PurchasedToken,
+                            ConsumptionState = info.consumptionState,
+                        });
+                        int totalCoin = await mUserQueryProcessor.AddCoin(item.Coin);
+
                     }
                     else if (response is PurchaseVerificationError)
                     {
-                        var info = (PurchaseVerificationError) response;
+                        var info = (PurchaseVerificationError)response;
                     }
                 }
             }

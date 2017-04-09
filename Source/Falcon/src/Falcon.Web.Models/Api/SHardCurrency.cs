@@ -11,6 +11,8 @@ namespace Falcon.Web.Models.Api
     {
         [Required]
         public int StoreItemID { get; set; }
+        [Required]
+        public int ClientPrice { get; set; }
         [Required(AllowEmptyStrings = false , ErrorMessage = "PurchaseToken can not be null")]
         public string PurchasedToken { get; set;}
     }

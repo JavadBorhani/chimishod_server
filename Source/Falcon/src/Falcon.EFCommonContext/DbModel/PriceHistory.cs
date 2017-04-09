@@ -15,7 +15,7 @@ namespace Falcon.EFCommonContext.DbModel
     public partial class PriceHistory
     {
         public int ID { get; set; }
-        public Nullable<int> StoreID { get; set; }
+        public int StoreID { get; set; }
         public int Price { get; set; }
         public System.DateTime InsertDate { get; set; }
     

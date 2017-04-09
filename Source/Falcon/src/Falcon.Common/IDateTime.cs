@@ -13,5 +13,7 @@ namespace Falcon.Common
         DateTime UtcNow { get; }
         DateTime Now { get; }
         long Ticks { get; }
+        DateTime ConvertEpochToUTCHumanReadable(long TimeInMilliseconds);
+        DateTime ConvertEpochToLocalHumanReadable(long TimeInMilliseconds);
     }
 }

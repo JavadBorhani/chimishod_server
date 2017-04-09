@@ -27,9 +27,9 @@ namespace Falcon.EFCommonContext.DbModel
         public int MarketID { get; set; }
         public int Price { get; set; }
         public string SKU { get; set; }
-        public int Star { get; set; }
+        public int Coin { get; set; }
         public bool IsAccessibleInAllStores { get; set; }
-        public bool IsInOff { get; set; }
+        public int DiscountAmount { get; set; }
         public string Icon { get; set; }
         public string RectangleColor { get; set; }
         public System.DateTime CreatedDate { get; set; }
