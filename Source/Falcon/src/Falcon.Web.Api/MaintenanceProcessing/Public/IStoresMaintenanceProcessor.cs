@@ -9,6 +9,6 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Public
 {
     public interface IStoresMaintenanceProcessor
     {
-        Task<bool> VerifyPurchase(SHardCurrency HardCurrency);
+        Task<SHardCurrencyPurchasedVerification> VerifyPurchase(SHardCurrency HardCurrency);
     }
 }

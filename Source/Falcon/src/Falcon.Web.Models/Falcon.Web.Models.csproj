@@ -57,6 +57,7 @@
     <Compile Include="Api\SGift.cs" />
     <Compile Include="Api\SGoogleAuthentication.cs" />
     <Compile Include="Api\SHardCurrency.cs" />
+    <Compile Include="Api\SHardCurrencyPurchasedVerification.cs" />
     <Compile Include="Api\SLeaderBoard.cs" />
     <Compile Include="Api\SLevel.cs" />
     <Compile Include="Api\SMarketInfo.cs" />

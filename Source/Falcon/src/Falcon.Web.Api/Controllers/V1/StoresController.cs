@@ -68,7 +68,7 @@ namespace Falcon.Web.Api.Controllers.V1
 
             if (!ModelState.IsValid || HardCurrency.StoreItemID <= 0)
                 return null;
-             bool result = await mStoreMaintenanceProcessor.VerifyPurchase(HardCurrency);
+             var result = await mStoreMaintenanceProcessor.VerifyPurchase(HardCurrency);
 
             return Ok();
         }

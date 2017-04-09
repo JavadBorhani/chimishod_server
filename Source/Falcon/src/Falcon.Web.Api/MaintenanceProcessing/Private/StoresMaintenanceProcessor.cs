@@ -42,7 +42,7 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
             mUserQueryProcessor = UserQueryProcessor;
         }
 
-        public async Task<bool> VerifyPurchase(SHardCurrency HardCurrency)
+        public async Task<SHardCurrencyPurchasedVerification> VerifyPurchase(SHardCurrency HardCurrency)
         {
             var item = await mStoresQueryProcessor.GetStoreItemByID(HardCurrency.StoreItemID);
             if (item != null)
@@ -66,8 +66,9 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
                         var info = (PurchaseVerificationSuccessful)response;
                         if(info.purchaseTime <= 0 || string.IsNullOrEmpty(info.kind))
                         {
-                            return false;
+                            return null;
                         }
+
                         var result = await mStoresQueryProcessor.SaveNewPurchase(new EFCommonContext.DbModel.Order
                         {
                             UserID = mUserSession.ID,
@@ -78,16 +79,29 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
                             PurchasedToken = HardCurrency.PurchasedToken,
                             ConsumptionState = info.consumptionState,
                         });
+
                         int totalCoin = await mUserQueryProcessor.AddCoin(item.Coin);
 
+                        var answer = new SHardCurrencyPurchasedVerification();
+                        answer.Authorized = true;
+                        answer.TotalCoin = totalCoin;
+
+                        return answer;
                     }
                     else if (response is PurchaseVerificationError)
                     {
                         var info = (PurchaseVerificationError)response;
+
+                        var answer = new SHardCurrencyPurchasedVerification();
+                        answer.Authorized = false;
+                        answer.Error = info.error;
+                        answer.ErrorDescription = info.error_description;
+
+                        return answer;
                     }
                 }
             }
-            return false;
+            return null;
         }
 
     }
