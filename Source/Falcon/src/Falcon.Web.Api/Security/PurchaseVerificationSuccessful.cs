@@ -9,8 +9,20 @@ namespace Falcon.Web.Api.Security
     {
         public int consumptionState { get; set; }
         public int purchaseState { get; set; }
-        public int kind { get; set;}
-        public int developerPayload { get; set; }
+        public string kind { get; set;}
+        public string developerPayload { get; set; }
         public long purchaseTime { get; set; }
+        public long purchaseTimeMillis
+        {
+            get
+            {
+                return purchaseTime;
+            }
+            set
+            {
+                purchaseTime = value;
+            }
+
+        }
     }
 }

@@ -180,6 +180,7 @@
     <Compile Include="Security\PurchaseVerificationSuccessful.cs" />
     <Compile Include="Security\RefreshTokenRequest.cs" />
     <Compile Include="Security\PurchaseVerificationError.cs" />
+    <Compile Include="Security\TokenError.cs" />
     <Compile Include="Security\TokenRequest.cs" />
     <Compile Include="Security\TokenResponse.cs" />
     <Compile Include="Utilities\Base\FalconApiController.cs" />

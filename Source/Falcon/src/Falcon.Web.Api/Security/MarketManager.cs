@@ -30,7 +30,7 @@ namespace Falcon.Web.Api.Security
         {
             if(!MarketInfo.NeedsTokenVerification)
             {
-                var response = await mMarketVerificationProcessor.VerifyPurchase(PurchaseVerificationRequest);
+                var response = await mMarketVerificationProcessor.VerifyPurchase(PurchaseVerificationRequest , true);
                 return response;
             }
 

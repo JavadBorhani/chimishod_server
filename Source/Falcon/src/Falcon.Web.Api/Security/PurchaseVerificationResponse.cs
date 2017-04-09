@@ -8,6 +8,5 @@ namespace Falcon.Web.Api.Security
 {
     public abstract class PurchaseVerificationResponse
     {
-
     }
 }

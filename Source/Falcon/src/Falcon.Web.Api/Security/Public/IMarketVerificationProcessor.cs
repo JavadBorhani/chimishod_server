@@ -10,6 +10,6 @@ namespace Falcon.Web.Api.Security.Public
     {
         Task<TokenResponse> GetFirstHandShaking(string MarketTokenVerifierUri, TokenRequest TokenRequest);
         Task<TokenResponse> GetTokenWithRefreshToken(string MarketTokenVerifierUri , RefreshTokenRequest RefreshTokenRequest);
-        Task<PurchaseVerificationResponse> VerifyPurchase(PurchaseVerificationRequest PurchaseVerificationRequest);
+        Task<PurchaseVerificationResponse> VerifyPurchase(PurchaseVerificationRequest PurchaseVerificationRequest , bool IgnoreAccessToken = false);
     }
 }

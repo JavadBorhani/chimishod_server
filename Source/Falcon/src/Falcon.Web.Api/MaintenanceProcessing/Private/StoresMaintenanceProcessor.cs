@@ -61,19 +61,18 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
                     if (response is PurchaseVerificationSuccessful)
                     {
                         var info = (PurchaseVerificationSuccessful) response;
-                        var result = await mStoresQueryProcessor.SaveNewPurchase(new EFCommonContext.DbModel.Order
-                        {
-                            ConsumptionState = info.consumptionState,
-                            PurchasedToken = HardCurrency.PurchasedToken,
-                            StoreID = HardCurrency.StoreItemID,
-                            UserID = mUserSession.ID,
-                            PriceID = 2000
-                        });
+                        //var result = await mStoresQueryProcessor.SaveNewPurchase(new EFCommonContext.DbModel.Order
+                        //{
+                        //    ConsumptionState = info.consumptionState,
+                        //    PurchasedToken = HardCurrency.PurchasedToken,
+                        //    StoreID = HardCurrency.StoreItemID,
+                        //    UserID = mUserSession.ID,
+                        //    PriceID = 2000
+                        //});
                     }
                     else if (response is PurchaseVerificationError)
                     {
                         var info = (PurchaseVerificationError) response;
-
                     }
                 }
             }

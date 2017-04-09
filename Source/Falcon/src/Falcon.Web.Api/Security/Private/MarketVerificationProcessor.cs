@@ -108,7 +108,7 @@ namespace Falcon.Web.Api.Security.Private
             return null;
         }
 
-        public async Task<PurchaseVerificationResponse> VerifyPurchase(PurchaseVerificationRequest PurchaseVerificationRequest)
+        public async Task<PurchaseVerificationResponse> VerifyPurchase(PurchaseVerificationRequest PurchaseVerificationRequest , bool IgnoreAccessToken)
         {
             if(PurchaseVerificationRequest == null || 
                 string.IsNullOrEmpty(PurchaseVerificationRequest.AppPackageName) ||
@@ -118,11 +118,13 @@ namespace Falcon.Web.Api.Security.Private
             {
                 return null;    
             }
-            var request = string.Format(PurchaseVerificationRequest.VerificationLink, 
-                PurchaseVerificationRequest.AppPackageName, 
+            var request = string.Format(PurchaseVerificationRequest.VerificationLink,
+                PurchaseVerificationRequest.AppPackageName,
                 PurchaseVerificationRequest.ProductID,
-                PurchaseVerificationRequest.Token)
-                + "?access_token=" + PurchaseVerificationRequest.AccessToken;
+                PurchaseVerificationRequest.Token);
+
+            if (!IgnoreAccessToken)
+                request += "?access_token=" + PurchaseVerificationRequest.AccessToken; 
 
             using (HttpClient client = new HttpClient())
             using (HttpResponseMessage response = await client.GetAsync(request))
@@ -145,6 +147,11 @@ namespace Falcon.Web.Api.Security.Private
 
         private PurchaseVerificationResponse CheckPurchaseVerification(HttpStatusCode StatusCode , string RawFormattedJsonString)
         {
+            if(RawFormattedJsonString.IndexOf("error") != -1 && StatusCode == HttpStatusCode.OK)
+            {
+                StatusCode = HttpStatusCode.NotFound;
+            }
+
             switch(StatusCode)
             {
                 case HttpStatusCode.NotFound:
@@ -224,8 +231,8 @@ namespace Falcon.Web.Api.Security.Private
 
         private void logError(string RawFormattedJsonString)
         {
-            TokenError error = mJsonManager.DeserializeObject<TokenError>(RawFormattedJsonString);
-            mLogger.Error(error);
+            TokenError issue = mJsonManager.DeserializeObject<TokenError>(RawFormattedJsonString);
+            mLogger.Error(issue.error);
         }
 
     }
