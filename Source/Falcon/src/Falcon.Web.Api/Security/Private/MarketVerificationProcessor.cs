@@ -122,7 +122,7 @@ namespace Falcon.Web.Api.Security.Private
                 PurchaseVerificationRequest.AppPackageName, 
                 PurchaseVerificationRequest.ProductID,
                 PurchaseVerificationRequest.Token)
-                + "access_token=" + PurchaseVerificationRequest.AccessToken;
+                + "?access_token=" + PurchaseVerificationRequest.AccessToken;
 
             using (HttpClient client = new HttpClient())
             using (HttpResponseMessage response = await client.GetAsync(request))
@@ -224,7 +224,7 @@ namespace Falcon.Web.Api.Security.Private
 
         private void logError(string RawFormattedJsonString)
         {
-            string error = mJsonManager.DeserializeObject<string>(RawFormattedJsonString);
+            TokenError error = mJsonManager.DeserializeObject<TokenError>(RawFormattedJsonString);
             mLogger.Error(error);
         }
 

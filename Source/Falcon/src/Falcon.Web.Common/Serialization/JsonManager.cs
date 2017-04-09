@@ -13,6 +13,7 @@ namespace Falcon.Common.Serialization
         public T DeserializeObject<T>(string value)
         {
             return JsonConvert.DeserializeObject<T>(value);
+
         }
         public object DeserializeObject(string value, Type type)
         {

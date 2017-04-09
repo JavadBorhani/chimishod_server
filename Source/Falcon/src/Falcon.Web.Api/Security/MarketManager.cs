@@ -54,7 +54,7 @@ namespace Falcon.Web.Api.Security
                 }
                 else
                 {
-                    throw new PaymentSystemException("can not retrieve access token and refresh token with this code" + MarketInfo.Code);
+                    throw new PaymentSystemException("can not retrieve access token and refresh token with this code " + MarketInfo.Code);
                 }
             }
 
