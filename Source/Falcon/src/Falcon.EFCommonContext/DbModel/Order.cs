@@ -17,13 +17,13 @@ namespace Falcon.EFCommonContext.DbModel
         public int ID { get; set; }
         public int UserID { get; set; }
         public int StoreID { get; set; }
-        public int PriceID { get; set; }
+        public int ClientPrice { get; set; }
+        public int ServerPrice { get; set; }
         public System.DateTime PurchasedDate { get; set; }
         public string PurchasedToken { get; set; }
         public int PurchaseState { get; set; }
         public int ConsumptionState { get; set; }
     
-        public virtual PriceList PriceList { get; set; }
         public virtual Store Store { get; set; }
         public virtual User User { get; set; }
     }

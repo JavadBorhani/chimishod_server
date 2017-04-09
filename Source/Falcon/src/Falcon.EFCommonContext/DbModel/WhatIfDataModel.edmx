@@ -273,7 +273,8 @@
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="UserID" Type="int" Nullable="false" />
           <Property Name="StoreID" Type="int" Nullable="false" />
-          <Property Name="PriceID" Type="int" Nullable="false" />
+          <Property Name="ClientPrice" Type="int" Nullable="false" />
+          <Property Name="ServerPrice" Type="int" Nullable="false" />
           <Property Name="PurchasedDate" Type="datetime" Nullable="false" />
           <Property Name="PurchasedToken" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="PurchaseState" Type="int" Nullable="false" />
@@ -292,12 +293,12 @@
           <Property Name="CreatedDate" Type="datetime" Nullable="false" />
           <Property Name="UpdatedDate" Type="datetime" Nullable="false" />
         </EntityType>
-        <EntityType Name="PriceList">
+        <EntityType Name="PriceHistory">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="int" Nullable="false" />
-          <Property Name="StoreID" Type="int" Nullable="false" />
+          <Property Name="StoreID" Type="int" />
           <Property Name="Price" Type="int" Nullable="false" />
           <Property Name="InsertDate" Type="datetime" Nullable="false" />
         </EntityType>
@@ -413,6 +414,7 @@
           <Property Name="SKU" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="Star" Type="int" Nullable="false" />
           <Property Name="IsAccessibleInAllStores" Type="bit" Nullable="false" />
+          <Property Name="IsInOff" Type="bit" Nullable="false" />
           <Property Name="Icon" Type="nvarchar" MaxLength="150" Nullable="false" />
           <Property Name="RectangleColor" Type="varchar" MaxLength="10" Nullable="false" />
           <Property Name="CreatedDate" Type="datetime" Nullable="false" />
@@ -785,18 +787,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Order_PriceList">
-          <End Role="PriceList" Type="Self.PriceList" Multiplicity="1" />
-          <End Role="Order" Type="Self.Order" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="PriceList">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="Order">
-              <PropertyRef Name="PriceID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Order_Store">
           <End Role="Store" Type="Self.Store" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -826,15 +816,15 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_PriceList_Store">
-          <End Role="Store" Type="Self.Store" Multiplicity="1">
+          <End Role="Store" Type="Self.Store" Multiplicity="0..1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="PriceList" Type="Self.PriceList" Multiplicity="*" />
+          <End Role="PriceHistory" Type="Self.PriceHistory" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Store">
               <PropertyRef Name="ID" />
             </Principal>
-            <Dependent Role="PriceList">
+            <Dependent Role="PriceHistory">
               <PropertyRef Name="StoreID" />
             </Dependent>
           </ReferentialConstraint>
@@ -1148,7 +1138,7 @@
           <EntitySet Name="MarketInfo" EntityType="Self.MarketInfo" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Order" EntityType="Self.Order" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="OurAdvertisements" EntityType="Self.OurAdvertisements" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="PriceList" EntityType="Self.PriceList" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PriceHistory" EntityType="Self.PriceHistory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PurchaseAvatar" EntityType="Self.PurchaseAvatar" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PurchaseCategory" EntityType="Self.PurchaseCategory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PurchaseTheme" EntityType="Self.PurchaseTheme" Schema="dbo" store:Type="Tables" />
@@ -1257,10 +1247,6 @@
             <End Role="User" EntitySet="User" />
             <End Role="Manufacture" EntitySet="Manufacture" />
           </AssociationSet>
-          <AssociationSet Name="FK_Order_PriceList" Association="Self.FK_Order_PriceList">
-            <End Role="PriceList" EntitySet="PriceList" />
-            <End Role="Order" EntitySet="Order" />
-          </AssociationSet>
           <AssociationSet Name="FK_Order_Store" Association="Self.FK_Order_Store">
             <End Role="Store" EntitySet="Store" />
             <End Role="Order" EntitySet="Order" />
@@ -1271,7 +1257,7 @@
           </AssociationSet>
           <AssociationSet Name="FK_PriceList_Store" Association="Self.FK_PriceList_Store">
             <End Role="Store" EntitySet="Store" />
-            <End Role="PriceList" EntitySet="PriceList" />
+            <End Role="PriceHistory" EntitySet="PriceHistory" />
           </AssociationSet>
           <AssociationSet Name="FK_PurchaseAvatar_User" Association="Self.FK_PurchaseAvatar_User">
             <End Role="User" EntitySet="User" />
@@ -1385,7 +1371,7 @@
           <EntitySet Name="MarketInfoes" EntityType="Falcon.DbModel.MarketInfo" />
           <EntitySet Name="Orders" EntityType="Falcon.DbModel.Order" />
           <EntitySet Name="OurAdvertisements" EntityType="Falcon.DbModel.OurAdvertisement" />
-          <EntitySet Name="PriceLists" EntityType="Falcon.DbModel.PriceList" />
+          <EntitySet Name="PriceHistories" EntityType="Falcon.DbModel.PriceHistory" />
           <EntitySet Name="PurchaseAvatars" EntityType="Falcon.DbModel.PurchaseAvatar" />
           <EntitySet Name="PurchaseCategories" EntityType="Falcon.DbModel.PurchaseCategory" />
           <EntitySet Name="PurchaseThemes" EntityType="Falcon.DbModel.PurchaseTheme" />
@@ -1522,10 +1508,6 @@
             <End Role="MarketInfo" EntitySet="MarketInfoes" />
             <End Role="Store" EntitySet="Stores" />
           </AssociationSet>
-          <AssociationSet Name="FK_Order_PriceList" Association="Falcon.DbModel.FK_Order_PriceList">
-            <End Role="PriceList" EntitySet="PriceLists" />
-            <End Role="Order" EntitySet="Orders" />
-          </AssociationSet>
           <AssociationSet Name="FK_Order_Store" Association="Falcon.DbModel.FK_Order_Store">
             <End Role="Store" EntitySet="Stores" />
             <End Role="Order" EntitySet="Orders" />
@@ -1536,7 +1518,7 @@
           </AssociationSet>
           <AssociationSet Name="FK_PriceList_Store" Association="Falcon.DbModel.FK_PriceList_Store">
             <End Role="Store" EntitySet="Stores" />
-            <End Role="PriceList" EntitySet="PriceLists" />
+            <End Role="PriceHistory" EntitySet="PriceHistories" />
           </AssociationSet>
           <AssociationSet Name="FK_PurchaseAvatar_User" Association="Falcon.DbModel.FK_PurchaseAvatar_User">
             <End Role="User" EntitySet="Users" />
@@ -1903,12 +1885,12 @@
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="UserID" Type="Int32" Nullable="false" />
           <Property Name="StoreID" Type="Int32" Nullable="false" />
-          <Property Name="PriceID" Type="Int32" Nullable="false" />
+          <Property Name="ClientPrice" Type="Int32" Nullable="false" />
+          <Property Name="ServerPrice" Type="Int32" Nullable="false" />
           <Property Name="PurchasedDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="PurchasedToken" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="PurchaseState" Type="Int32" Nullable="false" />
           <Property Name="ConsumptionState" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="PriceList" Relationship="Falcon.DbModel.FK_Order_PriceList" FromRole="Order" ToRole="PriceList" />
           <NavigationProperty Name="Store" Relationship="Falcon.DbModel.FK_Order_Store" FromRole="Order" ToRole="Store" />
           <NavigationProperty Name="User" Relationship="Falcon.DbModel.FK_Order_User" FromRole="Order" ToRole="User" />
         </EntityType>
@@ -1925,16 +1907,15 @@
           <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="UpdatedDate" Type="DateTime" Nullable="false" Precision="3" />
         </EntityType>
-        <EntityType Name="PriceList">
+        <EntityType Name="PriceHistory">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" />
-          <Property Name="StoreID" Type="Int32" Nullable="false" />
+          <Property Name="StoreID" Type="Int32" />
           <Property Name="Price" Type="Int32" Nullable="false" />
           <Property Name="InsertDate" Type="DateTime" Nullable="false" Precision="3" />
-          <NavigationProperty Name="Orders" Relationship="Falcon.DbModel.FK_Order_PriceList" FromRole="PriceList" ToRole="Order" />
-          <NavigationProperty Name="Store" Relationship="Falcon.DbModel.FK_PriceList_Store" FromRole="PriceList" ToRole="Store" />
+          <NavigationProperty Name="Store" Relationship="Falcon.DbModel.FK_PriceList_Store" FromRole="PriceHistory" ToRole="Store" />
         </EntityType>
         <EntityType Name="PurchaseAvatar">
           <Key>
@@ -2073,13 +2054,14 @@
           <Property Name="SKU" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Star" Type="Int32" Nullable="false" />
           <Property Name="IsAccessibleInAllStores" Type="Boolean" Nullable="false" />
+          <Property Name="IsInOff" Type="Boolean" Nullable="false" />
           <Property Name="Icon" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
           <Property Name="RectangleColor" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="UpdatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="MarketInfo" Relationship="Falcon.DbModel.FK_Store_MarketInfo" FromRole="Store" ToRole="MarketInfo" />
           <NavigationProperty Name="Orders" Relationship="Falcon.DbModel.FK_Order_Store" FromRole="Store" ToRole="Order" />
-          <NavigationProperty Name="PriceLists" Relationship="Falcon.DbModel.FK_PriceList_Store" FromRole="Store" ToRole="PriceList" />
+          <NavigationProperty Name="PriceHistories" Relationship="Falcon.DbModel.FK_PriceList_Store" FromRole="Store" ToRole="PriceHistory" />
         </EntityType>
         <EntityType Name="sysdiagram">
           <Key>
@@ -2567,18 +2549,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Order_PriceList">
-          <End Type="Falcon.DbModel.PriceList" Role="PriceList" Multiplicity="1" />
-          <End Type="Falcon.DbModel.Order" Role="Order" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="PriceList">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="Order">
-              <PropertyRef Name="PriceID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Order_Store">
           <End Type="Falcon.DbModel.Store" Role="Store" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -2608,15 +2578,15 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_PriceList_Store">
-          <End Type="Falcon.DbModel.Store" Role="Store" Multiplicity="1">
+          <End Type="Falcon.DbModel.Store" Role="Store" Multiplicity="0..1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Type="Falcon.DbModel.PriceList" Role="PriceList" Multiplicity="*" />
+          <End Type="Falcon.DbModel.PriceHistory" Role="PriceHistory" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Store">
               <PropertyRef Name="ID" />
             </Principal>
-            <Dependent Role="PriceList">
+            <Dependent Role="PriceHistory">
               <PropertyRef Name="StoreID" />
             </Dependent>
           </ReferentialConstraint>
@@ -3105,7 +3075,8 @@
                 <ScalarProperty Name="PurchaseState" ColumnName="PurchaseState" />
                 <ScalarProperty Name="PurchasedToken" ColumnName="PurchasedToken" />
                 <ScalarProperty Name="PurchasedDate" ColumnName="PurchasedDate" />
-                <ScalarProperty Name="PriceID" ColumnName="PriceID" />
+                <ScalarProperty Name="ServerPrice" ColumnName="ServerPrice" />
+                <ScalarProperty Name="ClientPrice" ColumnName="ClientPrice" />
                 <ScalarProperty Name="StoreID" ColumnName="StoreID" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
@@ -3126,9 +3097,9 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="PriceLists">
-            <EntityTypeMapping TypeName="Falcon.DbModel.PriceList">
-              <MappingFragment StoreEntitySet="PriceList">
+          <EntitySetMapping Name="PriceHistories">
+            <EntityTypeMapping TypeName="Falcon.DbModel.PriceHistory">
+              <MappingFragment StoreEntitySet="PriceHistory">
                 <ScalarProperty Name="InsertDate" ColumnName="InsertDate" />
                 <ScalarProperty Name="Price" ColumnName="Price" />
                 <ScalarProperty Name="StoreID" ColumnName="StoreID" />
@@ -3253,6 +3224,7 @@
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
                 <ScalarProperty Name="RectangleColor" ColumnName="RectangleColor" />
                 <ScalarProperty Name="Icon" ColumnName="Icon" />
+                <ScalarProperty Name="IsInOff" ColumnName="IsInOff" />
                 <ScalarProperty Name="IsAccessibleInAllStores" ColumnName="IsAccessibleInAllStores" />
                 <ScalarProperty Name="Star" ColumnName="Star" />
                 <ScalarProperty Name="SKU" ColumnName="SKU" />
