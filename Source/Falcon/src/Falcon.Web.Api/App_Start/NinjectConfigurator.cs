@@ -24,6 +24,7 @@ using Falcon.Web.Api.Security.Private;
 using Falcon.Web.Api.MaintenanceProcessing.Public;
 using Falcon.Web.Api.MaintenanceProcessing.Private;
 using Falcon.Common.Serialization;
+using Falcon.Web.Api.Security;
 
 namespace Falcon.Web.Api
 {
@@ -80,6 +81,7 @@ namespace Falcon.Web.Api
             container.Bind<ICodeGiftsQueryProcessor>().To<CodeGiftsQueryProcessor>().InRequestScope();
             container.Bind<IGiftQueryProcessor>().To<GiftQueryProcessor>().InRequestScope();
             container.Bind<IStoresQueryProcessor>().To<StoresQueryProcessor>().InRequestScope();
+            container.Bind<IMarketInfoQueryProcessor>().To<MarketInfoQueryProcessor>().InRequestScope();
             
         }
 
@@ -95,11 +97,13 @@ namespace Falcon.Web.Api
         {
             // add maintenance part separately
             container.Bind<ICodeGiftsMaintenanceProcessor>().To<CodeGiftsMaintenanceProcessor>().InRequestScope();
+            container.Bind<IStoresMaintenanceProcessor>().To<StoresMaintenanceProcessor>().InRequestScope();
         }
 
         private void AddAdHoc(IKernel container)
         {
             container.Bind<IMarketVerificationProcessor>().To<MarketVerificationProcessor>().InRequestScope();
+            container.Bind<IMarketManager>().To<MarketManager>().InRequestScope();
 
             container.Bind<IDateTime>().To<DateTimeAdapter>().InSingletonScope();
             container.Bind<IJsonManager>().To<JsonManager>().InSingletonScope();
@@ -115,7 +119,7 @@ namespace Falcon.Web.Api
         {
 
             var result = AppDomain.CurrentDomain.GetAssemblies()
-                                                .Where(r => r.FullName.Contains("Falcon")) //TODO : think about design
+                                                .Where(r => r.FullName.Contains("Falcon")) //TODO : think about a better design
                                                 .Select(r => r.GetTypes());
 
             List<Profile> profiles = new List<Profile>();

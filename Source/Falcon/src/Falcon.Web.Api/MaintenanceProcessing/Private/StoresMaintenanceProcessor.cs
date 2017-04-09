@@ -10,6 +10,7 @@ using Falcon.Data.QueryProcessors;
 using Falcon.Common;
 using Falcon.Web.Api.Security;
 using AutoMapper;
+using Falcon.Common.Security;
 
 namespace Falcon.Web.Api.MaintenanceProcessing.Private
 {
@@ -20,19 +21,22 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
         private readonly IDateTime mDateTime;
         private readonly IMarketManager mMarketManager;
         private readonly IMapper mMapper;
+        private readonly IWebUserSession mUserSession;
 
         public StoresMaintenanceProcessor(IMarketVerificationProcessor MarketVerificationProcessor , 
             IStoresQueryProcessor StoresQueryProcessor , 
             IDateTime DateTime , 
             IMarketInfoQueryProcessor MarketInfoQueryProcessor , 
             IMarketManager MarketManager , 
-            IMapper Mapper)
+            IMapper Mapper ,
+            IWebUserSession UserSession)
         {
         
             mStoresQueryProcessor = StoresQueryProcessor;
             mDateTime = DateTime;
             mMarketManager = MarketManager;
             mMapper = Mapper;
+            mUserSession = UserSession; 
         }
 
         public async Task<bool> VerifyPurchase(SHardCurrency HardCurrency)
@@ -44,6 +48,7 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
                 if(!purchased)
                 {
                     var market = mMapper.Map<SMarketInfo>(item.MarketInfo);
+
                     var response = await mMarketManager.PurchaseOperationChecking(new PurchaseVerificationRequest
                     {
                         AccessToken = item.MarketInfo.AccessToken,
@@ -55,10 +60,19 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
 
                     if (response is PurchaseVerificationSuccessful)
                     {
-
+                        var info = (PurchaseVerificationSuccessful) response;
+                        var result = await mStoresQueryProcessor.SaveNewPurchase(new EFCommonContext.DbModel.Order
+                        {
+                            ConsumptionState = info.consumptionState,
+                            PurchasedToken = HardCurrency.PurchasedToken,
+                            StoreID = HardCurrency.StoreItemID,
+                            UserID = mUserSession.ID,
+                            PriceID = 2000
+                        });
                     }
                     else if (response is PurchaseVerificationError)
                     {
+                        var info = (PurchaseVerificationError) response;
 
                     }
                 }

@@ -68,8 +68,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Security\IUserSession.cs" />
     <Compile Include="Security\IWebUserSession.cs" />
-    <Compile Include="Serialization\IJsonManager.cs" />
-    <Compile Include="Serialization\JsonManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

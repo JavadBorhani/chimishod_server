@@ -42,6 +42,7 @@
   <ItemGroup>
     <Compile Include="Entity\IVersionedEntity.cs" />
     <Compile Include="Exceptions\ChildObjectNotFoundException.cs" />
+    <Compile Include="Exceptions\PaymentSystemException.cs" />
     <Compile Include="Exceptions\RootObjectNotFoundException.cs" />
     <Compile Include="PagedDataRequest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

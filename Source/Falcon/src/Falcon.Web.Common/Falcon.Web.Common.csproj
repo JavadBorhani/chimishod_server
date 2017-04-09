@@ -35,6 +35,10 @@
       <HintPath>..\..\lib\log4net.2.0.7\lib\net45-full\log4net.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\Newtonsoft.Json.10.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="Ninject, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
       <HintPath>..\..\lib\Ninject.3.2.2.0\lib\net45-full\Ninject.dll</HintPath>
       <Private>True</Private>
@@ -73,13 +77,14 @@
     <Compile Include="Routing\ApiVersion1RoutePrefixAttribute.cs" />
     <Compile Include="Routing\ApiVersionConstraint.cs" />
     <Compile Include="Security\UserSession.cs" />
+    <Compile Include="Serialization\IJsonManager.cs" />
+    <Compile Include="Serialization\JsonManager.cs" />
     <Compile Include="SimpleTraceWriter.cs" />
     <Compile Include="UnitOfWorkActionFilterAttribute.cs" />
     <Compile Include="Validation\ValidateModelAttribute.cs" />
     <Compile Include="WebContainerManager.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
