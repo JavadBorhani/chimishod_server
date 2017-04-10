@@ -83,5 +83,7 @@ namespace Falcon.Web.Models.Api
 
         [Required]
         public int Store_DefaultReturnAmount { get; set; }
+        [Required]
+        public int WatchAdCoin { get; set; }
     }
 }

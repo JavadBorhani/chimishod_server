@@ -47,6 +47,9 @@ namespace Falcon.Web.Api.AutoMappingConfiguration.ApplicationStateMap
                 .ForMember(s => s.Comment_DefaultNumberAmount, ca => ca.MapFrom(y => y.Comment_DefaultNumberAmount))
                 .ForMember(s => s.Comment_DefaultVerifyState, ca => ca.MapFrom(y => y.Comment_DefaultVerifyState))
 
+                //Watch Ad 
+                .ForMember(s => s.WatchAdCoin, ca => ca.MapFrom(y => y.WatchAdCoin))
+
                 //Host
                 .ForMember(s => s.Host_WebSiteNoReplyMail, ca => ca.MapFrom(y => y.Host_WebSiteNoReplyMail))
                 .ForMember(s => s.Host_WebSiteNoReplyMailPassword, ca => ca.MapFrom(y => y.Host_WebSiteNoReplyMailPassword))

@@ -112,6 +112,7 @@
           <Property Name="Host_SupportMailPassword" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="Host_SmtpServer" Type="varchar" MaxLength="20" Nullable="false" />
           <Property Name="Store_DefaultReturnAmount" Type="int" Nullable="false" />
+          <Property Name="WatchAdCoin" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="AppTheme">
           <Key>
@@ -1699,6 +1700,7 @@
           <Property Name="Host_SupportMailPassword" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Host_SmtpServer" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="Store_DefaultReturnAmount" Type="Int32" Nullable="false" />
+          <Property Name="WatchAdCoin" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="AppTheme">
           <Key>
@@ -2874,6 +2876,7 @@
           <EntitySetMapping Name="ApplicationStates">
             <EntityTypeMapping TypeName="Falcon.DbModel.ApplicationState">
               <MappingFragment StoreEntitySet="ApplicationState">
+                <ScalarProperty Name="WatchAdCoin" ColumnName="WatchAdCoin" />
                 <ScalarProperty Name="Store_DefaultReturnAmount" ColumnName="Store_DefaultReturnAmount" />
                 <ScalarProperty Name="Host_SmtpServer" ColumnName="Host_SmtpServer" />
                 <ScalarProperty Name="Host_SupportMailPassword" ColumnName="Host_SupportMailPassword" />
