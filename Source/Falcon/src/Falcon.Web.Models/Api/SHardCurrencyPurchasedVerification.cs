@@ -8,9 +8,15 @@ namespace Falcon.Web.Models.Api
 {
     public class SHardCurrencyPurchasedVerification
     {
+        public enum ErrorCodeType
+        {
+            None,
+            TokenExpired,
+            Other
+        }
+        public int StoreItemId { get; set; }
         public int TotalCoin { get; set; }
-        public string Error { get; set; }
-        public string ErrorDescription { get; set; }
-        public bool Authorized { get; set; }
+        public ErrorCodeType ErrorCode { get; set; }        
+        public bool IsValid { get; set; }
     }
 }

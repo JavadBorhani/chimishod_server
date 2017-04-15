@@ -11,6 +11,7 @@ using Falcon.Common;
 using Falcon.Web.Api.Security;
 using AutoMapper;
 using Falcon.Common.Security;
+using static Falcon.Web.Models.Api.SHardCurrencyPurchasedVerification;
 
 namespace Falcon.Web.Api.MaintenanceProcessing.Private
 {
@@ -47,6 +48,8 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
             var item = await mStoresQueryProcessor.GetStoreItemByID(HardCurrency.StoreItemID);
             if (item != null)
             {
+                var answer = new SHardCurrencyPurchasedVerification();
+
                 var purchased = await mStoresQueryProcessor.IsPurchased(HardCurrency.StoreItemID , HardCurrency.PurchasedToken);
                 if(!purchased)
                 {
@@ -82,9 +85,10 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
 
                         int totalCoin = await mUserQueryProcessor.AddCoin(item.Coin);
 
-                        var answer = new SHardCurrencyPurchasedVerification();
-                        answer.Authorized = true;
+                        answer.IsValid = true;
                         answer.TotalCoin = totalCoin;
+                        answer.ErrorCode = ErrorCodeType.None;
+                        answer.StoreItemId = HardCurrency.StoreItemID;
 
                         return answer;
                     }
@@ -92,13 +96,24 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
                     {
                         var info = (PurchaseVerificationError)response;
 
-                        var answer = new SHardCurrencyPurchasedVerification();
-                        answer.Authorized = false;
-                        answer.Error = info.error;
-                        answer.ErrorDescription = info.error_description;
+                        answer.IsValid = false;
+                        answer.StoreItemId = HardCurrency.StoreItemID;
+                        answer.TotalCoin = await mUserQueryProcessor.GetTotalCoin();
 
+                        if (Constants.MarketMessages.TokenExpire.Contains(info.error_code))
+                        {
+                            answer.ErrorCode = ErrorCodeType.TokenExpired;
+                        }
+                        else
+                        {
+                            answer.ErrorCode = ErrorCodeType.Other;
+                        }
                         return answer;
                     }
+                }
+                else
+                {
+                    answer.TotalCoin = await mUserQueryProcessor.GetTotalCoin();
                 }
             }
             return null;

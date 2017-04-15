@@ -12,7 +12,7 @@ namespace Falcon.Web.Api.AutoMappingConfiguration.StoreMap
                 .ForMember(s => s.ID,               m => m.MapFrom(s => s.ID))
                 .ForMember(s => s.Name,             m => m.MapFrom(s => s.Name))
                 .ForMember(s => s.Description,      m => m.MapFrom(s => s.Description))
-                .ForMember(s => s.Star,             m => m.MapFrom(s => s.Star))
+                .ForMember(s => s.Coin,             m => m.MapFrom(s => s.Coin))
                 .ForMember(s => s.Price,            m => m.MapFrom(s => s.Price))
                 .ForMember(s => s.Icon,             m => m.MapFrom(s => s.Icon))
                 .ForMember(s => s.RectangleColor,   m => m.MapFrom(s => s.RectangleColor))

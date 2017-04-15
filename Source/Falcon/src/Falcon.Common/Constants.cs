@@ -135,6 +135,16 @@ namespace Falcon.Common
             public const string UserAuthenticator = "UserAuthenticator";
             public const string UserInfo = "UserInfo";
         }
+        public static class MarketMessages
+        {
+            //TODO : define expired message of different stores
+            public static readonly string[] TokenExpire = new string[]
+            {
+                "token expired", 
+                "second"
+            };
+
+        }
 
         public const string DefaultLegacyNamespaces = "http://vglr.ir";
     }

@@ -42,9 +42,9 @@ namespace Falcon.Web.Api.Controllers.V1
         }
 
         [ResponseType(typeof(SStore))]
-        [Route("Stores/")]
+        [Route("Stores/{StoreID}")]
         [HttpPost]
-        public async Task<IHttpActionResult> GetStoreList()
+        public async Task<IHttpActionResult> GetStoreList(int StoreID)
         {
             int storeDefaultReturnAmount = mAppState.State().Store_DefaultReturnAmount;
 
@@ -60,22 +60,18 @@ namespace Falcon.Web.Api.Controllers.V1
                 return Response(HttpStatusCode.NoContent);
             }
         }
-
+        
+        [ResponseType(typeof(SHardCurrencyPurchasedVerification))]
         [HttpPost]
         [Route("Stores/ValidatePurchase")]
-        public async Task<IHttpActionResult> PurchaseHardCurrency(SHardCurrency HardCurrency)
+        public async Task<SHardCurrencyPurchasedVerification> PurchaseHardCurrency(SHardCurrency HardCurrency)
         {
 
             if (!ModelState.IsValid || HardCurrency.StoreItemID <= 0)
                 return null;
              var result = await mStoreMaintenanceProcessor.VerifyPurchase(HardCurrency);
 
-            return Ok();
-        }
-
-        private bool StoreExists(int id)
-        {
-            return mDb.Set<Store>().Count(e => e.ID == id) > 0;
+            return result;
         }
 
     }

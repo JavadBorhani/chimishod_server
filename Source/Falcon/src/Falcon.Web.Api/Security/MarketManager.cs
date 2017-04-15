@@ -50,7 +50,7 @@ namespace Falcon.Web.Api.Security
                     await mMarketInfoQueryProcessor.SaveNewVerificationData(MarketInfo.ID, tokenResponse.access_token, tokenResponse.refresh_token, tokenResponse.expires_in);
                     MarketInfo.AccessToken = tokenResponse.access_token;
                     MarketInfo.RefreshToken = tokenResponse.refresh_token;
-                    MarketInfo.ExpireAt = mDateTime.Now.AddMilliseconds(tokenResponse.expires_in);
+                    MarketInfo.ExpireAt = mDateTime.Now.AddSeconds(tokenResponse.expires_in);
                 }
                 else
                 {
@@ -71,7 +71,7 @@ namespace Falcon.Web.Api.Security
                 {
                     await mMarketInfoQueryProcessor.SaveNewVerificationData(MarketInfo.ID, tokenResponse.access_token, MarketInfo.RefreshToken, tokenResponse.expires_in);
                     MarketInfo.AccessToken = tokenResponse.access_token;
-                    MarketInfo.ExpireAt = mDateTime.Now.AddMilliseconds(tokenResponse.expires_in);
+                    MarketInfo.ExpireAt = mDateTime.Now.AddSeconds(tokenResponse.expires_in);
                 }
                 else
                 {
