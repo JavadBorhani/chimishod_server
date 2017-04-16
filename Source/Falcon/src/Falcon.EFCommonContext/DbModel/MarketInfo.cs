@@ -22,6 +22,7 @@ namespace Falcon.EFCommonContext.DbModel
     
         public int ID { get; set; }
         public string MarketName { get; set; }
+        public int MarketKey { get; set; }
         public string AppPackageName { get; set; }
         public string PaymentVerificationLink { get; set; }
         public string LinkToAuthorize { get; set; }

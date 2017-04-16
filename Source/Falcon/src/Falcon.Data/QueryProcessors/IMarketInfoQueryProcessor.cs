@@ -11,5 +11,6 @@ namespace Falcon.Data.QueryProcessors
         Task<bool> IsExpired(int MarketId);
         Task AddExpireTimeByMiliseconds(int MarketId , int Miliseconds);
         Task SaveNewVerificationData(int MarketId , string AccessToken , string RefreshToken , long expiresIn);
+        Task<int> GetMarketIdByMarketKey(int Key);
     }
 }

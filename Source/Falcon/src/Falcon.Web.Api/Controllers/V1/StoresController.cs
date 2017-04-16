@@ -16,6 +16,7 @@ using Falcon.EFCommonContext;
 using Falcon.Web.Api.Utilities.Base;
 using Falcon.Web.Api.MaintenanceProcessing.Public;
 using System.Net.Http;
+using Falcon.Web.Api.InquiryProcessing.Public;
 
 namespace Falcon.Web.Api.Controllers.V1
 {
@@ -27,38 +28,37 @@ namespace Falcon.Web.Api.Controllers.V1
         private readonly IDateTime mDateTime;
         private readonly IGlobalApplicationState mAppState;
         private readonly IStoresMaintenanceProcessor mStoreMaintenanceProcessor;
+        private readonly IStoresInquiryProcessor mStoreInquiryProcessor;
 
         public StoresController(IMapper Mapper , 
             IDateTime DateTime, 
             IDbContext Database , 
             IGlobalApplicationState AppState, 
-            IStoresMaintenanceProcessor StoresMaintenanceProcessor)
+            IStoresMaintenanceProcessor StoresMaintenanceProcessor , 
+            IStoresInquiryProcessor StoresInquiryProcessor)
         {
             mMapper = Mapper;
             mDateTime = DateTime;
             mDb = Database;
             mAppState = AppState;
             mStoreMaintenanceProcessor = StoresMaintenanceProcessor;
+            mStoreInquiryProcessor = StoresInquiryProcessor; 
         }
 
         [ResponseType(typeof(SStore))]
-        [Route("Stores/{StoreID}")]
+        [Route("Stores/{StoreKey}")]
         [HttpPost]
-        public async Task<IHttpActionResult> GetStoreList(int StoreID)
+        public async Task<IHttpActionResult> GetStoreList(int StoreKey)
         {
-            int storeDefaultReturnAmount = mAppState.State().Store_DefaultReturnAmount;
+            // TODO : remember to remove this 
+            // mAppState.State().Store_DefaultReturnAmount; 
 
-            var storeList = await mDb.Set<Store>().Take(storeDefaultReturnAmount).ToListAsync();
-
-            if (storeList.Count > 0)
-            {
-                var clientList = mMapper.Map<List<Store>, List<SStore>>(storeList);
-                return Ok(clientList);
-            }
+            var result = await mStoreInquiryProcessor.GetStoreList(StoreKey);
+            
+            if(result != null)
+                return Ok(result);
             else
-            {
                 return Response(HttpStatusCode.NoContent);
-            }
         }
         
         [ResponseType(typeof(SHardCurrencyPurchasedVerification))]

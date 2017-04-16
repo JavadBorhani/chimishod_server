@@ -92,6 +92,7 @@ namespace Falcon.Web.Api
             container.Bind<ICreatedQuestionsInquiryProcessor>().To<CreatedQuestionsInquiryProcessor>().InRequestScope();
             container.Bind<INotificationInquiryProcessor>().To<NotificationInquiryProcessor>().InRequestScope();
             container.Bind<IUsersInquiryProcessor>().To<UsersInquiryProcessor>().InRequestScope();
+            container.Bind<IStoresInquiryProcessor>().To<StoresInquiryProcessor>().InRequestScope();
         }
         private void  AddMaintenanceProcessors(IKernel container)
         {

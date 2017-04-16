@@ -154,6 +154,7 @@
     <Compile Include="Controllers\V1\NotificationController.cs" />
     <Compile Include="InquiryProcessing\Private\CommentsInquiryProcessor.cs" />
     <Compile Include="InquiryProcessing\Private\CreatedQuestionsInquiryProcessor.cs" />
+    <Compile Include="InquiryProcessing\Private\StoresInquiryProcessor.cs" />
     <Compile Include="InquiryProcessing\Private\UsersInquiryProcessor.cs" />
     <Compile Include="InquiryProcessing\Private\NotificationInquiryProcessor.cs" />
     <Compile Include="InquiryProcessing\Public\ICommentsInquiryProcessor.cs" />
@@ -161,6 +162,7 @@
     <Compile Include="InquiryProcessing\Public\IPagedDataRequestFactory.cs" />
     <Compile Include="InquiryProcessing\Private\PagedDataRequestFactory.cs" />
     <Compile Include="InquiryProcessing\Public\INotificationInquiryProcessor.cs" />
+    <Compile Include="InquiryProcessing\Public\IStoresInquiryProcessor.cs" />
     <Compile Include="InquiryProcessing\Public\IUsersInquiryProcessor.cs" />
     <Compile Include="MaintenanceProcessing\Private\CodeGiftsMaintenanceProcessor.cs" />
     <Compile Include="MaintenanceProcessing\Private\GlobalApplicationState.cs" />

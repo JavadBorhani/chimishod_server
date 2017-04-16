@@ -253,6 +253,7 @@
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="MarketName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="MarketKey" Type="int" Nullable="false" />
           <Property Name="AppPackageName" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="PaymentVerificationLink" Type="varchar" MaxLength="200" Nullable="false" />
           <Property Name="LinkToAuthorize" Type="varchar" MaxLength="100" />
@@ -1865,6 +1866,7 @@
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="MarketName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MarketKey" Type="Int32" Nullable="false" />
           <Property Name="AppPackageName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="PaymentVerificationLink" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
           <Property Name="LinkToAuthorize" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
@@ -3066,6 +3068,7 @@
                 <ScalarProperty Name="LinkToAuthorize" ColumnName="LinkToAuthorize" />
                 <ScalarProperty Name="PaymentVerificationLink" ColumnName="PaymentVerificationLink" />
                 <ScalarProperty Name="AppPackageName" ColumnName="AppPackageName" />
+                <ScalarProperty Name="MarketKey" ColumnName="MarketKey" />
                 <ScalarProperty Name="MarketName" ColumnName="MarketName" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>

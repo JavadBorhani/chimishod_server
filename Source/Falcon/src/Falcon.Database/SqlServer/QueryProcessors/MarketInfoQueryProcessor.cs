@@ -27,13 +27,13 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             return mDateTime.Now > expireTime;
         }
 
-        public async Task AddExpireTimeByMiliseconds(int MarketId , int Miliseconds)
+        public async Task AddExpireTimeByMiliseconds(int MarketId , int Seconds)
         {
             
             var item = await mDb.Set<MarketInfo>().FindAsync(MarketId);
             if(item != null)
             {
-                item.ExpireAt = mDateTime.Now.AddMilliseconds(Miliseconds - Constants.DefaultValues.LatencyNumber);
+                item.ExpireAt = mDateTime.Now.AddSeconds(Seconds - Constants.DefaultValues.LatencyNumber);
                 await mDb.SaveChangesAsync();
             }
         }
@@ -45,9 +45,15 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             {
                 item.AccessToken = AccessToken;
                 item.RefreshToken = RefreshToken;
-                item.ExpireAt = mDateTime.Now.AddMilliseconds(ExpiresIn - Constants.DefaultValues.LatencyNumber);
+                item.ExpireAt = mDateTime.Now.AddSeconds(ExpiresIn - Constants.DefaultValues.LatencyNumber);
                 await mDb.SaveChangesAsync();
             }
+        }
+
+        public async Task<int> GetMarketIdByMarketKey(int Key)
+        {
+            int id = await mDb.Set<MarketInfo>().AsNoTracking().Where(mi => mi.MarketKey == Key).Select(mi => mi.ID).SingleOrDefaultAsync();
+            return id;  
         }
     }
 }

@@ -13,5 +13,6 @@ namespace Falcon.Data.QueryProcessors
         Task<Store> GetStoreItemByID(int Id);
         Task<bool> IsPurchased(int StoreItemId , string Token);
         Task<bool> SaveNewPurchase(Order Order);
+        Task<List<Store>> GetStoreListByMarketId(int Id);
     }
 }

@@ -30,12 +30,17 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             return await mDb.Set<Store>().AsNoTracking().Where(s => s.ID == Id).SingleOrDefaultAsync();
         }
 
+        public async Task<List<Store>> GetStoreListByMarketId(int Id)
+        {
+            return await mDb.Set<Store>().AsNoTracking().Where(s => s.MarketID == Id).ToListAsync();
+        }
+
         public async Task<bool> IsPurchased(int StoreItemId, string Token)
         {
             return await mDb.Set<Order>().AsNoTracking().CountAsync(o => o.UserID == mUserSession.ID && o.StoreID == StoreItemId && o.PurchasedToken == Token) > 0;
         }
 
-        public async  Task<bool> SaveNewPurchase(Order Order)
+        public async Task<bool> SaveNewPurchase(Order Order)
         {
             if(Order != null)
             {
