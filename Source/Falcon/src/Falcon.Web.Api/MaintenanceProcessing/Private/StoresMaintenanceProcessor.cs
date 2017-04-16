@@ -80,7 +80,9 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
                             ServerPrice = item.Price,
                             PurchasedDate = mDateTime.ConvertEpochToLocalHumanReadable(info.purchaseTime),
                             PurchasedToken = HardCurrency.PurchasedToken,
+                            PurchaseState = info.purchaseState,
                             ConsumptionState = info.consumptionState,
+                            IsFailed = false,                       
                         });
 
                         int totalCoin = await mUserQueryProcessor.AddCoin(item.Coin);
@@ -95,6 +97,18 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
                     else if (response is PurchaseVerificationError)
                     {
                         var info = (PurchaseVerificationError)response;
+
+                        var result = await mStoresQueryProcessor.SaveNewPurchase(new EFCommonContext.DbModel.Order
+                        {
+                            UserID = mUserSession.ID,
+                            StoreID = HardCurrency.StoreItemID,
+                            ClientPrice = HardCurrency.ClientPrice,
+                            ServerPrice = item.Price,
+                            PurchasedToken = HardCurrency.PurchasedToken,
+                            IsFailed = true,
+                            ErrorCode = info.error,
+                            ErrorDescription = info.error_description,
+                        });
 
                         answer.IsValid = false;
                         answer.StoreItemId = HardCurrency.StoreItemID;
@@ -118,6 +132,5 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
             }
             return null;
         }
-
     }
 }

@@ -19,10 +19,13 @@ namespace Falcon.EFCommonContext.DbModel
         public int StoreID { get; set; }
         public int ClientPrice { get; set; }
         public int ServerPrice { get; set; }
-        public System.DateTime PurchasedDate { get; set; }
+        public Nullable<System.DateTime> PurchasedDate { get; set; }
         public string PurchasedToken { get; set; }
-        public int PurchaseState { get; set; }
-        public int ConsumptionState { get; set; }
+        public Nullable<int> PurchaseState { get; set; }
+        public Nullable<int> ConsumptionState { get; set; }
+        public bool IsFailed { get; set; }
+        public string ErrorCode { get; set; }
+        public string ErrorDescription { get; set; }
     
         public virtual Store Store { get; set; }
         public virtual User User { get; set; }

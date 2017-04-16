@@ -277,10 +277,13 @@
           <Property Name="StoreID" Type="int" Nullable="false" />
           <Property Name="ClientPrice" Type="int" Nullable="false" />
           <Property Name="ServerPrice" Type="int" Nullable="false" />
-          <Property Name="PurchasedDate" Type="datetime" Nullable="false" />
+          <Property Name="PurchasedDate" Type="datetime" />
           <Property Name="PurchasedToken" Type="varchar" MaxLength="100" Nullable="false" />
-          <Property Name="PurchaseState" Type="int" Nullable="false" />
-          <Property Name="ConsumptionState" Type="int" Nullable="false" />
+          <Property Name="PurchaseState" Type="int" />
+          <Property Name="ConsumptionState" Type="int" />
+          <Property Name="IsFailed" Type="bit" Nullable="false" />
+          <Property Name="ErrorCode" Type="varchar" MaxLength="50" />
+          <Property Name="ErrorDescription" Type="varchar" MaxLength="100" />
         </EntityType>
         <EntityType Name="OurAdvertisements">
           <Key>
@@ -1891,10 +1894,13 @@
           <Property Name="StoreID" Type="Int32" Nullable="false" />
           <Property Name="ClientPrice" Type="Int32" Nullable="false" />
           <Property Name="ServerPrice" Type="Int32" Nullable="false" />
-          <Property Name="PurchasedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="PurchasedDate" Type="DateTime" Precision="3" />
           <Property Name="PurchasedToken" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="PurchaseState" Type="Int32" Nullable="false" />
-          <Property Name="ConsumptionState" Type="Int32" Nullable="false" />
+          <Property Name="PurchaseState" Type="Int32" />
+          <Property Name="ConsumptionState" Type="Int32" />
+          <Property Name="IsFailed" Type="Boolean" Nullable="false" />
+          <Property Name="ErrorCode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ErrorDescription" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Store" Relationship="Falcon.DbModel.FK_Order_Store" FromRole="Order" ToRole="Store" />
           <NavigationProperty Name="User" Relationship="Falcon.DbModel.FK_Order_User" FromRole="Order" ToRole="User" />
         </EntityType>
@@ -3077,6 +3083,9 @@
           <EntitySetMapping Name="Orders">
             <EntityTypeMapping TypeName="Falcon.DbModel.Order">
               <MappingFragment StoreEntitySet="Order">
+                <ScalarProperty Name="ErrorDescription" ColumnName="ErrorDescription" />
+                <ScalarProperty Name="ErrorCode" ColumnName="ErrorCode" />
+                <ScalarProperty Name="IsFailed" ColumnName="IsFailed" />
                 <ScalarProperty Name="ConsumptionState" ColumnName="ConsumptionState" />
                 <ScalarProperty Name="PurchaseState" ColumnName="PurchaseState" />
                 <ScalarProperty Name="PurchasedToken" ColumnName="PurchasedToken" />

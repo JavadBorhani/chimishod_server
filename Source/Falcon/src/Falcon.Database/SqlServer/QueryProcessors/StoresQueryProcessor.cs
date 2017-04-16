@@ -37,7 +37,9 @@ namespace Falcon.Database.SqlServer.QueryProcessors
 
         public async Task<bool> IsPurchased(int StoreItemId, string Token)
         {
-            return await mDb.Set<Order>().AsNoTracking().CountAsync(o => o.UserID == mUserSession.ID && o.StoreID == StoreItemId && o.PurchasedToken == Token) > 0;
+            return await mDb.Set<Order>()
+                .AsNoTracking().
+                CountAsync(o => o.UserID == mUserSession.ID && o.StoreID == StoreItemId && o.PurchasedToken == Token && o.IsFailed == false) > 0;
         }
 
         public async Task<bool> SaveNewPurchase(Order Order)
