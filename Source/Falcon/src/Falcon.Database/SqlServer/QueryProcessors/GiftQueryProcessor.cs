@@ -19,12 +19,17 @@ namespace Falcon.Database.SqlServer.QueryProcessors
         private readonly IWebUserSession mUserSession;
         private readonly IDbContext mDb;
         private readonly IDateTime mDateTime;
+        private readonly INotificationsQueryProcessor mNotificationQueryProcessor;
 
-        public GiftQueryProcessor(IWebUserSession UserSession , IDbContext Database , IDateTime DateTime)
+        public GiftQueryProcessor(IWebUserSession UserSession , 
+            IDbContext Database , 
+            IDateTime DateTime ,
+            INotificationsQueryProcessor NotificationQueryProcessor)
         {
-            mUserSession    = UserSession;
-            mDb             = Database;
-            mDateTime       = DateTime;
+            mUserSession                = UserSession;
+            mDb                         = Database;
+            mDateTime                   = DateTime;
+            mNotificationQueryProcessor = NotificationQueryProcessor;
         }
 
         public async Task<bool> AddAchievedGift(int ID)
@@ -56,7 +61,7 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             var giftType = mDb.Set<GiftType>();
 
             var achievedGift = await GetAchievedIdList();
-            var displayedGift = await GetDisplayedIdList();
+            var displayedGift = await mNotificationQueryProcessor.GetDisplayedIdList();
 
             var result = await mDb.Set<Gift>()
                 .AsNoTracking()
@@ -70,21 +75,13 @@ namespace Falcon.Database.SqlServer.QueryProcessors
                     Day = g.Day,
                     Priority = gt.Priority,
                     Description = g.Description,
-                    GiftTypeString = gt.Name
+                    GiftTypeString = gt.Name,
+                    ExpireDate = g.ExpireDate,
                 })
                 .OrderBy(m => m.Priority)
                 .ToListAsync();
 
             return result;  
-        }
-
-        public async Task<List<int>> GetDisplayedIdList()
-        {
-            return await mDb.Set<DisplayedNotification>()
-               .AsNoTracking()
-               .Where(ag => ag.UserID == mUserSession.ID)
-               .Select(u => u.NotificationID)
-               .ToListAsync();
         }
 
         public async Task<bool> IsAchieved(int ID)

@@ -10,5 +10,6 @@ namespace Falcon.Data.QueryProcessors
     public interface INotificationsQueryProcessor
     {
         Task<bool> AddDisplayedNotification(SDisplayedNotification DisplayedNotification); //TODO : Refactor Input to some generic interface
+        Task<List<int>> GetDisplayedIdList();
     }
 }

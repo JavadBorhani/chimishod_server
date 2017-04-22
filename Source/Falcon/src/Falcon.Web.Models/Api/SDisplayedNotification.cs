@@ -8,7 +8,6 @@ namespace Falcon.Web.Models.Api
 {
     public class SDisplayedNotification
     {
-        public int ID { get; set; }
         public int UserID { get; set; }
         public int NotificationID { get; set; }
         public DateTime ExpireDate { get; set; }

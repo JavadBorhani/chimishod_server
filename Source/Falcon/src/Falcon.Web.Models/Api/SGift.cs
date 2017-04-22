@@ -23,6 +23,7 @@ namespace Falcon.Web.Models.Api
         public int Priority { get; set; }
         public int Prize { get; set; }
         public int? Day { get; set; }
+        public DateTime? ExpireDate { get; set; }
 
         [IgnoreDataMember]
         public GiftTypes GiftType { get; set; }

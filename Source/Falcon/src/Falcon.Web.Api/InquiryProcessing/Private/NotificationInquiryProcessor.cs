@@ -20,18 +20,21 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
         private readonly IUserQueryProcessor mUserQueryProcessor;
         private readonly IWebUserSession mUserSession;
         private readonly IDateTime mDateTime;
+        private readonly INotificationsQueryProcessor mNotificationsQueryProcessor;
 
         public NotificationInquiryProcessor(IMapper Mapper , 
             IGiftQueryProcessor GiftQueryProcessor , 
             IWebUserSession UserSession , 
             IUserQueryProcessor UserQueryProcessor , 
-            IDateTime DateTime)
+            IDateTime DateTime ,
+            INotificationsQueryProcessor NotificationsQueryProcessor)
         {
             mMapper = Mapper;
             mGiftQueryProcessor = GiftQueryProcessor;
             mUserSession = UserSession;
             mUserQueryProcessor = UserQueryProcessor;
             mDateTime = DateTime;
+            mNotificationsQueryProcessor = NotificationsQueryProcessor;  
         }
         public async Task<SNotify> GetNotification()
         {
@@ -46,6 +49,13 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
                     {
                         SNotify result = mMapper.Map<SGift, SNotify>(userGiftList[i]);
 
+                        await mNotificationsQueryProcessor.AddDisplayedNotification(new SDisplayedNotification
+                        {
+                            UserID = mUserSession.ID,
+                            NotificationID = result.ID,
+                            InsertDate = mDateTime.Now,
+                            ExpireDate = userGiftList[i].ExpireDate ?? mDateTime.Now.AddDays(Constants.Notfication.DefaultExpireDays),
+                        });
 
                         return result;
                     }

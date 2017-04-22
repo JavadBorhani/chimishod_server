@@ -25,7 +25,12 @@ namespace Falcon.Common
             public const int CategoryID = 1;
             //public const int CategoryCoeffecient = 1;
             public const int EditableCount = 2; 
-            public const int AvatarID = 1; 
+            public const int AvatarID = 1;
+            
+        }
+        public static class Notfication
+        {
+            public const int DefaultExpireDays = 1;
         }
         public static class MediaTypeNames
         {
@@ -115,21 +120,21 @@ namespace Falcon.Common
             public const int AchievementAdHocQueryTypeID = 2;
             public const int LatencyNumber = 3000;
         }
-        public static class DefaultHostConfig
-        {
-            //public const string WebSiteNoReplyMail = "noreply@vglr.ir";
-            //public const string WebSiteNoReplyMailPassword = "@@@Visualbasic7";
-            //public const string WebSiteSupportMail = "";
-            //public const string WebSiteSupportMailPassword = "";
-            //public const string HostSmtpServer = "31.25.89.211"; 
-        }
-        public static class Prize
-        {
-            //public const int CreateQuestionPrize = 10; is in database
-            //public const int CreatedQuestionAccepted = 10;
-            //public const int LikeQuestion = 1; in db
-            //public const int Answering = 1; is in db
-        }
+        //public static class DefaultHostConfig
+        //{
+        //    //public const string WebSiteNoReplyMail = "noreply@vglr.ir";
+        //    //public const string WebSiteNoReplyMailPassword = "@@@Visualbasic7";
+        //    //public const string WebSiteSupportMail = "";
+        //    //public const string WebSiteSupportMailPassword = "";
+        //    //public const string HostSmtpServer = "31.25.89.211"; 
+        //}
+        //public static class Prize
+        //{
+        //    //public const int CreateQuestionPrize = 10; is in database
+        //    //public const int CreatedQuestionAccepted = 10;
+        //    //public const int LikeQuestion = 1; in db
+        //    //public const int Answering = 1; is in db
+        //}
         public static class RoutesToIgnoreAuthentication
         {
             public const string UserAuthenticator = "UserAuthenticator";
