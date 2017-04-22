@@ -19,7 +19,6 @@ namespace Falcon.EFCommonContext.DbModel
             : base("name=DbEntity")
         {
         }
-
         public DbEntity(string NameOrConnectionString) : base(NameOrConnectionString)
         {
         }
@@ -67,5 +66,6 @@ namespace Falcon.EFCommonContext.DbModel
         public virtual DbSet<UserAvatar> UserAvatars { get; set; }
         public virtual DbSet<UserInfo> UserInfoes { get; set; }
         public virtual DbSet<UserType> UserTypes { get; set; }
+        public virtual DbSet<DisplayedNotification> DisplayedNotifications { get; set; }
     }
 }

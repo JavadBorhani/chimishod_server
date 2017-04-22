@@ -56,10 +56,11 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             var giftType = mDb.Set<GiftType>();
 
             var achievedGift = await GetAchievedIdList();
+            var displayedGift = await GetDisplayedIdList();
 
             var result = await mDb.Set<Gift>()
                 .AsNoTracking()
-                .Where(g => (g.StartDate <= date && g.ExpireDate >= date) && !achievedGift.Contains(g.ID))
+                .Where(g => (g.StartDate <= date && g.ExpireDate >= date) && !achievedGift.Contains(g.ID) && !displayedGift.Contains(g.ID) )
                 .Join(giftType, g => g.GiftTypeID, gt => gt.ID, (g, gt) => new SGift
                 {
                     ID = g.ID,
@@ -75,6 +76,15 @@ namespace Falcon.Database.SqlServer.QueryProcessors
                 .ToListAsync();
 
             return result;  
+        }
+
+        public async Task<List<int>> GetDisplayedIdList()
+        {
+            return await mDb.Set<AchievedGift>()
+               .AsNoTracking()
+               .Where(ag => ag.UserID == mUserSession.ID)
+               .Select(u => u.GiftID)
+               .ToListAsync();
         }
 
         public async Task<bool> IsAchieved(int ID)

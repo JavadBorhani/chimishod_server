@@ -91,6 +91,9 @@
         <AssociationConnector Association="Falcon.DbModel.FK_SelectedTheme_User" />
         <AssociationConnector Association="Falcon.DbModel.FK_User_UserType" />
         <AssociationConnector Association="Falcon.DbModel.FK_UserInfo_User" />
+        <EntityTypeShape EntityType="Falcon.DbModel.DisplayedNotification" Width="1.5" PointX="17.25" PointY="35.375" />
+        <AssociationConnector Association="Falcon.DbModel.FK_DisplayedNotification_Gift" />
+        <AssociationConnector Association="Falcon.DbModel.FK_DisplayedNotification_User" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

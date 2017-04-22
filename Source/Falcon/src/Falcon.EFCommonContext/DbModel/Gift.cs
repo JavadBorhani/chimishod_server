@@ -18,6 +18,7 @@ namespace Falcon.EFCommonContext.DbModel
         public Gift()
         {
             this.AchievedGifts = new HashSet<AchievedGift>();
+            this.DisplayedNotifications = new HashSet<DisplayedNotification>();
         }
     
         public int ID { get; set; }
@@ -35,5 +36,7 @@ namespace Falcon.EFCommonContext.DbModel
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<AchievedGift> AchievedGifts { get; set; }
         public virtual GiftType GiftType { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<DisplayedNotification> DisplayedNotifications { get; set; }
     }
 }
