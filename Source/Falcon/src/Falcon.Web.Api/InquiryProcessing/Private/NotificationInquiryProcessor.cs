@@ -45,7 +45,8 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
             { 
                 for(int i = 0; i < userGiftList.Count; ++i)
                 {
-                    if(mGiftQueryProcessor.CheckGiftLogic(userGiftList[i]))
+                    var isOk = await mGiftQueryProcessor.CheckGiftLogic(userGiftList[i]); 
+                    if (isOk)
                     {
                         SNotify result = mMapper.Map<SGift, SNotify>(userGiftList[i]);
 
@@ -74,7 +75,9 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
 
                 if (!achieved || sGift.GiftType == GiftTypes.Daily)
                 {
-                    if (mGiftQueryProcessor.CheckGiftLogic(sGift, gift, mDateTime.Now))
+                    var isOk = await mGiftQueryProcessor.CheckGiftLogic(sGift, gift, mDateTime.Now);
+
+                    if (isOk)
                     {
                         var result = await mGiftQueryProcessor.AddAchievedGift(NotificationID);
 

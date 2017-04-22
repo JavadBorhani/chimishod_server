@@ -224,6 +224,7 @@
           <Property Name="GiftTypeID" Type="int" Nullable="false" />
           <Property Name="Prize" Type="int" Nullable="false" />
           <Property Name="Day" Type="int" />
+          <Property Name="QueryString" Type="nvarchar" MaxLength="150" />
           <Property Name="StartDate" Type="datetime" />
           <Property Name="ExpireDate" Type="datetime" />
           <Property Name="CreatedDate" Type="datetime" Nullable="false" />
@@ -1415,6 +1416,7 @@
           <EntitySet Name="Comments" EntityType="Falcon.DbModel.Comment" />
           <EntitySet Name="CreatedQuestions" EntityType="Falcon.DbModel.CreatedQuestion" />
           <EntitySet Name="CreatedQuestionsVerifyTypes" EntityType="Falcon.DbModel.CreatedQuestionsVerifyType" />
+          <EntitySet Name="DisplayedNotifications" EntityType="Falcon.DbModel.DisplayedNotification" />
           <EntitySet Name="Favorites" EntityType="Falcon.DbModel.Favorite" />
           <EntitySet Name="Gifts" EntityType="Falcon.DbModel.Gift" />
           <EntitySet Name="GiftTypes" EntityType="Falcon.DbModel.GiftType" />
@@ -1532,6 +1534,14 @@
             <End Role="User" EntitySet="Users" />
             <End Role="CreatedQuestion" EntitySet="CreatedQuestions" />
           </AssociationSet>
+          <AssociationSet Name="FK_DisplayedNotification_Gift" Association="Falcon.DbModel.FK_DisplayedNotification_Gift">
+            <End Role="Gift" EntitySet="Gifts" />
+            <End Role="DisplayedNotification" EntitySet="DisplayedNotifications" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DisplayedNotification_User" Association="Falcon.DbModel.FK_DisplayedNotification_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="DisplayedNotification" EntitySet="DisplayedNotifications" />
+          </AssociationSet>
           <AssociationSet Name="FK_Favorite_Question" Association="Falcon.DbModel.FK_Favorite_Question">
             <End Role="Question" EntitySet="Questions" />
             <End Role="Favorite" EntitySet="Favorites" />
@@ -1627,15 +1637,6 @@
           <AssociationSet Name="FK_UserInfo_User" Association="Falcon.DbModel.FK_UserInfo_User">
             <End Role="User" EntitySet="Users" />
             <End Role="UserInfo" EntitySet="UserInfoes" />
-          </AssociationSet>
-          <EntitySet Name="DisplayedNotifications" EntityType="Falcon.DbModel.DisplayedNotification" />
-          <AssociationSet Name="FK_DisplayedNotification_Gift" Association="Falcon.DbModel.FK_DisplayedNotification_Gift">
-            <End Role="Gift" EntitySet="Gifts" />
-            <End Role="DisplayedNotification" EntitySet="DisplayedNotifications" />
-          </AssociationSet>
-          <AssociationSet Name="FK_DisplayedNotification_User" Association="Falcon.DbModel.FK_DisplayedNotification_User">
-            <End Role="User" EntitySet="Users" />
-            <End Role="DisplayedNotification" EntitySet="DisplayedNotifications" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="AchievedCodeGift">
@@ -1857,6 +1858,18 @@
           <Property Name="Description" Type="Binary" MaxLength="50" FixedLength="false" />
           <NavigationProperty Name="CreatedQuestions" Relationship="Falcon.DbModel.FK_CreatedQuestions_CreatedQuestionsVerifyType" FromRole="CreatedQuestionsVerifyType" ToRole="CreatedQuestion" />
         </EntityType>
+        <EntityType Name="DisplayedNotification">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="NotificationID" Type="Int32" Nullable="false" />
+          <Property Name="ExpireDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="InsertDate" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Gift" Relationship="Falcon.DbModel.FK_DisplayedNotification_Gift" FromRole="DisplayedNotification" ToRole="Gift" />
+          <NavigationProperty Name="User" Relationship="Falcon.DbModel.FK_DisplayedNotification_User" FromRole="DisplayedNotification" ToRole="User" />
+        </EntityType>
         <EntityType Name="Favorite">
           <Key>
             <PropertyRef Name="ID" />
@@ -1879,13 +1892,14 @@
           <Property Name="GiftTypeID" Type="Int32" Nullable="false" />
           <Property Name="Prize" Type="Int32" Nullable="false" />
           <Property Name="Day" Type="Int32" />
+          <Property Name="QueryString" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
           <Property Name="StartDate" Type="DateTime" Precision="3" />
           <Property Name="ExpireDate" Type="DateTime" Precision="3" />
           <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="UpdatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="AchievedGifts" Relationship="Falcon.DbModel.FK_AchievedGifts_Gift" FromRole="Gift" ToRole="AchievedGift" />
-          <NavigationProperty Name="GiftType" Relationship="Falcon.DbModel.FK_Gift_GiftType" FromRole="Gift" ToRole="GiftType" />
           <NavigationProperty Name="DisplayedNotifications" Relationship="Falcon.DbModel.FK_DisplayedNotification_Gift" FromRole="Gift" ToRole="DisplayedNotification" />
+          <NavigationProperty Name="GiftType" Relationship="Falcon.DbModel.FK_Gift_GiftType" FromRole="Gift" ToRole="GiftType" />
         </EntityType>
         <EntityType Name="GiftType">
           <Key>
@@ -2161,6 +2175,7 @@
           <NavigationProperty Name="Answers" Relationship="Falcon.DbModel.FK_Answer_User" FromRole="User" ToRole="Answer" />
           <NavigationProperty Name="Comments" Relationship="Falcon.DbModel.FK_Comment_User" FromRole="User" ToRole="Comment" />
           <NavigationProperty Name="CreatedQuestions" Relationship="Falcon.DbModel.FK_CreatedQuestions_User" FromRole="User" ToRole="CreatedQuestion" />
+          <NavigationProperty Name="DisplayedNotifications" Relationship="Falcon.DbModel.FK_DisplayedNotification_User" FromRole="User" ToRole="DisplayedNotification" />
           <NavigationProperty Name="Favorites" Relationship="Falcon.DbModel.FK_Favorite_User" FromRole="User" ToRole="Favorite" />
           <NavigationProperty Name="Level" Relationship="Falcon.DbModel.FK_User_Level" FromRole="User" ToRole="Level" />
           <NavigationProperty Name="Manufactures" Relationship="Falcon.DbModel.FK_Manufacture_User" FromRole="User" ToRole="Manufacture" />
@@ -2174,7 +2189,6 @@
           <NavigationProperty Name="SelectedThemes" Relationship="Falcon.DbModel.FK_SelectedTheme_User" FromRole="User" ToRole="SelectedTheme" />
           <NavigationProperty Name="UserType" Relationship="Falcon.DbModel.FK_User_UserType" FromRole="User" ToRole="UserType" />
           <NavigationProperty Name="UserInfoes" Relationship="Falcon.DbModel.FK_UserInfo_User" FromRole="User" ToRole="UserInfo" />
-          <NavigationProperty Name="DisplayedNotifications" Relationship="Falcon.DbModel.FK_DisplayedNotification_User" FromRole="User" ToRole="DisplayedNotification" />
         </EntityType>
         <EntityType Name="UserAvatar">
           <Key>
@@ -2521,6 +2535,34 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_DisplayedNotification_Gift">
+          <End Type="Falcon.DbModel.Gift" Role="Gift" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="Falcon.DbModel.DisplayedNotification" Role="DisplayedNotification" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Gift">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="DisplayedNotification">
+              <PropertyRef Name="NotificationID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DisplayedNotification_User">
+          <End Type="Falcon.DbModel.User" Role="User" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="Falcon.DbModel.DisplayedNotification" Role="DisplayedNotification" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="DisplayedNotification">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Favorite_Question">
           <End Type="Falcon.DbModel.Question" Role="Question" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -2849,46 +2891,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="DisplayedNotification">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="UserID" Type="Int32" Nullable="false" />
-          <Property Name="NotificationID" Type="Int32" Nullable="false" />
-          <Property Name="ExpireDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="InsertDate" Type="DateTime" Nullable="false" Precision="3" />
-          <NavigationProperty Name="Gift" Relationship="Falcon.DbModel.FK_DisplayedNotification_Gift" FromRole="DisplayedNotification" ToRole="Gift" />
-          <NavigationProperty Name="User" Relationship="Falcon.DbModel.FK_DisplayedNotification_User" FromRole="DisplayedNotification" ToRole="User" />
-        </EntityType>
-        <Association Name="FK_DisplayedNotification_Gift">
-          <End Type="Falcon.DbModel.Gift" Role="Gift" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="Falcon.DbModel.DisplayedNotification" Role="DisplayedNotification" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Gift">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="DisplayedNotification">
-              <PropertyRef Name="NotificationID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_DisplayedNotification_User">
-          <End Type="Falcon.DbModel.User" Role="User" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="Falcon.DbModel.DisplayedNotification" Role="DisplayedNotification" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="DisplayedNotification">
-              <PropertyRef Name="UserID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -3098,6 +3100,17 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="DisplayedNotifications">
+            <EntityTypeMapping TypeName="Falcon.DbModel.DisplayedNotification">
+              <MappingFragment StoreEntitySet="DisplayedNotification">
+                <ScalarProperty Name="InsertDate" ColumnName="InsertDate" />
+                <ScalarProperty Name="ExpireDate" ColumnName="ExpireDate" />
+                <ScalarProperty Name="NotificationID" ColumnName="NotificationID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Favorites">
             <EntityTypeMapping TypeName="Falcon.DbModel.Favorite">
               <MappingFragment StoreEntitySet="Favorite">
@@ -3115,6 +3128,7 @@
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
                 <ScalarProperty Name="ExpireDate" ColumnName="ExpireDate" />
                 <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+                <ScalarProperty Name="QueryString" ColumnName="QueryString" />
                 <ScalarProperty Name="Day" ColumnName="Day" />
                 <ScalarProperty Name="Prize" ColumnName="Prize" />
                 <ScalarProperty Name="GiftTypeID" ColumnName="GiftTypeID" />
@@ -3409,17 +3423,6 @@
               <MappingFragment StoreEntitySet="UserType">
                 <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="DisplayedNotifications">
-            <EntityTypeMapping TypeName="Falcon.DbModel.DisplayedNotification">
-              <MappingFragment StoreEntitySet="DisplayedNotification">
-                <ScalarProperty Name="InsertDate" ColumnName="InsertDate" />
-                <ScalarProperty Name="ExpireDate" ColumnName="ExpireDate" />
-                <ScalarProperty Name="NotificationID" ColumnName="NotificationID" />
-                <ScalarProperty Name="UserID" ColumnName="UserID" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>

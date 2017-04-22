@@ -12,6 +12,7 @@ namespace Falcon.Web.Models.Api
         Daily,
         DateTime, 
         Message, 
+        AdHoc,
     };
 
     public class SGift
@@ -23,6 +24,7 @@ namespace Falcon.Web.Models.Api
         public int Priority { get; set; }
         public int Prize { get; set; }
         public int? Day { get; set; }
+        public string QueryString { get; set; }
         public DateTime? ExpireDate { get; set; }
 
         [IgnoreDataMember]

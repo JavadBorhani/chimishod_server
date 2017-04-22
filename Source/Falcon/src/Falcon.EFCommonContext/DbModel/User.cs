@@ -23,6 +23,7 @@ namespace Falcon.EFCommonContext.DbModel
             this.Answers = new HashSet<Answer>();
             this.Comments = new HashSet<Comment>();
             this.CreatedQuestions = new HashSet<CreatedQuestion>();
+            this.DisplayedNotifications = new HashSet<DisplayedNotification>();
             this.Favorites = new HashSet<Favorite>();
             this.Manufactures = new HashSet<Manufacture>();
             this.Orders = new HashSet<Order>();
@@ -34,7 +35,6 @@ namespace Falcon.EFCommonContext.DbModel
             this.SelectedCategories = new HashSet<SelectedCategory>();
             this.SelectedThemes = new HashSet<SelectedTheme>();
             this.UserInfoes = new HashSet<UserInfo>();
-            this.DisplayedNotifications = new HashSet<DisplayedNotification>();
         }
     
         public int ID { get; set; }
@@ -62,6 +62,8 @@ namespace Falcon.EFCommonContext.DbModel
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CreatedQuestion> CreatedQuestions { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<DisplayedNotification> DisplayedNotifications { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Favorite> Favorites { get; set; }
         public virtual Level Level { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -85,7 +87,5 @@ namespace Falcon.EFCommonContext.DbModel
         public virtual UserType UserType { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<UserInfo> UserInfoes { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<DisplayedNotification> DisplayedNotifications { get; set; }
     }
 }

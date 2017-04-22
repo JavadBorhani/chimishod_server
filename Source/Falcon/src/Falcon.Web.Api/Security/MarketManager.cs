@@ -26,6 +26,7 @@ namespace Falcon.Web.Api.Security
             mMarketInfoQueryProcessor = MarketInfoQueryProcessor;
             mDateTime = DateTime;
         }
+        //TODO : Add Subscription Checking in a separate function 
         public async Task<PurchaseVerificationResponse> PurchaseOperationChecking(PurchaseVerificationRequest PurchaseVerificationRequest, SMarketInfo MarketInfo)
         {
             if(!MarketInfo.NeedsTokenVerification)

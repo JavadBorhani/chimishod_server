@@ -21,6 +21,7 @@ namespace Falcon.Web.Api.AutoMappingConfiguration.GiftMap
                 .ForMember(s => s.Day, m => m.MapFrom(g => g.Day))
                 .ForMember(s => s.GiftType, m => m.MapFrom(g => (GiftTypes)Enum.Parse(typeof(GiftTypes), g.GiftType.Name)))
                 .ForMember(s => s.GiftTypeString, m => m.MapFrom(g => g.GiftType.Name))
+                .ForMember(s => s.QueryString, m => m.MapFrom(g => g.QueryString))
                 .ForMember(s => s.Priority , m => m.Ignore());
         }
     }

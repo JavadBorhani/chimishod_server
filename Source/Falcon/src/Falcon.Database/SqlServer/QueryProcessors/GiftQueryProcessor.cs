@@ -100,7 +100,7 @@ namespace Falcon.Database.SqlServer.QueryProcessors
                 .ToListAsync();
         }
 
-        public bool CheckGiftLogic(SGift CurrentGift)
+        public async Task<bool> CheckGiftLogic(SGift CurrentGift)
         {
             CurrentGift.GiftType = (GiftTypes)Enum.Parse(typeof(GiftTypes), CurrentGift.GiftTypeString);
             switch (CurrentGift.GiftType)
@@ -110,6 +110,18 @@ namespace Falcon.Database.SqlServer.QueryProcessors
                         return true;
                     break;
 
+                case GiftTypes.AdHoc:
+                    {
+                        
+                        if (string.IsNullOrEmpty(CurrentGift.QueryString))
+                            return false;
+
+                        int result = await mDb.Database.SqlQuery<int>(CurrentGift.QueryString, mUserSession.ID).SingleOrDefaultAsync();
+                        if (result >= 1)
+                            return true;
+
+                        return false;
+                    }
                 case GiftTypes.DateTime:
                 case GiftTypes.Message:
                     return true;
@@ -117,7 +129,7 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             return false;
         }
 
-        public bool CheckGiftLogic(SGift CurrentGift, Gift Gift, DateTime DateTime)
+        public async Task<bool> CheckGiftLogic(SGift CurrentGift, Gift Gift, DateTime DateTime)
         {
             CurrentGift.GiftType = (GiftTypes)Enum.Parse(typeof(GiftTypes), CurrentGift.GiftTypeString);
             switch (CurrentGift.GiftType)
@@ -140,6 +152,18 @@ namespace Falcon.Database.SqlServer.QueryProcessors
                 case GiftTypes.Message:
                     return true;
 
+                case GiftTypes.AdHoc:
+                    {
+                        
+                        if (string.IsNullOrEmpty(Gift.QueryString))
+                            return false;
+
+                        int result = await mDb.Database.SqlQuery<int>(Gift.QueryString, mUserSession.ID).SingleOrDefaultAsync();
+                        if (result >= 1)
+                            return true;
+
+                        return false;
+                    }
                 default:
                     return false;
             }

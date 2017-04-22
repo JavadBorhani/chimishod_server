@@ -16,7 +16,7 @@ namespace Falcon.Data.QueryProcessors
         Task<bool> AddAchievedGift(int ID);
         Task<bool> IsAchieved(int ID);
         Task<List<int>> GetAchievedIdList();
-        bool CheckGiftLogic(SGift CurrentGift);
-        bool CheckGiftLogic(SGift CurrentGift, Gift Gift, DateTime DateTime);
+        Task<bool> CheckGiftLogic(SGift CurrentGift);
+        Task<bool> CheckGiftLogic(SGift CurrentGift, Gift Gift, DateTime DateTime);
     }
 }
