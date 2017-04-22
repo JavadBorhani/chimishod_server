@@ -59,11 +59,17 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
             if(sGift != null)
             {
                 var achieved = await mGiftQueryProcessor.IsAchieved(NotificationID);
-                if (!achieved)
+
+                if (!achieved || sGift.GiftType == GiftTypes.Daily)
                 {
                     if (mGiftQueryProcessor.CheckGiftLogic(sGift, gift, mDateTime.Now))
                     {
                         var result = await mGiftQueryProcessor.AddAchievedGift(NotificationID);
+
+                        if (sGift.GiftType == GiftTypes.Daily)
+                        {
+                            await mUserQueryProcessor.UpdateLastSeenDateTimeToNow();
+                        }
 
                         if (sGift.GiftType != GiftTypes.Message)
                         {

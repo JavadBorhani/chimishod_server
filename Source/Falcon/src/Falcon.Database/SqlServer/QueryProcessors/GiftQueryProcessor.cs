@@ -99,7 +99,7 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             switch (CurrentGift.GiftType)
             {
                 case GiftTypes.Daily:
-                    if ((mDateTime.Now - mUserSession.LastSeenDateTime).Days > CurrentGift.Day)
+                    if ((mDateTime.Now - mUserSession.LastSeenDateTime).Days >= CurrentGift.Day)
                         return true;
                     break;
 
@@ -116,10 +116,11 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             switch (CurrentGift.GiftType)
             {
                 case GiftTypes.Daily:
-
-                    if ((DateTime - mUserSession.PrevLastSeenDateTime).Days > CurrentGift.Day)
-                        return true;
-
+                    {
+                        if ((DateTime - mUserSession.PrevLastSeenDateTime).Days >= CurrentGift.Day ||
+                            (DateTime - mUserSession.LastSeenDateTime).Days >= CurrentGift.Day)
+                            return true;
+                    }
                     break;
 
                 case GiftTypes.DateTime:

@@ -127,7 +127,11 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
                 }
                 else
                 {
+                    answer.IsValid = true;
+                    answer.StoreItemId = HardCurrency.StoreItemID; 
                     answer.TotalCoin = await mUserQueryProcessor.GetTotalCoin();
+
+                    return answer;
                 }
             }
             return null;

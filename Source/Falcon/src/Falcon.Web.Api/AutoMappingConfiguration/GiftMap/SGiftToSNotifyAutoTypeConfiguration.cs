@@ -18,7 +18,7 @@ namespace Falcon.Web.Api.AutoMappingConfiguration.GiftMap
                 .ForMember(n => n.Title , m => m.MapFrom(c => c.Name))
                 .ForMember(n => n.Description , m => m.MapFrom(c => c.Description))
                 .ForMember(n => n.Prize , m => m.MapFrom(c => c.Prize))
-                .ForMember(n => n.Type , m => m.UseValue(NotificationType.Gift));
+                .ForMember(n => n.Type , m => m.MapFrom( c => c.GiftType != GiftTypes.Message ? NotificationType.Gift : NotificationType.Other));
         }
     }
 }

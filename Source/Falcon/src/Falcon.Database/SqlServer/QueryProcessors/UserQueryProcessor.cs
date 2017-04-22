@@ -6,6 +6,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
 using System;
+using Falcon.Common;
 
 namespace Falcon.Database.SqlServer.QueryProcessors
 {
@@ -14,10 +15,12 @@ namespace Falcon.Database.SqlServer.QueryProcessors
 
         private readonly IDbContext mDb;
         private readonly IWebUserSession mUserSession;
-        public UserQueryProcessor(IDbContext Database , IWebUserSession UserSession)
+        private readonly IDateTime mDateTime;
+        public UserQueryProcessor(IDbContext Database , IWebUserSession UserSession , IDateTime DateTime)
         {
             mDb = Database;
             mUserSession = UserSession;
+            mDateTime = DateTime;
         }
         public async Task<int> AddCoin(int Coin)
         {
@@ -34,6 +37,23 @@ namespace Falcon.Database.SqlServer.QueryProcessors
         public async Task<int> GetTotalCoin()
         {
             return await mDb.Set<User>().AsNoTracking().Where(u => u.ID == mUserSession.ID).Select(u => u.TotalStars).SingleOrDefaultAsync();
+        }
+
+        public async Task<bool> UpdateLastSeenDateTime()
+        {
+            var user = await mDb.Set<User>().Where(u => u.ID == mUserSession.ID).SingleOrDefaultAsync();
+            user.PrevLastSeenDateTime = user.LastSeenDateTime;
+            user.LastSeenDateTime = mDateTime.Now;
+            await mDb.SaveChangesAsync();
+            return true;
+        }
+        public async Task<bool> UpdateLastSeenDateTimeToNow()
+        {
+            var user = await mDb.Set<User>().Where(u => u.ID == mUserSession.ID).SingleOrDefaultAsync();
+            user.PrevLastSeenDateTime = mDateTime.Now;
+            user.LastSeenDateTime = mDateTime.Now;
+            await mDb.SaveChangesAsync();
+            return true;
         }
     }
 }
