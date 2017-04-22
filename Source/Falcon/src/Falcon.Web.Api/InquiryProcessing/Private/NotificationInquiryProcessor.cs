@@ -45,6 +45,8 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
                     if(mGiftQueryProcessor.CheckGiftLogic(userGiftList[i]))
                     {
                         SNotify result = mMapper.Map<SGift, SNotify>(userGiftList[i]);
+
+
                         return result;
                     }
                 }

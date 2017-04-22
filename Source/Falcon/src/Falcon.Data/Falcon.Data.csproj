@@ -51,6 +51,7 @@
     <Compile Include="QueryProcessors\ICreatedQuestionsQueryProcessor.cs" />
     <Compile Include="QueryProcessors\IGiftQueryProcessor.cs" />
     <Compile Include="QueryProcessors\IMarketInfoQueryProcessor.cs" />
+    <Compile Include="QueryProcessors\INotificationsQueryProcessor.cs" />
     <Compile Include="QueryProcessors\IStoresQueryProcessor.cs" />
     <Compile Include="QueryProcessors\IUserQueryProcessor.cs" />
     <Compile Include="QueryResult.cs" />

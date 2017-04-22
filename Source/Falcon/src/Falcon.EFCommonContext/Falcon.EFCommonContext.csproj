@@ -96,6 +96,9 @@
     <Compile Include="DbModel\CreatedQuestionsVerifyType.cs">
       <DependentUpon>WhatIfDataModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="DbModel\DisplayedNotification.cs">
+      <DependentUpon>WhatIfDataModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="DbModel\Favorite.cs">
       <DependentUpon>WhatIfDataModel.tt</DependentUpon>
     </Compile>

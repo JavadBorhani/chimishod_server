@@ -80,10 +80,10 @@ namespace Falcon.Database.SqlServer.QueryProcessors
 
         public async Task<List<int>> GetDisplayedIdList()
         {
-            return await mDb.Set<AchievedGift>()
+            return await mDb.Set<DisplayedNotification>()
                .AsNoTracking()
                .Where(ag => ag.UserID == mUserSession.ID)
-               .Select(u => u.GiftID)
+               .Select(u => u.NotificationID)
                .ToListAsync();
         }
 
