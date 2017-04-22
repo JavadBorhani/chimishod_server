@@ -31,11 +31,9 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
 
             var comments = queryResult.QueriedItems.ToList();
 
-            var outputComments = mMapper.Map<List<SComment>>(comments);
-
             var inquiryResponse = new PagedTaskDataInquiryResponse
             {
-                Items = outputComments,
+                Items = comments,
                 PageCount = queryResult.TotalPageCount,
                 PageNumber = requestInfo.PageNumber,
                 PageSize = requestInfo.PageSize
