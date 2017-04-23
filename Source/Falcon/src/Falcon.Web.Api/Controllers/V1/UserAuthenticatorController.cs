@@ -137,11 +137,10 @@ namespace Falcon.Web.Api.Controllers.V1
 
         private async Task<IHttpActionResult> CreateNewUser(string UUID)
         {
-            var uniqueNumber = mDateTime.Ticks.ToString();
             User user = new User
             {
                 UUID = UUID,
-                UserName = mAppState.State().User_DefaultUserName + uniqueNumber.Substring(uniqueNumber.Length - 7),
+                UserName = mAppState.State().User_DefaultUserName,
                 UserTypeID = Constants.DefaultUser.UserTypeID,
                 TotalStars = mAppState.State().User_DefaultUserCoin,
                 Score = Constants.DefaultUser.Score,
@@ -155,6 +154,12 @@ namespace Falcon.Web.Api.Controllers.V1
             var registeredUser = mDb.Set<User>().Add(user);
             await mDb.SaveChangesAsync();
 
+            var userReg = mDb.Set<User>().Attach(user);
+
+            userReg.UserName += registeredUser.ID;
+
+            user.UserName = userReg.UserName;
+           
             SelectedTheme selecetedTheme = new SelectedTheme
             {
                 UserID = registeredUser.ID,
