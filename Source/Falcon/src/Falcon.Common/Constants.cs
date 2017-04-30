@@ -144,8 +144,7 @@ namespace Falcon.Common
         //TODO : If second advert added needs to move to database
         public static class WatchAdVerfierAddress
         {
-            public const string UserAuthenticator = "UserAuthenticator";
-            public const string UserInfo = "UserInfo";
+            public const string TapSellLink = "http://api.tapsell.ir/v2/suggestions/validate-suggestion";
         }
 
         public static class MarketMessages

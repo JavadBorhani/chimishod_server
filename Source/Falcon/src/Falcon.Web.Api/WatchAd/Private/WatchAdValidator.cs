@@ -11,6 +11,7 @@ using Falcon.Common.Serialization;
 using System.Net.Http;
 using Falcon.Web.Api.WatchAd.Public;
 using System.Net;
+using Falcon.Common;
 
 namespace Falcon.Web.Api.WatchAd.Private
 {
@@ -32,11 +33,9 @@ namespace Falcon.Web.Api.WatchAd.Private
                 return null;
             }
 
-            var request = new FormUrlEncodedContent(new[]
-                  {
-                    new KeyValuePair<string, string>( nameof(RequestToken.suggestionId), RequestToken.suggestionId),  
-                  });
 
+            var requestBody = mJsonManager.SerializeObject(RequestToken);
+            var request = new StringContent(requestBody.ToString(), Encoding.UTF8, Constants.MediaTypeNames.ApplicationJson);
 
             using (HttpClient client = new HttpClient())
             using (HttpResponseMessage response = await client.PostAsync(ProviderUri, request))
@@ -55,7 +54,7 @@ namespace Falcon.Web.Api.WatchAd.Private
 
             return null;
         }
-        private ResponseToken CheckHandShakingResponse(HttpStatusCode StatusCode, string RawFormattedJsonString, string MarketTokenVerifierUri)
+        private ResponseToken CheckHandShakingResponse(HttpStatusCode StatusCode, string RawFormattedJsonString, string ProviderUri)
         {
             switch (StatusCode)
             {
@@ -70,7 +69,7 @@ namespace Falcon.Web.Api.WatchAd.Private
                     var tokenResponse = mJsonManager.DeserializeObject<ResponseToken>(RawFormattedJsonString);
 
                     if (tokenResponse == null)
-                        mLogger.Error("Market token verifier Uri is wrong : " + MarketTokenVerifierUri);
+                        mLogger.Error("Market token verifier Uri is wrong : " + ProviderUri);
                     else
                         return tokenResponse;
 

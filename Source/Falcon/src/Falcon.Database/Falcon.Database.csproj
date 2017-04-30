@@ -61,6 +61,7 @@
     <Compile Include="SqlServer\QueryProcessors\NotificationsQueryProcessor.cs" />
     <Compile Include="SqlServer\QueryProcessors\StoresQueryProcessor.cs" />
     <Compile Include="SqlServer\QueryProcessors\UserQueryProcessor.cs" />
+    <Compile Include="SqlServer\QueryProcessors\WatchAdQueryProcessor.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Falcon.Common\Falcon.Common.csproj">

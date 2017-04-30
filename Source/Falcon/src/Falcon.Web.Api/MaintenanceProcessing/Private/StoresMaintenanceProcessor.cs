@@ -12,6 +12,8 @@ using AutoMapper;
 using Falcon.Common.Security;
 using static Falcon.Web.Models.Api.SHardCurrencyPurchasedVerification;
 using Falcon.Web.Api.PurchaseAuthorizer;
+using Falcon.Web.Api.PurchaseAuthorizer.Public;
+using Falcon.Web.Api.PurchaseAuthorizer.Private;
 
 namespace Falcon.Web.Api.MaintenanceProcessing.Private
 {
@@ -67,6 +69,7 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
                     if (response is PurchaseVerificationSuccessful)
                     {
                         var info = (PurchaseVerificationSuccessful)response;
+
                         if(info.purchaseTime <= 0 || string.IsNullOrEmpty(info.kind))
                         {
                             return null;

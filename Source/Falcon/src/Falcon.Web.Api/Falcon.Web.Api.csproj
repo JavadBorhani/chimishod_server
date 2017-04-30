@@ -168,10 +168,16 @@
     <Compile Include="MaintenanceProcessing\Private\CodeGiftsMaintenanceProcessor.cs" />
     <Compile Include="MaintenanceProcessing\Private\GlobalApplicationState.cs" />
     <Compile Include="MaintenanceProcessing\Private\StoresMaintenanceProcessor.cs" />
+    <Compile Include="MaintenanceProcessing\Private\WatchAdMaintenanceProcessor.cs" />
     <Compile Include="MaintenanceProcessing\Public\ICodeGiftsMaintenanceProcessor.cs" />
     <Compile Include="MaintenanceProcessing\Public\IGlobalApplicationState.cs" />
     <Compile Include="MaintenanceProcessing\Public\IStoresMaintenanceProcessor.cs" />
-    <Compile Include="WatchAd\IWatchAdValidationProcessor.cs" />
+    <Compile Include="MaintenanceProcessing\Public\IWatchAdMaintenanceProcessor.cs" />
+    <Compile Include="WatchAd\Private\ErrorToken.cs" />
+    <Compile Include="WatchAd\Private\RequestToken.cs" />
+    <Compile Include="WatchAd\Private\ResponseToken.cs" />
+    <Compile Include="WatchAd\Private\WatchAdValidator.cs" />
+    <Compile Include="WatchAd\Public\IWatchAdValidator.cs" />
     <Compile Include="PurchaseAuthorizer\Public\IMarketManager.cs" />
     <Compile Include="PurchaseAuthorizer\Private\MarketManager.cs" />
     <Compile Include="PurchaseAuthorizer\Private\PurchaseVerificationResponse.cs" />
@@ -226,8 +232,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="WatchAd\Private\" />
-    <Folder Include="WatchAd\Public\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Falcon.Common\Falcon.Common.csproj">

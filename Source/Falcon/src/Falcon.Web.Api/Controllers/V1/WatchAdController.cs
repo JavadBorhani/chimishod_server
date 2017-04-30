@@ -1,4 +1,5 @@
-﻿using Falcon.Web.Api.Utilities.Base;
+﻿using Falcon.Web.Api.MaintenanceProcessing.Public;
+using Falcon.Web.Api.Utilities.Base;
 using Falcon.Web.Common;
 using Falcon.Web.Models.Api;
 using System;
@@ -14,17 +15,24 @@ namespace Falcon.Web.Api.Controllers.V1
     [UnitOfWorkActionFilter]
     public class WatchAdController : FalconApiController
     {
+        private readonly IWatchAdMaintenanceProcessor mWatchAdMaintenanceProcessor;
 
+        public WatchAdController(IWatchAdMaintenanceProcessor WatchAdMaintenanceProcessor)
+        {
+            mWatchAdMaintenanceProcessor = WatchAdMaintenanceProcessor;
+        }
+
+        [Route("WatchAd/Verification")]
         [HttpPost]
         [ResponseType(typeof(int))]
-        public async Task<IHttpActionResult> ValidateWatchAd( [FromBody]  SWatchAdValidation WatchAdValidation)
+        public async Task<IHttpActionResult> ValidateWatchAd( [FromBody] SWatchAdValidation WatchAdValidation)
         {
             if(!ModelState.IsValid)
-            {
-                return NotFound();
-            }
+                return null;
 
-            return null;   
+            var result = await mWatchAdMaintenanceProcessor.ValidateWatchAd(WatchAdValidation);
+
+            return Ok(result);   
         }
 
     }
