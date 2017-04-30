@@ -10,6 +10,7 @@ using Falcon.Common.Logging;
 using Falcon.Common.Serialization;
 using System.Net.Http;
 using Falcon.Web.Api.WatchAd.Public;
+using System.Net;
 
 namespace Falcon.Web.Api.WatchAd.Private
 {
@@ -23,48 +24,65 @@ namespace Falcon.Web.Api.WatchAd.Private
             mLogger = LogManager.GetLog(typeof(WatchAdValidator));
             mJsonManager = JsonManager;
         }
-        public Task<int> ValidateWatchAd(SWatchAdValidation WatchAdValidation)
+
+        public async Task<ResponseToken> ValidateWatchAd(string ProviderUri, RequestToken RequestToken)
         {
+            if (RequestToken == null || string.IsNullOrEmpty(ProviderUri))
+            { 
+                return null;
+            }
+
+            var request = new FormUrlEncodedContent(new[]
+                  {
+                    new KeyValuePair<string, string>( nameof(RequestToken.suggestionId), RequestToken.suggestionId),  
+                  });
+
+
+            using (HttpClient client = new HttpClient())
+            using (HttpResponseMessage response = await client.PostAsync(ProviderUri, request))
+            using (HttpContent content = response.Content)
+            {
+                HttpStatusCode status = response.StatusCode;
+                // ... Read the string.
+                string result = await content.ReadAsStringAsync();
+                var tokenResponse = CheckHandShakingResponse(status, result, ProviderUri);
+
+                if (tokenResponse != null)
+                {
+                    return tokenResponse;
+                }
+            }
+
             return null;
-            //if (TokenRequest == null || string.IsNullOrEmpty(MarketTokenVerifierUri))
-            //{
-            //    return null;
-            //}
+        }
+        private ResponseToken CheckHandShakingResponse(HttpStatusCode StatusCode, string RawFormattedJsonString, string MarketTokenVerifierUri)
+        {
+            switch (StatusCode)
+            {
+                case HttpStatusCode.BadRequest:
 
-            //if (string.IsNullOrEmpty(TokenRequest.code) ||
-            //    string.IsNullOrEmpty(TokenRequest.client_id) ||
-            //    string.IsNullOrEmpty(TokenRequest.client_secret) ||
-            //    string.IsNullOrEmpty(TokenRequest.redirect_uri))
-            //{
-            //    return null;
-            //}
+                    logError(RawFormattedJsonString);
 
-            //var jsonMap = new FormUrlEncodedContent(new[]
-            //      {
-            //        new KeyValuePair<string, string>( nameof(TokenRequest.grant_type), TokenRequest.grant_type),
-            //        new KeyValuePair<string, string>( nameof(TokenRequest.code), TokenRequest.code),
-            //        new KeyValuePair<string, string>( nameof(TokenRequest.client_id), TokenRequest.client_id),
-            //        new KeyValuePair<string, string>( nameof(TokenRequest.client_secret), TokenRequest.client_secret),
-            //        new KeyValuePair<string, string>( nameof(TokenRequest.redirect_uri), TokenRequest.redirect_uri)
-            //    });
+                    break;
 
-            //string test = mJsonManager.SerializeObject(TokenRequest);
+                case HttpStatusCode.OK:
 
-            //using (HttpClient client = new HttpClient())
-            //using (HttpResponseMessage response = await client.PostAsync(MarketTokenVerifierUri, jsonMap))
-            //using (HttpContent content = response.Content)
-            //{
-            //    HttpStatusCode status = response.StatusCode;
-            //    // ... Read the string.
-            //    string result = await content.ReadAsStringAsync();
-            //    var tokenResponse = CheckHandShakingResponse(status, result, MarketTokenVerifierUri);
-            //    if (tokenResponse != null)
-            //    {
-            //        return tokenResponse;
-            //    }
-            //}
+                    var tokenResponse = mJsonManager.DeserializeObject<ResponseToken>(RawFormattedJsonString);
 
-            //return null;
+                    if (tokenResponse == null)
+                        mLogger.Error("Market token verifier Uri is wrong : " + MarketTokenVerifierUri);
+                    else
+                        return tokenResponse;
+
+                    break;
+            }
+            return null;
+        }
+
+        private void logError(string RawFormattedJsonString)
+        {
+            ErrorToken issue = mJsonManager.DeserializeObject<ErrorToken>(RawFormattedJsonString);
+            mLogger.Error(issue.error);
         }
 
     }

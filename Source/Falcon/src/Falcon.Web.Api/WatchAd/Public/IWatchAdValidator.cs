@@ -1,4 +1,5 @@
-﻿using Falcon.Web.Models.Api;
+﻿using Falcon.Web.Api.WatchAd.Private;
+using Falcon.Web.Models.Api;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,6 @@ namespace Falcon.Web.Api.WatchAd.Public
 {
     public interface IWatchAdValidator
     {
-        Task<int> ValidateWatchAd(SWatchAdValidation WatchAdValidation);
+        Task<ResponseToken> ValidateWatchAd(string ProviderUri, RequestToken RequestToken);
     }
 }
