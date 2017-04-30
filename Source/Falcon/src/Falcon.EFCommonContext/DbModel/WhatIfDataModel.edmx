@@ -456,6 +456,7 @@
           <Property Name="UserTypeID" Type="int" />
           <Property Name="TotalStars" Type="int" Nullable="false" />
           <Property Name="Score" Type="int" Nullable="false" />
+          <Property Name="Rank" Type="int" Nullable="false" />
           <Property Name="LevelProgress" Type="int" Nullable="false" />
           <Property Name="CurrentLevelID" Type="int" />
           <Property Name="IsAbleToWriteComment" Type="bit" Nullable="false" />
@@ -494,6 +495,25 @@
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="varchar" MaxLength="20" Nullable="false" />
           <Property Name="Description" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="WatchAdProvider">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ProviderName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="ProviderValidationLink" Type="varchar" MaxLength="150" Nullable="false" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="WatchedAd">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="WatchAdProviderId" Type="int" />
+          <Property Name="WatchAdId" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="InsertDate" Type="datetime" Nullable="false" />
         </EntityType>
         <Association Name="FK_AchievedCodeGift_CodeGift">
           <End Role="CodeGift" Type="Self.CodeGift" Multiplicity="1">
@@ -1159,6 +1179,32 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_WatchedAd_User">
+          <End Role="User" Type="Self.User" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="WatchedAd" Type="Self.WatchedAd" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="WatchedAd">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WatchedAd_WatchAdProvider">
+          <End Role="WatchAdProvider" Type="Self.WatchAdProvider" Multiplicity="0..1" />
+          <End Role="WatchedAd" Type="Self.WatchedAd" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WatchAdProvider">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="WatchedAd">
+              <PropertyRef Name="WatchAdProviderId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="FalconDbModelStoreContainer">
           <EntitySet Name="AchievedCodeGift" EntityType="Self.AchievedCodeGift" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AchievedGifts" EntityType="Self.AchievedGifts" Schema="dbo" store:Type="Tables" />
@@ -1200,6 +1246,8 @@
           <EntitySet Name="UserAvatar" EntityType="Self.UserAvatar" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserInfo" EntityType="Self.UserInfo" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserType" EntityType="Self.UserType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="WatchAdProvider" EntityType="Self.WatchAdProvider" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="WatchedAd" EntityType="Self.WatchedAd" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_AchievedCodeGift_CodeGift" Association="Self.FK_AchievedCodeGift_CodeGift">
             <End Role="CodeGift" EntitySet="CodeGift" />
             <End Role="AchievedCodeGift" EntitySet="AchievedCodeGift" />
@@ -1396,6 +1444,14 @@
             <End Role="User" EntitySet="User" />
             <End Role="UserInfo" EntitySet="UserInfo" />
           </AssociationSet>
+          <AssociationSet Name="FK_WatchedAd_User" Association="Self.FK_WatchedAd_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="WatchedAd" EntitySet="WatchedAd" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WatchedAd_WatchAdProvider" Association="Self.FK_WatchedAd_WatchAdProvider">
+            <End Role="WatchAdProvider" EntitySet="WatchAdProvider" />
+            <End Role="WatchedAd" EntitySet="WatchedAd" />
+          </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
@@ -1442,6 +1498,8 @@
           <EntitySet Name="UserAvatars" EntityType="Falcon.DbModel.UserAvatar" />
           <EntitySet Name="UserInfoes" EntityType="Falcon.DbModel.UserInfo" />
           <EntitySet Name="UserTypes" EntityType="Falcon.DbModel.UserType" />
+          <EntitySet Name="WatchAdProviders" EntityType="Falcon.DbModel.WatchAdProvider" />
+          <EntitySet Name="WatchedAds" EntityType="Falcon.DbModel.WatchedAd" />
           <AssociationSet Name="FK_AchievedCodeGift_CodeGift" Association="Falcon.DbModel.FK_AchievedCodeGift_CodeGift">
             <End Role="CodeGift" EntitySet="CodeGifts" />
             <End Role="AchievedCodeGift" EntitySet="AchievedCodeGifts" />
@@ -1637,6 +1695,14 @@
           <AssociationSet Name="FK_UserInfo_User" Association="Falcon.DbModel.FK_UserInfo_User">
             <End Role="User" EntitySet="Users" />
             <End Role="UserInfo" EntitySet="UserInfoes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WatchedAd_User" Association="Falcon.DbModel.FK_WatchedAd_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="WatchedAd" EntitySet="WatchedAds" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WatchedAd_WatchAdProvider" Association="Falcon.DbModel.FK_WatchedAd_WatchAdProvider">
+            <End Role="WatchAdProvider" EntitySet="WatchAdProviders" />
+            <End Role="WatchedAd" EntitySet="WatchedAds" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="AchievedCodeGift">
@@ -2164,6 +2230,7 @@
           <Property Name="UserTypeID" Type="Int32" />
           <Property Name="TotalStars" Type="Int32" Nullable="false" />
           <Property Name="Score" Type="Int32" Nullable="false" />
+          <Property Name="Rank" Type="Int32" Nullable="false" />
           <Property Name="LevelProgress" Type="Int32" Nullable="false" />
           <Property Name="CurrentLevelID" Type="Int32" />
           <Property Name="IsAbleToWriteComment" Type="Boolean" Nullable="false" />
@@ -2189,6 +2256,7 @@
           <NavigationProperty Name="SelectedThemes" Relationship="Falcon.DbModel.FK_SelectedTheme_User" FromRole="User" ToRole="SelectedTheme" />
           <NavigationProperty Name="UserType" Relationship="Falcon.DbModel.FK_User_UserType" FromRole="User" ToRole="UserType" />
           <NavigationProperty Name="UserInfoes" Relationship="Falcon.DbModel.FK_UserInfo_User" FromRole="User" ToRole="UserInfo" />
+          <NavigationProperty Name="WatchedAds" Relationship="Falcon.DbModel.FK_WatchedAd_User" FromRole="User" ToRole="WatchedAd" />
         </EntityType>
         <EntityType Name="UserAvatar">
           <Key>
@@ -2226,6 +2294,28 @@
           <Property Name="Name" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="Description" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Users" Relationship="Falcon.DbModel.FK_User_UserType" FromRole="UserType" ToRole="User" />
+        </EntityType>
+        <EntityType Name="WatchAdProvider">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProviderName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ProviderValidationLink" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="WatchedAds" Relationship="Falcon.DbModel.FK_WatchedAd_WatchAdProvider" FromRole="WatchAdProvider" ToRole="WatchedAd" />
+        </EntityType>
+        <EntityType Name="WatchedAd">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="WatchAdProviderId" Type="Int32" />
+          <Property Name="WatchAdId" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="InsertDate" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="User" Relationship="Falcon.DbModel.FK_WatchedAd_User" FromRole="WatchedAd" ToRole="User" />
+          <NavigationProperty Name="WatchAdProvider" Relationship="Falcon.DbModel.FK_WatchedAd_WatchAdProvider" FromRole="WatchedAd" ToRole="WatchAdProvider" />
         </EntityType>
         <Association Name="FK_AchievedCodeGift_CodeGift">
           <End Type="Falcon.DbModel.CodeGift" Role="CodeGift" Multiplicity="1">
@@ -2891,6 +2981,32 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_WatchedAd_User">
+          <End Type="Falcon.DbModel.User" Role="User" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="Falcon.DbModel.WatchedAd" Role="WatchedAd" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="WatchedAd">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WatchedAd_WatchAdProvider">
+          <End Type="Falcon.DbModel.WatchAdProvider" Role="WatchAdProvider" Multiplicity="0..1" />
+          <End Type="Falcon.DbModel.WatchedAd" Role="WatchedAd" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WatchAdProvider">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="WatchedAd">
+              <PropertyRef Name="WatchAdProviderId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -3382,6 +3498,7 @@
                 <ScalarProperty Name="IsAbleToWriteComment" ColumnName="IsAbleToWriteComment" />
                 <ScalarProperty Name="CurrentLevelID" ColumnName="CurrentLevelID" />
                 <ScalarProperty Name="LevelProgress" ColumnName="LevelProgress" />
+                <ScalarProperty Name="Rank" ColumnName="Rank" />
                 <ScalarProperty Name="Score" ColumnName="Score" />
                 <ScalarProperty Name="TotalStars" ColumnName="TotalStars" />
                 <ScalarProperty Name="UserTypeID" ColumnName="UserTypeID" />
@@ -3423,6 +3540,27 @@
               <MappingFragment StoreEntitySet="UserType">
                 <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="WatchAdProviders">
+            <EntityTypeMapping TypeName="Falcon.DbModel.WatchAdProvider">
+              <MappingFragment StoreEntitySet="WatchAdProvider">
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="ProviderValidationLink" ColumnName="ProviderValidationLink" />
+                <ScalarProperty Name="ProviderName" ColumnName="ProviderName" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="WatchedAds">
+            <EntityTypeMapping TypeName="Falcon.DbModel.WatchedAd">
+              <MappingFragment StoreEntitySet="WatchedAd">
+                <ScalarProperty Name="InsertDate" ColumnName="InsertDate" />
+                <ScalarProperty Name="WatchAdId" ColumnName="WatchAdId" />
+                <ScalarProperty Name="WatchAdProviderId" ColumnName="WatchAdProviderId" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>

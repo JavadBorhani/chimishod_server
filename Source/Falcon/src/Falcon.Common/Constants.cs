@@ -140,6 +140,14 @@ namespace Falcon.Common
             public const string UserAuthenticator = "UserAuthenticator";
             public const string UserInfo = "UserInfo";
         }
+
+        //TODO : If second advert added needs to move to database
+        public static class WatchAdVerfierAddress
+        {
+            public const string UserAuthenticator = "UserAuthenticator";
+            public const string UserInfo = "UserInfo";
+        }
+
         public static class MarketMessages
         {
             //TODO : define expired message of different stores
@@ -150,6 +158,7 @@ namespace Falcon.Common
             };
 
         }
+
 
         public const string DefaultLegacyNamespaces = "http://vglr.ir";
     }

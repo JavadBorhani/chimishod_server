@@ -35,6 +35,7 @@ namespace Falcon.EFCommonContext.DbModel
             this.SelectedCategories = new HashSet<SelectedCategory>();
             this.SelectedThemes = new HashSet<SelectedTheme>();
             this.UserInfoes = new HashSet<UserInfo>();
+            this.WatchedAds = new HashSet<WatchedAd>();
         }
     
         public int ID { get; set; }
@@ -43,6 +44,7 @@ namespace Falcon.EFCommonContext.DbModel
         public Nullable<int> UserTypeID { get; set; }
         public int TotalStars { get; set; }
         public int Score { get; set; }
+        public int Rank { get; set; }
         public int LevelProgress { get; set; }
         public Nullable<int> CurrentLevelID { get; set; }
         public bool IsAbleToWriteComment { get; set; }
@@ -87,5 +89,7 @@ namespace Falcon.EFCommonContext.DbModel
         public virtual UserType UserType { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<UserInfo> UserInfoes { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<WatchedAd> WatchedAds { get; set; }
     }
 }

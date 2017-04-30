@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Falcon.Web.Api.PurchaseAuthorizer.Private
+namespace Falcon.Data.QueryProcessors
 {
-    public abstract class PurchaseVerificationResponse
+    public interface IWatchAdQueryProcessor
     {
-
+        
     }
 }

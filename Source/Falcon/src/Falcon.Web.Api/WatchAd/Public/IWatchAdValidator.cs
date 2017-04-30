@@ -5,9 +5,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 
-namespace Falcon.Web.Api.Security
+namespace Falcon.Web.Api.WatchAd.Public
 {
-    public interface IWatchAdValidationProcessor
+    public interface IWatchAdValidator
     {
         Task<int> ValidateWatchAd(SWatchAdValidation WatchAdValidation);
     }

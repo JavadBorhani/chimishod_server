@@ -16,7 +16,6 @@ using System.Linq;
 using AutoMapper;
 using System.Collections.Generic;
 using Falcon.Web.Api.App_Start;
-using Falcon.Web.Api.InquiryProcessing;
 using Falcon.Web.Api.InquiryProcessing.Private;
 using Falcon.Web.Api.InquiryProcessing.Public;
 using Falcon.Web.Api.Security.Public;
@@ -24,7 +23,10 @@ using Falcon.Web.Api.Security.Private;
 using Falcon.Web.Api.MaintenanceProcessing.Public;
 using Falcon.Web.Api.MaintenanceProcessing.Private;
 using Falcon.Common.Serialization;
-using Falcon.Web.Api.Security;
+using Falcon.Web.Api.PurchaseAuthorizer.Public;
+using Falcon.Web.Api.PurchaseAuthorizer.Private;
+using Falcon.Web.Api.WatchAd.Public;
+using Falcon.Web.Api.WatchAd.Private;
 
 namespace Falcon.Web.Api
 {
@@ -100,15 +102,18 @@ namespace Falcon.Web.Api
             // add maintenance part separately
             container.Bind<ICodeGiftsMaintenanceProcessor>().To<CodeGiftsMaintenanceProcessor>().InRequestScope();
             container.Bind<IStoresMaintenanceProcessor>().To<StoresMaintenanceProcessor>().InRequestScope();
+            container.Bind<IWatchAdMaintenanceProcessor>().To<WatchAdMaintenanceProcessor>().InRequestScope();
         }
 
         private void AddAdHoc(IKernel container)
         {
             container.Bind<IMarketVerificationProcessor>().To<MarketVerificationProcessor>().InRequestScope();
             container.Bind<IMarketManager>().To<MarketManager>().InRequestScope();
+            container.Bind<IWatchAdValidator>().To<WatchAdValidator>().InRequestScope();
 
             container.Bind<IDateTime>().To<DateTimeAdapter>().InSingletonScope();
             container.Bind<IJsonManager>().To<JsonManager>().InSingletonScope();
+
 
             container.Bind<IBasicPrincipalSecurityService>().To<BasicPrincipalSecurityService>().InSingletonScope();
 
