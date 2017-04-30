@@ -23,6 +23,8 @@ namespace Falcon.Web.Api.Controllers.V1
             {
                 return NotFound();
             }
+
+            return null;   
         }
 
     }

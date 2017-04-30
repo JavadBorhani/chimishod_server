@@ -8,10 +8,10 @@ using System.Threading.Tasks;
 using Falcon.Web.Api.Security.Public;
 using Falcon.Data.QueryProcessors;
 using Falcon.Common;
-using Falcon.Web.Api.Security;
 using AutoMapper;
 using Falcon.Common.Security;
 using static Falcon.Web.Models.Api.SHardCurrencyPurchasedVerification;
+using Falcon.Web.Api.PurchaseAuthorizer;
 
 namespace Falcon.Web.Api.MaintenanceProcessing.Private
 {

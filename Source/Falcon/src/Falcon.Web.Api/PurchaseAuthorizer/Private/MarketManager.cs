@@ -9,6 +9,7 @@ using System.Web;
 using Falcon.EFCommonContext.DbModel;
 using Falcon.Web.Models.Api;
 using Falcon.Data.Exceptions;
+using Falcon.Web.Api.PurchaseAuthorizer.Public;
 
 namespace Falcon.Web.Api.PurchaseAuthorizer.Private
 {

@@ -11,6 +11,7 @@ using log4net.Core;
 using Falcon.Common.Logging;
 using log4net;
 using Falcon.Common.Serialization;
+using Falcon.Web.Api.PurchaseAuthorizer.Private;
 
 namespace Falcon.Web.Api.Security.Private
 {
