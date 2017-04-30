@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
+using Falcon.Web.Api.PurchaseAuthorizer.Private;
 
 namespace Falcon.Web.Api.Security.Public
 {

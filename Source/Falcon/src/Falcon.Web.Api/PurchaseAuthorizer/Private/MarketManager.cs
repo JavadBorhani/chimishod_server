@@ -10,7 +10,7 @@ using Falcon.EFCommonContext.DbModel;
 using Falcon.Web.Models.Api;
 using Falcon.Data.Exceptions;
 
-namespace Falcon.Web.Api.Security
+namespace Falcon.Web.Api.PurchaseAuthorizer.Private
 {
     public class MarketManager : IMarketManager
     {
@@ -85,5 +85,6 @@ namespace Falcon.Web.Api.Security
 
             return result;  
         }
+
     }
 }

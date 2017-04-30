@@ -96,7 +96,7 @@ namespace Falcon.Web.Api.Controllers.V1
                                                                     Constants.DefaultValues.PurchaseCategoryNumberAllowedToBuy;
                     if (hasBought)
                     {
-                        //TODO : Log to system , unAuthorized Request
+                        mLogger.Error("another buy request despite user has bought it before"); 
                     }
                     else
                     {
