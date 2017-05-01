@@ -8,10 +8,10 @@ using System.Web.Http;
 
 namespace Falcon.Web.Api.Controllers.V1
 {
-    public class OurAdvertisementsController : FalconApiController
+    public class AppAdvertisementsController : FalconApiController
     {
        
-        public OurAdvertisementsController()
+        public AppAdvertisementsController()
         {
 
         }

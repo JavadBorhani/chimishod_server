@@ -59,6 +59,7 @@
     <Compile Include="SqlServer\QueryProcessors\GiftQueryProcessor.cs" />
     <Compile Include="SqlServer\QueryProcessors\MarketInfoQueryProcessor.cs" />
     <Compile Include="SqlServer\QueryProcessors\NotificationsQueryProcessor.cs" />
+    <Compile Include="SqlServer\QueryProcessors\AppAdvertisementsQueryProcessor.cs" />
     <Compile Include="SqlServer\QueryProcessors\StoresQueryProcessor.cs" />
     <Compile Include="SqlServer\QueryProcessors\UserQueryProcessor.cs" />
     <Compile Include="SqlServer\QueryProcessors\WatchAdQueryProcessor.cs" />
