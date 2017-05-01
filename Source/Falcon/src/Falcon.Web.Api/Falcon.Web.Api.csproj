@@ -152,6 +152,7 @@
     <Compile Include="Controllers\V1\LeaderBoardController.cs" />
     <Compile Include="Controllers\V1\LevelsController.cs" />
     <Compile Include="Controllers\V1\NotificationController.cs" />
+    <Compile Include="Controllers\V1\OurAdvertisementsController.cs" />
     <Compile Include="Controllers\V1\WatchAdController.cs" />
     <Compile Include="InquiryProcessing\Private\CommentsInquiryProcessor.cs" />
     <Compile Include="InquiryProcessing\Private\CreatedQuestionsInquiryProcessor.cs" />

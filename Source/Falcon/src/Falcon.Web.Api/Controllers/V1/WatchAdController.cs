@@ -30,9 +30,9 @@ namespace Falcon.Web.Api.Controllers.V1
             if(!ModelState.IsValid)
                 return null;
 
-            var result = await mWatchAdMaintenanceProcessor.ValidateWatchAd(WatchAdValidation);
+            var totalCoin = await mWatchAdMaintenanceProcessor.ValidateWatchAd(WatchAdValidation);
 
-            return Ok(result);   
+            return Ok(totalCoin);   
         }
 
     }
