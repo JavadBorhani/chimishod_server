@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Falcon.Database.SqlServer.QueryProcessors
 {
-    public class AppAdvertisementsQueryProcessor : IAppAvertisementsQueryProcessor
+    public class AppAdvertisementsQueryProcessor : IAppAdvertisementsQueryProcessor
     {
         private readonly IDbContext mDb;
         private readonly IDateTime mDateTime;

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Falcon.Data.QueryProcessors
 {
-    public interface IAppAvertisementsQueryProcessor
+    public interface IAppAdvertisementsQueryProcessor
     {
         Task<bool> IsExists(int ID);
         Task<List<AppAdvertisement>> GetUnexpiredList(); 

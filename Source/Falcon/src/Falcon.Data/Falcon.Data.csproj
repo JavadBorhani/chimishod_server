@@ -52,7 +52,7 @@
     <Compile Include="QueryProcessors\IGiftQueryProcessor.cs" />
     <Compile Include="QueryProcessors\IMarketInfoQueryProcessor.cs" />
     <Compile Include="QueryProcessors\INotificationsQueryProcessor.cs" />
-    <Compile Include="QueryProcessors\IAppAvertisementsQueryProcessor.cs" />
+    <Compile Include="QueryProcessors\IAppAdvertisementsQueryProcessor.cs" />
     <Compile Include="QueryProcessors\IStoresQueryProcessor.cs" />
     <Compile Include="QueryProcessors\IUserQueryProcessor.cs" />
     <Compile Include="QueryProcessors\IWatchAdQueryProcessor.cs" />

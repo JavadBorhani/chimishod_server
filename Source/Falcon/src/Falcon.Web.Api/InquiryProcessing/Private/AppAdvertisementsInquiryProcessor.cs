@@ -12,10 +12,10 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
 {
     public class AppAdvertisementsInquiryProcessor : IAppAdvertisementsInquiryProcessor
     {
-        private readonly IAppAvertisementsQueryProcessor mAppAdvertQueryProcessor;
+        private readonly IAppAdvertisementsQueryProcessor mAppAdvertQueryProcessor;
         private readonly IMapper mMapper;
 
-        public AppAdvertisementsInquiryProcessor(IAppAvertisementsQueryProcessor AppAdvertQueryProcessor , IMapper Mapper)
+        public AppAdvertisementsInquiryProcessor(IAppAdvertisementsQueryProcessor AppAdvertQueryProcessor , IMapper Mapper)
         {
             mAppAdvertQueryProcessor = AppAdvertQueryProcessor;
             mMapper = Mapper;

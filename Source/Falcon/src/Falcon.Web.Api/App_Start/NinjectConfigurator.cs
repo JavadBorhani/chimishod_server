@@ -85,6 +85,7 @@ namespace Falcon.Web.Api
             container.Bind<IStoresQueryProcessor>().To<StoresQueryProcessor>().InRequestScope();
             container.Bind<IMarketInfoQueryProcessor>().To<MarketInfoQueryProcessor>().InRequestScope();
             container.Bind<INotificationsQueryProcessor>().To<NotificationsQueryProcessor>().InRequestScope();
+            container.Bind<IAppAdvertisementsQueryProcessor>().To<AppAdvertisementsQueryProcessor>().InRequestScope();
             container.Bind<IWatchAdQueryProcessor>().To<WatchAdQueryProcessor>().InRequestScope();
         }
 
@@ -96,6 +97,7 @@ namespace Falcon.Web.Api
             container.Bind<INotificationInquiryProcessor>().To<NotificationInquiryProcessor>().InRequestScope();
             container.Bind<IUsersInquiryProcessor>().To<UsersInquiryProcessor>().InRequestScope();
             container.Bind<IStoresInquiryProcessor>().To<StoresInquiryProcessor>().InRequestScope();
+            container.Bind<IAppAdvertisementsInquiryProcessor>().To<AppAdvertisementsInquiryProcessor>().InRequestScope();
         }
         private void  AddMaintenanceProcessors(IKernel container)
         {
