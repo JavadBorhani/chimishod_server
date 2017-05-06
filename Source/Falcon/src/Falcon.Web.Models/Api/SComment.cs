@@ -21,5 +21,7 @@ namespace Falcon.Web.Models.Api
         public DateTime InsertDate { get; set; }
 
         public string Avatar { get; set; }
+
+        public DateTime ServerTime { get; set; }
     }
 }

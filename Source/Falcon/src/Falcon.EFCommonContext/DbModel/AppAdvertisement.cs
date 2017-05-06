@@ -14,6 +14,12 @@ namespace Falcon.EFCommonContext.DbModel
     
     public partial class AppAdvertisement
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public AppAdvertisement()
+        {
+            this.PresentedAdverts = new HashSet<PresentedAdvert>();
+        }
+    
         public int ID { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
@@ -27,5 +33,8 @@ namespace Falcon.EFCommonContext.DbModel
         public bool IsNew { get; set; }
         public System.DateTime CreatedDate { get; set; }
         public System.DateTime UpdatedDate { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<PresentedAdvert> PresentedAdverts { get; set; }
     }
 }

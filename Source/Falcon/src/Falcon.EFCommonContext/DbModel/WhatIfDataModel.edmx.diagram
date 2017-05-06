@@ -98,6 +98,9 @@
         <AssociationConnector Association="Falcon.DbModel.FK_UserInfo_User" />
         <AssociationConnector Association="Falcon.DbModel.FK_WatchedAd_User" />
         <AssociationConnector Association="Falcon.DbModel.FK_WatchedAd_WatchAdProvider" />
+        <EntityTypeShape EntityType="Falcon.DbModel.PresentedAdvert" Width="1.5" PointX="8.25" PointY="12.875" />
+        <AssociationConnector Association="Falcon.DbModel.FK_PresentedAdvert_AppAdvertisements" />
+        <AssociationConnector Association="Falcon.DbModel.FK_PresentedAdvert_User" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

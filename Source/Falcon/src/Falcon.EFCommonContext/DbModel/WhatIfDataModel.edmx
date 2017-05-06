@@ -314,6 +314,15 @@
           <Property Name="ErrorCode" Type="varchar" MaxLength="50" />
           <Property Name="ErrorDescription" Type="varchar" MaxLength="100" />
         </EntityType>
+        <EntityType Name="PresentedAdvert">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="AdvertID" Type="int" Nullable="false" />
+          <Property Name="InsertDate" Type="datetime" Nullable="false" />
+        </EntityType>
         <EntityType Name="PriceHistory">
           <Key>
             <PropertyRef Name="ID" />
@@ -884,6 +893,34 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_PresentedAdvert_AppAdvertisements">
+          <End Role="AppAdvertisements" Type="Self.AppAdvertisements" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="PresentedAdvert" Type="Self.PresentedAdvert" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AppAdvertisements">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="PresentedAdvert">
+              <PropertyRef Name="AdvertID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PresentedAdvert_User">
+          <End Role="User" Type="Self.User" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="PresentedAdvert" Type="Self.PresentedAdvert" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="PresentedAdvert">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_PriceList_Store">
           <End Role="Store" Type="Self.Store" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -1234,6 +1271,7 @@
           <EntitySet Name="Manufacture" EntityType="Self.Manufacture" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MarketInfo" EntityType="Self.MarketInfo" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Order" EntityType="Self.Order" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PresentedAdvert" EntityType="Self.PresentedAdvert" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PriceHistory" EntityType="Self.PriceHistory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PurchaseAvatar" EntityType="Self.PurchaseAvatar" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PurchaseCategory" EntityType="Self.PurchaseCategory" Schema="dbo" store:Type="Tables" />
@@ -1360,6 +1398,14 @@
           <AssociationSet Name="FK_Order_User" Association="Self.FK_Order_User">
             <End Role="User" EntitySet="User" />
             <End Role="Order" EntitySet="Order" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PresentedAdvert_AppAdvertisements" Association="Self.FK_PresentedAdvert_AppAdvertisements">
+            <End Role="AppAdvertisements" EntitySet="AppAdvertisements" />
+            <End Role="PresentedAdvert" EntitySet="PresentedAdvert" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PresentedAdvert_User" Association="Self.FK_PresentedAdvert_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="PresentedAdvert" EntitySet="PresentedAdvert" />
           </AssociationSet>
           <AssociationSet Name="FK_PriceList_Store" Association="Self.FK_PriceList_Store">
             <End Role="Store" EntitySet="Store" />
@@ -1709,6 +1755,15 @@
             <End Role="WatchAdProvider" EntitySet="WatchAdProviders" />
             <End Role="WatchedAd" EntitySet="WatchedAds" />
           </AssociationSet>
+          <EntitySet Name="PresentedAdverts" EntityType="Falcon.DbModel.PresentedAdvert" />
+          <AssociationSet Name="FK_PresentedAdvert_AppAdvertisements" Association="Falcon.DbModel.FK_PresentedAdvert_AppAdvertisements">
+            <End Role="AppAdvertisement" EntitySet="AppAdvertisements" />
+            <End Role="PresentedAdvert" EntitySet="PresentedAdverts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PresentedAdvert_User" Association="Falcon.DbModel.FK_PresentedAdvert_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="PresentedAdvert" EntitySet="PresentedAdverts" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="AchievedCodeGift">
           <Key>
@@ -1819,6 +1874,7 @@
           <Property Name="IsNew" Type="Boolean" Nullable="false" />
           <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="UpdatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="PresentedAdverts" Relationship="Falcon.DbModel.FK_PresentedAdvert_AppAdvertisements" FromRole="AppAdvertisement" ToRole="PresentedAdvert" />
         </EntityType>
         <EntityType Name="ApplicationState">
           <Key>
@@ -2267,6 +2323,7 @@
           <NavigationProperty Name="UserType" Relationship="Falcon.DbModel.FK_User_UserType" FromRole="User" ToRole="UserType" />
           <NavigationProperty Name="UserInfoes" Relationship="Falcon.DbModel.FK_UserInfo_User" FromRole="User" ToRole="UserInfo" />
           <NavigationProperty Name="WatchedAds" Relationship="Falcon.DbModel.FK_WatchedAd_User" FromRole="User" ToRole="WatchedAd" />
+          <NavigationProperty Name="PresentedAdverts" Relationship="Falcon.DbModel.FK_PresentedAdvert_User" FromRole="User" ToRole="PresentedAdvert" />
         </EntityType>
         <EntityType Name="UserAvatar">
           <Key>
@@ -3017,6 +3074,45 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="PresentedAdvert">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="AdvertID" Type="Int32" Nullable="false" />
+          <Property Name="InsertDate" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="AppAdvertisement" Relationship="Falcon.DbModel.FK_PresentedAdvert_AppAdvertisements" FromRole="PresentedAdvert" ToRole="AppAdvertisement" />
+          <NavigationProperty Name="User" Relationship="Falcon.DbModel.FK_PresentedAdvert_User" FromRole="PresentedAdvert" ToRole="User" />
+        </EntityType>
+        <Association Name="FK_PresentedAdvert_AppAdvertisements">
+          <End Type="Falcon.DbModel.AppAdvertisement" Role="AppAdvertisement" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="Falcon.DbModel.PresentedAdvert" Role="PresentedAdvert" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AppAdvertisement">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="PresentedAdvert">
+              <PropertyRef Name="AdvertID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PresentedAdvert_User">
+          <End Type="Falcon.DbModel.User" Role="User" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="Falcon.DbModel.PresentedAdvert" Role="PresentedAdvert" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="PresentedAdvert">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -3575,6 +3671,16 @@
                 <ScalarProperty Name="InsertDate" ColumnName="InsertDate" />
                 <ScalarProperty Name="WatchAdId" ColumnName="WatchAdId" />
                 <ScalarProperty Name="WatchAdProviderId" ColumnName="WatchAdProviderId" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PresentedAdverts">
+            <EntityTypeMapping TypeName="Falcon.DbModel.PresentedAdvert">
+              <MappingFragment StoreEntitySet="PresentedAdvert">
+                <ScalarProperty Name="InsertDate" ColumnName="InsertDate" />
+                <ScalarProperty Name="AdvertID" ColumnName="AdvertID" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>

@@ -6,21 +6,24 @@ using Falcon.EFCommonContext;
 using System.Threading.Tasks;
 using System.Data.Entity;
 using Falcon.Web.Models.Api;
+using Falcon.Common;
 
 namespace Falcon.Database.SqlServer.QueryProcessors
 {
     public class CommentsQueryProcessor : ICommentsQueryProcessor
     {
         private readonly IDbContext mDb;
+        private readonly IDateTime mDateTime;
 
-        public CommentsQueryProcessor(IDbContext Database)
+        public CommentsQueryProcessor(IDbContext Database , IDateTime DateTime)
         {
             mDb = Database;
+            mDateTime = DateTime;
         }
         public async Task<QueryResult<SComment>> GetComments(PagedDataRequest requestInfo , int QuestionID)
         {
             var userAvatar = mDb.Set<SelectedAvatar>();
-
+            var time = mDateTime.Now;
             var query = mDb.Set<Comment>().AsNoTracking()
                 .Where(comment => comment.QuestionID == QuestionID && comment.IsVerified == true)
                 .Include(comment => comment.User)
@@ -33,6 +36,7 @@ namespace Falcon.Database.SqlServer.QueryProcessors
                     InsertDate = m.InsertDate,
                     QuestionID = m.QuestionID,
                     Avatar = ua.UserAvatar.PicUrl,
+                    ServerTime = time,
                 })
                 .OrderByDescending(x => x.InsertDate); 
 

@@ -15,6 +15,7 @@ namespace Falcon.Web.Api.AutoMappingConfiguration.CommentsMap
                 .ForMember(s => s.Content, m => m.MapFrom(c => c.CommentContent))
                 .ForMember(s => s.Response, m => m.MapFrom(c => c.Response))
                 .ForMember(s => s.InsertDate, m => m.MapFrom(c => c.InsertDate))
+                .ForMember(s => s.ServerTime, m => m.Ignore())
                 .ForMember(s => s.Avatar, m => m.Ignore());
         }
     }

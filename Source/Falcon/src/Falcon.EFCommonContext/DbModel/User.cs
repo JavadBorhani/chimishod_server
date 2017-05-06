@@ -36,6 +36,7 @@ namespace Falcon.EFCommonContext.DbModel
             this.SelectedThemes = new HashSet<SelectedTheme>();
             this.UserInfoes = new HashSet<UserInfo>();
             this.WatchedAds = new HashSet<WatchedAd>();
+            this.PresentedAdverts = new HashSet<PresentedAdvert>();
         }
     
         public int ID { get; set; }
@@ -91,5 +92,7 @@ namespace Falcon.EFCommonContext.DbModel
         public virtual ICollection<UserInfo> UserInfoes { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<WatchedAd> WatchedAds { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<PresentedAdvert> PresentedAdverts { get; set; }
     }
 }
