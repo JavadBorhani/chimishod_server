@@ -75,6 +75,9 @@
     <Compile Include="DbModel\Answer.cs">
       <DependentUpon>WhatIfDataModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="DbModel\AppAdvertisement.cs">
+      <DependentUpon>WhatIfDataModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="DbModel\ApplicationState.cs">
       <DependentUpon>WhatIfDataModel.tt</DependentUpon>
     </Compile>
@@ -118,9 +121,6 @@
       <DependentUpon>WhatIfDataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="DbModel\Order.cs">
-      <DependentUpon>WhatIfDataModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DbModel\OurAdvertisement.cs">
       <DependentUpon>WhatIfDataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="DbModel\PriceHistory.cs">

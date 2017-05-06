@@ -44,7 +44,7 @@ namespace Falcon.EFCommonContext.DbModel
         public Nullable<int> UserTypeID { get; set; }
         public int TotalStars { get; set; }
         public int Score { get; set; }
-        public int Rank { get; set; }
+        public Nullable<int> Rank { get; set; }
         public int LevelProgress { get; set; }
         public Nullable<int> CurrentLevelID { get; set; }
         public bool IsAbleToWriteComment { get; set; }

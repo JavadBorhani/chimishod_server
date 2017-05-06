@@ -12,14 +12,19 @@ namespace Falcon.EFCommonContext.DbModel
     using System;
     using System.Collections.Generic;
     
-    public partial class OurAdvertisement
+    public partial class AppAdvertisement
     {
         public int ID { get; set; }
-        public string Name { get; set; }
-        public string ShortDescription { get; set; }
-        public string LongDescription { get; set; }
-        public string RectangleColor { get; set; }
-        public string AppStoresLink { get; set; }
+        public string Title { get; set; }
+        public string Description { get; set; }
+        public string BackgroundColor { get; set; }
+        public string MarketPackageName { get; set; }
+        public string MarketIntentString { get; set; }
+        public string AppStoreUri { get; set; }
+        public System.DateTime StartTime { get; set; }
+        public System.DateTime ExpireTime { get; set; }
+        public int Priority { get; set; }
+        public bool IsNew { get; set; }
         public System.DateTime CreatedDate { get; set; }
         public System.DateTime UpdatedDate { get; set; }
     }

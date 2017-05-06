@@ -19,9 +19,11 @@ namespace Falcon.EFCommonContext.DbModel
             : base("name=DbEntity")
         {
         }
+
         public DbEntity(string NameOrConnectionString) : base(NameOrConnectionString)
         {
         }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             throw new UnintentionalCodeFirstException();
@@ -34,6 +36,7 @@ namespace Falcon.EFCommonContext.DbModel
         public virtual DbSet<AchievementQueryType> AchievementQueryTypes { get; set; }
         public virtual DbSet<AchieveStateType> AchieveStateTypes { get; set; }
         public virtual DbSet<Answer> Answers { get; set; }
+        public virtual DbSet<AppAdvertisement> AppAdvertisements { get; set; }
         public virtual DbSet<ApplicationState> ApplicationStates { get; set; }
         public virtual DbSet<AppTheme> AppThemes { get; set; }
         public virtual DbSet<Category> Categories { get; set; }
@@ -49,7 +52,6 @@ namespace Falcon.EFCommonContext.DbModel
         public virtual DbSet<Manufacture> Manufactures { get; set; }
         public virtual DbSet<MarketInfo> MarketInfoes { get; set; }
         public virtual DbSet<Order> Orders { get; set; }
-        public virtual DbSet<OurAdvertisement> OurAdvertisements { get; set; }
         public virtual DbSet<PriceHistory> PriceHistories { get; set; }
         public virtual DbSet<PurchaseAvatar> PurchaseAvatars { get; set; }
         public virtual DbSet<PurchaseCategory> PurchaseCategories { get; set; }

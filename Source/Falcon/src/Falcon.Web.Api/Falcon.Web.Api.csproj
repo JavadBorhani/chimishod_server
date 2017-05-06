@@ -131,6 +131,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\AutoMapperConfiguration.cs" />
+    <Compile Include="AutoMappingConfiguration\AppAdvertisementsMap\AppAdvertisementsToSAppAdvertAutoTypeConfiguration.cs" />
     <Compile Include="AutoMappingConfiguration\ApplicationStateMap\ApplicationStateToClientAppStateAutoTypeConfiguration.cs" />
     <Compile Include="AutoMappingConfiguration\ApplicationStateMap\ApplicationStateToSApplicationStateAutoTypeConfiguration.cs" />
     <Compile Include="AutoMappingConfiguration\ApplicationStateMap\SApplicationStateToAplicationStateAutoTypeConfiguration.cs" />
@@ -154,6 +155,7 @@
     <Compile Include="Controllers\V1\NotificationController.cs" />
     <Compile Include="Controllers\V1\AppAdvertisementsController.cs" />
     <Compile Include="Controllers\V1\WatchAdController.cs" />
+    <Compile Include="InquiryProcessing\Private\AppAdvertisementsInquiryProcessor.cs" />
     <Compile Include="InquiryProcessing\Private\CommentsInquiryProcessor.cs" />
     <Compile Include="InquiryProcessing\Private\CreatedQuestionsInquiryProcessor.cs" />
     <Compile Include="InquiryProcessing\Private\StoresInquiryProcessor.cs" />
