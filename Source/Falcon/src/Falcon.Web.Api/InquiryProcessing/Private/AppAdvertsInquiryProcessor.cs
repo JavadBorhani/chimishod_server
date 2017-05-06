@@ -10,12 +10,12 @@ using AutoMapper;
 
 namespace Falcon.Web.Api.InquiryProcessing.Private
 {
-    public class AppAdvertisementsInquiryProcessor : IAppAdvertisementsInquiryProcessor
+    public class AppAdvertsInquiryProcessor : IAppAdvertsInquiryProcessor
     {
-        private readonly IAppAdvertisementsQueryProcessor mAppAdvertQueryProcessor;
+        private readonly IAppAdvertsQueryProcessor mAppAdvertQueryProcessor;
         private readonly IMapper mMapper;
 
-        public AppAdvertisementsInquiryProcessor(IAppAdvertisementsQueryProcessor AppAdvertQueryProcessor , IMapper Mapper)
+        public AppAdvertsInquiryProcessor(IAppAdvertsQueryProcessor AppAdvertQueryProcessor , IMapper Mapper)
         {
             mAppAdvertQueryProcessor = AppAdvertQueryProcessor;
             mMapper = Mapper;

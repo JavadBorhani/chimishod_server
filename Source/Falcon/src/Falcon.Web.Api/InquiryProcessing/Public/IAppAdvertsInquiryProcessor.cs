@@ -7,7 +7,7 @@ using System.Web;
 
 namespace Falcon.Web.Api.InquiryProcessing.Public
 {
-    public interface IAppAdvertisementsInquiryProcessor
+    public interface IAppAdvertsInquiryProcessor
     {
         Task<List<SAppAdvert>> GetAdvertList(); 
     }

@@ -1,4 +1,5 @@
 ﻿using Falcon.Common;
+using Falcon.Common.Security;
 using Falcon.Data.QueryProcessors;
 using Falcon.EFCommonContext;
 using Falcon.EFCommonContext.DbModel;
@@ -11,14 +12,17 @@ using System.Threading.Tasks;
 
 namespace Falcon.Database.SqlServer.QueryProcessors
 {
-    public class AppAdvertisementsQueryProcessor : IAppAdvertisementsQueryProcessor
+    public class AppAdvertsQueryProcessor : IAppAdvertsQueryProcessor
     {
         private readonly IDbContext mDb;
         private readonly IDateTime mDateTime;
-        public AppAdvertisementsQueryProcessor(IDbContext Database , IDateTime DateTime)
+        private readonly IUserSession mUserSession;
+
+        public AppAdvertsQueryProcessor(IDbContext Database , IDateTime DateTime , IUserSession UserSession)
         {
             mDb = Database;
             mDateTime = DateTime;
+            mUserSession = UserSession;
         }
         public async Task<List<AppAdvertisement>> GetUnexpiredList()
         {
@@ -36,6 +40,19 @@ namespace Falcon.Database.SqlServer.QueryProcessors
         {
             var count = await mDb.Set<AppAdvertisement>().AsNoTracking().CountAsync(m => m.ID == ID) > 0;
             return count;
+        }
+
+        public async Task<bool> AddPresentedAdvert(int ID)
+        {
+            mDb.Set<PresentedAdvert>().Add(new PresentedAdvert
+            {
+              UserID = mUserSession.ID,
+              AdvertID = ID , 
+              InsertDate = mDateTime.Now
+            });
+
+            await mDb.SaveChangesAsync();
+            return true ;   
         }
     }
 }

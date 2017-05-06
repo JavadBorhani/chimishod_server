@@ -1,4 +1,5 @@
 ﻿using Falcon.Web.Api.InquiryProcessing.Public;
+using Falcon.Web.Api.MaintenanceProcessing.Public;
 using Falcon.Web.Api.Utilities.Base;
 using Falcon.Web.Models.Api;
 using System;
@@ -15,10 +16,12 @@ namespace Falcon.Web.Api.Controllers.V1
     public class AppAdvertisementsController : FalconApiController
     {
 
-        private readonly IAppAdvertisementsInquiryProcessor mAppAdvertisementsInquiryProcessor;
-        public AppAdvertisementsController(IAppAdvertisementsInquiryProcessor AppAdvertisementsInquiryProcessor)
+        private readonly IAppAdvertsInquiryProcessor mAppAdvertisementsInquiryProcessor;
+        private readonly IAppAdvertsMaintenanceProcessor mAppAdvertsMaintenanceProcessor;
+        public AppAdvertisementsController(IAppAdvertsInquiryProcessor AppAdvertisementsInquiryProcessor, IAppAdvertsMaintenanceProcessor AppAdvertsMaintenanceProcessor)
         {
             mAppAdvertisementsInquiryProcessor = AppAdvertisementsInquiryProcessor;
+            mAppAdvertsMaintenanceProcessor = AppAdvertsMaintenanceProcessor;
         }
 
         [ResponseType(typeof(SAppAdvert))]
@@ -30,5 +33,15 @@ namespace Falcon.Web.Api.Controllers.V1
             var result = await mAppAdvertisementsInquiryProcessor.GetAdvertList();
             return result;
         }
+
+        [Route("AppAdvertisements/{AdvertID}")]
+        [ResponseType(typeof(bool))]
+        [HttpPost]
+        public async Task<IHttpActionResult> SendPresentedAdvert(int AdvertID)
+        {
+            var result = await mAppAdvertsMaintenanceProcessor.AddPresentedAdvert(AdvertID);
+            return Ok(result);
+        }
+
     }
 }
