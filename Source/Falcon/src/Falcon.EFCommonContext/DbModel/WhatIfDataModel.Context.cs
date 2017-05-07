@@ -22,6 +22,7 @@ namespace Falcon.EFCommonContext.DbModel
         public DbEntity(string NameOrConnectionString) : base(NameOrConnectionString)
         {
         }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             throw new UnintentionalCodeFirstException();
@@ -50,6 +51,7 @@ namespace Falcon.EFCommonContext.DbModel
         public virtual DbSet<Manufacture> Manufactures { get; set; }
         public virtual DbSet<MarketInfo> MarketInfoes { get; set; }
         public virtual DbSet<Order> Orders { get; set; }
+        public virtual DbSet<PresentedAdvert> PresentedAdverts { get; set; }
         public virtual DbSet<PriceHistory> PriceHistories { get; set; }
         public virtual DbSet<PurchaseAvatar> PurchaseAvatars { get; set; }
         public virtual DbSet<PurchaseCategory> PurchaseCategories { get; set; }
@@ -69,6 +71,5 @@ namespace Falcon.EFCommonContext.DbModel
         public virtual DbSet<UserType> UserTypes { get; set; }
         public virtual DbSet<WatchAdProvider> WatchAdProviders { get; set; }
         public virtual DbSet<WatchedAd> WatchedAds { get; set; }
-        public virtual DbSet<PresentedAdvert> PresentedAdverts { get; set; }
     }
 }

@@ -27,6 +27,7 @@ namespace Falcon.EFCommonContext.DbModel
             this.Favorites = new HashSet<Favorite>();
             this.Manufactures = new HashSet<Manufacture>();
             this.Orders = new HashSet<Order>();
+            this.PresentedAdverts = new HashSet<PresentedAdvert>();
             this.PurchaseAvatars = new HashSet<PurchaseAvatar>();
             this.PurchaseCategories = new HashSet<PurchaseCategory>();
             this.PurchaseThemes = new HashSet<PurchaseTheme>();
@@ -36,7 +37,6 @@ namespace Falcon.EFCommonContext.DbModel
             this.SelectedThemes = new HashSet<SelectedTheme>();
             this.UserInfoes = new HashSet<UserInfo>();
             this.WatchedAds = new HashSet<WatchedAd>();
-            this.PresentedAdverts = new HashSet<PresentedAdvert>();
         }
     
         public int ID { get; set; }
@@ -74,6 +74,8 @@ namespace Falcon.EFCommonContext.DbModel
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Order> Orders { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<PresentedAdvert> PresentedAdverts { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PurchaseAvatar> PurchaseAvatars { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PurchaseCategory> PurchaseCategories { get; set; }
@@ -92,7 +94,5 @@ namespace Falcon.EFCommonContext.DbModel
         public virtual ICollection<UserInfo> UserInfoes { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<WatchedAd> WatchedAds { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<PresentedAdvert> PresentedAdverts { get; set; }
     }
 }

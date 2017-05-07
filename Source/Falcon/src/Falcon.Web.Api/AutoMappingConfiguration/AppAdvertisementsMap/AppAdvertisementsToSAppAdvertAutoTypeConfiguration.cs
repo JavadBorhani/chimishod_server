@@ -20,6 +20,7 @@ namespace Falcon.Web.Api.AutoMappingConfiguration.AppAdvertisementsMap
                 .ForMember(s => s.MarketPackageName, m => m.MapFrom(a => a.MarketPackageName))
                 .ForMember(s => s.MarketIntentString, m => m.MapFrom(a => a.MarketIntentString))
                 .ForMember(s => s.AppStoreUri, m => m.MapFrom(a => a.AppStoreUri))
+                .ForMember(s => s.Icon, m => m.MapFrom(a => a.Icon))
                 .ForMember(s => s.IsNew, m => m.MapFrom(a => a.IsNew));                
         }
     }
