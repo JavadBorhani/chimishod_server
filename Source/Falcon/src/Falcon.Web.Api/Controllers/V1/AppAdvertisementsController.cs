@@ -27,7 +27,6 @@ namespace Falcon.Web.Api.Controllers.V1
         [ResponseType(typeof(SAppAdvert))]
         [Route("AppAdvertisements/")]
         [HttpPost]
-
         public async Task<List<SAppAdvert>> GetAppList()
         {
             var result = await mAppAdvertisementsInquiryProcessor.GetAdvertList();

@@ -40,7 +40,8 @@ namespace Falcon.Web.Api.Security.Private
             if(!CanHandleAuthentication(request))
             {
                 mLogger.Debug("authentication type does not supported");
-                return await base.SendAsync(request, cancellationToken);
+                //return await base.SendAsync(request, cancellationToken); // let other handlers control the flow 
+                return CreateUnauthorizedResponse(); //TODO : Checkout the logic 
             }
 
             bool isAuthenticated;
