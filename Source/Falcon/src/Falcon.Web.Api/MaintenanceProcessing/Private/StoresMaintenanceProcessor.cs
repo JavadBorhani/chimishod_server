@@ -1,4 +1,5 @@
-﻿using Falcon.Web.Api.MaintenanceProcessing.Public;
+﻿// Flapp Copyright 2017-2018
+using Falcon.Web.Api.MaintenanceProcessing.Public;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -189,9 +189,9 @@
     <Compile Include="PurchaseAuthorizer\Private\PurchaseVerificationResponse.cs" />
     <Compile Include="Security\Private\BasicAuthenticationMessageHandler.cs" />
     <Compile Include="Security\Private\BasicPrincipalSecurityService.cs" />
-    <Compile Include="Security\Private\MarketVerificationProcessor.cs" />
+    <Compile Include="PurchaseAuthorizer\Private\MarketVerificationProcessor.cs" />
     <Compile Include="Security\Public\IBasicPrincipalSecurityService.cs" />
-    <Compile Include="Security\Public\IMarketVerificationProcessor.cs" />
+    <Compile Include="PurchaseAuthorizer\Public\IMarketVerificationProcessor.cs" />
     <Compile Include="PurchaseAuthorizer\Private\PurchaseVerificationRequest.cs" />
     <Compile Include="PurchaseAuthorizer\Private\PurchaseVerificationSuccessful.cs" />
     <Compile Include="PurchaseAuthorizer\Private\RefreshTokenRequest.cs" />

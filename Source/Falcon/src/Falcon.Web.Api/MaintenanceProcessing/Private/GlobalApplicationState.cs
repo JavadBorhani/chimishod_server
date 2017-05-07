@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿// Flapp Copyright 2017-2018
+using AutoMapper;
 using Falcon.EFCommonContext;
 using Falcon.EFCommonContext.DbModel;
 using Falcon.Web.Api.MaintenanceProcessing.Public;

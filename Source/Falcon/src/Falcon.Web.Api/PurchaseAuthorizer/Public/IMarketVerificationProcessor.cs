@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using System.Web;
 using Falcon.Web.Api.PurchaseAuthorizer.Private;
 
-namespace Falcon.Web.Api.Security.Public
+namespace Falcon.Web.Api.PurchaseAuthorizer.Public
 {
     public interface IMarketVerificationProcessor
     {

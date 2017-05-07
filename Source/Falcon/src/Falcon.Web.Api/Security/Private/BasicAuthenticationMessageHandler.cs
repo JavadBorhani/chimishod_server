@@ -1,4 +1,5 @@
-﻿using Falcon.Common;
+﻿// Flapp Copyright 2017-2018
+using Falcon.Common;
 using Falcon.Common.Logging;
 using Falcon.Web.Api.Security.Public;
 using log4net;

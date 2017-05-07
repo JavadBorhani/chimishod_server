@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿// Flapp Copyright 2017-2018
+using AutoMapper;
 using Falcon.Data.QueryProcessors;
 using Falcon.Database.SqlServer.QueryProcessors;
 using Falcon.EFCommonContext.DbModel;

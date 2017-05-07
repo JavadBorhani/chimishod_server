@@ -1,4 +1,5 @@
-﻿using Falcon.EFCommonContext.DbModel;
+﻿// Flapp Copyright 2017-2018
+using Falcon.EFCommonContext.DbModel;
 using Falcon.Web.Api.PurchaseAuthorizer.Private;
 using Falcon.Web.Models.Api;
 using System;

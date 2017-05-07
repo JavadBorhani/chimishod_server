@@ -1,4 +1,4 @@
-﻿
+﻿// Flapp Copyright 2017-2018
 using Falcon.Data;
 using System;
 
