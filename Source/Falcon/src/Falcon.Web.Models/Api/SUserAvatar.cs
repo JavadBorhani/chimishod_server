@@ -9,7 +9,7 @@ namespace Falcon.Web.Models.Api
         public int Price { get; set; }
         public bool IsPurchased { get; set; }
         public bool IsActive { get; set; }
-        public bool IsNew { get; set; }
+        public int TagState { get; set; }
         public int DiscountAmount { get; set; }
     }
 }

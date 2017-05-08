@@ -64,7 +64,7 @@ namespace Falcon.Web.Api.Controllers.V1
                         IsPurchased = (themes[i].ID == Constants.DefaultUser.AppThemeID) ? true : purchasedThemes.Contains(themes[i].ID), // TODO : remember to remove what has checked to increase checking time
                         IsActive = (selectedTheme == themes[i].ID) ? true : false,
                         DiscountAmount = themes[i].DiscountAmount,
-                        IsNew = themes[i].IsNew
+                        TagState = themes[i].TagStateID
                     };                        
                 }
 

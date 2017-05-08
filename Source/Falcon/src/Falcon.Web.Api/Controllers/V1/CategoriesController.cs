@@ -71,7 +71,7 @@ namespace Falcon.Web.Api.Controllers.V1
                         IsPurchased = (categories[i].ID == Constants.DefaultUser.CategoryID) ? true : purchasedCategories.Contains(categories[i].ID), // TODO : remember to remove what has checked to increase checking time
                         IsActive = (selectedCategory == categories[i].ID) ? true : false,
                         DiscountAmount = categories[i].DiscountAmount,
-                        IsNew = categories[i].IsNew
+                        TagState = categories[i].TagStateID
                     };
                 }
 
