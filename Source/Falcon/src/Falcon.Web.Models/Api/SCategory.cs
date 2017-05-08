@@ -16,6 +16,6 @@ namespace Falcon.Web.Models.Api
         public bool IsPurchased { get; set; }
         public int PrizeCoefficient { get; set; }
         public int DiscountAmount { get; set; }
-        public bool IsNew { get; set; }
+        public int TagState { get; set; }
     }
 }

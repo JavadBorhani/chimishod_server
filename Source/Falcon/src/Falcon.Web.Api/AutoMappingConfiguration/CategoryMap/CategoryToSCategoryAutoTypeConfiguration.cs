@@ -17,6 +17,8 @@ namespace Falcon.Web.Api.AutoMappingConfiguration.CategoryMap
                 .ForMember(s => s.Price,            ca => ca.MapFrom(y => y.Price))
                 .ForMember(s => s.SquareColor,      ca => ca.MapFrom(y => y.SquareColor))
                 .ForMember(s => s.CircleColor,      ca => ca.MapFrom(y => y.CircleColor))
+                .ForMember(s => s.TagState,         ca => ca.MapFrom(y => y.TagStateID))
+                .ForMember(s => s.DiscountAmount,   ca => ca.MapFrom(y => y.DiscountAmount))
                 .ForMember(s => s.IsPurchased,      ca => ca.Ignore())
                 .ForMember(s => s.IsActive,         ca => ca.Ignore());
         }
