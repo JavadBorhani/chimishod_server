@@ -5,7 +5,6 @@ namespace Falcon.Web.Models.Api
 {
     public class SLeaderBoard
     {
-        [IgnoreDataMember]
         public int UserID { get; set; }
         public int Rank { get; set; }
         public string UserName { get; set; }

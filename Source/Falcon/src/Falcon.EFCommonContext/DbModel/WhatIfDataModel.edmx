@@ -89,7 +89,7 @@
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Icon" Type="varchar" MaxLength="150" Nullable="false" />
           <Property Name="Title" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="Description" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Description" Type="nvarchar" MaxLength="250" Nullable="false" />
           <Property Name="BackgroundColor" Type="varchar" MaxLength="10" Nullable="false" />
           <Property Name="MarketPackageName" Type="varchar" MaxLength="100" />
           <Property Name="MarketIntentString" Type="varchar" MaxLength="100" />
@@ -148,6 +148,8 @@
           <Property Name="DialogImage" Type="nvarchar" MaxLength="50" />
           <Property Name="CreatedDate" Type="datetime" Nullable="false" />
           <Property Name="UpdatedDate" Type="datetime" Nullable="false" />
+          <Property Name="DiscountAmount" Type="int" Nullable="false" />
+          <Property Name="IsNew" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="Category">
           <Key>
@@ -161,9 +163,11 @@
           <Property Name="CircleColor" Type="varchar" MaxLength="10" Nullable="false" />
           <Property Name="RectangleColor" Type="varchar" MaxLength="10" Nullable="false" />
           <Property Name="Price" Type="int" Nullable="false" />
+          <Property Name="PrizeCoefficient" Type="int" Nullable="false" />
           <Property Name="CreatedDate" Type="datetime" Nullable="false" />
           <Property Name="UpdatedDate" Type="datetime" Nullable="false" />
-          <Property Name="PrizeCoefficient" Type="int" Nullable="false" />
+          <Property Name="DiscountAmount" Type="int" Nullable="false" />
+          <Property Name="IsNew" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="CodeGift">
           <Key>
@@ -486,6 +490,8 @@
           <Property Name="PicUrl" Type="nvarchar" MaxLength="150" Nullable="false" />
           <Property Name="Price" Type="int" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="50" />
+          <Property Name="DiscountAmount" Type="int" Nullable="false" />
+          <Property Name="IsNew" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="UserInfo">
           <Key>
@@ -1865,7 +1871,7 @@
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Icon" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
           <Property Name="Title" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Description" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
           <Property Name="BackgroundColor" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Name="MarketPackageName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="MarketIntentString" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
@@ -1925,6 +1931,8 @@
           <Property Name="DialogImage" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="UpdatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="DiscountAmount" Type="Int32" Nullable="false" />
+          <Property Name="IsNew" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="PurchaseThemes" Relationship="Falcon.DbModel.FK_PurchaseTheme_AppTheme" FromRole="AppTheme" ToRole="PurchaseTheme" />
           <NavigationProperty Name="SelectedThemes" Relationship="Falcon.DbModel.FK_SelectedTheme_AppTheme" FromRole="AppTheme" ToRole="SelectedTheme" />
         </EntityType>
@@ -1940,9 +1948,11 @@
           <Property Name="CircleColor" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Name="RectangleColor" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Name="Price" Type="Int32" Nullable="false" />
+          <Property Name="PrizeCoefficient" Type="Int32" Nullable="false" />
           <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="UpdatedDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="PrizeCoefficient" Type="Int32" Nullable="false" />
+          <Property Name="DiscountAmount" Type="Int32" Nullable="false" />
+          <Property Name="IsNew" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Achievements" Relationship="Falcon.DbModel.FK_Achievement_Category" FromRole="Category" ToRole="Achievement" />
           <NavigationProperty Name="CreatedQuestions" Relationship="Falcon.DbModel.FK_CreatedQuestions_Category" FromRole="Category" ToRole="CreatedQuestion" />
           <NavigationProperty Name="PurchaseCategories" Relationship="Falcon.DbModel.FK_PurchaseCategory_Category" FromRole="Category" ToRole="PurchaseCategory" />
@@ -2346,6 +2356,8 @@
           <Property Name="PicUrl" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
           <Property Name="Price" Type="Int32" Nullable="false" />
           <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="DiscountAmount" Type="Int32" Nullable="false" />
+          <Property Name="IsNew" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="PurchaseAvatars" Relationship="Falcon.DbModel.FK_PurchaseAvatar_UserAvatar" FromRole="UserAvatar" ToRole="PurchaseAvatar" />
           <NavigationProperty Name="SelectedAvatars" Relationship="Falcon.DbModel.FK_SelectedAvatar_UserAvatar" FromRole="UserAvatar" ToRole="SelectedAvatar" />
         </EntityType>
@@ -3261,6 +3273,8 @@
           <EntitySetMapping Name="AppThemes">
             <EntityTypeMapping TypeName="Falcon.DbModel.AppTheme">
               <MappingFragment StoreEntitySet="AppTheme">
+                <ScalarProperty Name="IsNew" ColumnName="IsNew" />
+                <ScalarProperty Name="DiscountAmount" ColumnName="DiscountAmount" />
                 <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
                 <ScalarProperty Name="DialogImage" ColumnName="DialogImage" />
@@ -3278,9 +3292,11 @@
           <EntitySetMapping Name="Categories">
             <EntityTypeMapping TypeName="Falcon.DbModel.Category">
               <MappingFragment StoreEntitySet="Category">
-                <ScalarProperty Name="PrizeCoefficient" ColumnName="PrizeCoefficient" />
+                <ScalarProperty Name="IsNew" ColumnName="IsNew" />
+                <ScalarProperty Name="DiscountAmount" ColumnName="DiscountAmount" />
                 <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="PrizeCoefficient" ColumnName="PrizeCoefficient" />
                 <ScalarProperty Name="Price" ColumnName="Price" />
                 <ScalarProperty Name="RectangleColor" ColumnName="RectangleColor" />
                 <ScalarProperty Name="CircleColor" ColumnName="CircleColor" />
@@ -3635,6 +3651,8 @@
           <EntitySetMapping Name="UserAvatars">
             <EntityTypeMapping TypeName="Falcon.DbModel.UserAvatar">
               <MappingFragment StoreEntitySet="UserAvatar">
+                <ScalarProperty Name="IsNew" ColumnName="IsNew" />
+                <ScalarProperty Name="DiscountAmount" ColumnName="DiscountAmount" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Price" ColumnName="Price" />
                 <ScalarProperty Name="PicUrl" ColumnName="PicUrl" />

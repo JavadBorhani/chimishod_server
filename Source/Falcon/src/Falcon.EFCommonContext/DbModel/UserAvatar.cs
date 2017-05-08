@@ -25,6 +25,8 @@ namespace Falcon.EFCommonContext.DbModel
         public string PicUrl { get; set; }
         public int Price { get; set; }
         public string Name { get; set; }
+        public int DiscountAmount { get; set; }
+        public bool IsNew { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PurchaseAvatar> PurchaseAvatars { get; set; }

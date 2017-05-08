@@ -32,6 +32,8 @@ namespace Falcon.EFCommonContext.DbModel
         public string DialogImage { get; set; }
         public System.DateTime CreatedDate { get; set; }
         public System.DateTime UpdatedDate { get; set; }
+        public int DiscountAmount { get; set; }
+        public bool IsNew { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PurchaseTheme> PurchaseThemes { get; set; }

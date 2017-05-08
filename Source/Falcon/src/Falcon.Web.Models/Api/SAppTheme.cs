@@ -15,5 +15,7 @@ namespace Falcon.Web.Models.Api
         public string DialogImage { get; set; }
         public bool IsActive { get; set; }
         public bool IsPurchased { get; set; }
+        public int DiscountAmount { get; set; }
+        public bool IsNew { get; set;  }
     }
 }
