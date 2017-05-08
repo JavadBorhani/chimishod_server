@@ -20,6 +20,7 @@ namespace Falcon.Web.Api.AutoMappingConfiguration.NewCreatedQuestions
                 .ForMember(sn => sn.No_Count ,          m => m.MapFrom( q => q.No_Count))
                 .ForMember(sn => sn.Dislike_Count ,     m => m.MapFrom( q => q.Dislike_Count))
                 .ForMember(sn => sn.VerifyState ,       m => m.UseValue(Constants.DefaultValues.CreatedQuestionsVerified))
+                .ForMember(sn => sn.ServerTime,         m => m.Ignore())
                 .ForMember(sn => sn.RegisterDateTime ,  m => m.MapFrom( q => q.CreatedDate));
         }
     }
