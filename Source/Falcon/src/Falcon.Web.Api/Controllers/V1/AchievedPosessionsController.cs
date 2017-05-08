@@ -17,6 +17,7 @@ using Falcon.EFCommonContext;
 using Falcon.Web.Api.Utilities.Base;
 using Falcon.Common.Security;
 using Falcon.Web.Api.MaintenanceProcessing.Public;
+using Falcon.Web.Api.InquiryProcessing.Public;
 
 namespace Falcon.Web.Api.Controllers.V1
 {
@@ -28,14 +29,22 @@ namespace Falcon.Web.Api.Controllers.V1
         private readonly IDbContext mDb;
         private readonly IWebUserSession mUserSession;
         private readonly IGlobalApplicationState mAppState;
+        private readonly IAchievementInquiryProcessor mAchievementInquiryProcessor; 
 
-        public AchievedPosessionsController(IMapper Mapper , IDateTime DateTime , IDbContext Database , IWebUserSession UserSession , IGlobalApplicationState AppState)
+        public AchievedPosessionsController(
+            IMapper Mapper , 
+            IDateTime DateTime , 
+            IDbContext Database , 
+            IWebUserSession UserSession , 
+            IGlobalApplicationState AppState,
+            IAchievementInquiryProcessor AchievementInquiryProcessor)
         {
             mMapper = Mapper;
             mDateTime = DateTime;
             mDb = Database;
             mUserSession = UserSession;
             mAppState = AppState;
+            mAchievementInquiryProcessor = AchievementInquiryProcessor; 
         }
 
         [Route("Achievements/")]
@@ -260,6 +269,20 @@ namespace Falcon.Web.Api.Controllers.V1
 
 
             var result = mMapper.Map<List<Achievement>, List<SAchievement>>(achievedList);
+
+            if (result.Count > 0)
+                return Response(HttpStatusCode.OK, result);
+            else
+                return Response(HttpStatusCode.NoContent);
+        }
+
+        [Route("Achievements/Achieved/{UserID}")]
+        [ResponseType(typeof(SAchievement))]
+        [HttpPost]
+        public async Task<IHttpActionResult> GetAchievedList(int UserID)
+        {
+
+            var result = await mAchievementInquiryProcessor.GetAchievementListByUserID(UserID);
 
             if (result.Count > 0)
                 return Response(HttpStatusCode.OK, result);
