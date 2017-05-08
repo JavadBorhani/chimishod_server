@@ -12,17 +12,19 @@ namespace Falcon.Database.SqlServer.QueryProcessors
 {
     public class CreatedQuestionsQueryProcessor : ICreatedQuestionsQueryProcessor
     {
-        private readonly IDbContext mDb; 
-        public CreatedQuestionsQueryProcessor(IDbContext Database)
+        private readonly IDbContext mDb;
+        private readonly IDateTime mDateTime;
+        public CreatedQuestionsQueryProcessor(IDbContext Database , IDateTime DateTime)
         {
             mDb = Database;
+            mDateTime = DateTime;
         }
         public async Task<QueryResult<SNewCreatedQuestions>> GetCreatedQuestions(PagedDataRequest requestInfo, int UserID)
         {
 
             var manu = mDb.Set<Manufacture>();
             var createdQuestion = mDb.Set<CreatedQuestion>();
-
+            var now = mDateTime.Now;
             //TODO : refactor this 
             var query = manu.AsNoTracking()
                 .Where(u => u.UserID == UserID)
@@ -41,12 +43,14 @@ namespace Falcon.Database.SqlServer.QueryProcessors
                     No_Count = u.No_Count,
                     Dislike_Count = u.Dislike_Count,
                     VerifyState = Constants.DefaultValues.CreatedQuestionsVerified,
-                    RegisterDateTime = u.CreatedDate
+                    RegisterDateTime = u.CreatedDate,
+                    ServerTime = now
                 })
                 .Union(createdQuestion.AsNoTracking().Where(cq => cq.UserID == UserID && (
                         cq.VerifyStateID == Constants.DefaultValues.CreatedQuestionIsInChecking ||
                         cq.VerifyStateID == Constants.DefaultValues.CreatedQuestionRejected
-                    )).Include(cq => cq.Category.Name).Select(cq => new SNewCreatedQuestions
+                    )).Include(cq => cq.Category.Name)
+                    .Select(cq => new SNewCreatedQuestions
                     {
                         ID = cq.ID,
                         What_if = cq.What_if,
@@ -57,7 +61,8 @@ namespace Falcon.Database.SqlServer.QueryProcessors
                         No_Count = 0 ,
                         Dislike_Count = 0 ,
                         VerifyState = cq.VerifyStateID,
-                        RegisterDateTime = cq.RegisterDateTime
+                        RegisterDateTime = cq.RegisterDateTime,
+                        ServerTime = now
                     }));
 
 

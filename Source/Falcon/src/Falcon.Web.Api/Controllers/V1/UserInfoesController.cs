@@ -232,6 +232,7 @@ namespace Falcon.Web.Api.Controllers.V1
             SmtpServer.Credentials = new NetworkCredential(state.Host_WebSiteNoReplyMail, state.Host_WebSiteNoReplyMailPassword);
             SmtpServer.EnableSsl = false;
             SmtpServer.Send(mail);
+
         }
 
         private bool IsValidMail(string Mail)

@@ -19,5 +19,6 @@ namespace Falcon.Web.Models.Api
         public int Dislike_Count { get; set; }
         public int VerifyState { get; set; }
         public DateTime RegisterDateTime { get; set; }
+        public DateTime ServerTime { get; set; }
     }
 }
