@@ -26,11 +26,12 @@ namespace Falcon.EFCommonContext.DbModel
         public int Price { get; set; }
         public string Name { get; set; }
         public int DiscountAmount { get; set; }
-        public bool IsNew { get; set; }
+        public int TagStateID { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PurchaseAvatar> PurchaseAvatars { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SelectedAvatar> SelectedAvatars { get; set; }
+        public virtual TagState TagState { get; set; }
     }
 }

@@ -33,13 +33,14 @@ namespace Falcon.EFCommonContext.DbModel
         public string RectangleColor { get; set; }
         public int Price { get; set; }
         public int PrizeCoefficient { get; set; }
+        public int DiscountAmount { get; set; }
+        public int TagStateID { get; set; }
         public System.DateTime CreatedDate { get; set; }
         public System.DateTime UpdatedDate { get; set; }
-        public int DiscountAmount { get; set; }
-        public bool IsNew { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Achievement> Achievements { get; set; }
+        public virtual TagState TagState { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CreatedQuestion> CreatedQuestions { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

@@ -12,33 +12,24 @@ namespace Falcon.EFCommonContext.DbModel
     using System;
     using System.Collections.Generic;
     
-    public partial class AppTheme
+    public partial class TagState
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public AppTheme()
+        public TagState()
         {
-            this.PurchaseThemes = new HashSet<PurchaseTheme>();
-            this.SelectedThemes = new HashSet<SelectedTheme>();
+            this.AppThemes = new HashSet<AppTheme>();
+            this.Categories = new HashSet<Category>();
+            this.UserAvatars = new HashSet<UserAvatar>();
         }
     
         public int ID { get; set; }
         public string Name { get; set; }
-        public string ShortDesciption { get; set; }
-        public string LongDescription { get; set; }
-        public string SquareColor { get; set; }
-        public string CircleColor { get; set; }
-        public int Price { get; set; }
-        public string BackImage { get; set; }
-        public string DialogImage { get; set; }
-        public int DiscountAmount { get; set; }
-        public int TagStateID { get; set; }
-        public System.DateTime CreatedDate { get; set; }
-        public System.DateTime UpdatedDate { get; set; }
     
-        public virtual TagState TagState { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<PurchaseTheme> PurchaseThemes { get; set; }
+        public virtual ICollection<AppTheme> AppThemes { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<SelectedTheme> SelectedThemes { get; set; }
+        public virtual ICollection<Category> Categories { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<UserAvatar> UserAvatars { get; set; }
     }
 }

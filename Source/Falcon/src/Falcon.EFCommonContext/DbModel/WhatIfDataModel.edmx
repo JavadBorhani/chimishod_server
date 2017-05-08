@@ -146,10 +146,10 @@
           <Property Name="Price" Type="int" Nullable="false" />
           <Property Name="BackImage" Type="nvarchar" MaxLength="50" />
           <Property Name="DialogImage" Type="nvarchar" MaxLength="50" />
+          <Property Name="DiscountAmount" Type="int" Nullable="false" />
+          <Property Name="TagStateID" Type="int" Nullable="false" />
           <Property Name="CreatedDate" Type="datetime" Nullable="false" />
           <Property Name="UpdatedDate" Type="datetime" Nullable="false" />
-          <Property Name="DiscountAmount" Type="int" Nullable="false" />
-          <Property Name="IsNew" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="Category">
           <Key>
@@ -164,10 +164,10 @@
           <Property Name="RectangleColor" Type="varchar" MaxLength="10" Nullable="false" />
           <Property Name="Price" Type="int" Nullable="false" />
           <Property Name="PrizeCoefficient" Type="int" Nullable="false" />
+          <Property Name="DiscountAmount" Type="int" Nullable="false" />
+          <Property Name="TagStateID" Type="int" Nullable="false" />
           <Property Name="CreatedDate" Type="datetime" Nullable="false" />
           <Property Name="UpdatedDate" Type="datetime" Nullable="false" />
-          <Property Name="DiscountAmount" Type="int" Nullable="false" />
-          <Property Name="IsNew" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="CodeGift">
           <Key>
@@ -465,6 +465,13 @@
           <Property Name="version" Type="int" />
           <Property Name="definition" Type="varbinary(max)" />
         </EntityType>
+        <EntityType Name="TagState">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
         <EntityType Name="User">
           <Key>
             <PropertyRef Name="ID" />
@@ -491,7 +498,7 @@
           <Property Name="Price" Type="int" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="50" />
           <Property Name="DiscountAmount" Type="int" Nullable="false" />
-          <Property Name="IsNew" Type="bit" Nullable="false" />
+          <Property Name="TagStateID" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="UserInfo">
           <Key>
@@ -693,6 +700,30 @@
             </Principal>
             <Dependent Role="Answer">
               <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AppTheme_TagState">
+          <End Role="TagState" Type="Self.TagState" Multiplicity="1" />
+          <End Role="AppTheme" Type="Self.AppTheme" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TagState">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="AppTheme">
+              <PropertyRef Name="TagStateID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Category_TagState">
+          <End Role="TagState" Type="Self.TagState" Multiplicity="1" />
+          <End Role="Category" Type="Self.Category" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TagState">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Category">
+              <PropertyRef Name="TagStateID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1214,6 +1245,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_UserAvatar_TagState">
+          <End Role="TagState" Type="Self.TagState" Multiplicity="1" />
+          <End Role="UserAvatar" Type="Self.UserAvatar" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TagState">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="UserAvatar">
+              <PropertyRef Name="TagStateID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_UserInfo_User">
           <End Role="User" Type="Self.User" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -1292,6 +1335,7 @@
           <EntitySet Name="SelectedTheme" EntityType="Self.SelectedTheme" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Store" EntityType="Self.Store" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TagState" EntityType="Self.TagState" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserAvatar" EntityType="Self.UserAvatar" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserInfo" EntityType="Self.UserInfo" Schema="dbo" store:Type="Tables" />
@@ -1345,6 +1389,14 @@
           <AssociationSet Name="FK_Answer_User" Association="Self.FK_Answer_User">
             <End Role="User" EntitySet="User" />
             <End Role="Answer" EntitySet="Answer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AppTheme_TagState" Association="Self.FK_AppTheme_TagState">
+            <End Role="TagState" EntitySet="TagState" />
+            <End Role="AppTheme" EntitySet="AppTheme" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Category_TagState" Association="Self.FK_Category_TagState">
+            <End Role="TagState" EntitySet="TagState" />
+            <End Role="Category" EntitySet="Category" />
           </AssociationSet>
           <AssociationSet Name="FK_Comment_Question" Association="Self.FK_Comment_Question">
             <End Role="Question" EntitySet="Question" />
@@ -1498,6 +1550,10 @@
             <End Role="UserType" EntitySet="UserType" />
             <End Role="User" EntitySet="User" />
           </AssociationSet>
+          <AssociationSet Name="FK_UserAvatar_TagState" Association="Self.FK_UserAvatar_TagState">
+            <End Role="TagState" EntitySet="TagState" />
+            <End Role="UserAvatar" EntitySet="UserAvatar" />
+          </AssociationSet>
           <AssociationSet Name="FK_UserInfo_User" Association="Self.FK_UserInfo_User">
             <End Role="User" EntitySet="User" />
             <End Role="UserInfo" EntitySet="UserInfo" />
@@ -1553,6 +1609,7 @@
           <EntitySet Name="SelectedThemes" EntityType="Falcon.DbModel.SelectedTheme" />
           <EntitySet Name="Stores" EntityType="Falcon.DbModel.Store" />
           <EntitySet Name="sysdiagrams" EntityType="Falcon.DbModel.sysdiagram" />
+          <EntitySet Name="TagStates" EntityType="Falcon.DbModel.TagState" />
           <EntitySet Name="Users" EntityType="Falcon.DbModel.User" />
           <EntitySet Name="UserAvatars" EntityType="Falcon.DbModel.UserAvatar" />
           <EntitySet Name="UserInfoes" EntityType="Falcon.DbModel.UserInfo" />
@@ -1611,6 +1668,10 @@
             <End Role="AppAdvertisement" EntitySet="AppAdvertisements" />
             <End Role="PresentedAdvert" EntitySet="PresentedAdverts" />
           </AssociationSet>
+          <AssociationSet Name="FK_AppTheme_TagState" Association="Falcon.DbModel.FK_AppTheme_TagState">
+            <End Role="TagState" EntitySet="TagStates" />
+            <End Role="AppTheme" EntitySet="AppThemes" />
+          </AssociationSet>
           <AssociationSet Name="FK_PurchaseTheme_AppTheme" Association="Falcon.DbModel.FK_PurchaseTheme_AppTheme">
             <End Role="AppTheme" EntitySet="AppThemes" />
             <End Role="PurchaseTheme" EntitySet="PurchaseThemes" />
@@ -1618,6 +1679,10 @@
           <AssociationSet Name="FK_SelectedTheme_AppTheme" Association="Falcon.DbModel.FK_SelectedTheme_AppTheme">
             <End Role="AppTheme" EntitySet="AppThemes" />
             <End Role="SelectedTheme" EntitySet="SelectedThemes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Category_TagState" Association="Falcon.DbModel.FK_Category_TagState">
+            <End Role="TagState" EntitySet="TagStates" />
+            <End Role="Category" EntitySet="Categories" />
           </AssociationSet>
           <AssociationSet Name="FK_CreatedQuestions_Category" Association="Falcon.DbModel.FK_CreatedQuestions_Category">
             <End Role="Category" EntitySet="Categories" />
@@ -1754,6 +1819,10 @@
           <AssociationSet Name="FK_SelectedTheme_User" Association="Falcon.DbModel.FK_SelectedTheme_User">
             <End Role="User" EntitySet="Users" />
             <End Role="SelectedTheme" EntitySet="SelectedThemes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserAvatar_TagState" Association="Falcon.DbModel.FK_UserAvatar_TagState">
+            <End Role="TagState" EntitySet="TagStates" />
+            <End Role="UserAvatar" EntitySet="UserAvatars" />
           </AssociationSet>
           <AssociationSet Name="FK_User_UserType" Association="Falcon.DbModel.FK_User_UserType">
             <End Role="UserType" EntitySet="UserTypes" />
@@ -1929,10 +1998,11 @@
           <Property Name="Price" Type="Int32" Nullable="false" />
           <Property Name="BackImage" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="DialogImage" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="DiscountAmount" Type="Int32" Nullable="false" />
+          <Property Name="TagStateID" Type="Int32" Nullable="false" />
           <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="UpdatedDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="DiscountAmount" Type="Int32" Nullable="false" />
-          <Property Name="IsNew" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="TagState" Relationship="Falcon.DbModel.FK_AppTheme_TagState" FromRole="AppTheme" ToRole="TagState" />
           <NavigationProperty Name="PurchaseThemes" Relationship="Falcon.DbModel.FK_PurchaseTheme_AppTheme" FromRole="AppTheme" ToRole="PurchaseTheme" />
           <NavigationProperty Name="SelectedThemes" Relationship="Falcon.DbModel.FK_SelectedTheme_AppTheme" FromRole="AppTheme" ToRole="SelectedTheme" />
         </EntityType>
@@ -1949,11 +2019,12 @@
           <Property Name="RectangleColor" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Name="Price" Type="Int32" Nullable="false" />
           <Property Name="PrizeCoefficient" Type="Int32" Nullable="false" />
+          <Property Name="DiscountAmount" Type="Int32" Nullable="false" />
+          <Property Name="TagStateID" Type="Int32" Nullable="false" />
           <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="UpdatedDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="DiscountAmount" Type="Int32" Nullable="false" />
-          <Property Name="IsNew" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Achievements" Relationship="Falcon.DbModel.FK_Achievement_Category" FromRole="Category" ToRole="Achievement" />
+          <NavigationProperty Name="TagState" Relationship="Falcon.DbModel.FK_Category_TagState" FromRole="Category" ToRole="TagState" />
           <NavigationProperty Name="CreatedQuestions" Relationship="Falcon.DbModel.FK_CreatedQuestions_Category" FromRole="Category" ToRole="CreatedQuestion" />
           <NavigationProperty Name="PurchaseCategories" Relationship="Falcon.DbModel.FK_PurchaseCategory_Category" FromRole="Category" ToRole="PurchaseCategory" />
           <NavigationProperty Name="Questions" Relationship="Falcon.DbModel.FK_Question_Category" FromRole="Category" ToRole="Question" />
@@ -2309,6 +2380,16 @@
           <Property Name="version" Type="Int32" />
           <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
         </EntityType>
+        <EntityType Name="TagState">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="AppThemes" Relationship="Falcon.DbModel.FK_AppTheme_TagState" FromRole="TagState" ToRole="AppTheme" />
+          <NavigationProperty Name="Categories" Relationship="Falcon.DbModel.FK_Category_TagState" FromRole="TagState" ToRole="Category" />
+          <NavigationProperty Name="UserAvatars" Relationship="Falcon.DbModel.FK_UserAvatar_TagState" FromRole="TagState" ToRole="UserAvatar" />
+        </EntityType>
         <EntityType Name="User">
           <Key>
             <PropertyRef Name="ID" />
@@ -2357,9 +2438,10 @@
           <Property Name="Price" Type="Int32" Nullable="false" />
           <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="DiscountAmount" Type="Int32" Nullable="false" />
-          <Property Name="IsNew" Type="Boolean" Nullable="false" />
+          <Property Name="TagStateID" Type="Int32" Nullable="false" />
           <NavigationProperty Name="PurchaseAvatars" Relationship="Falcon.DbModel.FK_PurchaseAvatar_UserAvatar" FromRole="UserAvatar" ToRole="PurchaseAvatar" />
           <NavigationProperty Name="SelectedAvatars" Relationship="Falcon.DbModel.FK_SelectedAvatar_UserAvatar" FromRole="UserAvatar" ToRole="SelectedAvatar" />
+          <NavigationProperty Name="TagState" Relationship="Falcon.DbModel.FK_UserAvatar_TagState" FromRole="UserAvatar" ToRole="TagState" />
         </EntityType>
         <EntityType Name="UserInfo">
           <Key>
@@ -2583,6 +2665,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_AppTheme_TagState">
+          <End Type="Falcon.DbModel.TagState" Role="TagState" Multiplicity="1" />
+          <End Type="Falcon.DbModel.AppTheme" Role="AppTheme" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TagState">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="AppTheme">
+              <PropertyRef Name="TagStateID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_PurchaseTheme_AppTheme">
           <End Type="Falcon.DbModel.AppTheme" Role="AppTheme" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -2608,6 +2702,18 @@
             </Principal>
             <Dependent Role="SelectedTheme">
               <PropertyRef Name="AppThemeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Category_TagState">
+          <End Type="Falcon.DbModel.TagState" Role="TagState" Multiplicity="1" />
+          <End Type="Falcon.DbModel.Category" Role="Category" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TagState">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Category">
+              <PropertyRef Name="TagStateID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -3075,6 +3181,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_UserAvatar_TagState">
+          <End Type="Falcon.DbModel.TagState" Role="TagState" Multiplicity="1" />
+          <End Type="Falcon.DbModel.UserAvatar" Role="UserAvatar" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TagState">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="UserAvatar">
+              <PropertyRef Name="TagStateID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_User_UserType">
           <End Type="Falcon.DbModel.UserType" Role="UserType" Multiplicity="0..1" />
           <End Type="Falcon.DbModel.User" Role="User" Multiplicity="*" />
@@ -3273,10 +3391,10 @@
           <EntitySetMapping Name="AppThemes">
             <EntityTypeMapping TypeName="Falcon.DbModel.AppTheme">
               <MappingFragment StoreEntitySet="AppTheme">
-                <ScalarProperty Name="IsNew" ColumnName="IsNew" />
-                <ScalarProperty Name="DiscountAmount" ColumnName="DiscountAmount" />
                 <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="TagStateID" ColumnName="TagStateID" />
+                <ScalarProperty Name="DiscountAmount" ColumnName="DiscountAmount" />
                 <ScalarProperty Name="DialogImage" ColumnName="DialogImage" />
                 <ScalarProperty Name="BackImage" ColumnName="BackImage" />
                 <ScalarProperty Name="Price" ColumnName="Price" />
@@ -3292,10 +3410,10 @@
           <EntitySetMapping Name="Categories">
             <EntityTypeMapping TypeName="Falcon.DbModel.Category">
               <MappingFragment StoreEntitySet="Category">
-                <ScalarProperty Name="IsNew" ColumnName="IsNew" />
-                <ScalarProperty Name="DiscountAmount" ColumnName="DiscountAmount" />
                 <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="TagStateID" ColumnName="TagStateID" />
+                <ScalarProperty Name="DiscountAmount" ColumnName="DiscountAmount" />
                 <ScalarProperty Name="PrizeCoefficient" ColumnName="PrizeCoefficient" />
                 <ScalarProperty Name="Price" ColumnName="Price" />
                 <ScalarProperty Name="RectangleColor" ColumnName="RectangleColor" />
@@ -3630,6 +3748,14 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="TagStates">
+            <EntityTypeMapping TypeName="Falcon.DbModel.TagState">
+              <MappingFragment StoreEntitySet="TagState">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Users">
             <EntityTypeMapping TypeName="Falcon.DbModel.User">
               <MappingFragment StoreEntitySet="User">
@@ -3651,7 +3777,7 @@
           <EntitySetMapping Name="UserAvatars">
             <EntityTypeMapping TypeName="Falcon.DbModel.UserAvatar">
               <MappingFragment StoreEntitySet="UserAvatar">
-                <ScalarProperty Name="IsNew" ColumnName="IsNew" />
+                <ScalarProperty Name="TagStateID" ColumnName="TagStateID" />
                 <ScalarProperty Name="DiscountAmount" ColumnName="DiscountAmount" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Price" ColumnName="Price" />
