@@ -15,7 +15,7 @@ namespace Falcon.Web.Models.Api
         public int Dislike_Count { get; set; }
         public double Weight { get; set; }
         public bool Banned { get; set; }
-        public int ActionCoin { get; set; }
+        public int? ActionCoin { get; set; }
         public int? ActionId { get; set; }
     }
 }
