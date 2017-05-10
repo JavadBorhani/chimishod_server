@@ -183,10 +183,15 @@ namespace Falcon.Web.Api.Controllers.V1
                 var questionToUpdate = await mDb.Set<Question>().Where(q => q.ID ==  answer.QuestionID).Include( q => q.Category).SingleOrDefaultAsync();
 
                 if (questionToUpdate != null)
-                {
+                {                    
                     if (answer.YesNoState)
                     {
                         ++questionToUpdate.Yes_Count;
+
+                        if(questionToUpdate.ActionID != null)
+                        {
+                            user.TotalStars += questionToUpdate.QuestionAction.Coin;
+                        }
                     }
                     else
                     {
@@ -249,6 +254,7 @@ namespace Falcon.Web.Api.Controllers.V1
                                                    .ToList()
                                                    .Contains(question.ID))
                                                    .OrderByDescending(question => question.Weight)
+                                                   .Include( q => q.QuestionAction)
                                                    .Take(mAppState.Question_DefaultReturnAmount)
                                                    .Join(manuRef, question => question.ID, manu => manu.QuestionID, (question, manu) => new SQuestion
                                                    {
@@ -262,7 +268,9 @@ namespace Falcon.Web.Api.Controllers.V1
                                                        Dislike_Count = question.Dislike_Count,
                                                        Weight = question.Weight,
                                                        Banned = question.Banned,
-                                                       UserName = manu.User.UserName
+                                                       UserName = manu.User.UserName, 
+                                                       ActionCoin = question.QuestionAction.Coin,
+                                                       ActionId = question.ActionID
                                                    })
                                                    .ToArrayAsync();
 
