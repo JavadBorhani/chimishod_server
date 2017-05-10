@@ -80,7 +80,9 @@ namespace Falcon.Web.Api.Controllers.V1
                                                 UserName = manu.User.UserName,
                                                 ActionCoin = question.QuestionAction.Coin,
                                                 ActionId = question.QuestionAction.ActionNumber
-                                            }).ToArrayAsync();
+                                            })
+                                            .OrderByDescending(a => a.Weight)
+                                            .ToArrayAsync();
 
             if (result.Length > 0)
             {

@@ -214,6 +214,7 @@ namespace Falcon.Web.Api.Controllers.V1
                     {
                         ++questionToUpdate.Dislike_Count;
                     }
+
                     await mDb.SaveChangesAsync();
                 }
 
@@ -272,6 +273,7 @@ namespace Falcon.Web.Api.Controllers.V1
                                                        ActionCoin = question.QuestionAction.Coin,
                                                        ActionId = question.QuestionAction.ActionNumber
                                                    })
+                                                   .OrderByDescending(a => a.Weight)
                                                    .ToArrayAsync();
 
                     if (Questions.Length > 0)
