@@ -22,6 +22,7 @@ namespace Falcon.EFCommonContext.DbModel
     
         public int ID { get; set; }
         public string Name { get; set; }
+        public int ActionNumber { get; set; }
         public int Coin { get; set; }
         public int Priority { get; set; }
     

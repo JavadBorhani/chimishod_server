@@ -79,7 +79,7 @@ namespace Falcon.Web.Api.Controllers.V1
                                                 Banned = question.Banned,
                                                 UserName = manu.User.UserName,
                                                 ActionCoin = question.QuestionAction.Coin,
-                                                ActionId = question.ActionID
+                                                ActionId = question.QuestionAction.ActionNumber
                                             }).ToArrayAsync();
 
             if (result.Length > 0)
