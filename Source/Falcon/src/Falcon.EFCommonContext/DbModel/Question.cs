@@ -33,10 +33,11 @@ namespace Falcon.EFCommonContext.DbModel
         public int Like_Count { get; set; }
         public int Dislike_Count { get; set; }
         public double Weight { get; set; }
-        public System.DateTime CreatedDate { get; set; }
-        public System.DateTime UpdateDate { get; set; }
         public bool Banned { get; set; }
         public Nullable<int> QuestionBoostID { get; set; }
+        public Nullable<int> ActionID { get; set; }
+        public System.DateTime CreatedDate { get; set; }
+        public System.DateTime UpdateDate { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Answer> Answers { get; set; }
@@ -47,6 +48,7 @@ namespace Falcon.EFCommonContext.DbModel
         public virtual ICollection<Favorite> Favorites { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Manufacture> Manufactures { get; set; }
+        public virtual QuestionAction QuestionAction { get; set; }
         public virtual QuestionBoost QuestionBoost { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ReportedQuestion> ReportedQuestions { get; set; }

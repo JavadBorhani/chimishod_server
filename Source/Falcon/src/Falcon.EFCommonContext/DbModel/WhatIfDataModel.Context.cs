@@ -57,6 +57,7 @@ namespace Falcon.EFCommonContext.DbModel
         public virtual DbSet<PurchaseCategory> PurchaseCategories { get; set; }
         public virtual DbSet<PurchaseTheme> PurchaseThemes { get; set; }
         public virtual DbSet<Question> Questions { get; set; }
+        public virtual DbSet<QuestionAction> QuestionActions { get; set; }
         public virtual DbSet<QuestionBoost> QuestionBoosts { get; set; }
         public virtual DbSet<ReportedQuestion> ReportedQuestions { get; set; }
         public virtual DbSet<ReportType> ReportTypes { get; set; }

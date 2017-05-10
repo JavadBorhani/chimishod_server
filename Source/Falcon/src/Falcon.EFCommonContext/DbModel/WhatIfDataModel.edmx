@@ -377,10 +377,20 @@
           <Property Name="Like_Count" Type="int" Nullable="false" />
           <Property Name="Dislike_Count" Type="int" Nullable="false" />
           <Property Name="Weight" Type="float" Nullable="false" />
-          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
-          <Property Name="UpdateDate" Type="datetime" Nullable="false" />
           <Property Name="Banned" Type="bit" Nullable="false" />
           <Property Name="QuestionBoostID" Type="int" />
+          <Property Name="ActionID" Type="int" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+          <Property Name="UpdateDate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="QuestionAction">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Coin" Type="int" Nullable="false" />
+          <Property Name="Priority" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="QuestionBoost">
           <Key>
@@ -1071,6 +1081,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Question_QuestionAction">
+          <End Role="QuestionAction" Type="Self.QuestionAction" Multiplicity="0..1" />
+          <End Role="Question" Type="Self.Question" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="QuestionAction">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Question">
+              <PropertyRef Name="ActionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Question_QuestionBoost">
           <End Role="QuestionBoost" Type="Self.QuestionBoost" Multiplicity="0..1" />
           <End Role="Question" Type="Self.Question" Multiplicity="*" />
@@ -1327,6 +1349,7 @@
           <EntitySet Name="PurchaseCategory" EntityType="Self.PurchaseCategory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PurchaseTheme" EntityType="Self.PurchaseTheme" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Question" EntityType="Self.Question" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="QuestionAction" EntityType="Self.QuestionAction" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="QuestionBoost" EntityType="Self.QuestionBoost" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ReportedQuestions" EntityType="Self.ReportedQuestions" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ReportType" EntityType="Self.ReportType" Schema="dbo" store:Type="Tables" />
@@ -1498,6 +1521,10 @@
             <End Role="Category" EntitySet="Category" />
             <End Role="Question" EntitySet="Question" />
           </AssociationSet>
+          <AssociationSet Name="FK_Question_QuestionAction" Association="Self.FK_Question_QuestionAction">
+            <End Role="QuestionAction" EntitySet="QuestionAction" />
+            <End Role="Question" EntitySet="Question" />
+          </AssociationSet>
           <AssociationSet Name="FK_Question_QuestionBoost" Association="Self.FK_Question_QuestionBoost">
             <End Role="QuestionBoost" EntitySet="QuestionBoost" />
             <End Role="Question" EntitySet="Question" />
@@ -1601,6 +1628,7 @@
           <EntitySet Name="PurchaseCategories" EntityType="Falcon.DbModel.PurchaseCategory" />
           <EntitySet Name="PurchaseThemes" EntityType="Falcon.DbModel.PurchaseTheme" />
           <EntitySet Name="Questions" EntityType="Falcon.DbModel.Question" />
+          <EntitySet Name="QuestionActions" EntityType="Falcon.DbModel.QuestionAction" />
           <EntitySet Name="QuestionBoosts" EntityType="Falcon.DbModel.QuestionBoost" />
           <EntitySet Name="ReportedQuestions" EntityType="Falcon.DbModel.ReportedQuestion" />
           <EntitySet Name="ReportTypes" EntityType="Falcon.DbModel.ReportType" />
@@ -1787,6 +1815,10 @@
           <AssociationSet Name="FK_PurchaseTheme_User" Association="Falcon.DbModel.FK_PurchaseTheme_User">
             <End Role="User" EntitySet="Users" />
             <End Role="PurchaseTheme" EntitySet="PurchaseThemes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Question_QuestionAction" Association="Falcon.DbModel.FK_Question_QuestionAction">
+            <End Role="QuestionAction" EntitySet="QuestionActions" />
+            <End Role="Question" EntitySet="Questions" />
           </AssociationSet>
           <AssociationSet Name="FK_Question_QuestionBoost" Association="Falcon.DbModel.FK_Question_QuestionBoost">
             <End Role="QuestionBoost" EntitySet="QuestionBoosts" />
@@ -2270,17 +2302,29 @@
           <Property Name="Like_Count" Type="Int32" Nullable="false" />
           <Property Name="Dislike_Count" Type="Int32" Nullable="false" />
           <Property Name="Weight" Type="Double" Nullable="false" />
-          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="UpdateDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="Banned" Type="Boolean" Nullable="false" />
           <Property Name="QuestionBoostID" Type="Int32" />
+          <Property Name="ActionID" Type="Int32" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UpdateDate" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="Answers" Relationship="Falcon.DbModel.FK_Answer_Question" FromRole="Question" ToRole="Answer" />
           <NavigationProperty Name="Category" Relationship="Falcon.DbModel.FK_Question_Category" FromRole="Question" ToRole="Category" />
           <NavigationProperty Name="Comments" Relationship="Falcon.DbModel.FK_Comment_Question" FromRole="Question" ToRole="Comment" />
           <NavigationProperty Name="Favorites" Relationship="Falcon.DbModel.FK_Favorite_Question" FromRole="Question" ToRole="Favorite" />
           <NavigationProperty Name="Manufactures" Relationship="Falcon.DbModel.FK_Manufacture_Question" FromRole="Question" ToRole="Manufacture" />
+          <NavigationProperty Name="QuestionAction" Relationship="Falcon.DbModel.FK_Question_QuestionAction" FromRole="Question" ToRole="QuestionAction" />
           <NavigationProperty Name="QuestionBoost" Relationship="Falcon.DbModel.FK_Question_QuestionBoost" FromRole="Question" ToRole="QuestionBoost" />
           <NavigationProperty Name="ReportedQuestions" Relationship="Falcon.DbModel.FK_ReportedQuestions_Question" FromRole="Question" ToRole="ReportedQuestion" />
+        </EntityType>
+        <EntityType Name="QuestionAction">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Coin" Type="Int32" Nullable="false" />
+          <Property Name="Priority" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Questions" Relationship="Falcon.DbModel.FK_Question_QuestionAction" FromRole="QuestionAction" ToRole="Question" />
         </EntityType>
         <EntityType Name="QuestionBoost">
           <Key>
@@ -3073,6 +3117,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Question_QuestionAction">
+          <End Type="Falcon.DbModel.QuestionAction" Role="QuestionAction" Multiplicity="0..1" />
+          <End Type="Falcon.DbModel.Question" Role="Question" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="QuestionAction">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Question">
+              <PropertyRef Name="ActionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Question_QuestionBoost">
           <End Type="Falcon.DbModel.QuestionBoost" Role="QuestionBoost" Multiplicity="0..1" />
           <End Type="Falcon.DbModel.Question" Role="Question" Multiplicity="*" />
@@ -3641,10 +3697,11 @@
           <EntitySetMapping Name="Questions">
             <EntityTypeMapping TypeName="Falcon.DbModel.Question">
               <MappingFragment StoreEntitySet="Question">
-                <ScalarProperty Name="QuestionBoostID" ColumnName="QuestionBoostID" />
-                <ScalarProperty Name="Banned" ColumnName="Banned" />
                 <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="ActionID" ColumnName="ActionID" />
+                <ScalarProperty Name="QuestionBoostID" ColumnName="QuestionBoostID" />
+                <ScalarProperty Name="Banned" ColumnName="Banned" />
                 <ScalarProperty Name="Weight" ColumnName="Weight" />
                 <ScalarProperty Name="Dislike_Count" ColumnName="Dislike_Count" />
                 <ScalarProperty Name="Like_Count" ColumnName="Like_Count" />
@@ -3653,6 +3710,16 @@
                 <ScalarProperty Name="Catgory_ID" ColumnName="Catgory_ID" />
                 <ScalarProperty Name="But" ColumnName="But" />
                 <ScalarProperty Name="What_if" ColumnName="What_if" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="QuestionActions">
+            <EntityTypeMapping TypeName="Falcon.DbModel.QuestionAction">
+              <MappingFragment StoreEntitySet="QuestionAction">
+                <ScalarProperty Name="Priority" ColumnName="Priority" />
+                <ScalarProperty Name="Coin" ColumnName="Coin" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
