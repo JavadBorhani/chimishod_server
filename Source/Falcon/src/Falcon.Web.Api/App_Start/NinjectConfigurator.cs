@@ -88,6 +88,7 @@ namespace Falcon.Web.Api
             container.Bind<IAppAdvertsQueryProcessor>().To<AppAdvertsQueryProcessor>().InRequestScope();
             container.Bind<IWatchAdQueryProcessor>().To<WatchAdQueryProcessor>().InRequestScope();
             container.Bind<IAchievementQueryProcessor>().To<AchievementQueryProcessor>().InRequestScope();
+            container.Bind<IDWMQueryProcessor>().To<DWMQueryProcessor>().InRequestScope();
         }
 
         private void AddInquiryProcessors(IKernel container)
@@ -100,6 +101,7 @@ namespace Falcon.Web.Api
             container.Bind<IStoresInquiryProcessor>().To<StoresInquiryProcessor>().InRequestScope();
             container.Bind<IAppAdvertsInquiryProcessor>().To<AppAdvertsInquiryProcessor>().InRequestScope();
             container.Bind<IAchievementInquiryProcessor>().To<AchievementInquiryProcessor>().InRequestScope();
+            container.Bind<IDWMInquiryProcessor>().To<DWMInquiryProcessor>().InRequestScope();
         }
         private void  AddMaintenanceProcessors(IKernel container)
         {
@@ -108,6 +110,7 @@ namespace Falcon.Web.Api
             container.Bind<IStoresMaintenanceProcessor>().To<StoresMaintenanceProcessor>().InRequestScope();
             container.Bind<IWatchAdMaintenanceProcessor>().To<WatchAdMaintenanceProcessor>().InRequestScope();
             container.Bind<IAppAdvertsMaintenanceProcessor>().To<AppAdvertsMaintenanceProcessor>().InRequestScope();
+            container.Bind<IDWMMaintenanceProcessor>().To<DWMMaintenanceProcessor>().InRequestScope();
         }
 
         private void AddAdHoc(IKernel container)
