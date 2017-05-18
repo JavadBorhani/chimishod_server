@@ -29,11 +29,11 @@ namespace Falcon.EFCommonContext.DbModel
         public string SKU { get; set; }
         public int Coin { get; set; }
         public bool IsAccessibleInAllStores { get; set; }
+        public int DiscountAmount { get; set; }
         public string Icon { get; set; }
         public string RectangleColor { get; set; }
         public System.DateTime CreatedDate { get; set; }
         public System.DateTime UpdatedDate { get; set; }
-        public int DiscountAmount { get; set; }
     
         public virtual MarketInfo MarketInfo { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

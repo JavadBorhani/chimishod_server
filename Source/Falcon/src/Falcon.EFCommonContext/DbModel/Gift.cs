@@ -28,11 +28,11 @@ namespace Falcon.EFCommonContext.DbModel
         public int GiftTypeID { get; set; }
         public int Prize { get; set; }
         public Nullable<int> Day { get; set; }
+        public string QueryString { get; set; }
         public Nullable<System.DateTime> StartDate { get; set; }
         public Nullable<System.DateTime> ExpireDate { get; set; }
         public System.DateTime CreatedDate { get; set; }
         public System.DateTime UpdatedDate { get; set; }
-        public string QueryString { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<AchievedGift> AchievedGifts { get; set; }

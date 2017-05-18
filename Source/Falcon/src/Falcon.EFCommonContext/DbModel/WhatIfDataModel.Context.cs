@@ -42,6 +42,8 @@ namespace Falcon.EFCommonContext.DbModel
         public virtual DbSet<Comment> Comments { get; set; }
         public virtual DbSet<CreatedQuestion> CreatedQuestions { get; set; }
         public virtual DbSet<CreatedQuestionsVerifyType> CreatedQuestionsVerifyTypes { get; set; }
+        public virtual DbSet<DailyReward> DailyRewards { get; set; }
+        public virtual DbSet<DailyRewardsAchieved> DailyRewardsAchieveds { get; set; }
         public virtual DbSet<DisplayedNotification> DisplayedNotifications { get; set; }
         public virtual DbSet<Favorite> Favorites { get; set; }
         public virtual DbSet<Gift> Gifts { get; set; }
@@ -64,7 +66,6 @@ namespace Falcon.EFCommonContext.DbModel
         public virtual DbSet<SelectedCategory> SelectedCategories { get; set; }
         public virtual DbSet<SelectedTheme> SelectedThemes { get; set; }
         public virtual DbSet<Store> Stores { get; set; }
-        public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
         public virtual DbSet<TagState> TagStates { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<UserAvatar> UserAvatars { get; set; }
