@@ -26,7 +26,7 @@ namespace Falcon.Common
             //public const int CategoryCoeffecient = 1;
             public const int EditableCount = 2; 
             public const int AvatarID = 1;
-            
+            public const int DWMDefaultCount = 0;
         }
         public static class Notfication
         {

@@ -55,7 +55,11 @@
     <Compile Include="Api\SAppTheme.cs" />
     <Compile Include="Api\SCategory.cs" />
     <Compile Include="Api\SComment.cs" />
+    <Compile Include="Api\SDailyReward.cs" />
+    <Compile Include="Api\SDailyRewardAcheived.cs" />
     <Compile Include="Api\SDisplayedNotification.cs" />
+    <Compile Include="Api\SDuration.cs" />
+    <Compile Include="Api\SEarnRewardValidation.cs" />
     <Compile Include="Api\SGift.cs" />
     <Compile Include="Api\SGoogleAuthentication.cs" />
     <Compile Include="Api\SHardCurrency.cs" />

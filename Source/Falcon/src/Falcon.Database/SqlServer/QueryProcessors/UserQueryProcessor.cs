@@ -55,5 +55,15 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             await mDb.SaveChangesAsync();
             return true;
         }
+
+        public async Task<int> GetDWMCount()
+        {
+            var count = await mDb.Set<User>()
+                .AsNoTracking()
+                .Where(u => u.ID == mUserSession.ID)
+                .Select(u => u.DWMCount)
+                .SingleOrDefaultAsync();
+            return count;
+        }
     }
 }

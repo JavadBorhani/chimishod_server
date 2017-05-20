@@ -10,6 +10,7 @@ namespace Falcon.Data.QueryProcessors
     {
         Task<int> AddCoin(int Coin);
         Task<int> GetTotalCoin();
+        Task<int> GetDWMCount();
         Task<bool> UpdateLastSeenDateTime();
         Task<bool> UpdateLastSeenDateTimeToNow();
     }

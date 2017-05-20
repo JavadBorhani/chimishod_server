@@ -1,6 +1,7 @@
 ﻿using Falcon.Web.Api.InquiryProcessing.Public;
 using Falcon.Web.Api.MaintenanceProcessing.Public;
 using Falcon.Web.Api.Utilities.Base;
+using Falcon.Web.Models.Api;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,6 +9,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
+using System.Web.Http.Description;
 
 namespace Falcon.Web.Api.Controllers.V1
 {
@@ -21,18 +23,21 @@ namespace Falcon.Web.Api.Controllers.V1
             mDWMInquiryProcessor = DWMInquiryProcessor;
         }
 
+        [ResponseType(typeof(SDailyReward))]
         [Route("DWM/")]        
         [HttpPost]
-        public async Task<IHttpActionResult> GetDailyReward()
+        public async Task<List<SDailyReward>> GetDailyReward()
         {
-            return null;    
+            var result = await mDWMInquiryProcessor.GetDailyRewardList();
+            return result;   
         }
 
-        [Route("DWM/Achieve/{DWMDay}")]
+        [Route("DWM/Achieve/{DWMRewardID}")]
         [HttpPost]
-        public async Task<IHttpActionResult> EarnDay(int DWMDay)
+        public async Task<SEarnRewardValidation> EarnDay(int DWMRewardID)
         {
-            return null;
+            var result = await mDWMMaintenanceProcessor.CollectDayReward(DWMRewardID);
+            return Ok(result);
         }
     }
 }

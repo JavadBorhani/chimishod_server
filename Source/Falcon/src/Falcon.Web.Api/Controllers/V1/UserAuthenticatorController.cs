@@ -25,13 +25,13 @@ namespace Falcon.Web.Api.Controllers.V1
         private readonly IDbContext mDb;
         private readonly IDateTime mDateTime;
         private readonly IDbContext mDbContext;
-        private readonly IWebUserSession mUserSession;
+        private readonly IUserSession mUserSession;
         private readonly IGlobalApplicationState mAppState;
 
         public UserAuthenticatorController(IDbContext Context , 
             IDateTime dateTime, 
-            IDbContext Database , 
-            IWebUserSession UserSession , 
+            IDbContext Database ,
+            IUserSession UserSession , 
             IGlobalApplicationState AppState)
         {
             mDateTime = dateTime;
@@ -122,9 +122,22 @@ namespace Falcon.Web.Api.Controllers.V1
                     PicUrl = avatar.PicUrl,
                 };
 
-                var Seen = await mDb.Set<User>().Where(c => c.ID == user.ID).SingleOrDefaultAsync();
-                Seen.PrevLastSeenDateTime = Seen.LastSeenDateTime; 
-                Seen.LastSeenDateTime = mDateTime.Now;
+                var currentUser = await mDb.Set<User>().Where(c => c.ID == user.ID).SingleOrDefaultAsync();
+                currentUser.PrevLastSeenDateTime = currentUser.LastSeenDateTime;
+                currentUser.LastSeenDateTime = mDateTime.Now;
+
+                if ((currentUser.LastSeenDateTime - currentUser.PreviousDaySeen).Hours > 24)
+                {
+                    if((currentUser.LastSeenDateTime.Date - currentUser.PreviousDaySeen.Date).Days <= 1)
+                    {
+                        ++currentUser.DWMCount;
+                    }
+                    else
+                    {
+                        currentUser.DWMCount = 0;
+                    }
+                    currentUser.PreviousDaySeen = mDateTime.Now;
+                }
                 await mDb.SaveChangesAsync();
 
                 return ResponseMessage(Request.CreateResponse(HttpStatusCode.OK, new { UserModel, UserState , UserAvatar , CurrentLevel , NextLevel , CurrentSelectedTheme })); //TODO : Does not support xml change to something generic
@@ -149,6 +162,10 @@ namespace Falcon.Web.Api.Controllers.V1
                 IsAbleToWriteComment = Constants.DefaultUser.IsAbleToWriteComment,
                 LastSeenDateTime = mDateTime.Now,
                 PrevLastSeenDateTime = mDateTime.Now,
+                PreviousDaySeen = mDateTime.Now,
+                DWMCount = Constants.DefaultUser.DWMDefaultCount , 
+                IsTutorial = true,
+                Rank = 0,
             };
 
             var registeredUser = mDb.Set<User>().Add(user);

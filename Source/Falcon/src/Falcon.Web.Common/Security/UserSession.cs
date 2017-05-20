@@ -63,6 +63,14 @@ namespace Falcon.Web.Common.Security
             {
                 return Convert.ToDateTime(((ClaimsPrincipal)HttpContext.Current.User).FindFirst(ClaimTypes.UserData).Value);
             }
+        }        
+
+        public bool IsTutorial
+        {
+            get
+            {
+                return Convert.ToBoolean(((ClaimsPrincipal)HttpContext.Current.User).FindFirst(ClaimTypes.IsPersistent).Value);
+            }
         }
     }
 }

@@ -50,6 +50,7 @@
     <Compile Include="QueryProcessors\ICodeGiftsQueryProcessor.cs" />
     <Compile Include="QueryProcessors\ICommentsQueryProcessor.cs" />
     <Compile Include="QueryProcessors\ICreatedQuestionsQueryProcessor.cs" />
+    <Compile Include="QueryProcessors\IDWMQueryProcessor.cs" />
     <Compile Include="QueryProcessors\IGiftQueryProcessor.cs" />
     <Compile Include="QueryProcessors\IMarketInfoQueryProcessor.cs" />
     <Compile Include="QueryProcessors\INotificationsQueryProcessor.cs" />

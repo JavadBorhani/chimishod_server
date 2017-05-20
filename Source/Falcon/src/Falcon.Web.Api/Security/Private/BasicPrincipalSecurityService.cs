@@ -48,6 +48,8 @@ namespace Falcon.Web.Api.Security.Private
             identity.AddClaim(new Claim(ClaimTypes.DateOfBirth, user.LastSeenDateTime.ToString()));
             identity.AddClaim(new Claim(ClaimTypes.UserData, user.PrevLastSeenDateTime.ToString()));
 
+            identity.AddClaim(new Claim(ClaimTypes.IsPersistent, user.IsTutorial.ToString()));
+
             return new ClaimsPrincipal(identity);
         }
 
