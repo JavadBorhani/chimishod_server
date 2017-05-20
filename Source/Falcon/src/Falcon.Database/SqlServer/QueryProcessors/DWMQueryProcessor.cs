@@ -46,7 +46,7 @@ namespace Falcon.Database.SqlServer.QueryProcessors
         {
             var result = await mDb.Set<DailyRewardsAchieved>()
                 .AsNoTracking()
-                .Where(dra => dra.EarnedDate >= Duration.From.Date && dra.EarnedDate <= Duration.To.Date)
+                .Where(dra => dra.EarnedDate >= Duration.From.Date && dra.EarnedDate <= Duration.To)
                 .Select(dra => dra.DailyRewardsID)
                 .ToListAsync();
 
@@ -65,7 +65,7 @@ namespace Falcon.Database.SqlServer.QueryProcessors
                 .AsNoTracking()
                 .CountAsync(
                     dra => dra.UserID == mUserSession.ID &&
-                    (dra.EarnedDate >= Duration.From.Date && dra.EarnedDate <= Duration.To.Date) &&
+                    (dra.EarnedDate >= Duration.From && dra.EarnedDate <= Duration.To) &&
                     dra.DailyRewardsID == RewardID) > 0;
 
             return collected;

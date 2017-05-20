@@ -37,7 +37,7 @@ namespace Falcon.Web.Api.Controllers.V1
         public async Task<SEarnRewardValidation> EarnDay(int DWMRewardID)
         {
             var result = await mDWMMaintenanceProcessor.CollectDayReward(DWMRewardID);
-            return Ok(result);
+            return result;
         }
     }
 }

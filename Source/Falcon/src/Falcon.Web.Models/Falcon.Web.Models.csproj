@@ -56,7 +56,7 @@
     <Compile Include="Api\SCategory.cs" />
     <Compile Include="Api\SComment.cs" />
     <Compile Include="Api\SDailyReward.cs" />
-    <Compile Include="Api\SDailyRewardAcheived.cs" />
+    <Compile Include="Api\SDailyRewardAchieved.cs" />
     <Compile Include="Api\SDisplayedNotification.cs" />
     <Compile Include="Api\SDuration.cs" />
     <Compile Include="Api\SEarnRewardValidation.cs" />

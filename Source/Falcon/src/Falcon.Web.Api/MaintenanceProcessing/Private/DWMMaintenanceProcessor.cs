@@ -1,16 +1,12 @@
 ﻿using Falcon.Data.QueryProcessors;
 using Falcon.Web.Api.MaintenanceProcessing.Public;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Threading.Tasks;
 using Falcon.Web.Models.Api;
 using Falcon.Common;
 
 namespace Falcon.Web.Api.MaintenanceProcessing.Private
 {
-    
+
     public class DWMMaintenanceProcessor : IDWMMaintenanceProcessor
     {
         private readonly IDWMQueryProcessor mDWMQueryProcessor;
@@ -33,7 +29,7 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
             if (reward != null)
             {
                 var dwmCount = await mUserQueryProcessor.GetDWMCount();
-                var isCollected = await mDWMQueryProcessor.RewardIsCollected(DayRewardID, new SDuration(mDateTime.Now, mDateTime.Now.AddDays(dwmCount * -1)));
+                var isCollected = await mDWMQueryProcessor.RewardIsCollected(DayRewardID, new SDuration(mDateTime.Now.AddDays(dwmCount * -1) , mDateTime.Now));
                 if(isCollected)
                 {
                     response.IsValid = false;        

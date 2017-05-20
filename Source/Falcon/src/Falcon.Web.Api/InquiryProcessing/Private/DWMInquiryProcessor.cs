@@ -19,6 +19,7 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
         {
             mDWMQueryProcessor = DWMQueryProcessor;
             mDateTime = DateTime;
+            mUserQueryProcessor = UserQueryProcessor;
         }
 
         public async Task<List<SDailyReward>> GetDailyRewardList()
