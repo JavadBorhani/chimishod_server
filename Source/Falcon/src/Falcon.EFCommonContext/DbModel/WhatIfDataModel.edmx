@@ -485,6 +485,16 @@
           <Property Name="CreatedDate" Type="datetime" Nullable="false" />
           <Property Name="UpdatedDate" Type="datetime" Nullable="false" />
         </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
         <EntityType Name="TagState">
           <Key>
             <PropertyRef Name="ID" />
@@ -824,6 +834,34 @@
               <PropertyRef Name="ID" />
             </Principal>
             <Dependent Role="CreatedQuestions">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DailyRewardsAchieved_DailyRewards">
+          <End Role="DailyRewards" Type="Self.DailyRewards" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="DailyRewardsAchieved" Type="Self.DailyRewardsAchieved" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DailyRewards">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="DailyRewardsAchieved">
+              <PropertyRef Name="DailyRewardsID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DailyRewardsAchieved_User">
+          <End Role="User" Type="Self.User" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="DailyRewardsAchieved" Type="Self.DailyRewardsAchieved" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="DailyRewardsAchieved">
               <PropertyRef Name="UserID" />
             </Dependent>
           </ReferentialConstraint>
@@ -1372,6 +1410,7 @@
           <EntitySet Name="SelectedCategory" EntityType="Self.SelectedCategory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SelectedTheme" EntityType="Self.SelectedTheme" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Store" EntityType="Self.Store" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TagState" EntityType="Self.TagState" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserAvatar" EntityType="Self.UserAvatar" Schema="dbo" store:Type="Tables" />
@@ -1458,6 +1497,14 @@
           <AssociationSet Name="FK_CreatedQuestions_User" Association="Self.FK_CreatedQuestions_User">
             <End Role="User" EntitySet="User" />
             <End Role="CreatedQuestions" EntitySet="CreatedQuestions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DailyRewardsAchieved_DailyRewards" Association="Self.FK_DailyRewardsAchieved_DailyRewards">
+            <End Role="DailyRewards" EntitySet="DailyRewards" />
+            <End Role="DailyRewardsAchieved" EntitySet="DailyRewardsAchieved" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DailyRewardsAchieved_User" Association="Self.FK_DailyRewardsAchieved_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="DailyRewardsAchieved" EntitySet="DailyRewardsAchieved" />
           </AssociationSet>
           <AssociationSet Name="FK_DisplayedNotification_Gift" Association="Self.FK_DisplayedNotification_Gift">
             <End Role="Gift" EntitySet="Gift" />
@@ -1652,6 +1699,7 @@
           <EntitySet Name="SelectedCategories" EntityType="Falcon.DbModel.SelectedCategory" />
           <EntitySet Name="SelectedThemes" EntityType="Falcon.DbModel.SelectedTheme" />
           <EntitySet Name="Stores" EntityType="Falcon.DbModel.Store" />
+          <EntitySet Name="sysdiagrams" EntityType="Falcon.DbModel.sysdiagram" />
           <EntitySet Name="TagStates" EntityType="Falcon.DbModel.TagState" />
           <EntitySet Name="Users" EntityType="Falcon.DbModel.User" />
           <EntitySet Name="UserAvatars" EntityType="Falcon.DbModel.UserAvatar" />
@@ -1762,6 +1810,14 @@
           <AssociationSet Name="FK_CreatedQuestions_User" Association="Falcon.DbModel.FK_CreatedQuestions_User">
             <End Role="User" EntitySet="Users" />
             <End Role="CreatedQuestion" EntitySet="CreatedQuestions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DailyRewardsAchieved_DailyRewards" Association="Falcon.DbModel.FK_DailyRewardsAchieved_DailyRewards">
+            <End Role="DailyReward" EntitySet="DailyRewards" />
+            <End Role="DailyRewardsAchieved" EntitySet="DailyRewardsAchieveds" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DailyRewardsAchieved_User" Association="Falcon.DbModel.FK_DailyRewardsAchieved_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="DailyRewardsAchieved" EntitySet="DailyRewardsAchieveds" />
           </AssociationSet>
           <AssociationSet Name="FK_DisplayedNotification_Gift" Association="Falcon.DbModel.FK_DisplayedNotification_Gift">
             <End Role="Gift" EntitySet="Gifts" />
@@ -2142,6 +2198,7 @@
           <Property Name="Icon" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
           <Property Name="Day" Type="Int32" Nullable="false" />
           <Property Name="Prize" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="DailyRewardsAchieveds" Relationship="Falcon.DbModel.FK_DailyRewardsAchieved_DailyRewards" FromRole="DailyReward" ToRole="DailyRewardsAchieved" />
         </EntityType>
         <EntityType Name="DailyRewardsAchieved">
           <Key>
@@ -2151,6 +2208,8 @@
           <Property Name="UserID" Type="Int32" Nullable="false" />
           <Property Name="DailyRewardsID" Type="Int32" Nullable="false" />
           <Property Name="EarnedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="DailyReward" Relationship="Falcon.DbModel.FK_DailyRewardsAchieved_DailyRewards" FromRole="DailyRewardsAchieved" ToRole="DailyReward" />
+          <NavigationProperty Name="User" Relationship="Falcon.DbModel.FK_DailyRewardsAchieved_User" FromRole="DailyRewardsAchieved" ToRole="User" />
         </EntityType>
         <EntityType Name="DisplayedNotification">
           <Key>
@@ -2449,6 +2508,16 @@
           <NavigationProperty Name="Orders" Relationship="Falcon.DbModel.FK_Order_Store" FromRole="Store" ToRole="Order" />
           <NavigationProperty Name="PriceHistories" Relationship="Falcon.DbModel.FK_PriceList_Store" FromRole="Store" ToRole="PriceHistory" />
         </EntityType>
+        <EntityType Name="sysdiagram">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
         <EntityType Name="TagState">
           <Key>
             <PropertyRef Name="ID" />
@@ -2484,6 +2553,7 @@
           <NavigationProperty Name="Answers" Relationship="Falcon.DbModel.FK_Answer_User" FromRole="User" ToRole="Answer" />
           <NavigationProperty Name="Comments" Relationship="Falcon.DbModel.FK_Comment_User" FromRole="User" ToRole="Comment" />
           <NavigationProperty Name="CreatedQuestions" Relationship="Falcon.DbModel.FK_CreatedQuestions_User" FromRole="User" ToRole="CreatedQuestion" />
+          <NavigationProperty Name="DailyRewardsAchieveds" Relationship="Falcon.DbModel.FK_DailyRewardsAchieved_User" FromRole="User" ToRole="DailyRewardsAchieved" />
           <NavigationProperty Name="DisplayedNotifications" Relationship="Falcon.DbModel.FK_DisplayedNotification_User" FromRole="User" ToRole="DisplayedNotification" />
           <NavigationProperty Name="Favorites" Relationship="Falcon.DbModel.FK_Favorite_User" FromRole="User" ToRole="Favorite" />
           <NavigationProperty Name="Level" Relationship="Falcon.DbModel.FK_User_Level" FromRole="User" ToRole="Level" />
@@ -2905,6 +2975,34 @@
               <PropertyRef Name="ID" />
             </Principal>
             <Dependent Role="CreatedQuestion">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DailyRewardsAchieved_DailyRewards">
+          <End Type="Falcon.DbModel.DailyReward" Role="DailyReward" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="Falcon.DbModel.DailyRewardsAchieved" Role="DailyRewardsAchieved" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DailyReward">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="DailyRewardsAchieved">
+              <PropertyRef Name="DailyRewardsID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DailyRewardsAchieved_User">
+          <End Type="Falcon.DbModel.User" Role="User" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="Falcon.DbModel.DailyRewardsAchieved" Role="DailyRewardsAchieved" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="DailyRewardsAchieved">
               <PropertyRef Name="UserID" />
             </Dependent>
           </ReferentialConstraint>
@@ -3851,6 +3949,17 @@
                 <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="Falcon.DbModel.sysdiagram">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="definition" ColumnName="definition" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="name" ColumnName="name" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -12,14 +12,12 @@ namespace Falcon.EFCommonContext.DbModel
     using System;
     using System.Collections.Generic;
     
-    public partial class DailyRewardsAchieved
+    public partial class sysdiagram
     {
-        public int ID { get; set; }
-        public int UserID { get; set; }
-        public int DailyRewardsID { get; set; }
-        public System.DateTime EarnedDate { get; set; }
-    
-        public virtual DailyReward DailyReward { get; set; }
-        public virtual User User { get; set; }
+        public string name { get; set; }
+        public int principal_id { get; set; }
+        public int diagram_id { get; set; }
+        public Nullable<int> version { get; set; }
+        public byte[] definition { get; set; }
     }
 }

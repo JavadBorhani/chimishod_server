@@ -14,10 +14,19 @@ namespace Falcon.EFCommonContext.DbModel
     
     public partial class DailyReward
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public DailyReward()
+        {
+            this.DailyRewardsAchieveds = new HashSet<DailyRewardsAchieved>();
+        }
+    
         public int ID { get; set; }
         public string Name { get; set; }
         public string Icon { get; set; }
         public int Day { get; set; }
         public int Prize { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<DailyRewardsAchieved> DailyRewardsAchieveds { get; set; }
     }
 }

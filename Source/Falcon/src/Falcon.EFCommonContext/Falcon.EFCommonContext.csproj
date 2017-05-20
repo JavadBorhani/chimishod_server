@@ -171,6 +171,9 @@
     <Compile Include="DbModel\Store.cs">
       <DependentUpon>WhatIfDataModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="DbModel\sysdiagram.cs">
+      <DependentUpon>WhatIfDataModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="DbModel\TagState.cs">
       <DependentUpon>WhatIfDataModel.tt</DependentUpon>
     </Compile>

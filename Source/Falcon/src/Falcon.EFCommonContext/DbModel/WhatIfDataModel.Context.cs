@@ -66,6 +66,7 @@ namespace Falcon.EFCommonContext.DbModel
         public virtual DbSet<SelectedCategory> SelectedCategories { get; set; }
         public virtual DbSet<SelectedTheme> SelectedThemes { get; set; }
         public virtual DbSet<Store> Stores { get; set; }
+        public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
         public virtual DbSet<TagState> TagStates { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<UserAvatar> UserAvatars { get; set; }
