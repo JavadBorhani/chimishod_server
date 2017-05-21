@@ -32,9 +32,8 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
                 var isCollected = await mDWMQueryProcessor.RewardIsCollected(DayRewardID, new SDuration(mDateTime.Now.AddDays(dwmCount * -1) , mDateTime.Now));
                 if(isCollected)
                 {
-                    response.IsValid = false;        
+                    response.DailyRewardState = DailyRewardState.Collected;
                     response.TotalCoin = await mUserQueryProcessor.GetTotalCoin();
-
                     return response;
                 }
                 else
@@ -49,14 +48,16 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
 
                         var totalCoin = await mUserQueryProcessor.AddCoin(reward.Prize);
 
-                        response.IsValid = true;
+                        response.DailyRewardState= DailyRewardState.Collected;
                         response.TotalCoin = totalCoin;
                         return response;
                     }
+                    else
+                    {
+                        response.DailyRewardState = DailyRewardState.NotCollectible;
+                    }
                 }
             }
-
-            response.IsValid = false;
             response.TotalCoin = await mUserQueryProcessor.GetTotalCoin();
             return response;
         }
