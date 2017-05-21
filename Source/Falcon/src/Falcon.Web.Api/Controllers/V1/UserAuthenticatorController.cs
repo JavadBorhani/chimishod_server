@@ -126,7 +126,7 @@ namespace Falcon.Web.Api.Controllers.V1
                 currentUser.PrevLastSeenDateTime = currentUser.LastSeenDateTime;
                 currentUser.LastSeenDateTime = mDateTime.Now;
 
-                if ((currentUser.LastSeenDateTime - currentUser.PreviousDaySeen).Hours > 24)
+                if ((currentUser.LastSeenDateTime - currentUser.PreviousDaySeen).TotalHours >= 24)
                 {
                     if((currentUser.LastSeenDateTime.Date - currentUser.PreviousDaySeen.Date).Days <= 1)
                     {

@@ -87,9 +87,9 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
             else
             {
                 var totalList = await mDWMQueryProcessor.GetAllRewards();
-
+                var notCollectibles = mMapper.Map<List<SDailyReward>>(totalList);
+                return notCollectibles;
             }
-            return null;
         }
     }
 }

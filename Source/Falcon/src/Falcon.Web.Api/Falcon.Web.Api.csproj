@@ -138,6 +138,7 @@
     <Compile Include="AutoMappingConfiguration\ApplicationStateMap\SApplicationStateToClientAppStateAutoTypeConfiguration.cs" />
     <Compile Include="AutoMappingConfiguration\CategoryMap\CategoryToSCategoryAutoTypeConfiguration.cs" />
     <Compile Include="AutoMappingConfiguration\CommentsMap\CommentToSCommentAutoTypeConfiguration.cs" />
+    <Compile Include="AutoMappingConfiguration\DailyRewardMap\DailyRewardToSDailyInactiveRewardAutoTypeConfiguration.cs" />
     <Compile Include="AutoMappingConfiguration\GiftMap\GiftToSGiftAutoTypeConfiguration.cs" />
     <Compile Include="AutoMappingConfiguration\GiftMap\SGiftToSNotifyAutoTypeConfiguration.cs" />
     <Compile Include="AutoMappingConfiguration\LeaderBoard\UserToSLeaderBoardAutoTypeConfiguration.cs" />
