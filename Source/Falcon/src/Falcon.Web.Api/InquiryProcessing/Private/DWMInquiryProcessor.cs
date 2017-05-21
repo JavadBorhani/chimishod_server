@@ -7,6 +7,7 @@ using System.Web;
 using Falcon.Web.Models.Api;
 using System.Threading.Tasks;
 using Falcon.Common;
+using AutoMapper;
 
 namespace Falcon.Web.Api.InquiryProcessing.Private
 {
@@ -15,30 +16,32 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
         private readonly IDWMQueryProcessor mDWMQueryProcessor;
         private readonly IUserQueryProcessor mUserQueryProcessor;
         private readonly IDateTime mDateTime;
-        public DWMInquiryProcessor(IDWMQueryProcessor DWMQueryProcessor , IDateTime DateTime , IUserQueryProcessor UserQueryProcessor)
+        private readonly IMapper mMapper;
+        public DWMInquiryProcessor(IDWMQueryProcessor DWMQueryProcessor , IDateTime DateTime , IUserQueryProcessor UserQueryProcessor , IMapper Mapper)
         {
             mDWMQueryProcessor = DWMQueryProcessor;
             mDateTime = DateTime;
             mUserQueryProcessor = UserQueryProcessor;
+            mMapper = Mapper;
         }
 
         public async Task<List<SDailyReward>> GetDailyRewardList()
         {
-            
+
             var dwmCount = await mUserQueryProcessor.GetDWMCount();
 
-            if( dwmCount > 0 )
+            if (dwmCount > 0)
             {
                 var ceilDate = mDateTime.Now;
                 var floorDate = ceilDate.AddDays(dwmCount * -1);
 
-                var collectedList = await mDWMQueryProcessor.GetEarnedRewardIds(new SDuration(floorDate , ceilDate));
+                var collectedList = await mDWMQueryProcessor.GetEarnedRewardIds(new SDuration(floorDate, ceilDate));
                 var totalList = await mDWMQueryProcessor.GetAllRewards();
 
                 var list = new List<SDailyReward>();
                 list.Capacity = totalList.Length;
 
-                for(int i = 0; i < totalList.Length; ++i )
+                for (int i = 0; i < totalList.Length; ++i)
                 {
                     if (collectedList.Contains(totalList[i].ID))
                     {
@@ -64,7 +67,7 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
                             Icon = totalList[i].Icon,
                             Prize = totalList[i].Prize,
                             State = DailyRewardState.Collectible
-                        });                    
+                        });
                     }
                     else
                     {
@@ -80,6 +83,11 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
                     }
                 }
                 return list;
+            }
+            else
+            {
+                var totalList = await mDWMQueryProcessor.GetAllRewards();
+
             }
             return null;
         }
