@@ -63,6 +63,9 @@
     <Compile Include="DbModel\AchievedPosession.cs">
       <DependentUpon>WhatIfDataModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="DbModel\AchievedSpinWheel.cs">
+      <DependentUpon>WhatIfDataModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="DbModel\Achievement.cs">
       <DependentUpon>WhatIfDataModel.tt</DependentUpon>
     </Compile>
@@ -84,7 +87,19 @@
     <Compile Include="DbModel\AppTheme.cs">
       <DependentUpon>WhatIfDataModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="DbModel\AssignedCharacter.cs">
+      <DependentUpon>WhatIfDataModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="DbModel\Category.cs">
+      <DependentUpon>WhatIfDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DbModel\Character.cs">
+      <DependentUpon>WhatIfDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DbModel\CharacterAlia.cs">
+      <DependentUpon>WhatIfDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DbModel\CharacterPoint.cs">
       <DependentUpon>WhatIfDataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="DbModel\CodeGift.cs">
@@ -129,6 +144,9 @@
     <Compile Include="DbModel\Order.cs">
       <DependentUpon>WhatIfDataModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="DbModel\PersonalizedCharacter.cs">
+      <DependentUpon>WhatIfDataModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="DbModel\PresentedAdvert.cs">
       <DependentUpon>WhatIfDataModel.tt</DependentUpon>
     </Compile>
@@ -168,6 +186,12 @@
     <Compile Include="DbModel\SelectedTheme.cs">
       <DependentUpon>WhatIfDataModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="DbModel\SpinWheel.cs">
+      <DependentUpon>WhatIfDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DbModel\SpinWheelType.cs">
+      <DependentUpon>WhatIfDataModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="DbModel\Store.cs">
       <DependentUpon>WhatIfDataModel.tt</DependentUpon>
     </Compile>
@@ -177,6 +201,9 @@
     <Compile Include="DbModel\TagState.cs">
       <DependentUpon>WhatIfDataModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="DbModel\UnRepeatableAchievedSpinWheel.cs">
+      <DependentUpon>WhatIfDataModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="DbModel\User.cs">
       <DependentUpon>WhatIfDataModel.tt</DependentUpon>
     </Compile>
@@ -184,6 +211,9 @@
       <DependentUpon>WhatIfDataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="DbModel\UserInfo.cs">
+      <DependentUpon>WhatIfDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DbModel\UserStat.cs">
       <DependentUpon>WhatIfDataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="DbModel\UserType.cs">

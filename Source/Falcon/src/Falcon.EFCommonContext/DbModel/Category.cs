@@ -18,6 +18,7 @@ namespace Falcon.EFCommonContext.DbModel
         public Category()
         {
             this.Achievements = new HashSet<Achievement>();
+            this.AssignedCharacters = new HashSet<AssignedCharacter>();
             this.CreatedQuestions = new HashSet<CreatedQuestion>();
             this.PurchaseCategories = new HashSet<PurchaseCategory>();
             this.Questions = new HashSet<Question>();
@@ -35,11 +36,14 @@ namespace Falcon.EFCommonContext.DbModel
         public int PrizeCoefficient { get; set; }
         public int DiscountAmount { get; set; }
         public int TagStateID { get; set; }
+        public int AssignedCharaterID { get; set; }
         public System.DateTime CreatedDate { get; set; }
         public System.DateTime UpdatedDate { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Achievement> Achievements { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<AssignedCharacter> AssignedCharacters { get; set; }
         public virtual TagState TagState { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CreatedQuestion> CreatedQuestions { get; set; }
