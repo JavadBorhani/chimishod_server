@@ -71,6 +71,7 @@
     <Compile Include="Api\SNotify.cs" />
     <Compile Include="Api\SQuestionBoost.cs" />
     <Compile Include="Api\SReportType.cs" />
+    <Compile Include="Api\SSpinWheel.cs" />
     <Compile Include="Api\SStore.cs" />
     <Compile Include="Api\SUserAvatar.cs" />
     <Compile Include="Api\SUserInfo.cs" />
