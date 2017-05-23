@@ -28,7 +28,8 @@ namespace Falcon.Web.Api.Controllers.V1
         [HttpPost]
         public async Task<IList<SSpinWheel>> GetSpinWheelList()
         {
-            throw new NotImplementedException();
+            var result = await mSpinWheelInquiryProcessor.GetSpinWheelList();
+            return result;  
         }
 
 
