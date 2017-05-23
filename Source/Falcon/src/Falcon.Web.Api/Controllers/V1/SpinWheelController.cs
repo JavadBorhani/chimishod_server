@@ -35,9 +35,10 @@ namespace Falcon.Web.Api.Controllers.V1
 
         [Route("SpinWheel/Achieve/{SpinWheelID}")]
         [HttpPost]
-        public async Task<IList<SSpinWheel>> GetSpinWheelList(int SpinWheelID)
+        public async Task<SAchieveSpinWheelValidation> GetSpinWheelList(int SpinWheelID)
         {
-            throw new NotImplementedException();
+            var result = await mSpinWheelMaintenanceProcessor.AchieveSpinWheel(SpinWheelID);
+            return result;
         }
     }
 }

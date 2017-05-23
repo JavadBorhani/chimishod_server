@@ -25,7 +25,7 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
         public async Task<List<SSpinWheel>> GetSpinWheelList()
         {
             var spinList = new List<SSpinWheel>();
-            var totalList = await mSpinWheelQueryProcessor.IsExists(1);
+            var totalList = await mSpinWheelQueryProcessor.IsExists(10);
 
             return spinList;
         }
