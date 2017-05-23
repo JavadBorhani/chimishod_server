@@ -159,6 +159,7 @@ namespace Falcon.Web.Api.Controllers.V1
             if (ModelState.IsValid)
             {
                 var UUID = await mDb.Set<UserInfo>().AsNoTracking()
+                    .Include(u => u.User)
                     .Where(u => u.User.UserName == UserInfo.UserName && u.Password == UserInfo.Password)
                     .Select(u => u.User.UUID)
                     .SingleOrDefaultAsync();

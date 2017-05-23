@@ -45,6 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Api\ClientAppState.cs" />
+    <Compile Include="Api\SAchieveSpinWheelValidation.cs" />
     <Compile Include="Api\SAppAdvert.cs" />
     <Compile Include="Api\SApplicationState.cs" />
     <Compile Include="Api\SAvatarState.cs" />

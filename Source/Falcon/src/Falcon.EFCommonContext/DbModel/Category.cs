@@ -36,7 +36,6 @@ namespace Falcon.EFCommonContext.DbModel
         public int PrizeCoefficient { get; set; }
         public int DiscountAmount { get; set; }
         public int TagStateID { get; set; }
-        public int AssignedCharaterID { get; set; }
         public System.DateTime CreatedDate { get; set; }
         public System.DateTime UpdatedDate { get; set; }
     

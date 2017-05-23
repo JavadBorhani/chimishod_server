@@ -8,6 +8,6 @@ namespace Falcon.Data.QueryProcessors
 {
     public interface ISpinWheelQueryProcessor
     {
-
+        Task<bool> IsExists(int ID);
     }
 }

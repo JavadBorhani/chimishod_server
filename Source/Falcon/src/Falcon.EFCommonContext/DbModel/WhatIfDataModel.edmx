@@ -182,7 +182,6 @@
           <Property Name="PrizeCoefficient" Type="int" Nullable="false" />
           <Property Name="DiscountAmount" Type="int" Nullable="false" />
           <Property Name="TagStateID" Type="int" Nullable="false" />
-          <Property Name="AssignedCharaterID" Type="int" Nullable="false" />
           <Property Name="CreatedDate" Type="datetime" Nullable="false" />
           <Property Name="UpdatedDate" Type="datetime" Nullable="false" />
         </EntityType>
@@ -2583,7 +2582,6 @@
           <Property Name="PrizeCoefficient" Type="Int32" Nullable="false" />
           <Property Name="DiscountAmount" Type="Int32" Nullable="false" />
           <Property Name="TagStateID" Type="Int32" Nullable="false" />
-          <Property Name="AssignedCharaterID" Type="Int32" Nullable="false" />
           <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="UpdatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="Achievements" Relationship="Falcon.DbModel.FK_Achievement_Category" FromRole="Category" ToRole="Achievement" />
@@ -4380,7 +4378,6 @@
               <MappingFragment StoreEntitySet="Category">
                 <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-                <ScalarProperty Name="AssignedCharaterID" ColumnName="AssignedCharaterID" />
                 <ScalarProperty Name="TagStateID" ColumnName="TagStateID" />
                 <ScalarProperty Name="DiscountAmount" ColumnName="DiscountAmount" />
                 <ScalarProperty Name="PrizeCoefficient" ColumnName="PrizeCoefficient" />
