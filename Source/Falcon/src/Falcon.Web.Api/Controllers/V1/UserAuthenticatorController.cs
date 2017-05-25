@@ -61,6 +61,14 @@ namespace Falcon.Web.Api.Controllers.V1
                     IsAbleToWriteComment = user.IsAbleToWriteComment,
                 };
 
+                var result = await mDb.Set<UserStat>().AsNoTracking().Where(us => us.UserID == user.ID).Select(u => new 
+                {
+                    u.SpinRemainedChance ,
+                    u.SpinWheelCount
+                }).SingleOrDefaultAsync();
+
+                UserModel.RemainedSpinChance = result.SpinRemainedChance;
+                UserModel.TotalSpinCount = result.SpinWheelCount;
                 
                 var CurrentLevel = new Models.Api.SLevel
                 {
@@ -209,6 +217,16 @@ namespace Falcon.Web.Api.Controllers.V1
                 UserAvatarID = Constants.DefaultUser.AvatarID,
             };
 
+            UserStat userStat = new UserStat
+            {
+                UserID = user.ID, 
+                Rank = 0 , 
+                Score = 0,
+                SpinRemainedChance = Constants.DefaultUser.SpinWheelChance,
+                SpinWheelCount = Constants.DefaultUser.SpinWheelCount
+            };
+
+            mDb.Set<UserStat>().Add(userStat);
             mDb.Set<SelectedTheme>().Add(selecetedTheme);
             mDb.Set<SelectedCategory>().Add(selectedCategory);
             mDb.Set<UserInfo>().Add(userInfo);
@@ -225,6 +243,8 @@ namespace Falcon.Web.Api.Controllers.V1
                 Score = user.Score,
                 LevelProgress = user.LevelProgress,
                 IsAbleToWriteComment = user.IsAbleToWriteComment,
+                RemainedSpinChance = userStat.SpinRemainedChance,
+                TotalSpinCount = userStat.SpinWheelCount
             };
             var CurrentSelectedTheme = await mDb.Set<AppTheme>().AsNoTracking()
                                                                 .Where(at => at.ID == Constants.DefaultUser.AppThemeID)
@@ -299,7 +319,7 @@ namespace Falcon.Web.Api.Controllers.V1
                     UserAvatar ,
                     CurrentLevel ,
                     NextLevel,
-                    CurrentSelectedTheme
+                    CurrentSelectedTheme,
                 }));
             }
             else

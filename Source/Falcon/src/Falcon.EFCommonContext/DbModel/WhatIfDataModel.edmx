@@ -154,10 +154,10 @@
           <Property Name="Price" Type="int" Nullable="false" />
           <Property Name="BackImage" Type="nvarchar" MaxLength="50" />
           <Property Name="DialogImage" Type="nvarchar" MaxLength="50" />
-          <Property Name="DiscountAmount" Type="int" Nullable="false" />
-          <Property Name="TagStateID" Type="int" Nullable="false" />
           <Property Name="CreatedDate" Type="datetime" Nullable="false" />
           <Property Name="UpdatedDate" Type="datetime" Nullable="false" />
+          <Property Name="DiscountAmount" Type="int" Nullable="false" />
+          <Property Name="TagStateID" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="AssignedCharacter">
           <Key>
@@ -309,11 +309,11 @@
           <Property Name="GiftTypeID" Type="int" Nullable="false" />
           <Property Name="Prize" Type="int" Nullable="false" />
           <Property Name="Day" Type="int" />
-          <Property Name="QueryString" Type="nvarchar" MaxLength="150" />
           <Property Name="StartDate" Type="datetime" />
           <Property Name="ExpireDate" Type="datetime" />
           <Property Name="CreatedDate" Type="datetime" Nullable="false" />
           <Property Name="UpdatedDate" Type="datetime" Nullable="false" />
+          <Property Name="QueryString" Type="nvarchar" MaxLength="150" />
         </EntityType>
         <EntityType Name="GiftType">
           <Key>
@@ -449,11 +449,11 @@
           <Property Name="Like_Count" Type="int" Nullable="false" />
           <Property Name="Dislike_Count" Type="int" Nullable="false" />
           <Property Name="Weight" Type="float" Nullable="false" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+          <Property Name="UpdateDate" Type="datetime" Nullable="false" />
           <Property Name="Banned" Type="bit" Nullable="false" />
           <Property Name="QuestionBoostID" Type="int" />
           <Property Name="ActionID" Type="int" />
-          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
-          <Property Name="UpdateDate" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="QuestionAction">
           <Key>
@@ -552,11 +552,11 @@
           <Property Name="SKU" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="Coin" Type="int" Nullable="false" />
           <Property Name="IsAccessibleInAllStores" Type="bit" Nullable="false" />
-          <Property Name="DiscountAmount" Type="int" Nullable="false" />
           <Property Name="Icon" Type="nvarchar" MaxLength="150" Nullable="false" />
           <Property Name="RectangleColor" Type="varchar" MaxLength="10" Nullable="false" />
           <Property Name="CreatedDate" Type="datetime" Nullable="false" />
           <Property Name="UpdatedDate" Type="datetime" Nullable="false" />
+          <Property Name="DiscountAmount" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="sysdiagrams">
           <Key>
@@ -591,14 +591,14 @@
           <Property Name="UUID" Type="varchar" MaxLength="36" Nullable="false" />
           <Property Name="UserName" Type="nvarchar" MaxLength="40" Nullable="false" />
           <Property Name="UserTypeID" Type="int" />
-          <Property Name="TotalStars" Type="int" Nullable="false" />
+          <Property Name="TotalCoin" Type="int" Nullable="false" />
           <Property Name="Score" Type="int" Nullable="false" />
-          <Property Name="Rank" Type="int" />
           <Property Name="LevelProgress" Type="int" Nullable="false" />
           <Property Name="CurrentLevelID" Type="int" />
           <Property Name="IsAbleToWriteComment" Type="bit" Nullable="false" />
           <Property Name="LastSeenDateTime" Type="datetime" Nullable="false" />
           <Property Name="PrevLastSeenDateTime" Type="datetime" Nullable="false" />
+          <Property Name="Rank" Type="int" />
           <Property Name="PreviousDaySeen" Type="datetime" Nullable="false" />
           <Property Name="DWMCount" Type="int" Nullable="false" />
           <Property Name="IsTutorial" Type="bit" Nullable="false" />
@@ -2549,10 +2549,10 @@
           <Property Name="Price" Type="Int32" Nullable="false" />
           <Property Name="BackImage" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="DialogImage" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="DiscountAmount" Type="Int32" Nullable="false" />
-          <Property Name="TagStateID" Type="Int32" Nullable="false" />
           <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="UpdatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="DiscountAmount" Type="Int32" Nullable="false" />
+          <Property Name="TagStateID" Type="Int32" Nullable="false" />
           <NavigationProperty Name="TagState" Relationship="Falcon.DbModel.FK_AppTheme_TagState" FromRole="AppTheme" ToRole="TagState" />
           <NavigationProperty Name="PurchaseThemes" Relationship="Falcon.DbModel.FK_PurchaseTheme_AppTheme" FromRole="AppTheme" ToRole="PurchaseTheme" />
           <NavigationProperty Name="SelectedThemes" Relationship="Falcon.DbModel.FK_SelectedTheme_AppTheme" FromRole="AppTheme" ToRole="SelectedTheme" />
@@ -2740,11 +2740,11 @@
           <Property Name="GiftTypeID" Type="Int32" Nullable="false" />
           <Property Name="Prize" Type="Int32" Nullable="false" />
           <Property Name="Day" Type="Int32" />
-          <Property Name="QueryString" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
           <Property Name="StartDate" Type="DateTime" Precision="3" />
           <Property Name="ExpireDate" Type="DateTime" Precision="3" />
           <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="UpdatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="QueryString" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="AchievedGifts" Relationship="Falcon.DbModel.FK_AchievedGifts_Gift" FromRole="Gift" ToRole="AchievedGift" />
           <NavigationProperty Name="DisplayedNotifications" Relationship="Falcon.DbModel.FK_DisplayedNotification_Gift" FromRole="Gift" ToRole="DisplayedNotification" />
           <NavigationProperty Name="GiftType" Relationship="Falcon.DbModel.FK_Gift_GiftType" FromRole="Gift" ToRole="GiftType" />
@@ -2902,11 +2902,11 @@
           <Property Name="Like_Count" Type="Int32" Nullable="false" />
           <Property Name="Dislike_Count" Type="Int32" Nullable="false" />
           <Property Name="Weight" Type="Double" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UpdateDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="Banned" Type="Boolean" Nullable="false" />
           <Property Name="QuestionBoostID" Type="Int32" />
           <Property Name="ActionID" Type="Int32" />
-          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="UpdateDate" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="Answers" Relationship="Falcon.DbModel.FK_Answer_Question" FromRole="Question" ToRole="Answer" />
           <NavigationProperty Name="Category" Relationship="Falcon.DbModel.FK_Question_Category" FromRole="Question" ToRole="Category" />
           <NavigationProperty Name="CharacterPoints" Relationship="Falcon.DbModel.FK_CharacterPoints_Question" FromRole="Question" ToRole="CharacterPoint" />
@@ -3031,11 +3031,11 @@
           <Property Name="SKU" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Coin" Type="Int32" Nullable="false" />
           <Property Name="IsAccessibleInAllStores" Type="Boolean" Nullable="false" />
-          <Property Name="DiscountAmount" Type="Int32" Nullable="false" />
           <Property Name="Icon" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
           <Property Name="RectangleColor" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="UpdatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="DiscountAmount" Type="Int32" Nullable="false" />
           <NavigationProperty Name="MarketInfo" Relationship="Falcon.DbModel.FK_Store_MarketInfo" FromRole="Store" ToRole="MarketInfo" />
           <NavigationProperty Name="Orders" Relationship="Falcon.DbModel.FK_Order_Store" FromRole="Store" ToRole="Order" />
           <NavigationProperty Name="PriceHistories" Relationship="Falcon.DbModel.FK_PriceList_Store" FromRole="Store" ToRole="PriceHistory" />
@@ -3078,14 +3078,14 @@
           <Property Name="UUID" Type="String" Nullable="false" MaxLength="36" FixedLength="false" Unicode="false" />
           <Property Name="UserName" Type="String" Nullable="false" MaxLength="40" FixedLength="false" Unicode="true" />
           <Property Name="UserTypeID" Type="Int32" />
-          <Property Name="TotalStars" Type="Int32" Nullable="false" />
+          <Property Name="TotalCoin" Type="Int32" Nullable="false" />
           <Property Name="Score" Type="Int32" Nullable="false" />
-          <Property Name="Rank" Type="Int32" />
           <Property Name="LevelProgress" Type="Int32" Nullable="false" />
           <Property Name="CurrentLevelID" Type="Int32" />
           <Property Name="IsAbleToWriteComment" Type="Boolean" Nullable="false" />
           <Property Name="LastSeenDateTime" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="PrevLastSeenDateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Rank" Type="Int32" />
           <Property Name="PreviousDaySeen" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="DWMCount" Type="Int32" Nullable="false" />
           <Property Name="IsTutorial" Type="Boolean" Nullable="false" />
@@ -4348,10 +4348,10 @@
           <EntitySetMapping Name="AppThemes">
             <EntityTypeMapping TypeName="Falcon.DbModel.AppTheme">
               <MappingFragment StoreEntitySet="AppTheme">
-                <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
-                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
                 <ScalarProperty Name="TagStateID" ColumnName="TagStateID" />
                 <ScalarProperty Name="DiscountAmount" ColumnName="DiscountAmount" />
+                <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
                 <ScalarProperty Name="DialogImage" ColumnName="DialogImage" />
                 <ScalarProperty Name="BackImage" ColumnName="BackImage" />
                 <ScalarProperty Name="Price" ColumnName="Price" />
@@ -4519,11 +4519,11 @@
           <EntitySetMapping Name="Gifts">
             <EntityTypeMapping TypeName="Falcon.DbModel.Gift">
               <MappingFragment StoreEntitySet="Gift">
+                <ScalarProperty Name="QueryString" ColumnName="QueryString" />
                 <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
                 <ScalarProperty Name="ExpireDate" ColumnName="ExpireDate" />
                 <ScalarProperty Name="StartDate" ColumnName="StartDate" />
-                <ScalarProperty Name="QueryString" ColumnName="QueryString" />
                 <ScalarProperty Name="Day" ColumnName="Day" />
                 <ScalarProperty Name="Prize" ColumnName="Prize" />
                 <ScalarProperty Name="GiftTypeID" ColumnName="GiftTypeID" />
@@ -4669,11 +4669,11 @@
           <EntitySetMapping Name="Questions">
             <EntityTypeMapping TypeName="Falcon.DbModel.Question">
               <MappingFragment StoreEntitySet="Question">
-                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
-                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
                 <ScalarProperty Name="ActionID" ColumnName="ActionID" />
                 <ScalarProperty Name="QuestionBoostID" ColumnName="QuestionBoostID" />
                 <ScalarProperty Name="Banned" ColumnName="Banned" />
+                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
                 <ScalarProperty Name="Weight" ColumnName="Weight" />
                 <ScalarProperty Name="Dislike_Count" ColumnName="Dislike_Count" />
                 <ScalarProperty Name="Like_Count" ColumnName="Like_Count" />
@@ -4783,11 +4783,11 @@
           <EntitySetMapping Name="Stores">
             <EntityTypeMapping TypeName="Falcon.DbModel.Store">
               <MappingFragment StoreEntitySet="Store">
+                <ScalarProperty Name="DiscountAmount" ColumnName="DiscountAmount" />
                 <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
                 <ScalarProperty Name="RectangleColor" ColumnName="RectangleColor" />
                 <ScalarProperty Name="Icon" ColumnName="Icon" />
-                <ScalarProperty Name="DiscountAmount" ColumnName="DiscountAmount" />
                 <ScalarProperty Name="IsAccessibleInAllStores" ColumnName="IsAccessibleInAllStores" />
                 <ScalarProperty Name="Coin" ColumnName="Coin" />
                 <ScalarProperty Name="SKU" ColumnName="SKU" />
@@ -4833,14 +4833,14 @@
                 <ScalarProperty Name="IsTutorial" ColumnName="IsTutorial" />
                 <ScalarProperty Name="DWMCount" ColumnName="DWMCount" />
                 <ScalarProperty Name="PreviousDaySeen" ColumnName="PreviousDaySeen" />
+                <ScalarProperty Name="Rank" ColumnName="Rank" />
                 <ScalarProperty Name="PrevLastSeenDateTime" ColumnName="PrevLastSeenDateTime" />
                 <ScalarProperty Name="LastSeenDateTime" ColumnName="LastSeenDateTime" />
                 <ScalarProperty Name="IsAbleToWriteComment" ColumnName="IsAbleToWriteComment" />
                 <ScalarProperty Name="CurrentLevelID" ColumnName="CurrentLevelID" />
                 <ScalarProperty Name="LevelProgress" ColumnName="LevelProgress" />
-                <ScalarProperty Name="Rank" ColumnName="Rank" />
                 <ScalarProperty Name="Score" ColumnName="Score" />
-                <ScalarProperty Name="TotalStars" ColumnName="TotalStars" />
+                <ScalarProperty Name="TotalCoin" ColumnName="TotalCoin" />
                 <ScalarProperty Name="UserTypeID" ColumnName="UserTypeID" />
                 <ScalarProperty Name="UserName" ColumnName="UserName" />
                 <ScalarProperty Name="UUID" ColumnName="UUID" />

@@ -27,6 +27,8 @@ namespace Falcon.Common
             public const int EditableCount = 2; 
             public const int AvatarID = 1;
             public const int DWMDefaultCount = 0;
+            public const int SpinWheelChance = 3;
+            public const int SpinWheelCount  = 0;
         }
         public static class Notfication
         {
