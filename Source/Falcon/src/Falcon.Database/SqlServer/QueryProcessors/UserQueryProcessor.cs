@@ -28,15 +28,15 @@ namespace Falcon.Database.SqlServer.QueryProcessors
                 return -1; 
             //TODO : Checkout Threading 
             var user = await mDb.Set<User>().Where(u => u.ID == mUserSession.ID).SingleOrDefaultAsync();
-            user.TotalStars += Coin;
+            user.TotalCoin += Coin;
 
             await mDb.SaveChangesAsync();
-            return user.TotalStars;
+            return user.TotalCoin;
         }
 
         public async Task<int> GetTotalCoin()
         {
-            return await mDb.Set<User>().AsNoTracking().Where(u => u.ID == mUserSession.ID).Select(u => u.TotalStars).SingleOrDefaultAsync();
+            return await mDb.Set<User>().AsNoTracking().Where(u => u.ID == mUserSession.ID).Select(u => u.TotalCoin).SingleOrDefaultAsync();
         }
 
         public async Task<bool> UpdateLastSeenDateTime()

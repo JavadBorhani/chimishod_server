@@ -79,9 +79,9 @@ namespace Falcon.Web.Api.App_Start
                     int newQuestionPrice = mAppState.State().Question_CreateQuestionPrice;
                     int newQuestionPrize = mAppState.State().Prize_CreateNewQuestionPrize;
 
-                    if (HasEnoughMoney(user.TotalStars, newQuestionPrice, boostPrice)) //TODO Change Create Question Price to get from appState
+                    if (HasEnoughMoney(user.TotalCoin, newQuestionPrice, boostPrice)) //TODO Change Create Question Price to get from appState
                     {
-                        user.TotalStars -= (newQuestionPrice + boostPrice);
+                        user.TotalCoin -= (newQuestionPrice + boostPrice);
 
                         var newQuestion = new CreatedQuestion
                         {
@@ -101,7 +101,7 @@ namespace Falcon.Web.Api.App_Start
                         LevelUpChecking(ref user, user.Level.ScoreCeil, newQuestionPrize, nextLevelId);
 
 
-                        return Response(HttpStatusCode.Created, user.TotalStars);
+                        return Response(HttpStatusCode.Created, user.TotalCoin);
                     }
                     else
                     {

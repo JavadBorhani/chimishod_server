@@ -166,9 +166,9 @@ namespace Falcon.Web.Api.Controllers.V1
                     }
                     else
                     {
-                        if (user.TotalStars - mAppState.Favorite_FavoritePrice >= 0)
+                        if (user.TotalCoin - mAppState.Favorite_FavoritePrice >= 0)
                         {
-                            user.TotalStars -= mAppState.Favorite_FavoritePrice;
+                            user.TotalCoin -= mAppState.Favorite_FavoritePrice;
 
                             var newFavorite = new Favorite
                             {
@@ -191,7 +191,7 @@ namespace Falcon.Web.Api.Controllers.V1
 
                         if(questionToUpdate.ActionID != null)
                         {
-                            user.TotalStars += questionToUpdate.QuestionAction.Coin;
+                            user.TotalCoin += questionToUpdate.QuestionAction.Coin;
                         }
                     }
                     else

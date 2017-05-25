@@ -102,9 +102,9 @@ namespace Falcon.Web.Api.Controllers.V1
                     }
                     else
                     {
-                        if (user.TotalStars - category.Price >= 0)
+                        if (user.TotalCoin - category.Price >= 0)
                         {
-                            user.TotalStars -= category.Price;
+                            user.TotalCoin -= category.Price;
 
                             PurchaseCategory newCategory = new PurchaseCategory
                             {
@@ -128,7 +128,7 @@ namespace Falcon.Web.Api.Controllers.V1
 
                 var clientResult = new Models.Api.SUserState
                 {
-                    UserStar = user.TotalStars,
+                    UserStar = user.TotalCoin,
                     SelectedThemeID = null,
                     SelectedCategoryID = selectedCategory.CategoryID,
                     SelectedCategoryName = selectedCategory.Category.Name,
@@ -178,7 +178,7 @@ namespace Falcon.Web.Api.Controllers.V1
 
                     var userState = new SUserState
                     {
-                        UserStar = user.TotalStars,
+                        UserStar = user.TotalCoin,
                         SelectedThemeID = null,
                         SelectedCategoryName = userSelectedCategory.Category.Name,
                         SelectedCategoryID = userSelectedCategory.CategoryID

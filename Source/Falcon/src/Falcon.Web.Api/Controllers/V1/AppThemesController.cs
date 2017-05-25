@@ -108,7 +108,7 @@ namespace Falcon.Web.Api.Controllers.V1
 
                     var userState = new Models.Api.SUserState
                     {
-                        UserStar = user.TotalStars,
+                        UserStar = user.TotalCoin,
                         SelectedThemeID = userSelectedTheme.AppThemeID,
                         SelectedCategoryName = null,
                         SelectedCategoryID = null
@@ -148,9 +148,9 @@ namespace Falcon.Web.Api.Controllers.V1
                     }
                     else
                     {
-                        if(user.TotalStars - theme.Price >= 0 )
+                        if(user.TotalCoin - theme.Price >= 0 )
                         {
-                            user.TotalStars -= theme.Price;
+                            user.TotalCoin -= theme.Price;
 
                             PurchaseTheme newTheme = new PurchaseTheme
                             {
@@ -174,7 +174,7 @@ namespace Falcon.Web.Api.Controllers.V1
 
                 var clientResult = new Models.Api.SUserState
                 {
-                    UserStar = user.TotalStars,
+                    UserStar = user.TotalCoin,
                     SelectedThemeID = selectedTheme.AppThemeID,
                     SelectedCategoryID = null,
                     SelectedCategoryName = null,

@@ -55,7 +55,7 @@ namespace Falcon.Web.Api.Controllers.V1
                     ID = user.ID,
                     UserName = user.UserName,
                     UserTypeID = user.UserTypeID,
-                    TotalStars = user.TotalStars,
+                    TotalCoin = user.TotalCoin,
                     Score = user.Score,
                     LevelProgress = user.LevelProgress,                    
                     IsAbleToWriteComment = user.IsAbleToWriteComment,
@@ -111,7 +111,7 @@ namespace Falcon.Web.Api.Controllers.V1
 
                 var UserState = new SUserState
                 {
-                    UserStar = user.TotalStars,
+                    UserStar = user.TotalCoin,
                     SelectedCategoryID = selectedCat.ID,
                     SelectedCategoryName = selectedCat.Name,
                     SelectedCategoryCoEfficient = selectedCat.PrizeCoefficient,
@@ -164,7 +164,7 @@ namespace Falcon.Web.Api.Controllers.V1
                 UUID = UUID,
                 UserName = mAppState.State().User_DefaultUserName,
                 UserTypeID = Constants.DefaultUser.UserTypeID,
-                TotalStars = mAppState.State().User_DefaultUserCoin,
+                TotalCoin = mAppState.State().User_DefaultUserCoin,
                 Score = Constants.DefaultUser.Score,
                 LevelProgress = Constants.DefaultUser.LevelProgress,
                 CurrentLevelID = Constants.DefaultUser.CurrentLevelD,
@@ -239,7 +239,7 @@ namespace Falcon.Web.Api.Controllers.V1
                 ID = user.ID,
                 UserName = user.UserName,
                 UserTypeID = user.UserTypeID,
-                TotalStars = user.TotalStars,
+                TotalCoin = user.TotalCoin,
                 Score = user.Score,
                 LevelProgress = user.LevelProgress,
                 IsAbleToWriteComment = user.IsAbleToWriteComment,
@@ -306,7 +306,7 @@ namespace Falcon.Web.Api.Controllers.V1
             {
                 var UserState = new SUserState
                 {
-                    UserStar = UserModel.TotalStars,
+                    UserStar = UserModel.TotalCoin,
                     SelectedCategoryID = Constants.DefaultUser.CategoryID,
                     SelectedThemeID = Constants.DefaultUser.AppThemeID,
                     SelectedCategoryName = catInfo.Name,

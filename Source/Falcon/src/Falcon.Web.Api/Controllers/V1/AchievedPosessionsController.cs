@@ -238,13 +238,13 @@ namespace Falcon.Web.Api.Controllers.V1
                    
                     achievable.AchieveStateID = Constants.DefaultValues.AchievementDefaultAchievedID;
                     achievable.AchievedDate = mDateTime.Now;
-                    user.TotalStars += achievable.Achievement.Star;
+                    user.TotalCoin += achievable.Achievement.Star;
 
                     int nextLevelId = await GetNextLevelID(user.Level.LevelNumber);
                     LevelUpChecking( ref user , user.Level.ScoreCeil, prize , nextLevelId);
 
                     await mDb.SaveChangesAsync();
-                    return Response(HttpStatusCode.OK, user.TotalStars);
+                    return Response(HttpStatusCode.OK, user.TotalCoin);
                 }
                 return Response(HttpStatusCode.Unauthorized);
             }

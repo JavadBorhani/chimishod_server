@@ -72,7 +72,7 @@ namespace Falcon.Web.Api.Controllers.V1
         {
             var user = await mDb.Set<User>().AsNoTracking()
                                         .Where(u => u.UUID == mUserSession.UUID)
-                                        .Select(u => new { u.ID, u.TotalStars })
+                                        .Select(u => new { u.ID, u.TotalCoin })
                                         .SingleOrDefaultAsync();
 
             if (user != null)
@@ -105,7 +105,7 @@ namespace Falcon.Web.Api.Controllers.V1
 
                     var avatarState = new SAvatarState
                     {
-                        TotalStar = user.TotalStars,
+                        TotalStar = user.TotalCoin,
                         ID = userSelectedAvatar.ID,
                         PicUrl = userSelectedAvatar.UserAvatar.PicUrl,
                     };
@@ -144,9 +144,9 @@ namespace Falcon.Web.Api.Controllers.V1
                     }
                     else
                     {
-                        if (user.TotalStars - avatar.Price >= 0)
+                        if (user.TotalCoin - avatar.Price >= 0)
                         {
-                            user.TotalStars -= avatar.Price;
+                            user.TotalCoin -= avatar.Price;
 
                             PurchaseAvatar newAvatar = new PurchaseAvatar
                             {
@@ -167,7 +167,7 @@ namespace Falcon.Web.Api.Controllers.V1
 
                 var clientResult = new SAvatarState
                 {
-                    TotalStar = user.TotalStars,
+                    TotalStar = user.TotalCoin,
                     ID = avatar.ID,
                     PicUrl = avatar.PicUrl,
                     Purchased = bought,
