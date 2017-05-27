@@ -29,12 +29,14 @@ namespace Falcon.Database.SqlServer.QueryProcessors
 
         public Task<List<SpinWheel>> GetAllSpinWheelsWithoutAchieved()
         {
-            var unRepeatableAchieved = mDb.Set<UnRepeatableAchievedSpinWheel>();
-            var notAchieved = mDb.Set<SpinWheel>().AsNoTracking()
-                .Where(
-                sw => !unRepeatableAchieved
+            mDb.Database.Log = Console.Write;
+            var unRepeatableAchieved = mDb.Set<AchievedSpinWheel>().AsNoTracking();
+
+            var notAchieved = mDb.Set<SpinWheel>()
                 .AsNoTracking()
-                .Where(ra => ra.SpinWheelID == sw.ID).Any()).ToListAsync();
+                .Where(sw => !unRepeatableAchieved
+                        .Where(ra => ra.SpinWheelID == sw.ID && ra.UserID == mUserSession.ID).Any())
+                .ToListAsync();
 
             return notAchieved;
         }

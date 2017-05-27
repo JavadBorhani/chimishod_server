@@ -18,6 +18,7 @@ namespace Falcon.EFCommonContext.DbModel
         public SpinWheel()
         {
             this.AchievedSpinWheels = new HashSet<AchievedSpinWheel>();
+            this.SpinWheel1 = new HashSet<SpinWheel>();
             this.UnRepeatableAchievedSpinWheels = new HashSet<UnRepeatableAchievedSpinWheel>();
         }
     
@@ -26,7 +27,7 @@ namespace Falcon.EFCommonContext.DbModel
         public string Icon { get; set; }
         public int SpinWheelTypeID { get; set; }
         public int Prize { get; set; }
-        public int SpinWheelAlternativeID { get; set; }
+        public Nullable<int> SpinWheelAlternativeID { get; set; }
         public int FirstChance { get; set; }
         public int SecondChance { get; set; }
         public int Priority { get; set; }
@@ -35,6 +36,9 @@ namespace Falcon.EFCommonContext.DbModel
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<AchievedSpinWheel> AchievedSpinWheels { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<SpinWheel> SpinWheel1 { get; set; }
+        public virtual SpinWheel SpinWheel2 { get; set; }
         public virtual SpinWheelType SpinWheelType { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<UnRepeatableAchievedSpinWheel> UnRepeatableAchievedSpinWheels { get; set; }

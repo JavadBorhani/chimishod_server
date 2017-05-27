@@ -140,6 +140,7 @@
           <Property Name="Host_SmtpServer" Type="varchar" MaxLength="20" Nullable="false" />
           <Property Name="Store_DefaultReturnAmount" Type="int" Nullable="false" />
           <Property Name="WatchAdCoin" Type="int" Nullable="false" />
+          <Property Name="SpinWheelFortuneThreshold" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="AppTheme">
           <Key>
@@ -529,7 +530,7 @@
           <Property Name="Icon" Type="varchar" MaxLength="150" Nullable="false" />
           <Property Name="SpinWheelTypeID" Type="int" Nullable="false" />
           <Property Name="Prize" Type="int" Nullable="false" />
-          <Property Name="SpinWheelAlternativeID" Type="int" Nullable="false" />
+          <Property Name="SpinWheelAlternativeID" Type="int" />
           <Property Name="FirstChance" Type="int" Nullable="false" />
           <Property Name="SecondChance" Type="int" Nullable="false" />
           <Property Name="Priority" Type="int" Nullable="false" />
@@ -1525,6 +1526,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_SpinWheel_SpinWheel">
+          <End Role="SpinWheel" Type="Self.SpinWheel" Multiplicity="0..1" />
+          <End Role="SpinWheel1" Type="Self.SpinWheel" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SpinWheel">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="SpinWheel1">
+              <PropertyRef Name="SpinWheelAlternativeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_SpinWheel_SpinWheelType">
           <End Role="SpinWheelType" Type="Self.SpinWheelType" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -1981,6 +1994,10 @@
             <End Role="User" EntitySet="User" />
             <End Role="SelectedTheme" EntitySet="SelectedTheme" />
           </AssociationSet>
+          <AssociationSet Name="FK_SpinWheel_SpinWheel" Association="Self.FK_SpinWheel_SpinWheel">
+            <End Role="SpinWheel" EntitySet="SpinWheel" />
+            <End Role="SpinWheel1" EntitySet="SpinWheel" />
+          </AssociationSet>
           <AssociationSet Name="FK_SpinWheel_SpinWheelType" Association="Self.FK_SpinWheel_SpinWheelType">
             <End Role="SpinWheelType" EntitySet="SpinWheelType" />
             <End Role="SpinWheel" EntitySet="SpinWheel" />
@@ -2348,6 +2365,10 @@
             <End Role="User" EntitySet="Users" />
             <End Role="SelectedTheme" EntitySet="SelectedThemes" />
           </AssociationSet>
+          <AssociationSet Name="FK_SpinWheel_SpinWheel" Association="Falcon.DbModel.FK_SpinWheel_SpinWheel">
+            <End Role="SpinWheel" EntitySet="SpinWheels" />
+            <End Role="SpinWheel1" EntitySet="SpinWheels" />
+          </AssociationSet>
           <AssociationSet Name="FK_SpinWheel_SpinWheelType" Association="Falcon.DbModel.FK_SpinWheel_SpinWheelType">
             <End Role="SpinWheelType" EntitySet="SpinWheelTypes" />
             <End Role="SpinWheel" EntitySet="SpinWheels" />
@@ -2538,6 +2559,7 @@
           <Property Name="Host_SmtpServer" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="Store_DefaultReturnAmount" Type="Int32" Nullable="false" />
           <Property Name="WatchAdCoin" Type="Int32" Nullable="false" />
+          <Property Name="SpinWheelFortuneThreshold" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="AppTheme">
           <Key>
@@ -3007,13 +3029,15 @@
           <Property Name="Icon" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
           <Property Name="SpinWheelTypeID" Type="Int32" Nullable="false" />
           <Property Name="Prize" Type="Int32" Nullable="false" />
-          <Property Name="SpinWheelAlternativeID" Type="Int32" Nullable="false" />
+          <Property Name="SpinWheelAlternativeID" Type="Int32" />
           <Property Name="FirstChance" Type="Int32" Nullable="false" />
           <Property Name="SecondChance" Type="Int32" Nullable="false" />
           <Property Name="Priority" Type="Int32" Nullable="false" />
           <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="UpdatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="AchievedSpinWheels" Relationship="Falcon.DbModel.FK_AchievedSpinWheel_SpinWheel" FromRole="SpinWheel" ToRole="AchievedSpinWheel" />
+          <NavigationProperty Name="SpinWheel1" Relationship="Falcon.DbModel.FK_SpinWheel_SpinWheel" FromRole="SpinWheel" ToRole="SpinWheel1" />
+          <NavigationProperty Name="SpinWheel2" Relationship="Falcon.DbModel.FK_SpinWheel_SpinWheel" FromRole="SpinWheel1" ToRole="SpinWheel" />
           <NavigationProperty Name="SpinWheelType" Relationship="Falcon.DbModel.FK_SpinWheel_SpinWheelType" FromRole="SpinWheel" ToRole="SpinWheelType" />
           <NavigationProperty Name="UnRepeatableAchievedSpinWheels" Relationship="Falcon.DbModel.FK_UnRepeatableAchievedSpinWheel_SpinWheel" FromRole="SpinWheel" ToRole="UnRepeatableAchievedSpinWheel" />
         </EntityType>
@@ -4079,6 +4103,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_SpinWheel_SpinWheel">
+          <End Type="Falcon.DbModel.SpinWheel" Role="SpinWheel" Multiplicity="0..1" />
+          <End Type="Falcon.DbModel.SpinWheel" Role="SpinWheel1" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SpinWheel">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="SpinWheel1">
+              <PropertyRef Name="SpinWheelAlternativeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_SpinWheel_SpinWheelType">
           <End Type="Falcon.DbModel.SpinWheelType" Role="SpinWheelType" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -4321,6 +4357,7 @@
           <EntitySetMapping Name="ApplicationStates">
             <EntityTypeMapping TypeName="Falcon.DbModel.ApplicationState">
               <MappingFragment StoreEntitySet="ApplicationState">
+                <ScalarProperty Name="SpinWheelFortuneThreshold" ColumnName="SpinWheelFortuneThreshold" />
                 <ScalarProperty Name="WatchAdCoin" ColumnName="WatchAdCoin" />
                 <ScalarProperty Name="Store_DefaultReturnAmount" ColumnName="Store_DefaultReturnAmount" />
                 <ScalarProperty Name="Host_SmtpServer" ColumnName="Host_SmtpServer" />
