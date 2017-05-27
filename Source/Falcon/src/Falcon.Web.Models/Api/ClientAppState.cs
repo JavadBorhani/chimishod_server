@@ -15,5 +15,6 @@ namespace Falcon.Web.Models.Api
         public int LikePrize { get; set; }
         public int CreateNewQuestionPrize { get; set; }
         public int WatchAdCoin { get; set; }
+        public int SpinWheelFortuneThreshold { get; set; }
     }
 }

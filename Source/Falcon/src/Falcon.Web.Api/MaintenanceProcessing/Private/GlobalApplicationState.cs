@@ -84,7 +84,8 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
                 model.Store_DefaultReturnAmount >= 0 &&
                 model.User_DefaultUserCoin >= 0 &&
                 model.WatchAdCoin >= 0 && 
-                !string.IsNullOrEmpty(model.User_DefaultUserName));
+                !string.IsNullOrEmpty(model.User_DefaultUserName)
+                );
 
         }
     }

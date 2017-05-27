@@ -50,6 +50,9 @@ namespace Falcon.Web.Api.AutoMappingConfiguration.ApplicationStateMap
                 //Watch Ad 
                 .ForMember(s => s.WatchAdCoin, ca => ca.MapFrom(y => y.WatchAdCoin))
 
+                //SpinWheel
+                .ForMember(s => s.SpinWheelFortuneThreshold , ca => ca.MapFrom(y => y.SpinWheelFortuneThreshold))
+
                 //Host
                 .ForMember(s => s.Host_WebSiteNoReplyMail, ca => ca.MapFrom(y => y.Host_WebSiteNoReplyMail))
                 .ForMember(s => s.Host_WebSiteNoReplyMailPassword, ca => ca.MapFrom(y => y.Host_WebSiteNoReplyMailPassword))
