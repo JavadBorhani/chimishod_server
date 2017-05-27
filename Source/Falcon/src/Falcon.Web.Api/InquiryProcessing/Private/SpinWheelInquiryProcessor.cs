@@ -31,29 +31,33 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
             var spinList = new List<SpinWheel>();
 
             var totalList = await mSpinWheelQueryProcessor.GetAllSpinWheelsWithoutAchieved();
-
-            spinList.AddRange(totalList.Take(Constants.SpinWheel.NumberOfSlots).ToList());
-
-            var tempItems = spinList.Where(s => s.SpinWheelAlternativeID != null).ToList();
-
-            for(int i = 0; i < tempItems.Count; ++i)
+            if(totalList.Count > 0 )
             {
-                var newitem = totalList.Where(t => t.ID == tempItems[i].ID).SingleOrDefault();
-                spinList.Add(newitem);
+                spinList.AddRange(totalList.Take(Constants.SpinWheel.NumberOfSlots).ToList());
 
-                if(newitem.SpinWheelAlternativeID != null)
+                var tempItems = spinList.Where(s => s.SpinWheelAlternativeID != null).ToList();
+
+                for (int i = 0; i < tempItems.Count; ++i)
                 {
-                    spinList.Add(totalList.Where(t => t.ID == newitem.SpinWheelAlternativeID).SingleOrDefault());
-                }
-            }
-            if(spinList.Count < Constants.SpinWheel.NumberOfSlots)
-            {
-                var blankItem = totalList.Where(t => t.SpinWheelType.Title == Enum.GetName(typeof(SSpinWheelType), SSpinWheelType.Blank)).SingleOrDefault();
-                int remainedItems = Constants.SpinWheel.NumberOfSlots - spinList.Count;
-                spinList.AddRange(Enumerable.Repeat(blankItem, remainedItems));
-            }
+                    var newitem = totalList.Where(t => t.ID == tempItems[i].ID).SingleOrDefault();
+                    spinList.Add(newitem);
 
-            return mMapper.Map<List<SSpinWheel>>(spinList);
+                    if (newitem.SpinWheelAlternativeID != null)
+                    {
+                        spinList.Add(totalList.Where(t => t.ID == newitem.SpinWheelAlternativeID).SingleOrDefault());
+                    }
+                }
+
+                if (spinList.Count < Constants.SpinWheel.NumberOfSlots)
+                {
+                    var blankItem = totalList.Where(t => t.SpinWheelType.Title == Enum.GetName(typeof(SSpinWheelType), SSpinWheelType.Blank)).SingleOrDefault();
+                    int remainedItems = Constants.SpinWheel.NumberOfSlots - spinList.Count;
+                    spinList.AddRange(Enumerable.Repeat(blankItem, remainedItems));
+                }
+
+                return mMapper.Map<List<SSpinWheel>>(spinList);
+            }
+            return null;    
         }
     }
 }

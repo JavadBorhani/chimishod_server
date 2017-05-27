@@ -30,7 +30,7 @@ namespace Falcon.Database.SqlServer.QueryProcessors
 
         public async Task<List<SpinWheel>> GetAllSpinWheelsWithoutAchieved()
         {
-            var unRepeatableAchieved = mDb.Set<AchievedSpinWheel>().AsNoTracking();
+            var unRepeatableAchieved = mDb.Set<UnRepeatableAchievedSpinWheel>().AsNoTracking();
             var notAchieved = await mDb.Set<SpinWheel>()
                 .Include(sw => sw.SpinWheelType)
                 .AsNoTracking()
