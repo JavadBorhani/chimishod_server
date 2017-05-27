@@ -159,6 +159,10 @@ namespace Falcon.Common
             };
 
         }
+        public static class SpinWheel
+        {
+            public const int NumberOfSlots = 12;
+        }
 
 
         public const string DefaultLegacyNamespaces = "http://vglr.ir";

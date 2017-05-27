@@ -22,20 +22,21 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             mUserSession = UserSession;
         }
 
-        public Task<List<SSpinWheel>> GetAllSpinWheels()
+        public async Task<List<SpinWheel>> GetAllSpinWheels()
         {
-            throw new NotImplementedException();
+            var result = await mDb.Set<SpinWheel>().AsNoTracking().ToListAsync();
+            return result;  
         }
 
-        public Task<List<SpinWheel>> GetAllSpinWheelsWithoutAchieved()
+        public async Task<List<SpinWheel>> GetAllSpinWheelsWithoutAchieved()
         {
-            mDb.Database.Log = Console.Write;
             var unRepeatableAchieved = mDb.Set<AchievedSpinWheel>().AsNoTracking();
-
-            var notAchieved = mDb.Set<SpinWheel>()
+            var notAchieved = await mDb.Set<SpinWheel>()
+                .Include(sw => sw.SpinWheelType)
                 .AsNoTracking()
                 .Where(sw => !unRepeatableAchieved
                         .Where(ra => ra.SpinWheelID == sw.ID && ra.UserID == mUserSession.ID).Any())
+                .OrderBy(sw => sw.Priority)
                 .ToListAsync();
 
             return notAchieved;

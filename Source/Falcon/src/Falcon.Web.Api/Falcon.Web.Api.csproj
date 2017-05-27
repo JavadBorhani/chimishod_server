@@ -148,6 +148,7 @@
     <Compile Include="AutoMappingConfiguration\NewCreatedQuestionsMap\QuestionToSNewCreatedQuestionsAutoTypeConfiguration.cs" />
     <Compile Include="AutoMappingConfiguration\QuestionBoostMap\QuestionBoostToSQuestionBoostAutoTypeConfiguration.cs" />
     <Compile Include="AutoMappingConfiguration\ReportTypeMap\ReportTypeToSReportTypeAutoTypeConfiguration.cs" />
+    <Compile Include="AutoMappingConfiguration\SpinWheelMap\SpinWheelToSSpinWheelAutoTypeConfiguration.cs" />
     <Compile Include="AutoMappingConfiguration\StoreMap\StoreToSStoreAutoTypeConfiguration.cs" />
     <Compile Include="AutoMappingConfiguration\UserInfoMap\UserInfoToSUserInfoAutoTypeConfiguration.cs" />
     <Compile Include="Controllers\V1\CodeGiftsController.cs" />
