@@ -19,7 +19,13 @@ namespace Falcon.Web.Api.AutoMappingConfiguration.SpinWheelMap
                 .ForMember(ss => ss.Icon, m => m.MapFrom(sw => sw.Icon))
                 .ForMember(ss => ss.SpinWheelType, m => m.ResolveUsing(sw =>
                 {
-                    return (int)(SSpinWheelType)Enum.Parse(typeof(SSpinWheelType), sw.SpinWheelType.Title);
+                    bool isPossible = Enum.IsDefined(typeof(SSpinWheelType), sw.SpinWheelType.Title);
+                    if(isPossible)
+                    {
+                        var result = (int)(SSpinWheelType)Enum.Parse(typeof(SSpinWheelType), sw.SpinWheelType.Title);
+                        return result;
+                    }
+                    return 0;                    
                 }))
                 .ForMember(ss => ss.Prize, m => m.MapFrom(sw => sw.Prize))
                 .ForMember(ss => ss.SpinWheelAlternativeID, m => m.MapFrom(sw => sw.SpinWheelAlternativeID))

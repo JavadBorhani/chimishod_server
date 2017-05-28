@@ -24,8 +24,8 @@ namespace Falcon.Web.Models.Api
         public SSpinWheelType SpinWheelType { get; set; }
         public int Prize { get; set; }
         public int? SpinWheelAlternativeID { get; set; }
-        public int FirstChance { get; set; }
-        public int SecondChance { get; set; }
+        public double FirstChance { get; set; }
+        public double SecondChance { get; set; }
         public int Priority { get; set; }
     }
 }
