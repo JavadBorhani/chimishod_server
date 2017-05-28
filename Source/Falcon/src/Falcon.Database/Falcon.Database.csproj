@@ -54,6 +54,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SqlServer\Mapping\VersionedClassMap.cs" />
     <Compile Include="SqlServer\QueryProcessors\AchievementQueryProcessor.cs" />
+    <Compile Include="SqlServer\QueryProcessors\AvatarsQueryProcessor.cs" />
+    <Compile Include="SqlServer\QueryProcessors\CategoriesQueryProcessor.cs" />
     <Compile Include="SqlServer\QueryProcessors\CodeGiftsQueryProcessor.cs" />
     <Compile Include="SqlServer\QueryProcessors\CommentsQueryProcessor.cs" />
     <Compile Include="SqlServer\QueryProcessors\CreatedQuestionsQueryProcessor.cs" />
@@ -64,6 +66,7 @@
     <Compile Include="SqlServer\QueryProcessors\AppAdvertsQueryProcessor.cs" />
     <Compile Include="SqlServer\QueryProcessors\SpinWheelQueryProcessor.cs" />
     <Compile Include="SqlServer\QueryProcessors\StoresQueryProcessor.cs" />
+    <Compile Include="SqlServer\QueryProcessors\ThemesQueryProcessor.cs" />
     <Compile Include="SqlServer\QueryProcessors\UserQueryProcessor.cs" />
     <Compile Include="SqlServer\QueryProcessors\WatchAdQueryProcessor.cs" />
   </ItemGroup>

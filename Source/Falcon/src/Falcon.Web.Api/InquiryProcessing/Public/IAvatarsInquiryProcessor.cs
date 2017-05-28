@@ -5,7 +5,7 @@ using System.Web;
 
 namespace Falcon.Web.Api.InquiryProcessing.Public
 {
-    public class IAvatarsInquiryProcessor
+    public interface IAvatarsInquiryProcessor
     {
     }
 }

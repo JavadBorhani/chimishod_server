@@ -107,8 +107,9 @@ namespace Falcon.Web.Api
             container.Bind<IAchievementInquiryProcessor>().To<AchievementInquiryProcessor>().InRequestScope();
             container.Bind<IDWMInquiryProcessor>().To<DWMInquiryProcessor>().InRequestScope();
             container.Bind<ISpinWheelInquiryProcessor>().To<SpinWheelInquiryProcessor>().InRequestScope();
-            container.Bind<IThemesInquiryProcessor>().To<IThemesInquiryProcessor>().InRequestScope();
+            container.Bind<IThemesInquiryProcessor>().To<ThemesInquiryProcessor>().InRequestScope();
             container.Bind<ICategoriesInquiryProcessor>().To<CategoriesInquiryProcessor>().InRequestScope();
+            container.Bind<IAvatarsInquiryProcessor>().To<AvatarsInquiryProcessor>().InRequestScope();
         }
         private void  AddMaintenanceProcessors(IKernel container)
         {
