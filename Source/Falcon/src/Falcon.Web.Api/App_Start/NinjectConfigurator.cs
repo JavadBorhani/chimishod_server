@@ -90,6 +90,9 @@ namespace Falcon.Web.Api
             container.Bind<IAchievementQueryProcessor>().To<AchievementQueryProcessor>().InRequestScope();
             container.Bind<IDWMQueryProcessor>().To<DWMQueryProcessor>().InRequestScope();
             container.Bind<ISpinWheelQueryProcessor>().To<SpinWheelQueryProcessor>().InRequestScope();
+            container.Bind<ICategoriesQueryProcessor>().To<CategoriesQueryProcessor>().InRequestScope();
+            container.Bind<IThemesQueryProcessor>().To<ThemesQueryProcessor>().InRequestScope();
+            container.Bind<IAvatarsQueryProcessor>().To<AvatarsQueryProcessor>().InRequestScope();
         }
 
         private void AddInquiryProcessors(IKernel container)
@@ -104,6 +107,8 @@ namespace Falcon.Web.Api
             container.Bind<IAchievementInquiryProcessor>().To<AchievementInquiryProcessor>().InRequestScope();
             container.Bind<IDWMInquiryProcessor>().To<DWMInquiryProcessor>().InRequestScope();
             container.Bind<ISpinWheelInquiryProcessor>().To<SpinWheelInquiryProcessor>().InRequestScope();
+            container.Bind<IThemesInquiryProcessor>().To<IThemesInquiryProcessor>().InRequestScope();
+            container.Bind<ICategoriesInquiryProcessor>().To<CategoriesInquiryProcessor>().InRequestScope();
         }
         private void  AddMaintenanceProcessors(IKernel container)
         {
@@ -114,6 +119,9 @@ namespace Falcon.Web.Api
             container.Bind<IAppAdvertsMaintenanceProcessor>().To<AppAdvertsMaintenanceProcessor>().InRequestScope();
             container.Bind<IDWMMaintenanceProcessor>().To<DWMMaintenanceProcessor>().InRequestScope();
             container.Bind<ISpinWheelMaintenanceProcessor>().To<SpinWheelMaintenanceProcessor>().InRequestScope();
+            container.Bind<ICategoriesMaintenanceProcessor>().To<CategoriesMaintenanceProcessor>().InRequestScope();
+            container.Bind<IThemesMaintenanceProcessor>().To<ThemesMaintenanceProcessor>().InRequestScope();
+            container.Bind<IAvatarsMaintenanceProcessor>().To<AvatarsMaintenanceProcessor>().InRequestScope();
         }
 
         private void AddAdHoc(IKernel container)

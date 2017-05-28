@@ -42,6 +42,11 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             return notAchieved;
         }
 
+        public async Task<SpinWheel> GetByID(int ID)
+        {
+            return await mDb.Set<SpinWheel>().AsNoTracking().Where(sw => sw.ID == ID).SingleOrDefaultAsync();
+        }
+
         public async Task<bool> IsExists(int ID)
         {
             var exists = await mDb.Set<SpinWheel>().AsNoTracking().CountAsync(sw => sw.ID == ID) > 0;

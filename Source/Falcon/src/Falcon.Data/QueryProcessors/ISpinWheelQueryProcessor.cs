@@ -13,5 +13,6 @@ namespace Falcon.Data.QueryProcessors
         Task<bool> IsExists(int ID);
         Task<List<SpinWheel>> GetAllSpinWheelsWithoutAchieved();
         Task<List<SpinWheel>> GetAllSpinWheels();
+        Task<SpinWheel> GetByID(int ID);
     }
 }

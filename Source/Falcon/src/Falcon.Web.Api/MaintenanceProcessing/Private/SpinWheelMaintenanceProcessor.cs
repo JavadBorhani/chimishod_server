@@ -19,7 +19,11 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
 
         public async Task<SAchieveSpinWheelValidation> AchieveSpinWheel(int ID)
         {
-            throw new NotImplementedException();
+            var spinItem = mSpinWheelQueryProcessor.GetByID(ID);
+            if(spinItem != null)
+            {
+
+            }
         }
     }
 }
