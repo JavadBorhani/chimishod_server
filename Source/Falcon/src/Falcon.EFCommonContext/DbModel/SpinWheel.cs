@@ -28,8 +28,8 @@ namespace Falcon.EFCommonContext.DbModel
         public int SpinWheelTypeID { get; set; }
         public int Prize { get; set; }
         public Nullable<int> SpinWheelAlternativeID { get; set; }
-        public int FirstChance { get; set; }
-        public int SecondChance { get; set; }
+        public double FirstChance { get; set; }
+        public double SecondChance { get; set; }
         public int Priority { get; set; }
         public System.DateTime CreatedDate { get; set; }
         public System.DateTime UpdatedDate { get; set; }

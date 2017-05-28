@@ -531,8 +531,8 @@
           <Property Name="SpinWheelTypeID" Type="int" Nullable="false" />
           <Property Name="Prize" Type="int" Nullable="false" />
           <Property Name="SpinWheelAlternativeID" Type="int" />
-          <Property Name="FirstChance" Type="int" Nullable="false" />
-          <Property Name="SecondChance" Type="int" Nullable="false" />
+          <Property Name="FirstChance" Type="float" Nullable="false" />
+          <Property Name="SecondChance" Type="float" Nullable="false" />
           <Property Name="Priority" Type="int" Nullable="false" />
           <Property Name="CreatedDate" Type="datetime" Nullable="false" />
           <Property Name="UpdatedDate" Type="datetime" Nullable="false" />
@@ -3030,8 +3030,8 @@
           <Property Name="SpinWheelTypeID" Type="Int32" Nullable="false" />
           <Property Name="Prize" Type="Int32" Nullable="false" />
           <Property Name="SpinWheelAlternativeID" Type="Int32" />
-          <Property Name="FirstChance" Type="Int32" Nullable="false" />
-          <Property Name="SecondChance" Type="Int32" Nullable="false" />
+          <Property Name="FirstChance" Type="Double" Nullable="false" />
+          <Property Name="SecondChance" Type="Double" Nullable="false" />
           <Property Name="Priority" Type="Int32" Nullable="false" />
           <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="UpdatedDate" Type="DateTime" Nullable="false" Precision="3" />

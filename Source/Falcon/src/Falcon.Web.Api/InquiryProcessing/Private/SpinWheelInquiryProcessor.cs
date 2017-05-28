@@ -39,20 +39,26 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
 
                 for (int i = 0; i < tempItems.Count; ++i)
                 {
-                    var newitem = totalList.Where(t => t.ID == tempItems[i].ID).SingleOrDefault();
-                    spinList.Add(newitem);
+                    var firstLeaf = totalList.Where(t => t.ID == tempItems[i].SpinWheelAlternativeID).SingleOrDefault();
+                    if(!spinList.Any(s => s.ID == firstLeaf.ID))
+                        spinList.Add(firstLeaf);
 
-                    if (newitem.SpinWheelAlternativeID != null)
+                    if (firstLeaf.SpinWheelAlternativeID != null)
                     {
-                        spinList.Add(totalList.Where(t => t.ID == newitem.SpinWheelAlternativeID).SingleOrDefault());
+                        var secondLeaf = totalList.Where(t => t.ID == firstLeaf.SpinWheelAlternativeID).SingleOrDefault();
+                        if(!spinList.Any(s => s.ID == secondLeaf.ID))
+                            spinList.Add(secondLeaf);
                     }
                 }
 
                 if (spinList.Count < Constants.SpinWheel.NumberOfSlots)
                 {
                     var blankItem = totalList.Where(t => t.SpinWheelType.Title == Enum.GetName(typeof(SSpinWheelType), SSpinWheelType.Blank)).SingleOrDefault();
-                    int remainedItems = Constants.SpinWheel.NumberOfSlots - spinList.Count;
-                    spinList.AddRange(Enumerable.Repeat(blankItem, remainedItems));
+                    if(blankItem != null)
+                    {
+                        int remainedItems = Constants.SpinWheel.NumberOfSlots - spinList.Count;
+                        spinList.AddRange(Enumerable.Repeat(blankItem, remainedItems));
+                    }
                 }
 
                 return mMapper.Map<List<SSpinWheel>>(spinList);
