@@ -22,6 +22,13 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             mUserSession = UserSession;
         }
 
+        public async Task<bool> AchievedUnRepeatableSpinWheel(int ID)
+        {
+            return await mDb.Set<UnRepeatableAchievedSpinWheel>()
+                .AsNoTracking()
+                .CountAsync(uas => uas.SpinWheelID == ID) > 0;
+        }
+
         public async Task<List<SpinWheel>> GetAllSpinWheels()
         {
             var result = await mDb.Set<SpinWheel>().AsNoTracking().ToListAsync();

@@ -14,5 +14,6 @@ namespace Falcon.Data.QueryProcessors
         Task<List<SpinWheel>> GetAllSpinWheelsWithoutAchieved();
         Task<List<SpinWheel>> GetAllSpinWheels();
         Task<SpinWheel> GetByID(int ID);
+        Task<bool> AchievedUnRepeatableSpinWheel(int ID);
     }
 }

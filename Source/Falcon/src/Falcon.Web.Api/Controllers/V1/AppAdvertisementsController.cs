@@ -1,6 +1,7 @@
 ﻿using Falcon.Web.Api.InquiryProcessing.Public;
 using Falcon.Web.Api.MaintenanceProcessing.Public;
 using Falcon.Web.Api.Utilities.Base;
+using Falcon.Web.Common;
 using Falcon.Web.Models.Api;
 using System;
 using System.Collections.Generic;
@@ -13,7 +14,7 @@ using System.Web.Http.Description;
 
 namespace Falcon.Web.Api.Controllers.V1
 {
-
+    [UnitOfWorkActionFilter]
     public class AppAdvertisementsController : FalconApiController
     {
 
