@@ -17,11 +17,15 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
         }
         public async Task<bool> PurchaseFreeItem(int ID)
         {
-            var purchased = await mCategoriesQueryProcessor.IsPurchased(ID);
-            if (!purchased)
+            var exists = await mCategoriesQueryProcessor.IsExists(ID);
+            if(exists)
             {
-                await mCategoriesQueryProcessor.PurchaseItem(ID);
-                return true;
+                var purchased = await mCategoriesQueryProcessor.IsPurchased(ID);
+                if (!purchased)
+                {
+                    await mCategoriesQueryProcessor.PurchaseItem(ID);
+                    return true;
+                }
             }
             return false;
         }

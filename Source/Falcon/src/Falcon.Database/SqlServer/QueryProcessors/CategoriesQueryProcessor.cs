@@ -47,5 +47,12 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             var result = await mDb.Set<PurchaseCategory>().AsNoTracking().CountAsync(pt => pt.CategoryID == ID) > 0;
             return result;
         }
+
+        public async Task<bool> IsExists(int ID)
+        {
+            var exists = await mDb.Set<Category>().AsNoTracking().CountAsync(at => at.ID == ID) > 0;
+            return exists;
+        }
+
     }
 }

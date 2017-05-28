@@ -17,7 +17,17 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
         }
         public async Task<bool> PurchaseFreeItem(int ID)
         {
-            throw new NotImplementedException();
+            var exists = await mAvatarsQueryProcessor.IsExists(ID);
+            if (exists)
+            {
+                var purchased = await mAvatarsQueryProcessor.IsPurchased(ID);
+                if (!purchased)
+                {
+                    await mAvatarsQueryProcessor.PurchaseItem(ID);
+                    return true;
+                }
+            }
+            return false;
         }
     }
 }

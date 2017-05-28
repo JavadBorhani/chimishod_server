@@ -12,11 +12,17 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
         private readonly ISpinWheelQueryProcessor mSpinWheelQueryProcessor;
         private readonly IUserQueryProcessor mUserQueryProcessor;
         private readonly IDateTime mDateTime;
-        public SpinWheelMaintenanceProcessor(IDateTime DateTime, ISpinWheelQueryProcessor SpinWheelQueryProcessor , IUserQueryProcessor UserQueryProcessor)
+        private readonly IItemPurchaseManager mItemPurchaseManager;
+        public SpinWheelMaintenanceProcessor(
+            IDateTime DateTime, 
+            ISpinWheelQueryProcessor SpinWheelQueryProcessor , 
+            IUserQueryProcessor UserQueryProcessor , 
+            IItemPurchaseManager ItemPurchaseManager)
         {
             mSpinWheelQueryProcessor = SpinWheelQueryProcessor;
             mDateTime = DateTime;
             mUserQueryProcessor = UserQueryProcessor;
+            mItemPurchaseManager = ItemPurchaseManager;
         }
 
         public async Task<SAchieveSpinWheelValidation> AchieveSpinWheel(int ID)
@@ -51,6 +57,8 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
                 {
                     case SSpinWheelType.Avatar:
 
+                        await mItemPurchaseManager.PurchaseFreeAvatar(spinItem.Prize);
+
                         break;
 
                     case SSpinWheelType.Blank:
@@ -58,6 +66,8 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
                         break;
 
                     case SSpinWheelType.Category:
+
+                        await mItemPurchaseManager.PurchaseFreeCategory(spinItem.Prize);
 
                         break;
 
@@ -70,6 +80,8 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
                         break;
 
                     case SSpinWheelType.Theme:
+
+                        await mItemPurchaseManager.PurchaseFreeTheme(spinItem.Prize);
 
                         break;
                 }

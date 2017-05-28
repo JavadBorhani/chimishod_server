@@ -10,5 +10,6 @@ namespace Falcon.Data.QueryProcessors
     {
         Task<bool> PurchaseItem(int ID);
         Task<bool> IsPurchased(int ID);
+        Task<bool> IsExists(int ID);
     }
 }
