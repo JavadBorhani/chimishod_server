@@ -8,5 +8,6 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Public
 {
     public interface ICategoriesMaintenanceProcessor
     {
+        Task<bool> PurchaseFreeItem(int ID);
     }
 }

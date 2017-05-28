@@ -8,8 +8,8 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Public
 {
     public interface IItemPurchaseManager
     {
-        Task<bool> PurchaseTheme(int ID);
-        Task<bool> PurchaseCategory(int ID );
-        Task<bool> PurchaseAvatar(int ID );
+        Task<bool> PurchaseFreeTheme(int ID);
+        Task<bool> PurchaseFreeCategory(int ID );
+        Task<bool> PurchaseFreeAvatar(int ID );
     }
 }

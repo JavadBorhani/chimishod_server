@@ -5,6 +5,7 @@ using Falcon.EFCommonContext;
 using Falcon.EFCommonContext.DbModel;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,6 +26,9 @@ namespace Falcon.Database.SqlServer.QueryProcessors
         }
         public async Task<bool> PurchaseItem(int ID)
         {
+            if (ID == Constants.DefaultUser.AppThemeID)
+                return true;
+
             mDb.Set<PurchaseTheme>().Add(new PurchaseTheme
             {
                 ThemeID = ID,
@@ -34,6 +38,15 @@ namespace Falcon.Database.SqlServer.QueryProcessors
 
             await mDb.SaveChangesAsync();
             return true;
+        }
+
+        public async Task<bool> IsPurchased(int ID)
+        {
+            if (ID == Constants.DefaultUser.AppThemeID)
+                return true;
+
+            var result = await mDb.Set<PurchaseTheme>().AsNoTracking().CountAsync(pt => pt.ThemeID == ID) > 0;
+            return result;            
         }
     }
 }

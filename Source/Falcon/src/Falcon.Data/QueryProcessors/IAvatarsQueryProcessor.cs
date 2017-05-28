@@ -8,6 +8,7 @@ namespace Falcon.Data.QueryProcessors
 {
     public interface IAvatarsQueryProcessor
     {
-
+        Task<bool> PurchaseItem(int ID);
+        Task<bool> IsPurchased(int ID);
     }
 }

@@ -9,5 +9,6 @@ namespace Falcon.Data.QueryProcessors
     public interface IThemesQueryProcessor
     {
         Task<bool> PurchaseItem(int ID);
+        Task<bool> IsPurchased(int ID);
     }
 }

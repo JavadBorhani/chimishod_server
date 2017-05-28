@@ -22,20 +22,23 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
             mThemesMaintenanceProcessor = ThemesMaintenanceProcessor;
         }
         
-        public Task<bool> PurchaseAvatar(int ID)
+        public async Task<bool> PurchaseFreeAvatar(int ID)
         {
-            throw new NotImplementedException();
+            var result = await mAvatarsMaintenanceProcessor.PurchaseFreeItem(ID);
+            return result;
         }
 
-        
-        public Task<bool> PurchaseCategory(int ID)
+
+        public async Task<bool> PurchaseFreeCategory(int ID)
         {
-            throw new NotImplementedException();
+            var result = await mCategoriesMaintenanceProcessor.PurchaseFreeItem(ID);
+            return result;  
         }
 
-        public Task<bool> PurchaseTheme(int ID)
+        public async Task<bool> PurchaseFreeTheme(int ID)
         {
-            throw new NotImplementedException();
+            var result = await mThemesMaintenanceProcessor.PurchaseFreeItem(ID);
+            return result;  
         }
     }
 }
