@@ -35,5 +35,15 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             var result =  await mDb.Set<UserStat>().AsNoTracking().FirstOrDefaultAsync(us => us.ID == ID);
             return result;
         }
+
+        public async Task<int> GetRemainedFortune()
+        {
+            var amount = await mDb.Set<UserStat>()
+                .AsNoTracking()
+                .Where(u => u.UserID == mUserSession.ID)
+                .Select(u => u.SpinRemainedChance)
+                .SingleOrDefaultAsync();
+            return amount;
+        }
     }
 }

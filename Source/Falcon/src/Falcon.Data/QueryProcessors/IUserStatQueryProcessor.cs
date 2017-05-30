@@ -12,5 +12,6 @@ namespace Falcon.Data.QueryProcessors
     {
         Task<bool> AddFortune(int Amount);
         Task<UserStat> GetById(int ID);
+        Task<int> RemainedFortune();
     }
 }

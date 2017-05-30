@@ -37,6 +37,7 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
 
             if(spinItem != null)
             {
+                
                 var isPossible = Enum.IsDefined(typeof(SSpinWheelType), spinItem.SpinWheelType.Title);
                 if(!isPossible)
                 {
