@@ -68,6 +68,7 @@
     <Compile Include="SqlServer\QueryProcessors\StoresQueryProcessor.cs" />
     <Compile Include="SqlServer\QueryProcessors\ThemesQueryProcessor.cs" />
     <Compile Include="SqlServer\QueryProcessors\UserQueryProcessor.cs" />
+    <Compile Include="SqlServer\QueryProcessors\UserStatQueryProcessor.cs" />
     <Compile Include="SqlServer\QueryProcessors\WatchAdQueryProcessor.cs" />
   </ItemGroup>
   <ItemGroup>

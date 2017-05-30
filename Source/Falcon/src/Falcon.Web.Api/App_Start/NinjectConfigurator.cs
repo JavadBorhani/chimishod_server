@@ -93,6 +93,7 @@ namespace Falcon.Web.Api
             container.Bind<ICategoriesQueryProcessor>().To<CategoriesQueryProcessor>().InRequestScope();
             container.Bind<IThemesQueryProcessor>().To<ThemesQueryProcessor>().InRequestScope();
             container.Bind<IAvatarsQueryProcessor>().To<AvatarsQueryProcessor>().InRequestScope();
+            container.Bind<IUserStatQueryProcessor>().To<UserStatQueryProcessor>().InRequestScope();
         }
 
         private void AddInquiryProcessors(IKernel container)

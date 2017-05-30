@@ -151,6 +151,7 @@
     <Compile Include="AutoMappingConfiguration\SpinWheelMap\SpinWheelToSSpinWheelAutoTypeConfiguration.cs" />
     <Compile Include="AutoMappingConfiguration\StoreMap\StoreToSStoreAutoTypeConfiguration.cs" />
     <Compile Include="AutoMappingConfiguration\UserInfoMap\UserInfoToSUserInfoAutoTypeConfiguration.cs" />
+    <Compile Include="AutoMappingConfiguration\UserStatMap\UserStatToSUserStatAutoTypeConfiguration.cs" />
     <Compile Include="Controllers\V1\CodeGiftsController.cs" />
     <Compile Include="Controllers\V1\DWMController.cs" />
     <Compile Include="Controllers\V1\LeaderBoardController.cs" />
@@ -171,6 +172,7 @@
     <Compile Include="InquiryProcessing\Private\ThemesInquiryProcessor.cs" />
     <Compile Include="InquiryProcessing\Private\UsersInquiryProcessor.cs" />
     <Compile Include="InquiryProcessing\Private\NotificationInquiryProcessor.cs" />
+    <Compile Include="InquiryProcessing\Private\UserStatsInquiryProcessor.cs" />
     <Compile Include="InquiryProcessing\Public\IAchievementInquiryProcessor.cs" />
     <Compile Include="InquiryProcessing\Public\IAppAdvertsInquiryProcessor.cs" />
     <Compile Include="InquiryProcessing\Public\IAvatarsInquiryProcessor.cs" />
@@ -185,6 +187,7 @@
     <Compile Include="InquiryProcessing\Public\IStoresInquiryProcessor.cs" />
     <Compile Include="InquiryProcessing\Public\IThemesInquiryProcessor.cs" />
     <Compile Include="InquiryProcessing\Public\IUsersInquiryProcessor.cs" />
+    <Compile Include="InquiryProcessing\Public\IUserStatsInquiryProcessor.cs" />
     <Compile Include="MaintenanceProcessing\Private\AppAdvertsMaintenanceProcessor.cs" />
     <Compile Include="MaintenanceProcessing\Private\AvatarsMaintenanceProcessor.cs" />
     <Compile Include="MaintenanceProcessing\Private\CategoriesMaintenanceProcessor.cs" />

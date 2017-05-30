@@ -13,16 +13,19 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
         private readonly IUserQueryProcessor mUserQueryProcessor;
         private readonly IDateTime mDateTime;
         private readonly IItemPurchaseManager mItemPurchaseManager;
+        private readonly IUserStatQueryProcessor mUserStatQueryProcessor;
         public SpinWheelMaintenanceProcessor(
             IDateTime DateTime, 
             ISpinWheelQueryProcessor SpinWheelQueryProcessor , 
             IUserQueryProcessor UserQueryProcessor , 
-            IItemPurchaseManager ItemPurchaseManager)
+            IItemPurchaseManager ItemPurchaseManager,
+            IUserStatQueryProcessor UserStatQueryProcessor)
         {
             mSpinWheelQueryProcessor = SpinWheelQueryProcessor;
             mDateTime = DateTime;
             mUserQueryProcessor = UserQueryProcessor;
             mItemPurchaseManager = ItemPurchaseManager;
+            mUserStatQueryProcessor = UserStatQueryProcessor;
         }
 
         public async Task<SAchieveSpinWheelValidation> AchieveSpinWheel(int ID)
@@ -30,6 +33,7 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
             var spinItem = await mSpinWheelQueryProcessor.GetByID(ID);
             SSpinWheelType type;
             SAchieveSpinWheelValidation response = new SAchieveSpinWheelValidation();
+            response.RequestId = ID;    
 
             if(spinItem != null)
             {
@@ -48,40 +52,64 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
                     {
                         response.IsValid = false;
                         response.TotalCoin = await mUserQueryProcessor.GetTotalCoin();
-                        response.RequestId = ID;
                     }
                     return response;
                 }
 
-                switch(type)
+                await mSpinWheelQueryProcessor.AddRepeatableAchievement(spinItem.ID);
+
+                bool added;
+                bool purchased; 
+                switch (type)
                 {
                     case SSpinWheelType.Avatar:
 
-                        await mItemPurchaseManager.PurchaseFreeAvatar(spinItem.Prize);
-
+                        added = await mSpinWheelQueryProcessor.AddUnRepeatableAchievement(spinItem.ID);
+                        purchased = await mItemPurchaseManager.PurchaseFreeAvatar(spinItem.Prize);
+                        
+                        response.IsValid = purchased;
+                        response.TotalCoin = await mUserQueryProcessor.GetTotalCoin();
+                        
                         break;
 
                     case SSpinWheelType.Blank:
+
+                        response.IsValid = true;
+                        response.TotalCoin = await mUserQueryProcessor.GetTotalCoin();
 
                         break;
 
                     case SSpinWheelType.Category:
 
-                        await mItemPurchaseManager.PurchaseFreeCategory(spinItem.Prize);
+                        added = await mSpinWheelQueryProcessor.AddUnRepeatableAchievement(spinItem.ID);
+                        purchased = await mItemPurchaseManager.PurchaseFreeCategory(spinItem.Prize);
 
                         break;
 
                     case SSpinWheelType.Coin:
 
+                        response.IsValid = true;
+                        response.TotalCoin = await mUserQueryProcessor.AddCoin(spinItem.Prize) ;
+
+
                         break;
 
                     case SSpinWheelType.Fortune:
+
+                        await mUserStatQueryProcessor.AddFortune(spinItem.Prize);
+
+                        response.IsValid = true;
+                        response.TotalCoin = await mUserQueryProcessor.GetTotalCoin();
 
                         break;
 
                     case SSpinWheelType.Theme:
 
-                        await mItemPurchaseManager.PurchaseFreeTheme(spinItem.Prize);
+                        added = await mSpinWheelQueryProcessor.AddUnRepeatableAchievement(spinItem.ID);
+                        purchased = await mItemPurchaseManager.PurchaseFreeTheme(spinItem.Prize);
+
+                        response.IsValid = purchased;
+                        response.TotalCoin = await mUserQueryProcessor.GetTotalCoin();
 
                         break;
                 }
