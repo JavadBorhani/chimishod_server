@@ -37,19 +37,25 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
 
             if(spinItem != null)
             {
-                
+                var fortuneCount = await mUserStatQueryProcessor.GetRemainedFortune();
+                if (fortuneCount <= 0)
+                {
+                    response.IsValid = false;
+                    response.TotalCoin = await mUserQueryProcessor.GetTotalCoin();
+
+                }
                 var isPossible = Enum.IsDefined(typeof(SSpinWheelType), spinItem.SpinWheelType.Title);
-                if(!isPossible)
+                if (!isPossible)
                 {
                     return null;
                 }
 
                 type = (SSpinWheelType)Enum.Parse(typeof(SSpinWheelType), spinItem.SpinWheelType.Title);
 
-                if(type == SSpinWheelType.Theme || type == SSpinWheelType.Category || type == SSpinWheelType.Avatar)
+                if (type == SSpinWheelType.Theme || type == SSpinWheelType.Category || type == SSpinWheelType.Avatar)
                 {
                     var achieved = await mSpinWheelQueryProcessor.AchievedUnRepeatableSpinWheel(spinItem.ID);
-                    if(achieved)
+                    if (achieved)
                     {
                         response.IsValid = false;
                         response.TotalCoin = await mUserQueryProcessor.GetTotalCoin();
@@ -60,17 +66,17 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
                 await mSpinWheelQueryProcessor.AddRepeatableAchievement(spinItem.ID);
 
                 bool added;
-                bool purchased; 
+                bool purchased;
                 switch (type)
                 {
                     case SSpinWheelType.Avatar:
 
                         added = await mSpinWheelQueryProcessor.AddUnRepeatableAchievement(spinItem.ID);
                         purchased = await mItemPurchaseManager.PurchaseFreeAvatar(spinItem.Prize);
-                        
+
                         response.IsValid = purchased;
                         response.TotalCoin = await mUserQueryProcessor.GetTotalCoin();
-                        
+
                         break;
 
                     case SSpinWheelType.Blank:
@@ -90,7 +96,7 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
                     case SSpinWheelType.Coin:
 
                         response.IsValid = true;
-                        response.TotalCoin = await mUserQueryProcessor.AddCoin(spinItem.Prize) ;
+                        response.TotalCoin = await mUserQueryProcessor.AddCoin(spinItem.Prize);
 
 
                         break;

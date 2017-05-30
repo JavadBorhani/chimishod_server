@@ -27,6 +27,7 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
                     await mThemesQueryProcessor.PurchaseItem(ID);
                     return true;
                 }
+                return purchased;
             }
             return false;
         }

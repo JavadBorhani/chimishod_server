@@ -26,6 +26,7 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
                     await mCategoriesQueryProcessor.PurchaseItem(ID);
                     return true;
                 }
+                return purchased;
             }
             return false;
         }
