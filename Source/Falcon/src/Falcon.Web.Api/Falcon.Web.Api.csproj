@@ -210,6 +210,9 @@
     <Compile Include="MaintenanceProcessing\Public\IStoresMaintenanceProcessor.cs" />
     <Compile Include="MaintenanceProcessing\Public\IThemesMaintenanceProcessor.cs" />
     <Compile Include="MaintenanceProcessing\Public\IWatchAdMaintenanceProcessor.cs" />
+    <Compile Include="Security\Private\NumberEncryptor.cs" />
+    <Compile Include="Security\Private\SpinItem.cs" />
+    <Compile Include="Security\Public\INumberEncryptor.cs" />
     <Compile Include="WatchAd\Private\ErrorToken.cs" />
     <Compile Include="WatchAd\Private\RequestToken.cs" />
     <Compile Include="WatchAd\Private\ResponseToken.cs" />

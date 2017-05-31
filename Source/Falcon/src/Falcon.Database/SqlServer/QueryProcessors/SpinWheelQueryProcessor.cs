@@ -26,7 +26,7 @@ namespace Falcon.Database.SqlServer.QueryProcessors
         {
             return await mDb.Set<UnRepeatableAchievedSpinWheel>()
                 .AsNoTracking()
-                .CountAsync(uas => uas.SpinWheelID == ID) > 0;
+                .CountAsync(uas => uas.SpinWheelID == ID && uas.UserID == mUserSession.ID) > 0;
         }
 
         public async Task<bool> AddRepeatableAchievement(int ID)

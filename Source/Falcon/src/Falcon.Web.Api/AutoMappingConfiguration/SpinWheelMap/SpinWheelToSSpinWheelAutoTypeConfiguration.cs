@@ -8,13 +8,19 @@ using System.Web;
 
 namespace Falcon.Web.Api.AutoMappingConfiguration.SpinWheelMap
 {
+    using Common;
     using Models.Api;
+    using Security.Public;
+
     public class SpinWheelToSSpinWheelAutoTypeConfiguration : Profile
     {
         public SpinWheelToSSpinWheelAutoTypeConfiguration()
         {
             CreateMap<SpinWheel, SSpinWheel>()
-                .ForMember(ss => ss.ID, m => m.MapFrom(sw => sw.ID))
+                .ForMember(ss => ss.ID, m => m.ResolveUsing(sw =>
+                {                    
+                    return NumberEncryptor.Encrypt(sw.ID);
+                }))
                 .ForMember(ss => ss.Title, m => m.MapFrom(sw => sw.Title))
                 .ForMember(ss => ss.Icon, m => m.MapFrom(sw => sw.Icon))
                 .ForMember(ss => ss.SpinWheelType, m => m.ResolveUsing(sw =>
@@ -33,5 +39,14 @@ namespace Falcon.Web.Api.AutoMappingConfiguration.SpinWheelMap
                 .ForMember(ss => ss.SecondChance, m => m.MapFrom(sw => sw.SecondChance))
                 .ForMember(ss => ss.Priority, m => m.MapFrom(sw => sw.Priority));
         }
+
+        private INumberEncryptor NumberEncryptor
+        {
+            get
+            {
+                return WebContainerManager.Get<INumberEncryptor>();
+            }
+        }
+
     }
 }

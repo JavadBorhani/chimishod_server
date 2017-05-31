@@ -143,6 +143,8 @@ namespace Falcon.Web.Api
 
 
             container.Bind<IItemPurchaseManager>().To<ItemPurchaseManager>().InRequestScope();
+
+            container.Bind<INumberEncryptor>().To<NumberEncryptor>().InSingletonScope();
             
         }
 

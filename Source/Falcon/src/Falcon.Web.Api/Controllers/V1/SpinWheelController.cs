@@ -1,6 +1,8 @@
 ﻿using Falcon.Data.QueryProcessors;
 using Falcon.Web.Api.InquiryProcessing.Public;
 using Falcon.Web.Api.MaintenanceProcessing.Public;
+using Falcon.Web.Api.Security.Private;
+using Falcon.Web.Api.Security.Public;
 using Falcon.Web.Api.Utilities.Base;
 using Falcon.Web.Common;
 using Falcon.Web.Models.Api;
@@ -21,10 +23,15 @@ namespace Falcon.Web.Api.Controllers.V1
 
         private readonly ISpinWheelInquiryProcessor mSpinWheelInquiryProcessor;
         private readonly ISpinWheelMaintenanceProcessor mSpinWheelMaintenanceProcessor;
-        public SpinWheelController(ISpinWheelInquiryProcessor SpinWheelInquiryProcessor, ISpinWheelMaintenanceProcessor SpinWheelMaintenanceProcessor)
+        private readonly INumberEncryptor mNumberEncyptor; 
+        public SpinWheelController(
+            ISpinWheelInquiryProcessor SpinWheelInquiryProcessor, 
+            ISpinWheelMaintenanceProcessor SpinWheelMaintenanceProcessor , 
+            INumberEncryptor NumberEncryptor)
         {
             mSpinWheelInquiryProcessor = SpinWheelInquiryProcessor;
             mSpinWheelMaintenanceProcessor = SpinWheelMaintenanceProcessor;
+            mNumberEncyptor = NumberEncryptor;
         }
 
         [Route("SpinWheel/")]
@@ -36,12 +43,17 @@ namespace Falcon.Web.Api.Controllers.V1
         }
 
 
-        [Route("SpinWheel/Achieve/{SpinWheelID}")]
+        [Route("SpinWheel/Achieve/")]
         [HttpPost]
-        public async Task<SAchieveSpinWheelValidation> CollectSpinWheel(int SpinWheelID)
+        public async Task<SAchieveSpinWheelValidation> CollectSpinWheel(SpinItem Spin)
         {
-            var result = await mSpinWheelMaintenanceProcessor.AchieveSpinWheel(SpinWheelID);
-            return result;
+            var item = mNumberEncyptor.Decrypt(Spin.SpinWheelID);
+            if(item != -1)
+            {
+                var result = await mSpinWheelMaintenanceProcessor.AchieveSpinWheel(item);
+                return result;
+            }
+            return null;    
         }
     }
 }

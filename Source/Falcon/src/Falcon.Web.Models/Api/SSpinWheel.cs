@@ -18,7 +18,7 @@ namespace Falcon.Web.Models.Api
     
     public class SSpinWheel
     {
-        public int ID { get; set; }
+        public string ID { get; set; }
         public string Title { get; set; }
         public string Icon { get; set; }
         public SSpinWheelType SpinWheelType { get; set; }
