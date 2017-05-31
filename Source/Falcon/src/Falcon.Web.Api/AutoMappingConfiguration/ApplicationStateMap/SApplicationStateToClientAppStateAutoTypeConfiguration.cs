@@ -14,7 +14,8 @@ namespace Falcon.Web.Api.AutoMappingConfiguration.ApplicationStateMap
                 .ForMember(c => c.LikePrize, m => m.MapFrom(a => a.Prize_LikePrize))
                 .ForMember(c => c.CreateNewQuestionPrize, m => m.MapFrom(a => a.Prize_CreateNewQuestionPrize))
                 .ForMember(c => c.WatchAdCoin , m => m.MapFrom(a => a.WatchAdCoin))
-                .ForMember(c => c.SpinWheelFortuneThreshold , m => m.MapFrom(a => a.SpinWheelFortuneThreshold));
+                .ForMember(c => c.SpinWheelFortuneThreshold , m => m.MapFrom(a => a.SpinWheelFortuneThreshold))
+                .ForMember(c => c.SpinWheelLoopPrice ,  m => m.MapFrom(a => a.SpinWheelLoopPrice));
         }
     }
 }

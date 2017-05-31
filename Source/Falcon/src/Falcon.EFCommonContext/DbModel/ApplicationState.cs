@@ -42,5 +42,6 @@ namespace Falcon.EFCommonContext.DbModel
         public int Store_DefaultReturnAmount { get; set; }
         public int WatchAdCoin { get; set; }
         public int SpinWheelFortuneThreshold { get; set; }
+        public int SpinWheelLoopPrice { get; set; }
     }
 }

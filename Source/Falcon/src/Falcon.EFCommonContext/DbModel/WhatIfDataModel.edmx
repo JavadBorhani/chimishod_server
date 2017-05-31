@@ -141,6 +141,7 @@
           <Property Name="Store_DefaultReturnAmount" Type="int" Nullable="false" />
           <Property Name="WatchAdCoin" Type="int" Nullable="false" />
           <Property Name="SpinWheelFortuneThreshold" Type="int" Nullable="false" />
+          <Property Name="SpinWheelLoopPrice" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="AppTheme">
           <Key>
@@ -2560,6 +2561,7 @@
           <Property Name="Store_DefaultReturnAmount" Type="Int32" Nullable="false" />
           <Property Name="WatchAdCoin" Type="Int32" Nullable="false" />
           <Property Name="SpinWheelFortuneThreshold" Type="Int32" Nullable="false" />
+          <Property Name="SpinWheelLoopPrice" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="AppTheme">
           <Key>
@@ -4357,6 +4359,7 @@
           <EntitySetMapping Name="ApplicationStates">
             <EntityTypeMapping TypeName="Falcon.DbModel.ApplicationState">
               <MappingFragment StoreEntitySet="ApplicationState">
+                <ScalarProperty Name="SpinWheelLoopPrice" ColumnName="SpinWheelLoopPrice" />
                 <ScalarProperty Name="SpinWheelFortuneThreshold" ColumnName="SpinWheelFortuneThreshold" />
                 <ScalarProperty Name="WatchAdCoin" ColumnName="WatchAdCoin" />
                 <ScalarProperty Name="Store_DefaultReturnAmount" ColumnName="Store_DefaultReturnAmount" />

@@ -48,7 +48,7 @@ namespace Falcon.Web.Api.AutoMappingConfiguration.ApplicationStateMap
 
                 //SpinWheel
                 .ForMember(s => s.SpinWheelFortuneThreshold, ca => ca.MapFrom(y => y.SpinWheelFortuneThreshold))
-
+                .ForMember(s => s.SpinWheelLoopPrice, ca => ca.MapFrom(y => y.SpinWheelLoopPrice))
                 //Host
                 .ForMember(s => s.Host_WebSiteNoReplyMail, ca => ca.MapFrom(y => y.Host_WebSiteNoReplyMail))
                 .ForMember(s => s.Host_WebSiteNoReplyMailPassword, ca => ca.MapFrom(y => y.Host_WebSiteNoReplyMailPassword))

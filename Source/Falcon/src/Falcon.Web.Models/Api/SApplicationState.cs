@@ -88,5 +88,8 @@ namespace Falcon.Web.Models.Api
 
         [Required]
         public int SpinWheelFortuneThreshold { get; set; }
+
+        [Required]
+        public int SpinWheelLoopPrice { get; set; }
     }
 }

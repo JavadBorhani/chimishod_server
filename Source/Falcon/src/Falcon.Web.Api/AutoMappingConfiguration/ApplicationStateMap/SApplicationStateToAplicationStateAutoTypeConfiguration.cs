@@ -12,7 +12,7 @@ namespace Falcon.Web.Api.AutoMappingConfiguration.ApplicationStateMap
     {
         public SApplicationStateToAplicationStateAutoTypeConfiguration()
         {
-            CreateMap<SApplicationState , ApplicationState>()
+            CreateMap<SApplicationState, ApplicationState>()
 
                 //Favorite
                 .ForMember(s => s.Favorite_FavoritePrice, ca => ca.MapFrom(y => y.Favorite_FavoritePrice))
@@ -51,7 +51,8 @@ namespace Falcon.Web.Api.AutoMappingConfiguration.ApplicationStateMap
                 .ForMember(s => s.WatchAdCoin, ca => ca.MapFrom(y => y.WatchAdCoin))
 
                 //SpinWheel
-                .ForMember(s => s.SpinWheelFortuneThreshold , ca => ca.MapFrom(y => y.SpinWheelFortuneThreshold))
+                .ForMember(s => s.SpinWheelFortuneThreshold, ca => ca.MapFrom(y => y.SpinWheelFortuneThreshold))
+                .ForMember(s => s.SpinWheelLoopPrice ,  ca => ca.MapFrom(y => y.SpinWheelLoopPrice))
 
                 //Host
                 .ForMember(s => s.Host_WebSiteNoReplyMail, ca => ca.MapFrom(y => y.Host_WebSiteNoReplyMail))
