@@ -89,7 +89,7 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
                             IsFailed = false,                       
                         });
 
-                        int totalCoin = await mUserQueryProcessor.AddCoin(item.Coin);
+                        int totalCoin = await mUserQueryProcessor.IncreaseCoin(item.Coin);
 
                         answer.IsValid = true;
                         answer.TotalCoin = totalCoin;

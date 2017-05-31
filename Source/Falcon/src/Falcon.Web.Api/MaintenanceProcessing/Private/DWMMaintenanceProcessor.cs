@@ -46,7 +46,7 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
                             EarnedDate = mDateTime.Now,
                         });
 
-                        var totalCoin = await mUserQueryProcessor.AddCoin(reward.Prize);
+                        var totalCoin = await mUserQueryProcessor.IncreaseCoin(reward.Prize);
 
                         response.DailyRewardState= DailyRewardState.Collected;
                         response.TotalCoin = totalCoin;

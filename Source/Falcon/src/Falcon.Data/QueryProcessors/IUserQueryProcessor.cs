@@ -8,7 +8,8 @@ namespace Falcon.Data.QueryProcessors
 {
     public interface IUserQueryProcessor
     {
-        Task<int> AddCoin(int Coin);
+        Task<int> IncreaseCoin(int Coin);
+        Task<int> DecreaseCoin(int Coin);
         Task<int> GetTotalCoin();
         Task<int> GetDWMCount();
         Task<bool> UpdateLastSeenDateTime();

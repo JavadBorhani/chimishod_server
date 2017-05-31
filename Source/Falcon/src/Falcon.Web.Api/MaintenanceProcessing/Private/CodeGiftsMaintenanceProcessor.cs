@@ -40,7 +40,7 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
                         var codeGiftAdded = await mCodeGiftsQueryProcessor.AddByID(codeGift.ID);
                         if (codeGiftAdded)
                         {
-                            var totalCoin = await mUserQueryProcessor.AddCoin(codeGift.Prize);
+                            var totalCoin = await mUserQueryProcessor.IncreaseCoin(codeGift.Prize);
 
                             result.TotalCoin = totalCoin;
                             result.ResponseCode = ResponseState.Ok;

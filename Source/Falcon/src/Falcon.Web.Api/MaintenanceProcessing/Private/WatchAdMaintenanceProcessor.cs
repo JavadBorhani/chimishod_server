@@ -58,7 +58,7 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
                             InsertDate = mDateTime.Now
                         });
 
-                        var totalCoin = await mUserQueryProcessor.AddCoin(mAppState.State().WatchAdCoin);
+                        var totalCoin = await mUserQueryProcessor.IncreaseCoin(mAppState.State().WatchAdCoin);
 
                         return totalCoin;
                     }

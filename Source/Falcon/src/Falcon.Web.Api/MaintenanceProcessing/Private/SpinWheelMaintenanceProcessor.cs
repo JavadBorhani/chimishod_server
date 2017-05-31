@@ -14,18 +14,22 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
         private readonly IDateTime mDateTime;
         private readonly IItemPurchaseManager mItemPurchaseManager;
         private readonly IUserStatQueryProcessor mUserStatQueryProcessor;
+        private readonly SApplicationState mAppState;
+
         public SpinWheelMaintenanceProcessor(
             IDateTime DateTime, 
             ISpinWheelQueryProcessor SpinWheelQueryProcessor , 
             IUserQueryProcessor UserQueryProcessor , 
             IItemPurchaseManager ItemPurchaseManager,
-            IUserStatQueryProcessor UserStatQueryProcessor)
+            IUserStatQueryProcessor UserStatQueryProcessor,
+            IGlobalApplicationState ApplicationState)
         {
             mSpinWheelQueryProcessor = SpinWheelQueryProcessor;
             mDateTime = DateTime;
             mUserQueryProcessor = UserQueryProcessor;
             mItemPurchaseManager = ItemPurchaseManager;
             mUserStatQueryProcessor = UserStatQueryProcessor;
+            mAppState = ApplicationState.State();
         }
 
         public async Task<SAchieveSpinWheelValidation> AchieveSpinWheel(int ID)
@@ -42,7 +46,16 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
                 {
                     response.IsValid = false;
                     response.TotalCoin = await mUserQueryProcessor.GetTotalCoin();
-                    return response; 
+
+                    if(response.TotalCoin >= mAppState.SpinWheelLoopPrice)
+                    {
+                        await mUserQueryProcessor.DecreaseCoin(mAppState.SpinWheelLoopPrice);
+                        await mUserStatQueryProcessor.AddFortune(Constants.DefaultUser.SpinWheelAnotherFortune);
+                    }
+                    else
+                    {
+                        return response;
+                    }
                 }
                 var isPossible = Enum.IsDefined(typeof(SSpinWheelType), spinItem.SpinWheelType.Title);
                 if (!isPossible)
@@ -59,8 +72,8 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
                     {
                         response.IsValid = false;
                         response.TotalCoin = await mUserQueryProcessor.GetTotalCoin();
+                        return response;
                     }
-                    return response;
                 }
 
                 await mSpinWheelQueryProcessor.AddRepeatableAchievement(spinItem.ID);
@@ -91,12 +104,15 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
                         added = await mSpinWheelQueryProcessor.AddUnRepeatableAchievement(spinItem.ID);
                         purchased = await mItemPurchaseManager.PurchaseFreeCategory(spinItem.Prize);
 
+                        response.IsValid = purchased;
+                        response.TotalCoin = await mUserQueryProcessor.GetTotalCoin();
+
                         break;
 
                     case SSpinWheelType.Coin:
 
                         response.IsValid = true;
-                        response.TotalCoin = await mUserQueryProcessor.AddCoin(spinItem.Prize);
+                        response.TotalCoin = await mUserQueryProcessor.IncreaseCoin(spinItem.Prize);
 
 
                         break;
@@ -120,6 +136,7 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
 
                         break;
                 }
+                return response;
             }
             return null;
         }

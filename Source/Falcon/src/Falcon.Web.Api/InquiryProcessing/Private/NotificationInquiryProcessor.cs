@@ -88,7 +88,7 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
 
                         if (sGift.GiftType != GiftTypes.Message)
                         {
-                            var coin = await mUserQueryProcessor.AddCoin(sGift.Prize);
+                            var coin = await mUserQueryProcessor.IncreaseCoin(sGift.Prize);
                             return coin;
                         }
                         else

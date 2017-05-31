@@ -43,6 +43,7 @@ namespace Falcon.Database.SqlServer.QueryProcessors
                 .Where(u => u.UserID == mUserSession.ID)
                 .Select(u => u.SpinRemainedChance)
                 .SingleOrDefaultAsync();
+
             return amount;
         }
     }

@@ -29,6 +29,7 @@ namespace Falcon.Common
             public const int DWMDefaultCount = 0;
             public const int SpinWheelChance = 3;
             public const int SpinWheelCount  = 0;
+            public const int SpinWheelAnotherFortune = 1; 
         }
         public static class Notfication
         {

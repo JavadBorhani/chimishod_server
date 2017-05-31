@@ -22,7 +22,7 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             mUserSession = UserSession;
             mDateTime = DateTime;
         }
-        public async Task<int> AddCoin(int Coin)
+        public async Task<int> IncreaseCoin(int Coin)
         {
             if (Coin < 0)
                 return -1; 
@@ -64,6 +64,15 @@ namespace Falcon.Database.SqlServer.QueryProcessors
                 .Select(u => u.DWMCount)
                 .SingleOrDefaultAsync();
             return count;
+        }
+
+        public async Task<int> DecreaseCoin(int Coin)
+        {
+            var user = await mDb.Set<User>().Where(u => u.ID == mUserSession.ID).SingleOrDefaultAsync();
+            user.TotalCoin -= Coin;
+
+            await mDb.SaveChangesAsync();
+            return user.TotalCoin;
         }
     }
 }
