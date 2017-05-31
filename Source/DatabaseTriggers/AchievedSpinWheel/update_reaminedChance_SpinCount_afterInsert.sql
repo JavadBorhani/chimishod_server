@@ -1,6 +1,6 @@
 USE [what_if]
 GO
-/****** Object:  Trigger [dbo].[update_reaminedChance_SpinCount_afterInsert]    Script Date: 5/30/2017 6:36:09 PM ******/
+/****** Object:  Trigger [dbo].[update_reaminedChance_SpinCount_afterInsert]    Script Date: 5/31/2017 11:34:59 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -38,14 +38,14 @@ BEGIN
 		Update 
 	[dbo].[UserStat]
 	Set 
-		SpinRemainedChance = SpinRemainedChance - 
+		SpinRemainedChance = SpinRemainedChance + 
 		(
 		Select COUNT(*)
 		From deleted I 
 		Where I.UserID = [dbo].[UserStat].UserID
 		)
 		,
-		SpinWheelCount = SpinWheelCount + 
+		SpinWheelCount = SpinWheelCount - 
 		(
 		Select COUNT(*)
 		From deleted I 

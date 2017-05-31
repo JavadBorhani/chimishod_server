@@ -38,7 +38,7 @@ namespace Falcon.Web.Api.Controllers.V1
 
         [Route("SpinWheel/Achieve/{SpinWheelID}")]
         [HttpPost]
-        public async Task<SAchieveSpinWheelValidation> GetSpinWheelList(int SpinWheelID)
+        public async Task<SAchieveSpinWheelValidation> CollectSpinWheel(int SpinWheelID)
         {
             var result = await mSpinWheelMaintenanceProcessor.AchieveSpinWheel(SpinWheelID);
             return result;

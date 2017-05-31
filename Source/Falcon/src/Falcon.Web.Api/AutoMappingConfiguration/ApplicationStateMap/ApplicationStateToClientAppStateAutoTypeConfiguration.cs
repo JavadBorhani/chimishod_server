@@ -1,10 +1,6 @@
 ﻿using AutoMapper;
 using Falcon.EFCommonContext.DbModel;
 using Falcon.Web.Models.Api;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
 namespace Falcon.Web.Api.AutoMappingConfiguration.ApplicationStateMap
 {
@@ -20,7 +16,7 @@ namespace Falcon.Web.Api.AutoMappingConfiguration.ApplicationStateMap
                 .ForMember(c => c.CreateNewQuestionPrize, m => m.MapFrom(a => a.Prize_CreateNewQuestionPrize))
                 .ForMember(c => c.WatchAdCoin, m => m.MapFrom(a => a.WatchAdCoin))
                 .ForMember(c => c.SpinWheelFortuneThreshold, m => m.MapFrom(a => a.SpinWheelFortuneThreshold))
-                .ForMember(c => c.SpinWheelLoopPrice, m => m.MapFrom(a => a.SpinWheelLoopPrice)); ;
+                .ForMember(c => c.SpinWheelLoopPrice, m => m.MapFrom(a => a.SpinWheelLoopPrice));
         }
     }
 }

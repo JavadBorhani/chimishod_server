@@ -42,7 +42,7 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
                 {
                     response.IsValid = false;
                     response.TotalCoin = await mUserQueryProcessor.GetTotalCoin();
-
+                    return response; 
                 }
                 var isPossible = Enum.IsDefined(typeof(SSpinWheelType), spinItem.SpinWheelType.Title);
                 if (!isPossible)
