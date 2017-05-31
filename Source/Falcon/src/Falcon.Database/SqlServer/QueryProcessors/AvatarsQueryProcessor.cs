@@ -45,7 +45,7 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             if (ID == Constants.DefaultUser.AvatarID)
                 return true;
 
-            var result = await mDb.Set<PurchaseAvatar>().AsNoTracking().CountAsync(pt => pt.UserAvatarID == ID) > 0;
+            var result = await mDb.Set<PurchaseAvatar>().AsNoTracking().CountAsync(pt => pt.UserAvatarID == ID && pt.UserID == mUserSession.ID) > 0;
             return result;
         }
 

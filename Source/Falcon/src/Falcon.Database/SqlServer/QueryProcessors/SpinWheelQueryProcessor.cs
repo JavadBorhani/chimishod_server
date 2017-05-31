@@ -53,9 +53,23 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             return true;
         }
 
+        public async Task<List<int>> GetAllAchievedUnrepeatableItemIds()
+        {
+            var result = await mDb.Set<UnRepeatableAchievedSpinWheel>()
+                .AsNoTracking()
+                .Where(u => u.UserID == mUserSession.ID)
+                .Select(u => u.SpinWheelID)
+                .ToListAsync();
+            return result;
+        }
+
         public async Task<List<SpinWheel>> GetAllSpinWheels()
         {
-            var result = await mDb.Set<SpinWheel>().AsNoTracking().ToListAsync();
+            var result = await mDb.Set<SpinWheel>()
+                .AsNoTracking()
+                .OrderBy(sw => sw.Priority)
+                .ToListAsync();
+
             return result;  
         }
 

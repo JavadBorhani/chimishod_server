@@ -45,7 +45,7 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             if (ID == Constants.DefaultUser.AppThemeID)
                 return true;
 
-            var result = await mDb.Set<PurchaseTheme>().AsNoTracking().CountAsync(pt => pt.ThemeID == ID) > 0;
+            var result = await mDb.Set<PurchaseTheme>().AsNoTracking().CountAsync(pt => pt.ThemeID == ID && pt.UserID == mUserSession.ID) > 0;
             return result;            
         }
 

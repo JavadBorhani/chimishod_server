@@ -65,6 +65,8 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
 
                 type = (SSpinWheelType)Enum.Parse(typeof(SSpinWheelType), spinItem.SpinWheelType.Title);
 
+                await mSpinWheelQueryProcessor.AddRepeatableAchievement(spinItem.ID);
+
                 if (type == SSpinWheelType.Theme || type == SSpinWheelType.Category || type == SSpinWheelType.Avatar)
                 {
                     var achieved = await mSpinWheelQueryProcessor.AchievedUnRepeatableSpinWheel(spinItem.ID);
@@ -75,8 +77,6 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
                         return response;
                     }
                 }
-
-                await mSpinWheelQueryProcessor.AddRepeatableAchievement(spinItem.ID);
 
                 bool added;
                 bool purchased;

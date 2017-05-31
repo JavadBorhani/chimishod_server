@@ -44,7 +44,7 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             if (ID == Constants.DefaultUser.CategoryID)
                 return true;
 
-            var result = await mDb.Set<PurchaseCategory>().AsNoTracking().CountAsync(pt => pt.CategoryID == ID) > 0;
+            var result = await mDb.Set<PurchaseCategory>().AsNoTracking().CountAsync(pt => pt.CategoryID == ID && pt.UserID == mUserSession.ID) > 0;
             return result;
         }
 
