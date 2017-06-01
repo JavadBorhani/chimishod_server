@@ -147,7 +147,7 @@ namespace Falcon.Web.Api
             //Encryption
             container.Bind<INumberEncryptor>().To<NumberEncryptor>().InSingletonScope();
             //Random
-            container.Bind<IRandomGenerator>().To<RandomGenerator>().InSingletonScope();
+            container.Bind<IRandomGenerator>().To<RandomGeneratorAdapter>().InSingletonScope();
         }
 
         private void ConfigureAutoMapper(IKernel container)

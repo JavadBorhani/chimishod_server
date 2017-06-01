@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Falcon.Common
 {
-    public class RandomGenerator : IRandomGenerator
+    public class RandomGeneratorAdapter : IRandomGenerator
     {
         private static Random randGenerator = new Random();
         public int Next(int MaxValue)
