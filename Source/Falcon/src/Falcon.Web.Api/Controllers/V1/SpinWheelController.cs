@@ -49,7 +49,7 @@ namespace Falcon.Web.Api.Controllers.V1
         {
             if(ModelState.IsValid)
             {
-                var item = mNumberEncyptor.Decrypt(Spin.SpinWheelID);
+                var item = mNumberEncyptor.DecryptInt(Spin.SpinWheelID);
                 if (item != -1)
                 {
                     var result = await mSpinWheelMaintenanceProcessor.AchieveSpinWheel(item);

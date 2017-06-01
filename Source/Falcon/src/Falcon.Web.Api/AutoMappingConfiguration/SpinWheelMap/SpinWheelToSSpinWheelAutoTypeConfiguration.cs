@@ -37,11 +37,11 @@ namespace Falcon.Web.Api.AutoMappingConfiguration.SpinWheelMap
                 .ForMember(ss => ss.SpinWheelAlternativeID, m => m.MapFrom(sw => sw.SpinWheelAlternativeID))
                 .ForMember(ss => ss.FirstChance, m => m.ResolveUsing(sw =>
                 {
-                    return NumberEncryptor.EncryptFloat(sw.FirstChance);
+                    return NumberEncryptor.EncryptDouble(sw.FirstChance);
                 }))
                 .ForMember(ss => ss.SecondChance, m => m.ResolveUsing(sw =>
                 {
-                    return NumberEncryptor.EncryptFloat(sw.SecondChance);
+                    return NumberEncryptor.EncryptDouble(sw.SecondChance , true);
                 }))
                 .ForMember(ss => ss.Priority, m => m.MapFrom(sw => sw.Priority));
         }

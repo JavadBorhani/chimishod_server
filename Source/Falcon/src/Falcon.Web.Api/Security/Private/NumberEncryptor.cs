@@ -5,18 +5,24 @@ using System.Linq;
 using System.Web;
 using System.Threading.Tasks;
 using System.Text;
+using Falcon.Common;
 
 namespace Falcon.Web.Api.Security.Private
 {
     public class NumberEncryptor : INumberEncryptor
     {
+        private readonly IRandomGenerator mRandGenerator;
+        public NumberEncryptor(IRandomGenerator RandomGenerator)
+        {
+            mRandGenerator = RandomGenerator;
+        }
         private const int CharacterAmount = 20;
 
-        public double DecryptFloat(string Number)
+        public double DecryptDouble(string Number)
         {
             StringBuilder decStr = new StringBuilder(Number.Substring(5));
 
-            foreach(var entry in keyMap)
+            foreach(var entry in firstKeyMap)
             {
                 decStr = decStr.Replace(entry.Value, entry.Key);
             }
@@ -63,16 +69,26 @@ namespace Falcon.Web.Api.Security.Private
                 return -1;
         }
 
-        public string EncryptFloat(double Number)
+        public string EncryptDouble(double Number , bool UseSecondMap = false)
         {
             float enc = (float)Math.Sin(Math.PI * Number / 180.0f);
             enc *= -1.618033f;
 
             StringBuilder encStr = new StringBuilder(enc.ToString());
 
-            foreach (var entry in keyMap)
+            if(UseSecondMap)
             {
-                encStr = encStr.Replace(entry.Key, entry.Value);
+                foreach (var entry in secondKeyMap)
+                {
+                    encStr = encStr.Replace(entry.Key, entry.Value);
+                }
+            }
+            else
+            {
+                foreach (var entry in firstKeyMap)
+                {
+                    encStr = encStr.Replace(entry.Key, entry.Value);
+                }
             }
 
             return GetRandomString(5) + encStr;
@@ -95,16 +111,15 @@ namespace Falcon.Web.Api.Security.Private
 
         private string GetRandomString(int length)
         {
-            Random random = new Random();
             char[] buf = new char[length];
             for (int i = 0; i < buf.Length; i++)
             {
-                buf[i] = (char)random.Next(127);
+                buf[i] = (char)mRandGenerator.Next(127);
             }
             return new string(buf);
         }
 
-        private static readonly Dictionary<string, string> keyMap = new Dictionary<string, string>()
+        private static readonly Dictionary<string, string> firstKeyMap = new Dictionary<string, string>()
         {
             {"1" , "@"},
             {"2" , "&"} ,
@@ -117,6 +132,21 @@ namespace Falcon.Web.Api.Security.Private
             {"9" , "x"} ,
             {"0" , "G"} ,
             {"." , "F"} ,
+        };
+
+        private static readonly Dictionary<string, string> secondKeyMap = new Dictionary<string, string>()
+        {
+            {"1" , "B"},
+            {"2" , "}"} ,
+            {"3" , "K"} ,
+            {"4" , "#"} ,
+            {"5" , "?"} ,
+            {"6" , "M"} ,
+            {"7" , "&"} ,
+            {"8" , "J"} ,
+            {"9" , "@"} ,
+            {"0" , "a"} ,
+            {"." , "©"} ,
         };
     }
 }

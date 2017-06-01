@@ -9,7 +9,7 @@ namespace Falcon.Web.Api.Security.Public
     public interface INumberEncryptor
     {
         double  DecryptDouble(string Number);
-        string  EncryptDouble(double Number);
+        string  EncryptDouble(double Number , bool UseSecondMap = false);
         string  EncryptInt(int ItemNumber);
         int     DecryptInt(string Item);
     }

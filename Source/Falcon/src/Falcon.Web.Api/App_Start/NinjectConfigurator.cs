@@ -144,8 +144,10 @@ namespace Falcon.Web.Api
 
             container.Bind<IItemPurchaseManager>().To<ItemPurchaseManager>().InRequestScope();
 
+            //Encryption
             container.Bind<INumberEncryptor>().To<NumberEncryptor>().InSingletonScope();
-            
+            //Random
+            container.Bind<IRandomGenerator>().To<RandomGenerator>().InSingletonScope();
         }
 
         private void ConfigureAutoMapper(IKernel container)

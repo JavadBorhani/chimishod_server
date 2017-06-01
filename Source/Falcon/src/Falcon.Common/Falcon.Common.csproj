@@ -63,10 +63,12 @@
     <Compile Include="Extentions\IntExtensions.cs" />
     <Compile Include="Extentions\UriExtensions.cs" />
     <Compile Include="IDateTime.cs" />
+    <Compile Include="IRandomGenerator.cs" />
     <Compile Include="Logging\ILogManager.cs" />
     <Compile Include="Logging\LogManagerAdapter.cs" />
     <Compile Include="PrimitiveTypeParser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RandomGenerator.cs" />
     <Compile Include="Security\IUserSession.cs" />
     <Compile Include="Security\IWebUserSession.cs" />
   </ItemGroup>
