@@ -22,7 +22,7 @@ namespace Falcon.Web.Models.Api
         public string Title { get; set; }
         public string Icon { get; set; }
         public SSpinWheelType SpinWheelType { get; set; }
-        public int Prize { get; set; }
+        public string Prize { get; set; }
         public int? SpinWheelAlternativeID { get; set; }
         public string FirstChance { get; set; }
         public string SecondChance { get; set; }

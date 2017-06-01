@@ -23,11 +23,11 @@ namespace Falcon.Web.Api.Controllers.V1
 
         private readonly ISpinWheelInquiryProcessor mSpinWheelInquiryProcessor;
         private readonly ISpinWheelMaintenanceProcessor mSpinWheelMaintenanceProcessor;
-        private readonly INumberEncryptor mNumberEncyptor; 
+        private readonly IEncryptor mNumberEncyptor; 
         public SpinWheelController(
             ISpinWheelInquiryProcessor SpinWheelInquiryProcessor, 
             ISpinWheelMaintenanceProcessor SpinWheelMaintenanceProcessor , 
-            INumberEncryptor NumberEncryptor)
+            IEncryptor NumberEncryptor)
         {
             mSpinWheelInquiryProcessor = SpinWheelInquiryProcessor;
             mSpinWheelMaintenanceProcessor = SpinWheelMaintenanceProcessor;

@@ -212,7 +212,7 @@
     <Compile Include="MaintenanceProcessing\Public\IWatchAdMaintenanceProcessor.cs" />
     <Compile Include="Security\Private\NumberEncryptor.cs" />
     <Compile Include="Security\Private\SpinItem.cs" />
-    <Compile Include="Security\Public\INumberEncryptor.cs" />
+    <Compile Include="Security\Public\IEncryptor.cs" />
     <Compile Include="WatchAd\Private\ErrorToken.cs" />
     <Compile Include="WatchAd\Private\RequestToken.cs" />
     <Compile Include="WatchAd\Private\ResponseToken.cs" />

@@ -19,9 +19,12 @@ namespace Falcon.Web.Api.AutoMappingConfiguration.SpinWheelMap
             CreateMap<SpinWheel, SSpinWheel>()
                 .ForMember(ss => ss.ID, m => m.ResolveUsing(sw =>
                 {                    
-                    return NumberEncryptor.EncryptInt(sw.ID);
+                    return Encryptor.EncryptInt(sw.ID);
                 }))
-                .ForMember(ss => ss.Title, m => m.MapFrom(sw => sw.Title))
+                .ForMember(ss => ss.Title, m => m.ResolveUsing(sw =>
+                {
+                    return Encryptor.EncryptString(sw.Title);
+                }))
                 .ForMember(ss => ss.Icon, m => m.MapFrom(sw => sw.Icon))
                 .ForMember(ss => ss.SpinWheelType, m => m.ResolveUsing(sw =>
                 {
@@ -33,24 +36,27 @@ namespace Falcon.Web.Api.AutoMappingConfiguration.SpinWheelMap
                     }
                     return 0;                    
                 }))
-                .ForMember(ss => ss.Prize, m => m.MapFrom(sw => sw.Prize))
+                .ForMember(ss => ss.Prize, m => m.ResolveUsing(sw =>
+                {
+                    return Encryptor.EncryptInt(sw.Prize);
+                }))
                 .ForMember(ss => ss.SpinWheelAlternativeID, m => m.MapFrom(sw => sw.SpinWheelAlternativeID))
                 .ForMember(ss => ss.FirstChance, m => m.ResolveUsing(sw =>
                 {
-                    return NumberEncryptor.EncryptDouble(sw.FirstChance);
+                    return Encryptor.EncryptDouble((float)sw.FirstChance);
                 }))
                 .ForMember(ss => ss.SecondChance, m => m.ResolveUsing(sw =>
                 {
-                    return NumberEncryptor.EncryptDouble(sw.SecondChance , true);
+                    return Encryptor.EncryptDouble((float)sw.SecondChance , true);
                 }))
                 .ForMember(ss => ss.Priority, m => m.MapFrom(sw => sw.Priority));
         }
 
-        private INumberEncryptor NumberEncryptor
+        private IEncryptor Encryptor
         {
             get
             {
-                return WebContainerManager.Get<INumberEncryptor>();
+                return WebContainerManager.Get<IEncryptor>();
             }
         }
 

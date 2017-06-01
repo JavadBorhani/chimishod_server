@@ -145,7 +145,7 @@ namespace Falcon.Web.Api
             container.Bind<IItemPurchaseManager>().To<ItemPurchaseManager>().InRequestScope();
 
             //Encryption
-            container.Bind<INumberEncryptor>().To<NumberEncryptor>().InSingletonScope();
+            container.Bind<IEncryptor>().To<NumberEncryptor>().InSingletonScope();
             //Random
             container.Bind<IRandomGenerator>().To<RandomGeneratorAdapter>().InSingletonScope();
         }

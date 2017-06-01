@@ -9,7 +9,7 @@ using Falcon.Common;
 
 namespace Falcon.Web.Api.Security.Private
 {
-    public class NumberEncryptor : INumberEncryptor
+    public class NumberEncryptor : IEncryptor
     {
         private readonly IRandomGenerator mRandGenerator;
         public NumberEncryptor(IRandomGenerator RandomGenerator)
@@ -18,7 +18,7 @@ namespace Falcon.Web.Api.Security.Private
         }
         private const int CharacterAmount = 20;
 
-        public double DecryptDouble(string Number)
+        public float DecryptDouble(string Number)
         {
             StringBuilder decStr = new StringBuilder(Number.Substring(5));
 
@@ -27,10 +27,10 @@ namespace Falcon.Web.Api.Security.Private
                 decStr = decStr.Replace(entry.Value, entry.Key);
             }
 
-            double dec = Convert.ToDouble(decStr);
+            float dec = Convert.ToSingle(decStr);
             dec /= -1.618033f;
 
-            dec = ((Math.Asin(dec) * (180 / Math.PI)));
+            dec = (float)((Math.Asin(dec) * (180 / Math.PI)));
             return dec;
         }
 
@@ -41,17 +41,24 @@ namespace Falcon.Web.Api.Security.Private
 
             StringBuilder builder = new StringBuilder(Code);
 
-            for (int i = 0; i < builder.Length; i++)
-            {
-                builder[i] = (char)(builder[i] - (i * 23));
-            }
+
+
+            builder[1] = (char)(builder[1] - (1 * 23));
+            builder[3] = (char)(builder[3] - (3 * 23));
+            builder[5] = (char)(builder[5] - (5 * 23));
+            builder[7] = (char)(builder[7] - (7 * 23));
+            builder[9] = (char)(builder[9] - (9 * 23));
+            builder[11] = (char)(builder[11] - (11 * 23));
+            builder[13] = (char)(builder[13] - (13 * 23));
+            builder[14] = (char)(builder[14] - (14 * 23));
+            builder[17] = (char)(builder[17] - (17 * 23));
+            builder[18] = (char)(builder[18] - (18 * 23));
+
 
             bool valid = false;
             char ch0 = (char)(builder[14] - 11);
             char ch1 = (char)(builder[18] + 49);
-            char ch00 = builder[3];
-            char ch11 = builder[13];
-            if ((ch00 == ch0) && (ch11 == ch1))
+            if ((builder[3] == ch0) && (builder[13] == ch1))
                 valid = true;
 
             if (valid)
@@ -69,7 +76,7 @@ namespace Falcon.Web.Api.Security.Private
                 return -1;
         }
 
-        public string EncryptDouble(double Number , bool UseSecondMap = false)
+        public string EncryptDouble(float Number , bool UseSecondMap = false)
         {
             float enc = (float)Math.Sin(Math.PI * Number / 180.0f);
             enc *= -1.618033f;
@@ -117,6 +124,34 @@ namespace Falcon.Web.Api.Security.Private
                 buf[i] = (char)mRandGenerator.Next(127);
             }
             return new string(buf);
+        }
+
+        public string EncryptString(string expression)
+        {
+            string randString = GetRandomString(expression.Length);
+
+            StringBuilder builder = new StringBuilder(randString, expression.Length * 2);
+
+            for (int i = expression.Length, index = 0; i < expression.Length * 2; ++i, ++index)
+            {
+                builder.Append((char)(expression[index] - randString[index]));
+            }
+
+            return builder.ToString();
+        }
+        public string DecryptString(string expression)
+        {
+            string Base = expression.Substring(0, expression.Length / 2);
+            string value = expression.Substring(expression.Length / 2);
+
+            char[] outPut = new char[value.Length];
+            for (int i = 0; i < value.Length; i++)
+            {
+                outPut[i] = (char)(value[i] + Base[i]);
+            }
+
+            string result = new string(outPut);
+            return result;
         }
 
         private static readonly Dictionary<string, string> firstKeyMap = new Dictionary<string, string>()
