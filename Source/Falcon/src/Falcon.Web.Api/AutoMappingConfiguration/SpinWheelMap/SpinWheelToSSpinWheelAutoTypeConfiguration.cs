@@ -19,7 +19,7 @@ namespace Falcon.Web.Api.AutoMappingConfiguration.SpinWheelMap
             CreateMap<SpinWheel, SSpinWheel>()
                 .ForMember(ss => ss.ID, m => m.ResolveUsing(sw =>
                 {                    
-                    return NumberEncryptor.Encrypt(sw.ID);
+                    return NumberEncryptor.EncryptInt(sw.ID);
                 }))
                 .ForMember(ss => ss.Title, m => m.MapFrom(sw => sw.Title))
                 .ForMember(ss => ss.Icon, m => m.MapFrom(sw => sw.Icon))
@@ -35,8 +35,14 @@ namespace Falcon.Web.Api.AutoMappingConfiguration.SpinWheelMap
                 }))
                 .ForMember(ss => ss.Prize, m => m.MapFrom(sw => sw.Prize))
                 .ForMember(ss => ss.SpinWheelAlternativeID, m => m.MapFrom(sw => sw.SpinWheelAlternativeID))
-                .ForMember(ss => ss.FirstChance, m => m.MapFrom(sw => sw.FirstChance))
-                .ForMember(ss => ss.SecondChance, m => m.MapFrom(sw => sw.SecondChance))
+                .ForMember(ss => ss.FirstChance, m => m.ResolveUsing(sw =>
+                {
+                    return NumberEncryptor.EncryptFloat(sw.FirstChance);
+                }))
+                .ForMember(ss => ss.SecondChance, m => m.ResolveUsing(sw =>
+                {
+                    return NumberEncryptor.EncryptFloat(sw.SecondChance);
+                }))
                 .ForMember(ss => ss.Priority, m => m.MapFrom(sw => sw.Priority));
         }
 

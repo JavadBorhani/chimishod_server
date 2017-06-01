@@ -45,15 +45,18 @@ namespace Falcon.Web.Api.Controllers.V1
 
         [Route("SpinWheel/Achieve/")]
         [HttpPost]
-        public async Task<SAchieveSpinWheelValidation> CollectSpinWheel(SpinItem Spin)
+        public async Task<SAchieveSpinWheelValidation> CollectSpinWheel([FromBody] SpinItem Spin)
         {
-            var item = mNumberEncyptor.Decrypt(Spin.SpinWheelID);
-            if(item != -1)
+            if(ModelState.IsValid)
             {
-                var result = await mSpinWheelMaintenanceProcessor.AchieveSpinWheel(item);
-                return result;
+                var item = mNumberEncyptor.Decrypt(Spin.SpinWheelID);
+                if (item != -1)
+                {
+                    var result = await mSpinWheelMaintenanceProcessor.AchieveSpinWheel(item);
+                    return result;
+                }
             }
-            return null;    
+            return null;
         }
     }
 }

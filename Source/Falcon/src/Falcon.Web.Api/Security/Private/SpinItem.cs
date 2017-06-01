@@ -8,7 +8,7 @@ namespace Falcon.Web.Api.Security.Private
 {
     public class SpinItem
     {
-        [Required(AllowEmptyStrings =false)]
+        [Required(AllowEmptyStrings = false)]
         public string SpinWheelID { get; set; }
     }
 }
