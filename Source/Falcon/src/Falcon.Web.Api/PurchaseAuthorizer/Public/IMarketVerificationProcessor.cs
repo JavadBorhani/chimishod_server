@@ -9,7 +9,7 @@ namespace Falcon.Web.Api.PurchaseAuthorizer.Public
 {
     public interface IMarketVerificationProcessor
     {
-        Task<TokenResponse> GetFirstHandShaking(string MarketTokenVerifierUri, TokenRequest TokenRequest);
+        Task<TokenResponse> AuthorizeWithHandshaking(string MarketTokenVerifierUri, TokenRequest TokenRequest);
         Task<TokenResponse> GetTokenWithRefreshToken(string MarketTokenVerifierUri , RefreshTokenRequest RefreshTokenRequest);
         Task<PurchaseVerificationResponse> VerifyPurchase(PurchaseVerificationRequest PurchaseVerificationRequest , bool IgnoreAccessToken = false);
     }

@@ -40,7 +40,7 @@ namespace Falcon.Web.Api.PurchaseAuthorizer.Private
 
             if(string.IsNullOrWhiteSpace(MarketInfo.RefreshToken) || string.IsNullOrWhiteSpace(MarketInfo.AccessToken)) // it's the first time to get access and refresh code
             {
-                var tokenResponse = await mMarketVerificationProcessor.GetFirstHandShaking(MarketInfo.LinkToAuthorize, new TokenRequest
+                var tokenResponse = await mMarketVerificationProcessor.AuthorizeWithHandshaking(MarketInfo.LinkToAuthorize, new TokenRequest
                 {
                     client_id = MarketInfo.ClientID,
                     client_secret = MarketInfo.ClientSecret,

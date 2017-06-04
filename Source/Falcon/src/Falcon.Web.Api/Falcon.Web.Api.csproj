@@ -152,6 +152,7 @@
     <Compile Include="AutoMappingConfiguration\StoreMap\StoreToSStoreAutoTypeConfiguration.cs" />
     <Compile Include="AutoMappingConfiguration\UserInfoMap\UserInfoToSUserInfoAutoTypeConfiguration.cs" />
     <Compile Include="AutoMappingConfiguration\UserStatMap\UserStatToSUserStatAutoTypeConfiguration.cs" />
+    <Compile Include="Controllers\V1\CharacteristicsController.cs" />
     <Compile Include="Controllers\V1\CodeGiftsController.cs" />
     <Compile Include="Controllers\V1\DWMController.cs" />
     <Compile Include="Controllers\V1\LeaderBoardController.cs" />

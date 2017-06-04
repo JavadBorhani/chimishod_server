@@ -28,7 +28,7 @@ namespace Falcon.Web.Api.PurchaseAuthorizer.Private
             mJsonManager = JsonManager; 
         }
 
-        public async Task<TokenResponse> GetFirstHandShaking(string MarketTokenVerifierUri, TokenRequest TokenRequest)
+        public async Task<TokenResponse> AuthorizeWithHandshaking(string MarketTokenVerifierUri, TokenRequest TokenRequest)
         {
             
             if(TokenRequest == null || string.IsNullOrEmpty(MarketTokenVerifierUri))
