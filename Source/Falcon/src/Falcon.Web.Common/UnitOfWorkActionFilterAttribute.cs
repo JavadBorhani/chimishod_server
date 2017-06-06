@@ -16,7 +16,7 @@ namespace Falcon.Web.Common
         {
             get { return WebContainerManager.Get<IActionTransactionHelper>(); }
         }
-        public override bool AllowMultiple // To Prevent Calling this function twice
+        public override bool AllowMultiple // To Prevent Calling this function twice in the same request 
         {
             get { return false; }
         }

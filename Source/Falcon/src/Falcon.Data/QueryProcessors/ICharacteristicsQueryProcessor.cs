@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Falcon.EFCommonContext.DbModel;
+using Falcon.Web.Models.Api;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +10,6 @@ namespace Falcon.Data.QueryProcessors
 {
     public interface ICharacteristicsQueryProcessor
     {
-
+        Task<List<SCharacteristic>> FetchAllCharacteristicsWithAliases();
     }
 }

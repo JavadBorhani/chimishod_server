@@ -156,10 +156,10 @@
           <Property Name="Price" Type="int" Nullable="false" />
           <Property Name="BackImage" Type="nvarchar" MaxLength="50" />
           <Property Name="DialogImage" Type="nvarchar" MaxLength="50" />
-          <Property Name="DiscountAmount" Type="int" Nullable="false" />
-          <Property Name="TagStateID" Type="int" Nullable="false" />
           <Property Name="CreatedDate" Type="datetime" Nullable="false" />
           <Property Name="UpdatedDate" Type="datetime" Nullable="false" />
+          <Property Name="DiscountAmount" Type="int" Nullable="false" />
+          <Property Name="TagStateID" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="AssignedCharacter">
           <Key>
@@ -194,6 +194,7 @@
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Title" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Icon" Type="varchar" MaxLength="150" Nullable="false" />
+          <Property Name="CharacterID" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="CharacterPoints">
           <Key>
@@ -211,7 +212,6 @@
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Title" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="AliasID" Type="int" Nullable="false" />
           <Property Name="Icon" Type="varchar" MaxLength="150" Nullable="false" />
         </EntityType>
         <EntityType Name="CodeGift">
@@ -311,11 +311,11 @@
           <Property Name="GiftTypeID" Type="int" Nullable="false" />
           <Property Name="Prize" Type="int" Nullable="false" />
           <Property Name="Day" Type="int" />
-          <Property Name="QueryString" Type="nvarchar" MaxLength="150" />
           <Property Name="StartDate" Type="datetime" />
           <Property Name="ExpireDate" Type="datetime" />
           <Property Name="CreatedDate" Type="datetime" Nullable="false" />
           <Property Name="UpdatedDate" Type="datetime" Nullable="false" />
+          <Property Name="QueryString" Type="nvarchar" MaxLength="150" />
         </EntityType>
         <EntityType Name="GiftType">
           <Key>
@@ -451,11 +451,11 @@
           <Property Name="Like_Count" Type="int" Nullable="false" />
           <Property Name="Dislike_Count" Type="int" Nullable="false" />
           <Property Name="Weight" Type="float" Nullable="false" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+          <Property Name="UpdateDate" Type="datetime" Nullable="false" />
           <Property Name="Banned" Type="bit" Nullable="false" />
           <Property Name="QuestionBoostID" Type="int" />
           <Property Name="ActionID" Type="int" />
-          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
-          <Property Name="UpdateDate" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="QuestionAction">
           <Key>
@@ -557,11 +557,11 @@
           <Property Name="SKU" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="Coin" Type="int" Nullable="false" />
           <Property Name="IsAccessibleInAllStores" Type="bit" Nullable="false" />
-          <Property Name="DiscountAmount" Type="int" Nullable="false" />
           <Property Name="Icon" Type="nvarchar" MaxLength="150" Nullable="false" />
           <Property Name="RectangleColor" Type="varchar" MaxLength="10" Nullable="false" />
           <Property Name="CreatedDate" Type="datetime" Nullable="false" />
           <Property Name="UpdatedDate" Type="datetime" Nullable="false" />
+          <Property Name="DiscountAmount" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="sysdiagrams">
           <Key>
@@ -598,12 +598,12 @@
           <Property Name="UserTypeID" Type="int" />
           <Property Name="TotalCoin" Type="int" Nullable="false" />
           <Property Name="Score" Type="int" Nullable="false" />
-          <Property Name="Rank" Type="int" />
           <Property Name="LevelProgress" Type="int" Nullable="false" />
           <Property Name="CurrentLevelID" Type="int" />
           <Property Name="IsAbleToWriteComment" Type="bit" Nullable="false" />
           <Property Name="LastSeenDateTime" Type="datetime" Nullable="false" />
           <Property Name="PrevLastSeenDateTime" Type="datetime" Nullable="false" />
+          <Property Name="Rank" Type="int" />
           <Property Name="PreviousDaySeen" Type="datetime" Nullable="false" />
           <Property Name="DWMCount" Type="int" Nullable="false" />
           <Property Name="IsTutorial" Type="bit" Nullable="false" />
@@ -913,6 +913,20 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_CharacterAlias_Characters">
+          <End Role="Characters" Type="Self.Characters" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CharacterAlias" Type="Self.CharacterAlias" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Characters">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="CharacterAlias">
+              <PropertyRef Name="CharacterID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_CharacterPoints_Characters">
           <End Role="Characters" Type="Self.Characters" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -962,20 +976,6 @@
             </Principal>
             <Dependent Role="CharacterPoints">
               <PropertyRef Name="CreatorID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Characters_CharacterAlias">
-          <End Role="CharacterAlias" Type="Self.CharacterAlias" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="Characters" Type="Self.Characters" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="CharacterAlias">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="Characters">
-              <PropertyRef Name="AliasID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1815,6 +1815,10 @@
             <End Role="TagState" EntitySet="TagState" />
             <End Role="Category" EntitySet="Category" />
           </AssociationSet>
+          <AssociationSet Name="FK_CharacterAlias_Characters" Association="Self.FK_CharacterAlias_Characters">
+            <End Role="Characters" EntitySet="Characters" />
+            <End Role="CharacterAlias" EntitySet="CharacterAlias" />
+          </AssociationSet>
           <AssociationSet Name="FK_CharacterPoints_Characters" Association="Self.FK_CharacterPoints_Characters">
             <End Role="Characters" EntitySet="Characters" />
             <End Role="CharacterPoints" EntitySet="CharacterPoints" />
@@ -1830,10 +1834,6 @@
           <AssociationSet Name="FK_CharacterPoints_User1" Association="Self.FK_CharacterPoints_User1">
             <End Role="User" EntitySet="User" />
             <End Role="CharacterPoints" EntitySet="CharacterPoints" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Characters_CharacterAlias" Association="Self.FK_Characters_CharacterAlias">
-            <End Role="CharacterAlias" EntitySet="CharacterAlias" />
-            <End Role="Characters" EntitySet="Characters" />
           </AssociationSet>
           <AssociationSet Name="FK_Comment_Question" Association="Self.FK_Comment_Question">
             <End Role="Question" EntitySet="Question" />
@@ -2206,9 +2206,9 @@
             <End Role="Category" EntitySet="Categories" />
             <End Role="SelectedCategory" EntitySet="SelectedCategories" />
           </AssociationSet>
-          <AssociationSet Name="FK_Characters_CharacterAlias" Association="Falcon.DbModel.FK_Characters_CharacterAlias">
-            <End Role="CharacterAlia" EntitySet="CharacterAlias" />
+          <AssociationSet Name="FK_CharacterAlias_Characters" Association="Falcon.DbModel.FK_CharacterAlias_Characters">
             <End Role="Character" EntitySet="Characters" />
+            <End Role="CharacterAlia" EntitySet="CharacterAlias" />
           </AssociationSet>
           <AssociationSet Name="FK_CharacterPoints_Characters" Association="Falcon.DbModel.FK_CharacterPoints_Characters">
             <End Role="Character" EntitySet="Characters" />
@@ -2576,10 +2576,10 @@
           <Property Name="Price" Type="Int32" Nullable="false" />
           <Property Name="BackImage" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="DialogImage" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="DiscountAmount" Type="Int32" Nullable="false" />
-          <Property Name="TagStateID" Type="Int32" Nullable="false" />
           <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="UpdatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="DiscountAmount" Type="Int32" Nullable="false" />
+          <Property Name="TagStateID" Type="Int32" Nullable="false" />
           <NavigationProperty Name="TagState" Relationship="Falcon.DbModel.FK_AppTheme_TagState" FromRole="AppTheme" ToRole="TagState" />
           <NavigationProperty Name="PurchaseThemes" Relationship="Falcon.DbModel.FK_PurchaseTheme_AppTheme" FromRole="AppTheme" ToRole="PurchaseTheme" />
           <NavigationProperty Name="SelectedThemes" Relationship="Falcon.DbModel.FK_SelectedTheme_AppTheme" FromRole="AppTheme" ToRole="SelectedTheme" />
@@ -2626,7 +2626,8 @@
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Title" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Icon" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="Characters" Relationship="Falcon.DbModel.FK_Characters_CharacterAlias" FromRole="CharacterAlia" ToRole="Character" />
+          <Property Name="CharacterID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Character" Relationship="Falcon.DbModel.FK_CharacterAlias_Characters" FromRole="CharacterAlia" ToRole="Character" />
         </EntityType>
         <EntityType Name="CharacterPoint">
           <Key>
@@ -2648,10 +2649,9 @@
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Title" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="AliasID" Type="Int32" Nullable="false" />
           <Property Name="Icon" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="AssignedCharacters" Relationship="Falcon.DbModel.FK_AssignedCharacter_Characters" FromRole="Character" ToRole="AssignedCharacter" />
-          <NavigationProperty Name="CharacterAlia" Relationship="Falcon.DbModel.FK_Characters_CharacterAlias" FromRole="Character" ToRole="CharacterAlia" />
+          <NavigationProperty Name="CharacterAlias" Relationship="Falcon.DbModel.FK_CharacterAlias_Characters" FromRole="Character" ToRole="CharacterAlia" />
           <NavigationProperty Name="CharacterPoints" Relationship="Falcon.DbModel.FK_CharacterPoints_Characters" FromRole="Character" ToRole="CharacterPoint" />
           <NavigationProperty Name="PersonalizedCharacters" Relationship="Falcon.DbModel.FK_PersonalizedCharacter_Characters" FromRole="Character" ToRole="PersonalizedCharacter" />
         </EntityType>
@@ -2767,11 +2767,11 @@
           <Property Name="GiftTypeID" Type="Int32" Nullable="false" />
           <Property Name="Prize" Type="Int32" Nullable="false" />
           <Property Name="Day" Type="Int32" />
-          <Property Name="QueryString" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
           <Property Name="StartDate" Type="DateTime" Precision="3" />
           <Property Name="ExpireDate" Type="DateTime" Precision="3" />
           <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="UpdatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="QueryString" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="AchievedGifts" Relationship="Falcon.DbModel.FK_AchievedGifts_Gift" FromRole="Gift" ToRole="AchievedGift" />
           <NavigationProperty Name="DisplayedNotifications" Relationship="Falcon.DbModel.FK_DisplayedNotification_Gift" FromRole="Gift" ToRole="DisplayedNotification" />
           <NavigationProperty Name="GiftType" Relationship="Falcon.DbModel.FK_Gift_GiftType" FromRole="Gift" ToRole="GiftType" />
@@ -2929,11 +2929,11 @@
           <Property Name="Like_Count" Type="Int32" Nullable="false" />
           <Property Name="Dislike_Count" Type="Int32" Nullable="false" />
           <Property Name="Weight" Type="Double" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UpdateDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="Banned" Type="Boolean" Nullable="false" />
           <Property Name="QuestionBoostID" Type="Int32" />
           <Property Name="ActionID" Type="Int32" />
-          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="UpdateDate" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="Answers" Relationship="Falcon.DbModel.FK_Answer_Question" FromRole="Question" ToRole="Answer" />
           <NavigationProperty Name="Category" Relationship="Falcon.DbModel.FK_Question_Category" FromRole="Question" ToRole="Category" />
           <NavigationProperty Name="CharacterPoints" Relationship="Falcon.DbModel.FK_CharacterPoints_Question" FromRole="Question" ToRole="CharacterPoint" />
@@ -3063,11 +3063,11 @@
           <Property Name="SKU" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Coin" Type="Int32" Nullable="false" />
           <Property Name="IsAccessibleInAllStores" Type="Boolean" Nullable="false" />
-          <Property Name="DiscountAmount" Type="Int32" Nullable="false" />
           <Property Name="Icon" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
           <Property Name="RectangleColor" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="UpdatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="DiscountAmount" Type="Int32" Nullable="false" />
           <NavigationProperty Name="MarketInfo" Relationship="Falcon.DbModel.FK_Store_MarketInfo" FromRole="Store" ToRole="MarketInfo" />
           <NavigationProperty Name="Orders" Relationship="Falcon.DbModel.FK_Order_Store" FromRole="Store" ToRole="Order" />
           <NavigationProperty Name="PriceHistories" Relationship="Falcon.DbModel.FK_PriceList_Store" FromRole="Store" ToRole="PriceHistory" />
@@ -3112,12 +3112,12 @@
           <Property Name="UserTypeID" Type="Int32" />
           <Property Name="TotalCoin" Type="Int32" Nullable="false" />
           <Property Name="Score" Type="Int32" Nullable="false" />
-          <Property Name="Rank" Type="Int32" />
           <Property Name="LevelProgress" Type="Int32" Nullable="false" />
           <Property Name="CurrentLevelID" Type="Int32" />
           <Property Name="IsAbleToWriteComment" Type="Boolean" Nullable="false" />
           <Property Name="LastSeenDateTime" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="PrevLastSeenDateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Rank" Type="Int32" />
           <Property Name="PreviousDaySeen" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="DWMCount" Type="Int32" Nullable="false" />
           <Property Name="IsTutorial" Type="Boolean" Nullable="false" />
@@ -3561,17 +3561,17 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Characters_CharacterAlias">
-          <End Type="Falcon.DbModel.CharacterAlia" Role="CharacterAlia" Multiplicity="1">
+        <Association Name="FK_CharacterAlias_Characters">
+          <End Type="Falcon.DbModel.Character" Role="Character" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Type="Falcon.DbModel.Character" Role="Character" Multiplicity="*" />
+          <End Type="Falcon.DbModel.CharacterAlia" Role="CharacterAlia" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="CharacterAlia">
+            <Principal Role="Character">
               <PropertyRef Name="ID" />
             </Principal>
-            <Dependent Role="Character">
-              <PropertyRef Name="AliasID" />
+            <Dependent Role="CharacterAlia">
+              <PropertyRef Name="CharacterID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -4394,10 +4394,10 @@
           <EntitySetMapping Name="AppThemes">
             <EntityTypeMapping TypeName="Falcon.DbModel.AppTheme">
               <MappingFragment StoreEntitySet="AppTheme">
-                <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
-                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
                 <ScalarProperty Name="TagStateID" ColumnName="TagStateID" />
                 <ScalarProperty Name="DiscountAmount" ColumnName="DiscountAmount" />
+                <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
                 <ScalarProperty Name="DialogImage" ColumnName="DialogImage" />
                 <ScalarProperty Name="BackImage" ColumnName="BackImage" />
                 <ScalarProperty Name="Price" ColumnName="Price" />
@@ -4441,6 +4441,7 @@
           <EntitySetMapping Name="CharacterAlias">
             <EntityTypeMapping TypeName="Falcon.DbModel.CharacterAlia">
               <MappingFragment StoreEntitySet="CharacterAlias">
+                <ScalarProperty Name="CharacterID" ColumnName="CharacterID" />
                 <ScalarProperty Name="Icon" ColumnName="Icon" />
                 <ScalarProperty Name="Title" ColumnName="Title" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
@@ -4462,7 +4463,6 @@
             <EntityTypeMapping TypeName="Falcon.DbModel.Character">
               <MappingFragment StoreEntitySet="Characters">
                 <ScalarProperty Name="Icon" ColumnName="Icon" />
-                <ScalarProperty Name="AliasID" ColumnName="AliasID" />
                 <ScalarProperty Name="Title" ColumnName="Title" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
@@ -4565,11 +4565,11 @@
           <EntitySetMapping Name="Gifts">
             <EntityTypeMapping TypeName="Falcon.DbModel.Gift">
               <MappingFragment StoreEntitySet="Gift">
+                <ScalarProperty Name="QueryString" ColumnName="QueryString" />
                 <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
                 <ScalarProperty Name="ExpireDate" ColumnName="ExpireDate" />
                 <ScalarProperty Name="StartDate" ColumnName="StartDate" />
-                <ScalarProperty Name="QueryString" ColumnName="QueryString" />
                 <ScalarProperty Name="Day" ColumnName="Day" />
                 <ScalarProperty Name="Prize" ColumnName="Prize" />
                 <ScalarProperty Name="GiftTypeID" ColumnName="GiftTypeID" />
@@ -4715,11 +4715,11 @@
           <EntitySetMapping Name="Questions">
             <EntityTypeMapping TypeName="Falcon.DbModel.Question">
               <MappingFragment StoreEntitySet="Question">
-                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
-                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
                 <ScalarProperty Name="ActionID" ColumnName="ActionID" />
                 <ScalarProperty Name="QuestionBoostID" ColumnName="QuestionBoostID" />
                 <ScalarProperty Name="Banned" ColumnName="Banned" />
+                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
                 <ScalarProperty Name="Weight" ColumnName="Weight" />
                 <ScalarProperty Name="Dislike_Count" ColumnName="Dislike_Count" />
                 <ScalarProperty Name="Like_Count" ColumnName="Like_Count" />
@@ -4832,11 +4832,11 @@
           <EntitySetMapping Name="Stores">
             <EntityTypeMapping TypeName="Falcon.DbModel.Store">
               <MappingFragment StoreEntitySet="Store">
+                <ScalarProperty Name="DiscountAmount" ColumnName="DiscountAmount" />
                 <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
                 <ScalarProperty Name="RectangleColor" ColumnName="RectangleColor" />
                 <ScalarProperty Name="Icon" ColumnName="Icon" />
-                <ScalarProperty Name="DiscountAmount" ColumnName="DiscountAmount" />
                 <ScalarProperty Name="IsAccessibleInAllStores" ColumnName="IsAccessibleInAllStores" />
                 <ScalarProperty Name="Coin" ColumnName="Coin" />
                 <ScalarProperty Name="SKU" ColumnName="SKU" />
@@ -4882,12 +4882,12 @@
                 <ScalarProperty Name="IsTutorial" ColumnName="IsTutorial" />
                 <ScalarProperty Name="DWMCount" ColumnName="DWMCount" />
                 <ScalarProperty Name="PreviousDaySeen" ColumnName="PreviousDaySeen" />
+                <ScalarProperty Name="Rank" ColumnName="Rank" />
                 <ScalarProperty Name="PrevLastSeenDateTime" ColumnName="PrevLastSeenDateTime" />
                 <ScalarProperty Name="LastSeenDateTime" ColumnName="LastSeenDateTime" />
                 <ScalarProperty Name="IsAbleToWriteComment" ColumnName="IsAbleToWriteComment" />
                 <ScalarProperty Name="CurrentLevelID" ColumnName="CurrentLevelID" />
                 <ScalarProperty Name="LevelProgress" ColumnName="LevelProgress" />
-                <ScalarProperty Name="Rank" ColumnName="Rank" />
                 <ScalarProperty Name="Score" ColumnName="Score" />
                 <ScalarProperty Name="TotalCoin" ColumnName="TotalCoin" />
                 <ScalarProperty Name="UserTypeID" ColumnName="UserTypeID" />

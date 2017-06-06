@@ -49,6 +49,7 @@
     <Compile Include="QueryProcessors\IAchievementQueryProcessor.cs" />
     <Compile Include="QueryProcessors\IAvatarsQueryProcessor.cs" />
     <Compile Include="QueryProcessors\ICategoriesQueryProcessor.cs" />
+    <Compile Include="QueryProcessors\ICharacteristicsQueryProcessor.cs" />
     <Compile Include="QueryProcessors\ICodeGiftsQueryProcessor.cs" />
     <Compile Include="QueryProcessors\ICommentsQueryProcessor.cs" />
     <Compile Include="QueryProcessors\ICreatedQuestionsQueryProcessor.cs" />

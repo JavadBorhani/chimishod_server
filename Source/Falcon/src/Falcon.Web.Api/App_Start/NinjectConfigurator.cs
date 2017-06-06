@@ -94,6 +94,7 @@ namespace Falcon.Web.Api
             container.Bind<IThemesQueryProcessor>().To<ThemesQueryProcessor>().InRequestScope();
             container.Bind<IAvatarsQueryProcessor>().To<AvatarsQueryProcessor>().InRequestScope();
             container.Bind<IUserStatQueryProcessor>().To<UserStatQueryProcessor>().InRequestScope();
+            container.Bind<ICharacteristicsQueryProcessor>().To<CharacteristicsQueryProcessor>().InRequestScope();
         }
 
         private void AddInquiryProcessors(IKernel container)
@@ -111,6 +112,8 @@ namespace Falcon.Web.Api
             container.Bind<IThemesInquiryProcessor>().To<ThemesInquiryProcessor>().InRequestScope();
             container.Bind<ICategoriesInquiryProcessor>().To<CategoriesInquiryProcessor>().InRequestScope();
             container.Bind<IAvatarsInquiryProcessor>().To<AvatarsInquiryProcessor>().InRequestScope();
+            container.Bind<ICharacteristicsInquiryProcessor>().To<CharacteristicsInquiryProcessor>().InRequestScope();
+
         }
         private void  AddMaintenanceProcessors(IKernel container)
         {
@@ -124,6 +127,8 @@ namespace Falcon.Web.Api
             container.Bind<ICategoriesMaintenanceProcessor>().To<CategoriesMaintenanceProcessor>().InRequestScope();
             container.Bind<IThemesMaintenanceProcessor>().To<ThemesMaintenanceProcessor>().InRequestScope();
             container.Bind<IAvatarsMaintenanceProcessor>().To<AvatarsMaintenanceProcessor>().InRequestScope();
+            container.Bind<ICharacteristicsMaintenanceProcessor>().To<CharacteristicsMaintenanceProcessor>().InRequestScope();
+
         }
 
         private void AddAdHoc(IKernel container)
@@ -146,6 +151,7 @@ namespace Falcon.Web.Api
 
             //Encryption
             container.Bind<IEncryptor>().To<NumberEncryptor>().InSingletonScope();
+
             //Random
             container.Bind<IRandomGenerator>().To<RandomGeneratorAdapter>().InSingletonScope();
         }

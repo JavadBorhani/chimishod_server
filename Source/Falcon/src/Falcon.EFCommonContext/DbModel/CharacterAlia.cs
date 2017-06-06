@@ -14,17 +14,11 @@ namespace Falcon.EFCommonContext.DbModel
     
     public partial class CharacterAlia
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public CharacterAlia()
-        {
-            this.Characters = new HashSet<Character>();
-        }
-    
         public int ID { get; set; }
         public string Title { get; set; }
         public string Icon { get; set; }
+        public int CharacterID { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Character> Characters { get; set; }
+        public virtual Character Character { get; set; }
     }
 }

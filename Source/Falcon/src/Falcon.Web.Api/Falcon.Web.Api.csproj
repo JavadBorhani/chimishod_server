@@ -165,6 +165,7 @@
     <Compile Include="InquiryProcessing\Private\AppAdvertsInquiryProcessor.cs" />
     <Compile Include="InquiryProcessing\Private\AvatarsInquiryProcessor.cs" />
     <Compile Include="InquiryProcessing\Private\CategoriesInquiryProcessor.cs" />
+    <Compile Include="InquiryProcessing\Private\CharacteristicsInquiryProcessor.cs" />
     <Compile Include="InquiryProcessing\Private\CommentsInquiryProcessor.cs" />
     <Compile Include="InquiryProcessing\Private\CreatedQuestionsInquiryProcessor.cs" />
     <Compile Include="InquiryProcessing\Private\DWMInquiryProcessor.cs" />
@@ -178,6 +179,7 @@
     <Compile Include="InquiryProcessing\Public\IAppAdvertsInquiryProcessor.cs" />
     <Compile Include="InquiryProcessing\Public\IAvatarsInquiryProcessor.cs" />
     <Compile Include="InquiryProcessing\Public\ICategoriesInquiryProcessor.cs" />
+    <Compile Include="InquiryProcessing\Public\ICharacteristicsInquiryProcessor.cs" />
     <Compile Include="InquiryProcessing\Public\ICommentsInquiryProcessor.cs" />
     <Compile Include="InquiryProcessing\Public\ICreatedQuestionsInquiryProcessor.cs" />
     <Compile Include="InquiryProcessing\Public\IDWMInquiryProcessor.cs" />
@@ -192,6 +194,7 @@
     <Compile Include="MaintenanceProcessing\Private\AppAdvertsMaintenanceProcessor.cs" />
     <Compile Include="MaintenanceProcessing\Private\AvatarsMaintenanceProcessor.cs" />
     <Compile Include="MaintenanceProcessing\Private\CategoriesMaintenanceProcessor.cs" />
+    <Compile Include="MaintenanceProcessing\Private\CharacteristicsMaintenanceProcessor.cs" />
     <Compile Include="MaintenanceProcessing\Private\CodeGiftsMaintenanceProcessor.cs" />
     <Compile Include="MaintenanceProcessing\Private\DWMMaintenanceProcessor.cs" />
     <Compile Include="MaintenanceProcessing\Private\GlobalApplicationState.cs" />
@@ -203,6 +206,7 @@
     <Compile Include="MaintenanceProcessing\Public\IAppAdvertsMaintenanceProcessor.cs" />
     <Compile Include="MaintenanceProcessing\Public\IAvatarsMaintenanceProcessor.cs" />
     <Compile Include="MaintenanceProcessing\Public\ICategoriesMaintenanceProcessor.cs" />
+    <Compile Include="MaintenanceProcessing\Public\ICharacteristicsMaintenanceProcessor.cs" />
     <Compile Include="MaintenanceProcessing\Public\ICodeGiftsMaintenanceProcessor.cs" />
     <Compile Include="MaintenanceProcessing\Public\IDWMMaintenanceProcessor.cs" />
     <Compile Include="MaintenanceProcessing\Public\IGlobalApplicationState.cs" />

@@ -18,18 +18,19 @@ namespace Falcon.EFCommonContext.DbModel
         public Character()
         {
             this.AssignedCharacters = new HashSet<AssignedCharacter>();
+            this.CharacterAlias = new HashSet<CharacterAlia>();
             this.CharacterPoints = new HashSet<CharacterPoint>();
             this.PersonalizedCharacters = new HashSet<PersonalizedCharacter>();
         }
     
         public int ID { get; set; }
         public string Title { get; set; }
-        public int AliasID { get; set; }
         public string Icon { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<AssignedCharacter> AssignedCharacters { get; set; }
-        public virtual CharacterAlia CharacterAlia { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CharacterAlia> CharacterAlias { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CharacterPoint> CharacterPoints { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
