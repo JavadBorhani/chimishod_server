@@ -27,18 +27,21 @@ namespace Falcon.Web.Api.Controllers.V1
         private readonly IDbContext mDbContext;
         private readonly IUserSession mUserSession;
         private readonly IGlobalApplicationState mAppState;
+        private readonly ICharacteristicsMaintenanceProcessor mCharacteristicsMaintenanceProcessor;
 
         public UserAuthenticatorController(IDbContext Context , 
             IDateTime dateTime, 
             IDbContext Database ,
             IUserSession UserSession , 
-            IGlobalApplicationState AppState)
+            IGlobalApplicationState AppState , 
+            ICharacteristicsMaintenanceProcessor CharacteristicsMaintenanceProcessor)
         {
             mDateTime = dateTime;
             mDbContext = Context;
             mDb = Database;
             mUserSession = UserSession;
             mAppState = AppState;
+            mCharacteristicsMaintenanceProcessor = CharacteristicsMaintenanceProcessor;
         }
 
         [ResponseType(typeof(SUser))]
@@ -226,11 +229,16 @@ namespace Falcon.Web.Api.Controllers.V1
                 SpinWheelCount = Constants.DefaultUser.SpinWheelCount
             };
 
+            
+
             mDb.Set<UserStat>().Add(userStat);
             mDb.Set<SelectedTheme>().Add(selecetedTheme);
             mDb.Set<SelectedCategory>().Add(selectedCategory);
             mDb.Set<UserInfo>().Add(userInfo);
             mDb.Set<SelectedAvatar>().Add(selectedAvatar);
+
+            var characters = await mCharacteristicsMaintenanceProcessor.GetCategoryAssignedCharacters(Constants.DefaultUser.CategoryID);
+            var one = await mCharacteristicsMaintenanceProcessor.AddUserCharacteristicToLeaderBoard(characters);
 
             await mDb.SaveChangesAsync();
 

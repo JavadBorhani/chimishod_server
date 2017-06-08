@@ -29,6 +29,29 @@ namespace Falcon.Web.Api.Controllers.V1
             var result = await mCharacteristicsInquiryProcessor.GetAllCharcterteristicList();
             return result;  
         }
+        [Route("Characteristics/Test")]
+        [HttpPost]
+        public async Task<IHttpActionResult> Test()
+        {
+            var result = await mCharacteristicsMaintenanceProcessor.AddUserToLeaderBoard(new int [] { 4,1 });
+            return null;
+        }
+
+        [Route("Characteristics/LeaderBoard")]
+        [HttpPost]
+        public async Task<IHttpActionResult> LeaderBoard()
+        {
+            var result = await mCharacteristicsMaintenanceProcessor.AddUserToLeaderBoard(new int[] { 4, 1 });
+            return null;
+        }
+
+        [Route("Characteristics/")]
+        [HttpPost]
+        public async Task<IHttpActionResult> Board()
+        {
+            var result = await mCharacteristicsMaintenanceProcessor.AddUserToLeaderBoard(new int[] { 4, 1 });
+            return null;
+        }
 
     }
 }

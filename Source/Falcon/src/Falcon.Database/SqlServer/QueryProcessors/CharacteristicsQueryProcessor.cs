@@ -19,7 +19,7 @@ namespace Falcon.Database.SqlServer.QueryProcessors
         
         private class CharacteristicWithAlias
         {
-            public int Id{ get; set; }
+            public int Id { get; set; }
             public string Icon{ get; set; }
             public string Title{ get; set; }
             public List<CharacterAlia> Alias { get; set; }
@@ -63,6 +63,146 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             }
 
             return characters;  
+        }
+
+        public async Task<int> VoteDesignerCharacter(int QuestionCreatorID, int QuestionID, int[] CharacterIDs)
+        {
+            var characterPoints = new CharacterPoint[CharacterIDs.Length];
+            for(int i = 0; i < characterPoints.Length; ++i)
+            {
+                characterPoints[i].UserID = mUserSession.ID;
+                characterPoints[i].CreatorID = QuestionCreatorID;
+                characterPoints[i].QuestionID = QuestionID;
+                characterPoints[i].CharacterID = CharacterIDs[i];
+            }
+
+            mDb.Set<CharacterPoint>().AddRange(characterPoints);
+
+            var result = await mDb.SaveChangesAsync();
+            return result;  
+        }
+
+        public async Task<int> AddUserToLeaderBoard(int[] CharacterIDs)
+        {
+            var personalizedCharacters = new PersonalizedCharacter[CharacterIDs.Length];
+            for(int i = 0; i < CharacterIDs.Length; ++i)
+            {
+                personalizedCharacters[i] = new PersonalizedCharacter();
+
+                personalizedCharacters[i].PointCount = 0;
+                personalizedCharacters[i].Rank = 0;
+                personalizedCharacters[i].UserID = mUserSession.ID;
+                personalizedCharacters[i].CharacterID = CharacterIDs[i];
+            }
+
+            mDb.Set<PersonalizedCharacter>().AddRange(personalizedCharacters);
+
+            var result = await mDb.SaveChangesAsync();
+            return result;
+        }
+
+        public async Task<bool> IsExists(int CharacterID)
+        {
+            var query = await mDb.Set<Character>().AsNoTracking().CountAsync(c => c.ID == CharacterID) > 0;
+            return query; 
+        }
+
+        public async Task<int> AssignCharacterToCategory(int CharacterID, int CategoryID)
+        {
+            mDb.Set<AssignedCharacter>().Add(new AssignedCharacter
+            {
+                CategoryID = CategoryID,
+                CharacterID = CharacterID
+            });
+
+            var result = await mDb.SaveChangesAsync();
+            return result;
+        }
+
+        public async Task<int> AssignCharactersToCategory(int[] CharacterIDs, int CategoryID)
+        {
+            var newAssignee = new AssignedCharacter[CharacterIDs.Length];
+            for(int i = 0; i < newAssignee.Length; ++i)
+            {
+                newAssignee[i].CharacterID = CharacterIDs[i];
+                newAssignee[i].CategoryID = CategoryID;
+            }
+
+            mDb.Set<AssignedCharacter>().AddRange(newAssignee);
+            
+            var result = await mDb.SaveChangesAsync();
+            return result;  
+        }
+
+        public async Task<int> AssignCharactersToCategories(int[] CharacterIDs, int[] CategoryIDs)
+        {
+            var newAssignes = new AssignedCharacter[CharacterIDs.Length * CategoryIDs.Length];
+            for(int i = 0; i < CategoryIDs.Length; ++i)
+            {
+                for(int j = 0; j < CharacterIDs.Length; ++j)
+                {
+                    int index = (i * CategoryIDs.Length) + j;
+
+                    newAssignes[index].CategoryID = CategoryIDs[i];
+                    newAssignes[index].CharacterID = CharacterIDs[j];
+                }
+            }
+
+            mDb.Set<AssignedCharacter>().AddRange(newAssignes);
+
+            var result = await mDb.SaveChangesAsync();
+            return result;  
+        }
+
+        public async Task<bool> CharacterIdsExists(int[] CharacterIDs)
+        {
+            var query = await mDb.Set<Character>().CountAsync(c => CharacterIDs.Contains(c.ID)) == CharacterIDs.Length;
+            return query;
+        }
+
+        public async Task<int[]> GetCategoryAssignedCharacters(int CategoryID)
+        {
+            var ids = await mDb.Set<AssignedCharacter>()
+                .AsNoTracking()
+                .Where(ac => ac.CategoryID == CategoryID)
+                .Select(ac => ac.ID)
+                .ToArrayAsync();
+
+            return ids;
+        }
+
+        public async Task<bool> CreatorHasLeaderboradIds(int CreatorID, int[] characters)
+        {
+            var result = await mDb.Set<PersonalizedCharacter>()
+                .AsNoTracking()
+                .CountAsync(pc => pc.UserID == CreatorID && characters.Contains(pc.CharacterID)) == characters.Length;
+
+            return result;
+        }
+
+        public async Task<bool> CharacterIdExist(int CharacterID)
+        {
+            var data = await mDb.Set<Character>().AsNoTracking().Where(c => c.ID == CharacterID).AnyAsync();
+            return data;
+        }
+
+        public async Task<int> AddCharacterToUsers(int CharacterID, int[] UserIDs)
+        {
+
+            var users = new PersonalizedCharacter[UserIDs.Length];
+            for(int i = 0; i < UserIDs.Length; ++i)
+            {
+                users[i] = new PersonalizedCharacter();
+
+                users[i].PointCount = 0;
+                users[i].Rank = 0;
+                users[i].UserID = UserIDs[i];
+                users[i].CharacterID = CharacterID;
+            }
+            mDb.Set<PersonalizedCharacter>().AddRange(users);
+
+            var result = await mDb.SaveChangesAsync();
+            return result;
         }
     }
 }
