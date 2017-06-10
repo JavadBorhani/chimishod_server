@@ -18,6 +18,7 @@ using Falcon.Web.Common;
 using Falcon.Web.Api.Utilities.Base;
 using Falcon.Common.Security;
 using Falcon.Web.Api.MaintenanceProcessing.Public;
+using Falcon.Web.Api.InquiryProcessing.Public;
 
 namespace Falcon.Web.Api.Controllers.V1
 {
@@ -30,13 +31,18 @@ namespace Falcon.Web.Api.Controllers.V1
         private readonly IDbContext mDb;
         private readonly IWebUserSession mUserSession;
         private readonly SApplicationState mAppState;
+        private readonly ICharacteristicsMaintenanceProcessor mCharacteristicsMaintenanceProcessor;
+        private readonly ICharacteristicsInquiryProcessor mCharacteristicsInquiryProcessor;
+
 
         public AnswersController(IDateTime dateTime , 
             ILogManager logManager , 
             IMapper Mapper , 
             IDbContext Database , 
             IWebUserSession UserSession , 
-            IGlobalApplicationState AppState)
+            IGlobalApplicationState AppState,
+            ICharacteristicsMaintenanceProcessor CharacteristicsMaintenanceProcessor ,
+            ICharacteristicsInquiryProcessor CharacteristicsInquiryProcessor)
         {
             mDateTime = dateTime;
             mLogger = logManager.GetLog(typeof(AnswersController));
@@ -44,6 +50,8 @@ namespace Falcon.Web.Api.Controllers.V1
             mDb = Database;
             mUserSession = UserSession;
             mAppState = AppState.GetState();
+            mCharacteristicsMaintenanceProcessor = CharacteristicsMaintenanceProcessor;
+            mCharacteristicsInquiryProcessor = CharacteristicsInquiryProcessor;
         }
 
         public IQueryable<Answer> GetAnswers()
@@ -184,7 +192,23 @@ namespace Falcon.Web.Api.Controllers.V1
                 var questionToUpdate = await mDb.Set<Question>().Where(q => q.ID ==  answer.QuestionID).Include( q => q.Category).SingleOrDefaultAsync();
 
                 if (questionToUpdate != null)
-                {                    
+                {
+                    
+                    if(answer.ChosenCharacters.Length > 0 )
+                    {
+                        bool validation = await mCharacteristicsInquiryProcessor.CategoryHasCharacters(questionToUpdate.Catgory_ID, answer.ChosenCharacters);
+                        if(validation)
+                        {
+                            var designerID = await mDb.Set<Manufacture>()
+                                .AsNoTracking()
+                                .Where(m => m.QuestionID == answer.QuestionID)
+                                .Select(u => u.UserID)
+                                .SingleOrDefaultAsync();
+
+                            await mCharacteristicsMaintenanceProcessor.VoteForUser(designerID, questionToUpdate.ID, answer.ChosenCharacters);
+                        }
+                    }
+                                        
                     if (answer.YesNoState)
                     {
                         ++questionToUpdate.Yes_Count;

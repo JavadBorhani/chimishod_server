@@ -23,6 +23,13 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
             mCharacteristicsQueryProcessor = CharacteristicsQueryProcessor;
             mMapper = Mapper;
         }
+
+        public async Task<bool> CategoryHasCharacters(int CategoryID  , int[] CharacterIds)
+        {
+            var result = await mCharacteristicsQueryProcessor.CategoryHasCharacters(CategoryID, CharacterIds);
+            return result;
+        }
+
         public async Task<List<SCharacteristic>> GetAllCharcterteristicList()
         {
             var itemList = await mCharacteristicsQueryProcessor.FetchAllCharacteristicsWithAliases();

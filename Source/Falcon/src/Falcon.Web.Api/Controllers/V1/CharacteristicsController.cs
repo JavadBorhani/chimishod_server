@@ -18,6 +18,7 @@ namespace Falcon.Web.Api.Controllers.V1
         private readonly ICharacteristicsInquiryProcessor mCharacteristicsInquiryProcessor;
         private readonly IPagedDataRequestFactory mPagedDataRequestFactory;
         private readonly SApplicationState mAppState; 
+
         public CharacteristicsController(ICharacteristicsMaintenanceProcessor CharacteristicsMaintenanceProcessor ,
             ICharacteristicsInquiryProcessor CharacteristicsInquiryProcessor ,
             IPagedDataRequestFactory PagedDataRequestFactory , 
@@ -36,13 +37,6 @@ namespace Falcon.Web.Api.Controllers.V1
             var result = await mCharacteristicsInquiryProcessor.GetAllCharcterteristicList();
             return result;  
         }
-        [Route("Characteristics/Test")]
-        [HttpPost]
-        public async Task<IHttpActionResult> Test()
-        {
-            var result = await mCharacteristicsMaintenanceProcessor.AddUserCharacteristicToLeaderBoard(new int [] { 4,1 } , 1173 );
-            return result;
-        }
 
         [Route("Characteristics/LeaderBoard/{CharacterID}/{PageNumber}")]
         [HttpPost]
@@ -52,14 +46,5 @@ namespace Falcon.Web.Api.Controllers.V1
             var result = await mCharacteristicsInquiryProcessor.GetLeaderBoard(pagedData , CharacterID);
             return result;
         }
-
-        [Route("Characteristics/")]
-        [HttpPost]
-        public async Task<IHttpActionResult> Board()
-        {
-            var result = await mCharacteristicsMaintenanceProcessor.AddUserCharacteristicToLeaderBoard(new int[] { 4, 1 } , 1);
-            return null;
-        }
-
     }
 }

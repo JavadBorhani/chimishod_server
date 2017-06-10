@@ -19,6 +19,7 @@ namespace Falcon.Data.QueryProcessors
         Task<int> AssignCharactersToCategory(int[] CharacterIDs, int CategoryID);
         Task<int> AssignCharactersToCategories(int[] CharacterIDs, int[] CategoryIDs);
         Task<int[]> GetCategoryAssignedCharacters(int CategoryID);
+        Task<bool> CategoryHasCharacters(int CategoryID , int[] Characters);
         Task<bool> CreatorHasLeaderboradIds(int CreatorID, int[] characters);
         Task<int> AddCharacterToUsers(int CharacterID, int[] UserIDs);
         Task<QueryResult<SLeaderBoard>> GetLeaderBoard(PagedDataRequest RequestInfo, int CharacterID);

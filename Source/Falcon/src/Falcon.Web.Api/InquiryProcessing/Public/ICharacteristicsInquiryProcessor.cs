@@ -13,6 +13,7 @@ namespace Falcon.Web.Api.InquiryProcessing.Public
     {
         Task<List<SCharacteristic>> GetAllCharcterteristicList();
         Task<int[]> GetCategoryAssignedCharacters(int CategoryID);
+        Task<bool> CategoryHasCharacters(int CategoryID , int[] CharacterIds);
         Task<SCharcteristicLeaderBoard> GetLeaderBoard(PagedDataRequest RequestInfo, int CharacterID);
     }
 }

@@ -28,5 +28,7 @@ namespace Falcon.Web.Models.Api
         public bool SendQuestion { get; set; }
 
         public int CategoryToGetQuestion { get; set; }
+
+        public int[] ChosenCharacters { get; set; }
     }
 }

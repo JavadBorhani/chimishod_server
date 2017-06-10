@@ -284,5 +284,15 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             var result = await query.SingleOrDefaultAsync();
             return result;
         }
+
+        public async Task<bool> CategoryHasCharacters(int CategoryID, int[] Characters)
+        {
+            var result = await mDb.Set<AssignedCharacter>()
+                .AsNoTracking()
+                .Where( ac => ac.CategoryID == CategoryID && Characters.Contains(ac.CharacterID))
+                .CountAsync() == Characters.Length;
+
+            return result;
+        }
     }
 }
