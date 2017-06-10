@@ -165,9 +165,9 @@ namespace Falcon.Web.Api.Controllers.V1
             User user = new User
             {
                 UUID = UUID,
-                UserName = mAppState.State().User_DefaultUserName,
+                UserName = mAppState.GetState().User_DefaultUserName,
                 UserTypeID = Constants.DefaultUser.UserTypeID,
-                TotalCoin = mAppState.State().User_DefaultUserCoin,
+                TotalCoin = mAppState.GetState().User_DefaultUserCoin,
                 Score = Constants.DefaultUser.Score,
                 LevelProgress = Constants.DefaultUser.LevelProgress,
                 CurrentLevelID = Constants.DefaultUser.CurrentLevelD,

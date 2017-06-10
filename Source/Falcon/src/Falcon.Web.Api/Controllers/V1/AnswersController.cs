@@ -43,7 +43,7 @@ namespace Falcon.Web.Api.Controllers.V1
             mMapper = Mapper;
             mDb = Database;
             mUserSession = UserSession;
-            mAppState = AppState.State();
+            mAppState = AppState.GetState();
         }
 
         public IQueryable<Answer> GetAnswers()

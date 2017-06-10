@@ -9,6 +9,7 @@ using Falcon.Common.Security;
 using Falcon.EFCommonContext;
 using Falcon.Web.Models.Api;
 using System.Data.Entity;
+using Falcon.Data;
 
 namespace Falcon.Database.SqlServer.QueryProcessors
 {
@@ -30,15 +31,20 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             mDb = Database;
             mUserSession = UserSession;
         }
+
         public async Task<List<SCharacteristic>> FetchAllCharacteristicsWithAliases()
         {
-            var query = await mDb.Set<Character>().AsNoTracking().Select(u => new CharacteristicWithAlias
-            {
-                Id = u.ID,
-                Icon = u.Icon,
-                Title = u.Title,
-                Alias = u.CharacterAlias.ToList()
-            }).ToArrayAsync();
+            var query = await mDb.Set<Character>()
+                .AsNoTracking()
+                .Include(c => c.CharacterAlias)
+                .Select(u => new CharacteristicWithAlias
+                        {
+                            Id = u.ID,
+                            Icon = u.Icon,
+                            Title = u.Title,
+                            Alias = u.CharacterAlias.ToList()
+                        })
+                .ToArrayAsync();
 
             var characters = new List<SCharacteristic>();
 
@@ -203,6 +209,38 @@ namespace Falcon.Database.SqlServer.QueryProcessors
 
             var result = await mDb.SaveChangesAsync();
             return result;
+        }
+
+        public async Task<QueryResult<SCharcteristicLeaderBoard>> GetLeaderBoard(PagedDataRequest RequestInfo, int CharacterID)
+        {
+            return null;
+            //var userAvatar = mDb.Set<SelectedAvatar>();
+            //var time = mDateTime.Now;
+            //var query = mDb.Set<Comment>().AsNoTracking()
+            //    .Where(comment => comment.QuestionID == QuestionID && comment.IsVerified == true)
+            //    .Include(comment => comment.User)
+            //    .Join(userAvatar, m => m.UserID, ua => ua.UserID, (m, ua) => new SComment
+            //    {
+            //        UserID = m.UserID,
+            //        UserName = m.User.UserName,
+            //        Content = m.CommentContent,
+            //        Response = m.Response,
+            //        InsertDate = m.InsertDate,
+            //        QuestionID = m.QuestionID,
+            //        Avatar = ua.UserAvatar.PicUrl,
+            //        ServerTime = time,
+            //    })
+            //    .OrderByDescending(x => x.InsertDate);
+
+            //var totalItemCount = await query.CountAsync();
+
+            //var startIndex = ResultPagingUtility.CalculateStartIndex(requestInfo.PageNumber, requestInfo.PageSize);
+
+            //var comments = await query.Skip(startIndex).Take(requestInfo.PageSize).ToListAsync();
+
+            //var queryResult = new QueryResult<SComment>(comments, totalItemCount, requestInfo.PageSize);
+
+            //return queryResult;
         }
     }
 }

@@ -217,7 +217,7 @@ namespace Falcon.Web.Api.Controllers.V1
 
         private void SendVerificationEmailViaWebApi(string EmailToSend, string UserName, string Password)
         {
-            SApplicationState state= mAppState.State();
+            SApplicationState state= mAppState.GetState();
 
             string subject = "Verification Mail";
             string body = string.Format("Flapp Studio - What if Game \n This is password Recovery \n UserName : '{0}' \n Password : '{1}'", UserName, Password);

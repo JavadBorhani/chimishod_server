@@ -45,12 +45,6 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
             return result;
         }
 
-        public async Task<int[]> GetCategoryAssignedCharacters(int CategoryID)
-        {
-            var result = await mCharacteristicsQueryProcessor.GetCategoryAssignedCharacters(CategoryID);
-            return result;  
-        }
-
         public async Task<int> VoteForUser(int QuestionDesignerID, int QuestionID, int[] CharacterIDs)
         {
             var exists = await mCharacteristicsQueryProcessor.CreatorHasLeaderboradIds(QuestionDesignerID, CharacterIDs);

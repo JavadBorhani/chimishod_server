@@ -1,6 +1,7 @@
 ﻿using Falcon.Web.Api.InquiryProcessing.Public;
 using Falcon.Web.Api.MaintenanceProcessing.Public;
 using Falcon.Web.Api.Utilities.Base;
+using Falcon.Web.Models;
 using Falcon.Web.Models.Api;
 using System;
 using System.Collections.Generic;
@@ -15,11 +16,17 @@ namespace Falcon.Web.Api.Controllers.V1
     {
         private readonly ICharacteristicsMaintenanceProcessor mCharacteristicsMaintenanceProcessor;
         private readonly ICharacteristicsInquiryProcessor mCharacteristicsInquiryProcessor;
+        private readonly IPagedDataRequestFactory mPagedDataRequestFactory;
+        private readonly SApplicationState mAppState; 
         public CharacteristicsController(ICharacteristicsMaintenanceProcessor CharacteristicsMaintenanceProcessor ,
-            ICharacteristicsInquiryProcessor CharacteristicsInquiryProcessor)
+            ICharacteristicsInquiryProcessor CharacteristicsInquiryProcessor ,
+            IPagedDataRequestFactory PagedDataRequestFactory , 
+            IGlobalApplicationState AppState)
         {
             mCharacteristicsMaintenanceProcessor = CharacteristicsMaintenanceProcessor;
             mCharacteristicsInquiryProcessor = CharacteristicsInquiryProcessor;
+            mPagedDataRequestFactory = PagedDataRequestFactory;
+            mAppState = AppState.GetState();
         }
 
         [Route("Characteristics/")]
@@ -33,23 +40,24 @@ namespace Falcon.Web.Api.Controllers.V1
         [HttpPost]
         public async Task<IHttpActionResult> Test()
         {
-            var result = await mCharacteristicsMaintenanceProcessor.AddUserToLeaderBoard(new int [] { 4,1 });
+            var result = await mCharacteristicsMaintenanceProcessor.AddUserCharacteristicToLeaderBoard(new int [] { 4,1 });
             return null;
         }
 
-        [Route("Characteristics/LeaderBoard")]
+        [Route("Characteristics/LeaderBoard/{CharacterID}/{PageNumber}")]
         [HttpPost]
-        public async Task<IHttpActionResult> LeaderBoard()
+        public async Task<PagedDataInquiryResponse<SCharcteristicLeaderBoard>> LeaderBoard(int CharacterID , int PageNumber)
         {
-            var result = await mCharacteristicsMaintenanceProcessor.AddUserToLeaderBoard(new int[] { 4, 1 });
-            return null;
+            var pagedData = mPagedDataRequestFactory.Create(PageNumber, mAppState.Paging_DefaultPageSize);
+            var result = await mCharacteristicsInquiryProcessor.GetLeaderBoard(pagedData , CharacterID);
+            return result;
         }
 
         [Route("Characteristics/")]
         [HttpPost]
         public async Task<IHttpActionResult> Board()
         {
-            var result = await mCharacteristicsMaintenanceProcessor.AddUserToLeaderBoard(new int[] { 4, 1 });
+            var result = await mCharacteristicsMaintenanceProcessor.AddUserCharacteristicToLeaderBoard(new int[] { 4, 1 });
             return null;
         }
 

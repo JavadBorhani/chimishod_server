@@ -76,8 +76,8 @@ namespace Falcon.Web.Api.App_Start
                     int boostPrice = (boost != null) ? boost.Price : 0;
                     int? boostID = (boost == null) ? (int?)null : boost.ID;
 
-                    int newQuestionPrice = mAppState.State().Question_CreateQuestionPrice;
-                    int newQuestionPrize = mAppState.State().Prize_CreateNewQuestionPrize;
+                    int newQuestionPrice = mAppState.GetState().Question_CreateQuestionPrice;
+                    int newQuestionPrize = mAppState.GetState().Prize_CreateNewQuestionPrize;
 
                     if (HasEnoughMoney(user.TotalCoin, newQuestionPrice, boostPrice)) //TODO Change Create Question Price to get from appState
                     {
@@ -118,7 +118,7 @@ namespace Falcon.Web.Api.App_Start
         [Route("CreatedQuestions/Get/{PageNumber}")]
         public async Task<PagedDataInquiryResponse<SNewCreatedQuestions>> GetCreatedQuestionList(int PageNumber)
         {
-            var page = mPagedDataRequestFactory.Create(PageNumber, mAppState.State().Paging_DefaultPageSize);
+            var page = mPagedDataRequestFactory.Create(PageNumber, mAppState.GetState().Paging_DefaultPageSize);
             var createdQuestions = await mCreatedQuestionsInquiryProcessor.GetQuestionList(page , mUserSession.ID);
             return createdQuestions;
         }

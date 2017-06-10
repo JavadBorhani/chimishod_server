@@ -28,7 +28,7 @@ namespace Falcon.Web.Api.Controllers.V1
         {
             mDb = Database;
             mUserSession = UserSession;
-            mAppState = AppState.State();
+            mAppState = AppState.GetState();
         }
 
         [ResponseType(typeof(Models.Api.SQuestion))]

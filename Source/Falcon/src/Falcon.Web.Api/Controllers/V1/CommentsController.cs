@@ -48,7 +48,7 @@ namespace Falcon.Web.Api.Controllers.V1
         [HttpPost]
         public async Task<PagedDataInquiryResponse<SComment>> GettingComments( int QuestionID , int PageNumber)
         {
-            var page = mPagedDataRequestFactory.Create(PageNumber , mAppState.State().Paging_DefaultPageSize);
+            var page = mPagedDataRequestFactory.Create(PageNumber , mAppState.GetState().Paging_DefaultPageSize);
             var comments = await mCommentInquiryProcessor.GetComments(page , QuestionID);
             return comments;
         }
@@ -74,7 +74,7 @@ namespace Falcon.Web.Api.Controllers.V1
                    QuestionID = question.ID,
                    CommentContent = NewComment.Content,
                    Response = Constants.DefaultValues.CommentDefaultReponseMessage,
-                   IsVerified = mAppState.State().Comment_DefaultVerifyState,
+                   IsVerified = mAppState.GetState().Comment_DefaultVerifyState,
                    InsertDate = mDateTime.Now
                 };
 

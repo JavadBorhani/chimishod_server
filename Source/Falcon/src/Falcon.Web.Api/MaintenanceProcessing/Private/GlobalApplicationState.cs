@@ -29,7 +29,7 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
             }
         }
 
-        public SApplicationState State()
+        public SApplicationState GetState()
         {
             if(mCurrentApplicationState == null)
             {

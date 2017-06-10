@@ -29,7 +29,7 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
             mUserQueryProcessor = UserQueryProcessor;
             mItemPurchaseManager = ItemPurchaseManager;
             mUserStatQueryProcessor = UserStatQueryProcessor;
-            mAppState = ApplicationState.State();
+            mAppState = ApplicationState.GetState();
         }
 
         public async Task<SAchieveSpinWheelValidation> AchieveSpinWheel(int ID)

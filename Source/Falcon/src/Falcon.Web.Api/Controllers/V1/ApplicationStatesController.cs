@@ -31,7 +31,7 @@ namespace Falcon.Web.Api.Controllers.V1
         [HttpPost]
         public IHttpActionResult GetApplicationStates()
         {   
-            var clientResult = mMapper.Map<SApplicationState , ClientAppState> (mAppState.State());
+            var clientResult = mMapper.Map<SApplicationState , ClientAppState> (mAppState.GetState());
             return Ok(clientResult);
         }
 
