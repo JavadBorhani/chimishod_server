@@ -73,10 +73,20 @@ namespace Falcon.Web.Api.Controllers.V1
                     data = c.AssignedCharacters.Select(a => a.CharacterID),
                     Cat = c,
                 });
+
             var categories = await query.ToArrayAsync(); 
 
-            var selectedCategory = await mDb.Set<SelectedCategory>().AsNoTracking().Where(st => st.UserID == mUserSession.ID).Select( sc => sc.CategoryID).SingleOrDefaultAsync();
-            var purchasedCategories = await mDb.Set<PurchaseCategory>().AsNoTracking().Where(pt => pt.UserID == mUserSession.ID).Select(c => c.CategoryID).ToListAsync();
+            var selectedCategory = await mDb.Set<SelectedCategory>()
+                .AsNoTracking()
+                .Where(st => st.UserID == mUserSession.ID)
+                .Select( sc => sc.CategoryID)
+                .SingleOrDefaultAsync();
+
+            var purchasedCategories = await mDb.Set<PurchaseCategory>()
+                .AsNoTracking()
+                .Where(pt => pt.UserID == mUserSession.ID)
+                .Select(c => c.CategoryID)
+                .ToListAsync();
 
             if (categories.Length > 0 && selectedCategory > 0 && purchasedCategories.Count >= 0)
             {
