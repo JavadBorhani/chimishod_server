@@ -9,7 +9,8 @@ using Falcon.Data.QueryProcessors;
 using AutoMapper;
 using Falcon.Data;
 using Falcon.Web.Models;
-using PagedTaskDataInquiryResponse = Falcon.Web.Models.PagedDataInquiryResponse<Falcon.Web.Models.Api.SCharcteristicLeaderBoard>;
+using PagedTaskDataInquiryResponse = Falcon.Web.Models.PagedDataInquiryResponse<Falcon.Web.Models.Api.SLeaderBoard>;
+using Falcon.Common;
 
 namespace Falcon.Web.Api.InquiryProcessing.Private
 {
@@ -35,13 +36,13 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
             return result;
         }
 
-        public async Task<PagedDataInquiryResponse<SCharcteristicLeaderBoard>> GetLeaderBoard(PagedDataRequest RequestInfo, int CharacterID)
+        public async Task<SCharcteristicLeaderBoard> GetLeaderBoard(PagedDataRequest RequestInfo, int CharacterID)
         {
             //TODO : change logic of this 
             var queryResult = await mCharacteristicsQueryProcessor.GetLeaderBoard(RequestInfo, CharacterID);
 
             var leaderboards = queryResult.QueriedItems.ToList();
-
+            
             var inquiryResponse = new PagedTaskDataInquiryResponse
             {
                 Items = leaderboards,
@@ -49,8 +50,18 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
                 PageNumber = RequestInfo.PageNumber,
                 PageSize = RequestInfo.PageSize
             };
+            var data = new SCharcteristicLeaderBoard
+            {
+                Players = inquiryResponse,
+                User = null
+            };
 
-            return inquiryResponse;
+            if(RequestInfo.PageNumber == Constants.DefaultValues.FirstPageNumer)
+            {
+                data.User = await mCharacteristicsQueryProcessor.GetUserLeaderBoard(CharacterID);
+            }
+
+            return data;
         }
     }
 }

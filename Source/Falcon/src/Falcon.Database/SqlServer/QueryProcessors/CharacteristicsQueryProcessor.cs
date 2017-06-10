@@ -88,17 +88,26 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             return result;  
         }
 
-        public async Task<int> AddUserToLeaderBoard(int[] CharacterIDs)
+        public async Task<int> AddUserToLeaderBoard(int[] CharacterIDs , int UserID)
         {
-            var personalizedCharacters = new PersonalizedCharacter[CharacterIDs.Length];
-            for(int i = 0; i < CharacterIDs.Length; ++i)
+            var items = await mDb.Set<PersonalizedCharacter>()
+                .AsNoTracking()
+                .Where(pc => pc.UserID == UserID)
+                .Select(pc => pc.CharacterID)
+                .ToListAsync();
+
+
+            var newItems = CharacterIDs.Except(items).ToArray();
+
+            var personalizedCharacters = new PersonalizedCharacter[newItems.Length];
+            for(int i = 0; i < newItems.Length; ++i)
             {
                 personalizedCharacters[i] = new PersonalizedCharacter();
 
                 personalizedCharacters[i].PointCount = 0;
                 personalizedCharacters[i].Rank = 0;
-                personalizedCharacters[i].UserID = mUserSession.ID;
-                personalizedCharacters[i].CharacterID = CharacterIDs[i];
+                personalizedCharacters[i].UserID = UserID;
+                personalizedCharacters[i].CharacterID = newItems[i];
             }
 
             mDb.Set<PersonalizedCharacter>().AddRange(personalizedCharacters);
@@ -171,7 +180,7 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             var ids = await mDb.Set<AssignedCharacter>()
                 .AsNoTracking()
                 .Where(ac => ac.CategoryID == CategoryID)
-                .Select(ac => ac.ID)
+                .Select(ac => ac.CharacterID)
                 .ToArrayAsync();
 
             return ids;
@@ -211,36 +220,69 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             return result;
         }
 
-        public async Task<QueryResult<SCharcteristicLeaderBoard>> GetLeaderBoard(PagedDataRequest RequestInfo, int CharacterID)
+        public async Task<QueryResult<SLeaderBoard>> GetLeaderBoard(PagedDataRequest RequestInfo, int CharacterID)
         {
-            return null;
-            //var userAvatar = mDb.Set<SelectedAvatar>();
-            //var time = mDateTime.Now;
-            //var query = mDb.Set<Comment>().AsNoTracking()
-            //    .Where(comment => comment.QuestionID == QuestionID && comment.IsVerified == true)
-            //    .Include(comment => comment.User)
-            //    .Join(userAvatar, m => m.UserID, ua => ua.UserID, (m, ua) => new SComment
-            //    {
-            //        UserID = m.UserID,
-            //        UserName = m.User.UserName,
-            //        Content = m.CommentContent,
-            //        Response = m.Response,
-            //        InsertDate = m.InsertDate,
-            //        QuestionID = m.QuestionID,
-            //        Avatar = ua.UserAvatar.PicUrl,
-            //        ServerTime = time,
-            //    })
-            //    .OrderByDescending(x => x.InsertDate);
+            var userAvatar = mDb.Set<SelectedAvatar>()
+                .AsNoTracking()
+                .Include(sa => sa.UserAvatar);
 
-            //var totalItemCount = await query.CountAsync();
+            var query = mDb.Set<PersonalizedCharacter>()
+                .AsNoTracking()
+                .Where(pc => pc.CharacterID == CharacterID)
+                .OrderBy(pc => pc.Rank)
+                .Include(pc => pc.User)
+                .Include(pc => pc.User.Level)
+                .Join(userAvatar , pc => pc.UserID , sa => sa.UserID, (pc, sa ) => new SLeaderBoard
+                {
+                    UserID = pc.User.ID,
+                    LevelNumber = pc.User.Level.LevelNumber,
+                    LevelCeil = pc.User.Level.ScoreCeil,
+                    LevelProgress = pc.User.LevelProgress,
+                    UserName = pc.User.UserName,
+                    Rank = pc.Rank,
+                    Score = pc.PointCount,
+                    UserAvatarUrl = sa.UserAvatar.PicUrl
+                })
+                .OrderBy(pc => pc.Rank);
 
-            //var startIndex = ResultPagingUtility.CalculateStartIndex(requestInfo.PageNumber, requestInfo.PageSize);
+            var totalItemCount = await query.CountAsync();
 
-            //var comments = await query.Skip(startIndex).Take(requestInfo.PageSize).ToListAsync();
+            var startIndex = ResultPagingUtility.CalculateStartIndex(RequestInfo.PageNumber, RequestInfo.PageSize);
 
-            //var queryResult = new QueryResult<SComment>(comments, totalItemCount, requestInfo.PageSize);
+            var players = await query.Skip(startIndex).Take(RequestInfo.PageSize).ToListAsync();
 
-            //return queryResult;
+            var queryResult = new QueryResult<SLeaderBoard>(players, totalItemCount, RequestInfo.PageSize);
+
+            return queryResult;
+        }
+
+        public async Task<SLeaderBoard> GetUserLeaderBoard(int CharacterID)
+        {
+            var userAvatar = mDb.Set<SelectedAvatar>()
+                .AsNoTracking()
+                .Include(sa => sa.UserAvatar);
+
+            var query = mDb.Set<PersonalizedCharacter>()
+                .AsNoTracking()
+                .Where(pc => pc.CharacterID == CharacterID && pc.UserID == mUserSession.ID)
+                .OrderBy(pc => pc.Rank)
+                .Include(pc => pc.User)
+                .Include(pc => pc.User.Level)
+                .Join(userAvatar, pc => pc.UserID, sa => sa.UserID, (pc, sa) => new SLeaderBoard
+                {
+                    UserID = pc.User.ID,
+                    LevelNumber = pc.User.Level.LevelNumber,
+                    LevelCeil = pc.User.Level.ScoreCeil,
+                    LevelProgress = pc.User.LevelProgress,
+                    UserName = pc.User.UserName,
+                    Rank = pc.Rank,
+                    Score = pc.PointCount,
+                    UserAvatarUrl = sa.UserAvatar.PicUrl
+                })
+                .OrderBy(pc => pc.Rank);
+
+            var result = await query.SingleOrDefaultAsync();
+            return result;
         }
     }
 }

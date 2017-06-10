@@ -5,6 +5,7 @@ using Falcon.Common.Security;
 using Falcon.Data.Exceptions;
 using Falcon.EFCommonContext;
 using Falcon.EFCommonContext.DbModel;
+using Falcon.Web.Api.InquiryProcessing.Public;
 using Falcon.Web.Api.MaintenanceProcessing.Public;
 using Falcon.Web.Api.Utilities.Base;
 using Falcon.Web.Common;
@@ -28,13 +29,15 @@ namespace Falcon.Web.Api.Controllers.V1
         private readonly IUserSession mUserSession;
         private readonly IGlobalApplicationState mAppState;
         private readonly ICharacteristicsMaintenanceProcessor mCharacteristicsMaintenanceProcessor;
+        private readonly ICharacteristicsInquiryProcessor mCharacteristicsInquiryProcessor;
 
         public UserAuthenticatorController(IDbContext Context , 
             IDateTime dateTime, 
             IDbContext Database ,
             IUserSession UserSession , 
             IGlobalApplicationState AppState , 
-            ICharacteristicsMaintenanceProcessor CharacteristicsMaintenanceProcessor)
+            ICharacteristicsMaintenanceProcessor CharacteristicsMaintenanceProcessor,
+            ICharacteristicsInquiryProcessor CharacteristicsInquiryProcessor)
         {
             mDateTime = dateTime;
             mDbContext = Context;
@@ -42,6 +45,7 @@ namespace Falcon.Web.Api.Controllers.V1
             mUserSession = UserSession;
             mAppState = AppState;
             mCharacteristicsMaintenanceProcessor = CharacteristicsMaintenanceProcessor;
+            mCharacteristicsInquiryProcessor = CharacteristicsInquiryProcessor;
         }
 
         [ResponseType(typeof(SUser))]
@@ -237,8 +241,8 @@ namespace Falcon.Web.Api.Controllers.V1
             mDb.Set<UserInfo>().Add(userInfo);
             mDb.Set<SelectedAvatar>().Add(selectedAvatar);
 
-            var characters = await mCharacteristicsMaintenanceProcessor.GetCategoryAssignedCharacters(Constants.DefaultUser.CategoryID);
-            var one = await mCharacteristicsMaintenanceProcessor.AddUserCharacteristicToLeaderBoard(characters);
+            var characters = await mCharacteristicsInquiryProcessor.GetCategoryAssignedCharacters(Constants.DefaultUser.CategoryID);
+            var one = await mCharacteristicsMaintenanceProcessor.AddUserCharacteristicToLeaderBoard(characters , user.ID);
 
             await mDb.SaveChangesAsync();
 

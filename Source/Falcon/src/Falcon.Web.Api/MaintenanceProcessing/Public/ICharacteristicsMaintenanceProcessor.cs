@@ -9,7 +9,7 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Public
     public interface ICharacteristicsMaintenanceProcessor
     {
         Task<int> VoteForUser(int QuestionDesignerID, int QuestionID , int[] CharacterIDs);
-        Task<int> AddUserCharacteristicToLeaderBoard(int[] CharacterIDs);
+        Task<int> AddUserCharacteristicToLeaderBoard(int[] CharacterIDs , int UserID);
         Task<int> AssignCharactersToCategory(int[] CharacterIDs, int CategoryID);
         Task<int> AddCharacterToBunchOfUsers(int[] UserIds, int CharacterID);
     }

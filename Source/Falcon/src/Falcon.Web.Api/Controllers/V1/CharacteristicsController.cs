@@ -40,13 +40,13 @@ namespace Falcon.Web.Api.Controllers.V1
         [HttpPost]
         public async Task<IHttpActionResult> Test()
         {
-            var result = await mCharacteristicsMaintenanceProcessor.AddUserCharacteristicToLeaderBoard(new int [] { 4,1 });
-            return null;
+            var result = await mCharacteristicsMaintenanceProcessor.AddUserCharacteristicToLeaderBoard(new int [] { 4,1 } , 1173 );
+            return result;
         }
 
         [Route("Characteristics/LeaderBoard/{CharacterID}/{PageNumber}")]
         [HttpPost]
-        public async Task<PagedDataInquiryResponse<SCharcteristicLeaderBoard>> LeaderBoard(int CharacterID , int PageNumber)
+        public async Task<SCharcteristicLeaderBoard> LeaderBoard(int CharacterID , int PageNumber)
         {
             var pagedData = mPagedDataRequestFactory.Create(PageNumber, mAppState.Paging_DefaultPageSize);
             var result = await mCharacteristicsInquiryProcessor.GetLeaderBoard(pagedData , CharacterID);
@@ -57,7 +57,7 @@ namespace Falcon.Web.Api.Controllers.V1
         [HttpPost]
         public async Task<IHttpActionResult> Board()
         {
-            var result = await mCharacteristicsMaintenanceProcessor.AddUserCharacteristicToLeaderBoard(new int[] { 4, 1 });
+            var result = await mCharacteristicsMaintenanceProcessor.AddUserCharacteristicToLeaderBoard(new int[] { 4, 1 } , 1);
             return null;
         }
 

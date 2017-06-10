@@ -19,6 +19,8 @@ using Falcon.Common.Logging;
 using log4net;
 using Falcon.Web.Api.Utilities.Base;
 using Falcon.Common.Security;
+using Falcon.Web.Api.MaintenanceProcessing.Public;
+using Falcon.Web.Api.InquiryProcessing.Public;
 
 namespace Falcon.Web.Api.Controllers.V1
 {
@@ -31,14 +33,24 @@ namespace Falcon.Web.Api.Controllers.V1
         private readonly IDbContext mDb;
         private readonly ILog mLogger;
         private readonly IWebUserSession mUserSession;
+        private readonly ICharacteristicsMaintenanceProcessor mCharacteristicsMaintenanceProcessor;
+        private readonly ICharacteristicsInquiryProcessor mCharacteristicsInquiryProcessor;
 
-        public CategoriesController(IDateTime dateTime , IMapper Mapper , IDbContext Database ,ILogManager LogManager , IWebUserSession UserSession)
+        public CategoriesController(IDateTime dateTime , 
+            IMapper Mapper , 
+            IDbContext Database ,
+            ILogManager LogManager , 
+            IWebUserSession UserSession , 
+            ICharacteristicsMaintenanceProcessor CharacteristicsMaintenanceProcessor,
+            ICharacteristicsInquiryProcessor CharacteristicsInquiryProcessor)
         {
             mDateTime = dateTime;
             mMapper = Mapper;
             mDb = Database;
             mLogger = LogManager.GetLog(typeof(CategoriesController));
             mUserSession = UserSession;
+            mCharacteristicsMaintenanceProcessor = CharacteristicsMaintenanceProcessor;
+            mCharacteristicsInquiryProcessor = CharacteristicsInquiryProcessor;
         }
            
 
@@ -122,6 +134,10 @@ namespace Falcon.Web.Api.Controllers.V1
                             selectedCategory.CategoryID = CategoryID;
 
                             await mDb.SaveChangesAsync();
+
+                            var characters = await mCharacteristicsInquiryProcessor.GetCategoryAssignedCharacters(CategoryID);
+                            var result = await mCharacteristicsMaintenanceProcessor.AddUserCharacteristicToLeaderBoard(characters , user.ID);
+                            
                         }
                     }
                 }

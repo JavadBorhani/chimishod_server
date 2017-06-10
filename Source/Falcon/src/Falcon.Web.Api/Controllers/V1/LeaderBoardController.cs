@@ -56,6 +56,7 @@ namespace Falcon.Web.Api.Controllers.V1
                                             UserAvatarUrl = ""
                                         })
                                         .ToArrayAsync();
+
             var userIDs = leaderboard.Select(l => l.UserID).ToList();
 
             var userAvatarPics = await mDb.Set<SelectedAvatar>().AsNoTracking()

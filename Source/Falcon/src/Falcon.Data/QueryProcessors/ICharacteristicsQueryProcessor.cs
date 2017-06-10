@@ -12,7 +12,7 @@ namespace Falcon.Data.QueryProcessors
     {
         Task<List<SCharacteristic>> FetchAllCharacteristicsWithAliases();
         Task<int> VoteDesignerCharacter(int QuestionCreatorID, int QuestionID, int[] CharacterIDs);
-        Task<int> AddUserToLeaderBoard(int[] CharacterIDs);
+        Task<int> AddUserToLeaderBoard(int[] CharacterIDs ,int UserID);
         Task<bool> CharacterIdsExists(int[] CharacterIDs);
         Task<bool> CharacterIdExist(int CharacterID);
         Task<int> AssignCharacterToCategory(int CharacterID, int CategoryID);
@@ -21,6 +21,7 @@ namespace Falcon.Data.QueryProcessors
         Task<int[]> GetCategoryAssignedCharacters(int CategoryID);
         Task<bool> CreatorHasLeaderboradIds(int CreatorID, int[] characters);
         Task<int> AddCharacterToUsers(int CharacterID, int[] UserIDs);
-        Task<QueryResult<SCharcteristicLeaderBoard>> GetLeaderBoard(PagedDataRequest RequestInfo, int CharacterID);
+        Task<QueryResult<SLeaderBoard>> GetLeaderBoard(PagedDataRequest RequestInfo, int CharacterID);
+        Task<SLeaderBoard> GetUserLeaderBoard(int CharacterID);
     }
 }

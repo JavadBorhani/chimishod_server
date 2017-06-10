@@ -24,13 +24,13 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
             return -1;
         }
 
-        public async Task<int> AddUserCharacteristicToLeaderBoard(int[] CharacterIDs)
+        public async Task<int> AddUserCharacteristicToLeaderBoard(int[] CharacterIDs , int UserID)
         {
             var exists = await mCharacteristicsQueryProcessor.CharacterIdsExists(CharacterIDs);
             if(exists)
             {
                 //ADD BUSINESS LOGIC HERE
-                var result = await mCharacteristicsQueryProcessor.AddUserToLeaderBoard(CharacterIDs);
+                var result = await mCharacteristicsQueryProcessor.AddUserToLeaderBoard(CharacterIDs , UserID);
                 return result;
             }
             else
