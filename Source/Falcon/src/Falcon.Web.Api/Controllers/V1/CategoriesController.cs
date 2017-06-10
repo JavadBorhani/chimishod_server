@@ -52,14 +52,29 @@ namespace Falcon.Web.Api.Controllers.V1
             mCharacteristicsMaintenanceProcessor = CharacteristicsMaintenanceProcessor;
             mCharacteristicsInquiryProcessor = CharacteristicsInquiryProcessor;
         }
-           
+
+        public class SampleData
+        {
+            public IEnumerable<int> data { get; set; }
+            public Category Cat { get; set; }
+        }
 
         [ResponseType(typeof(SCategory))]
         [Route("Categories/")]
         [HttpGet]
         public async Task<IHttpActionResult> GetCategoryList()
         {
-            var categories = await mDb.Set<Category>().AsNoTracking().ToArrayAsync();
+            var query = mDb.Set<Category>()
+                .AsNoTracking()
+                .OrderBy(c => c.ID)
+                .Include(c => c.AssignedCharacters)
+                .Select(c => new SampleData
+                {
+                    data = c.AssignedCharacters.Select(a => a.CharacterID),
+                    Cat = c,
+                });
+            var categories = await query.ToArrayAsync(); 
+
             var selectedCategory = await mDb.Set<SelectedCategory>().AsNoTracking().Where(st => st.UserID == mUserSession.ID).Select( sc => sc.CategoryID).SingleOrDefaultAsync();
             var purchasedCategories = await mDb.Set<PurchaseCategory>().AsNoTracking().Where(pt => pt.UserID == mUserSession.ID).Select(c => c.CategoryID).ToListAsync();
 
@@ -71,19 +86,20 @@ namespace Falcon.Web.Api.Controllers.V1
                 {
                     userCategories[i] = new SCategory
                     {
-                        ID = categories[i].ID,
-                        Name = categories[i].Name,
-                        ShortDescription = categories[i].ShortDescription,
-                        LongDescription = categories[i].LongDescription,
-                        SquareColor = categories[i].SquareColor,
-                        CircleColor = categories[i].CircleColor,
-                        RectangleColor = categories[i].RectangleColor,
-                        Price = categories[i].Price,
-                        PrizeCoefficient = categories[i].PrizeCoefficient,
-                        IsPurchased = (categories[i].ID == Constants.DefaultUser.CategoryID) ? true : purchasedCategories.Contains(categories[i].ID), // TODO : remember to remove what has checked to increase checking time
-                        IsActive = (selectedCategory == categories[i].ID) ? true : false,
-                        DiscountAmount = categories[i].DiscountAmount,
-                        TagState = categories[i].TagStateID
+                        ID = categories[i].Cat.ID,
+                        Name = categories[i].Cat.Name,
+                        ShortDescription = categories[i].Cat.ShortDescription,
+                        LongDescription = categories[i].Cat.LongDescription,
+                        SquareColor = categories[i].Cat.SquareColor,
+                        CircleColor = categories[i].Cat.CircleColor,
+                        RectangleColor = categories[i].Cat.RectangleColor,
+                        Price = categories[i].Cat.Price,
+                        PrizeCoefficient = categories[i].Cat.PrizeCoefficient,
+                        IsPurchased = (categories[i].Cat.ID == Constants.DefaultUser.CategoryID) ? true : purchasedCategories.Contains(categories[i].Cat.ID), // TODO : remember to remove what has checked to increase checking time
+                        IsActive = (selectedCategory == categories[i].Cat.ID) ? true : false,
+                        DiscountAmount = categories[i].Cat.DiscountAmount,
+                        TagState = categories[i].Cat.TagStateID,
+                        CharacterIds = categories[i].data,
                     };
                 }
 

@@ -1,5 +1,7 @@
 ﻿// Flapp Copyright 2017-2018
 
+using System.Collections.Generic;
+
 namespace Falcon.Web.Models.Api
 {
     public class SCategory
@@ -17,5 +19,6 @@ namespace Falcon.Web.Models.Api
         public int PrizeCoefficient { get; set; }
         public int DiscountAmount { get; set; }
         public int TagState { get; set; }
+        public IEnumerable<int> CharacterIds { get; set; }
     }
 }

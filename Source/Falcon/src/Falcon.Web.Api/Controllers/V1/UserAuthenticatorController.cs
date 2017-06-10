@@ -113,7 +113,7 @@ namespace Falcon.Web.Api.Controllers.V1
                 var selectedCat = await mDb.Set<SelectedCategory>().AsNoTracking()
                     .Where(sc => sc.UserID == user.ID)
                     .Include(sc => sc.Category)
-                    .Select(u => new { u.Category.ID , u.Category.Name , u.Category.PrizeCoefficient })
+                    .Select(u => new { u.Category.ID , u.Category.Name , u.Category.PrizeCoefficient ,})
                     .SingleOrDefaultAsync();
 
                 var UserState = new SUserState
@@ -124,6 +124,8 @@ namespace Falcon.Web.Api.Controllers.V1
                     SelectedCategoryCoEfficient = selectedCat.PrizeCoefficient,
                     SelectedThemeID = CurrentSelectedTheme.ID
                 };
+
+                var CategoryCharacters = mCharacteristicsInquiryProcessor.GetCategoryAssignedCharacters(selectedCat.ID);
 
                 var avatar = await mDb.Set<SelectedAvatar>().AsNoTracking()
                     .Where(sa => sa.UserID == user.ID)
@@ -156,7 +158,17 @@ namespace Falcon.Web.Api.Controllers.V1
                 }
                 await mDb.SaveChangesAsync();
 
-                return ResponseMessage(Request.CreateResponse(HttpStatusCode.OK, new { UserModel, UserState , UserAvatar , CurrentLevel , NextLevel , CurrentSelectedTheme })); //TODO : Does not support xml change to something generic
+                return ResponseMessage(Request.CreateResponse(HttpStatusCode.OK, 
+                    new
+                    {
+                        UserModel,
+                        UserState ,
+                        UserAvatar ,
+                        CurrentLevel ,
+                        NextLevel ,
+                        CurrentSelectedTheme ,
+                        CategoryCharacters
+                    })); //TODO : Does not support xml change to something generic
             }
             else
             {
@@ -241,8 +253,8 @@ namespace Falcon.Web.Api.Controllers.V1
             mDb.Set<UserInfo>().Add(userInfo);
             mDb.Set<SelectedAvatar>().Add(selectedAvatar);
 
-            var characters = await mCharacteristicsInquiryProcessor.GetCategoryAssignedCharacters(Constants.DefaultUser.CategoryID);
-            var one = await mCharacteristicsMaintenanceProcessor.AddUserCharacteristicToLeaderBoard(characters , user.ID);
+            var CategoryCharacters = await mCharacteristicsInquiryProcessor.GetCategoryAssignedCharacters(Constants.DefaultUser.CategoryID);
+            var one = await mCharacteristicsMaintenanceProcessor.AddUserCharacteristicToLeaderBoard(CategoryCharacters, user.ID);
 
             await mDb.SaveChangesAsync();
 
@@ -332,6 +344,7 @@ namespace Falcon.Web.Api.Controllers.V1
                     CurrentLevel ,
                     NextLevel,
                     CurrentSelectedTheme,
+                    CategoryCharacters
                 }));
             }
             else
