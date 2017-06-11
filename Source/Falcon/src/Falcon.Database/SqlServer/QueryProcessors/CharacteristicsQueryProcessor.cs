@@ -76,6 +76,8 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             var characterPoints = new CharacterPoint[CharacterIDs.Length];
             for(int i = 0; i < characterPoints.Length; ++i)
             {
+                characterPoints[i] = new CharacterPoint();
+
                 characterPoints[i].UserID = mUserSession.ID;
                 characterPoints[i].CreatorID = QuestionCreatorID;
                 characterPoints[i].QuestionID = QuestionID;
