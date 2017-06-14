@@ -16,8 +16,9 @@ namespace Falcon.EFCommonContext.DbModel
     {
         public int ID { get; set; }
         public int UserID { get; set; }
-        public Nullable<int> Score { get; set; }
-        public Nullable<int> Rank { get; set; }
+        public int Score { get; set; }
+        public int OldScore { get; set; }
+        public int Rank { get; set; }
         public int SpinRemainedChance { get; set; }
         public int SpinWheelCount { get; set; }
     

@@ -390,7 +390,8 @@
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="UserID" Type="int" Nullable="false" />
           <Property Name="CharacterID" Type="int" Nullable="false" />
-          <Property Name="PointCount" Type="int" Nullable="false" />
+          <Property Name="NewPointCount" Type="int" Nullable="false" />
+          <Property Name="OldPointCount" Type="int" Nullable="false" />
           <Property Name="Rank" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="PresentedAdvert">
@@ -641,8 +642,9 @@
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="UserID" Type="int" Nullable="false" />
-          <Property Name="Score" Type="int" />
-          <Property Name="Rank" Type="int" />
+          <Property Name="Score" Type="int" Nullable="false" />
+          <Property Name="OldScore" Type="int" Nullable="false" />
+          <Property Name="Rank" Type="int" Nullable="false" />
           <Property Name="SpinRemainedChance" Type="int" Nullable="false" />
           <Property Name="SpinWheelCount" Type="int" Nullable="false" />
         </EntityType>
@@ -1685,6 +1687,39 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="fn_diagramobjects" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int" />
+        <Function Name="sp_alterdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+          <Parameter Name="version" Type="int" Mode="In" />
+          <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+        </Function>
+        <Function Name="sp_creatediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+          <Parameter Name="version" Type="int" Mode="In" />
+          <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+        </Function>
+        <Function Name="sp_dropdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_helpdiagramdefinition" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_helpdiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_renamediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+          <Parameter Name="new_diagramname" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="sp_upgraddiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="UpdateCharacterRank" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="UpdateUserGlobalRank" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <EntityContainer Name="FalconDbModelStoreContainer">
           <EntitySet Name="AchievedCodeGift" EntityType="Self.AchievedCodeGift" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AchievedGifts" EntityType="Self.AchievedGifts" Schema="dbo" store:Type="Tables" />
@@ -2049,6 +2084,38 @@
     <edmx:ConceptualModels>
       <Schema Namespace="Falcon.DbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="DbEntity" annotation:LazyLoadingEnabled="true">
+          <FunctionImport Name="sp_alterdiagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="version" Mode="In" Type="Int32" />
+            <Parameter Name="definition" Mode="In" Type="Binary" />
+          </FunctionImport>
+          <FunctionImport Name="sp_creatediagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="version" Mode="In" Type="Int32" />
+            <Parameter Name="definition" Mode="In" Type="Binary" />
+          </FunctionImport>
+          <FunctionImport Name="sp_dropdiagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_helpdiagramdefinition" ReturnType="Collection(Falcon.DbModel.sp_helpdiagramdefinition_Result)">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_helpdiagrams" ReturnType="Collection(Falcon.DbModel.sp_helpdiagrams_Result)">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_renamediagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="new_diagramname" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_upgraddiagrams" />
+          <FunctionImport Name="UpdateCharacterRank" />
+          <FunctionImport Name="UpdateUserGlobalRank" />
           <EntitySet Name="AchievedCodeGifts" EntityType="Falcon.DbModel.AchievedCodeGift" />
           <EntitySet Name="AchievedGifts" EntityType="Falcon.DbModel.AchievedGift" />
           <EntitySet Name="AchievedPosessions" EntityType="Falcon.DbModel.AchievedPosession" />
@@ -2407,6 +2474,17 @@
             <End Role="WatchedAd" EntitySet="WatchedAds" />
           </AssociationSet>
         </EntityContainer>
+        <ComplexType Name="sp_helpdiagramdefinition_Result">
+          <Property Type="Int32" Name="version" Nullable="true" />
+          <Property Type="Binary" Name="definition" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="sp_helpdiagrams_Result">
+          <Property Type="String" Name="Database" Nullable="true" MaxLength="128" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="128" />
+          <Property Type="Int32" Name="ID" Nullable="false" />
+          <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
+          <Property Type="Int32" Name="OwnerID" Nullable="false" />
+        </ComplexType>
         <EntityType Name="AchievedCodeGift">
           <Key>
             <PropertyRef Name="ID" />
@@ -2857,7 +2935,8 @@
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="UserID" Type="Int32" Nullable="false" />
           <Property Name="CharacterID" Type="Int32" Nullable="false" />
-          <Property Name="PointCount" Type="Int32" Nullable="false" />
+          <Property Name="NewPointCount" Type="Int32" Nullable="false" />
+          <Property Name="OldPointCount" Type="Int32" Nullable="false" />
           <Property Name="Rank" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Character" Relationship="Falcon.DbModel.FK_PersonalizedCharacter_Characters" FromRole="PersonalizedCharacter" ToRole="Character" />
           <NavigationProperty Name="User" Relationship="Falcon.DbModel.FK_PersonalizedCharacter_User" FromRole="PersonalizedCharacter" ToRole="User" />
@@ -3188,8 +3267,9 @@
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="UserID" Type="Int32" Nullable="false" />
-          <Property Name="Score" Type="Int32" />
-          <Property Name="Rank" Type="Int32" />
+          <Property Name="Score" Type="Int32" Nullable="false" />
+          <Property Name="OldScore" Type="Int32" Nullable="false" />
+          <Property Name="Rank" Type="Int32" Nullable="false" />
           <Property Name="SpinRemainedChance" Type="Int32" Nullable="false" />
           <Property Name="SpinWheelCount" Type="Int32" Nullable="false" />
           <NavigationProperty Name="User" Relationship="Falcon.DbModel.FK_UserStatus_User" FromRole="UserStat" ToRole="User" />
@@ -4243,6 +4323,32 @@
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="FalconDbModelStoreContainer" CdmEntityContainer="DbEntity">
+          <FunctionImportMapping FunctionImportName="sp_alterdiagram" FunctionName="Falcon.DbModel.Store.sp_alterdiagram" />
+          <FunctionImportMapping FunctionImportName="sp_creatediagram" FunctionName="Falcon.DbModel.Store.sp_creatediagram" />
+          <FunctionImportMapping FunctionImportName="sp_dropdiagram" FunctionName="Falcon.DbModel.Store.sp_dropdiagram" />
+          <FunctionImportMapping FunctionImportName="sp_helpdiagramdefinition" FunctionName="Falcon.DbModel.Store.sp_helpdiagramdefinition">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Falcon.DbModel.sp_helpdiagramdefinition_Result">
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_helpdiagrams" FunctionName="Falcon.DbModel.Store.sp_helpdiagrams">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Falcon.DbModel.sp_helpdiagrams_Result">
+                <ScalarProperty Name="Database" ColumnName="Database" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Owner" ColumnName="Owner" />
+                <ScalarProperty Name="OwnerID" ColumnName="OwnerID" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_renamediagram" FunctionName="Falcon.DbModel.Store.sp_renamediagram" />
+          <FunctionImportMapping FunctionImportName="sp_upgraddiagrams" FunctionName="Falcon.DbModel.Store.sp_upgraddiagrams" />
+          <FunctionImportMapping FunctionImportName="UpdateCharacterRank" FunctionName="Falcon.DbModel.Store.UpdateCharacterRank" />
+          <FunctionImportMapping FunctionImportName="UpdateUserGlobalRank" FunctionName="Falcon.DbModel.Store.UpdateUserGlobalRank" />
           <EntitySetMapping Name="AchievedCodeGifts">
             <EntityTypeMapping TypeName="Falcon.DbModel.AchievedCodeGift">
               <MappingFragment StoreEntitySet="AchievedCodeGift">
@@ -4655,7 +4761,8 @@
             <EntityTypeMapping TypeName="Falcon.DbModel.PersonalizedCharacter">
               <MappingFragment StoreEntitySet="PersonalizedCharacter">
                 <ScalarProperty Name="Rank" ColumnName="Rank" />
-                <ScalarProperty Name="PointCount" ColumnName="PointCount" />
+                <ScalarProperty Name="OldPointCount" ColumnName="OldPointCount" />
+                <ScalarProperty Name="NewPointCount" ColumnName="NewPointCount" />
                 <ScalarProperty Name="CharacterID" ColumnName="CharacterID" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
@@ -4932,6 +5039,7 @@
                 <ScalarProperty Name="SpinWheelCount" ColumnName="SpinWheelCount" />
                 <ScalarProperty Name="SpinRemainedChance" ColumnName="SpinRemainedChance" />
                 <ScalarProperty Name="Rank" ColumnName="Rank" />
+                <ScalarProperty Name="OldScore" ColumnName="OldScore" />
                 <ScalarProperty Name="Score" ColumnName="Score" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
                 <ScalarProperty Name="ID" ColumnName="ID" />

@@ -106,7 +106,8 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             {
                 personalizedCharacters[i] = new PersonalizedCharacter();
 
-                personalizedCharacters[i].PointCount = 0;
+                personalizedCharacters[i].OldPointCount = 0;
+                personalizedCharacters[i].NewPointCount = 0;
                 personalizedCharacters[i].Rank = 0;
                 personalizedCharacters[i].UserID = UserID;
                 personalizedCharacters[i].CharacterID = newItems[i];
@@ -211,7 +212,8 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             {
                 users[i] = new PersonalizedCharacter();
 
-                users[i].PointCount = 0;
+                users[i].OldPointCount = 0;
+                users[i].NewPointCount = 0;
                 users[i].Rank = 0;
                 users[i].UserID = UserIDs[i];
                 users[i].CharacterID = CharacterID;

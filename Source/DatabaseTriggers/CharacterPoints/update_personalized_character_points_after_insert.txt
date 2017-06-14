@@ -1,0 +1,46 @@
+USE [what_if]
+GO
+/****** Object:  Trigger [dbo].[update_personalized_character_rank_after_update]    Script Date: 6/11/2017 12:12:40 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+--— =============================================
+--— Author:    <Jeb,JavadBorhani>
+--— Create date: <Now I mean Now>
+--— Description:  <trigger to update table>
+--— =============================================
+ALTER TRIGGER [dbo].[update_personalized_character_rank_after_update]
+   ON  [dbo].[CharacterPoints]
+   after Delete , insert
+AS 
+BEGIN
+  
+	Update 
+	[dbo].[PersonalizedCharacter]
+	Set 
+		PointCount = PointCount + 
+		(
+		Select COUNT(*)
+		From inserted I 
+		Where I.CreatorID = [dbo].[PersonalizedCharacter].UserID And I.CharacterID = [dbo].[PersonalizedCharacter].CharacterID
+		)
+	Where 
+			UserID IN (Select CreatorID from inserted)
+		And 
+			CharacterID IN (Select CharacterID from inserted)
+
+	Update 
+	[dbo].[PersonalizedCharacter]
+	Set 
+		PointCount = PointCount - 
+		(
+		Select COUNT(*)
+		From deleted I 
+		Where I.CreatorID = [dbo].[PersonalizedCharacter].UserID And I.CharacterID = [dbo].[PersonalizedCharacter].CharacterID
+		)
+	Where 
+			UserID IN (Select CreatorID from deleted)
+		And 
+			CharacterID IN (Select CharacterID from deleted)
+END

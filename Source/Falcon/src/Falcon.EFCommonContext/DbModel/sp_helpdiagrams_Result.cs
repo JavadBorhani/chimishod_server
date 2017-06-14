@@ -10,18 +10,13 @@
 namespace Falcon.EFCommonContext.DbModel
 {
     using System;
-    using System.Collections.Generic;
     
-    public partial class PersonalizedCharacter
+    public partial class sp_helpdiagrams_Result
     {
+        public string Database { get; set; }
+        public string Name { get; set; }
         public int ID { get; set; }
-        public int UserID { get; set; }
-        public int CharacterID { get; set; }
-        public int NewPointCount { get; set; }
-        public int OldPointCount { get; set; }
-        public int Rank { get; set; }
-    
-        public virtual Character Character { get; set; }
-        public virtual User User { get; set; }
+        public string Owner { get; set; }
+        public int OwnerID { get; set; }
     }
 }
