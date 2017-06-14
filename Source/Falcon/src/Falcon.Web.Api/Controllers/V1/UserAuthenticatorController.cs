@@ -241,6 +241,7 @@ namespace Falcon.Web.Api.Controllers.V1
                 UserID = user.ID, 
                 Rank = 0 , 
                 Score = 0,
+                OldScore = 0,
                 SpinRemainedChance = Constants.DefaultUser.SpinWheelChance,
                 SpinWheelCount = Constants.DefaultUser.SpinWheelCount
             };

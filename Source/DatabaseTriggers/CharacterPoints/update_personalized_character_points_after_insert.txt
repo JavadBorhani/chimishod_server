@@ -1,6 +1,6 @@
 USE [what_if]
 GO
-/****** Object:  Trigger [dbo].[update_personalized_character_rank_after_update]    Script Date: 6/11/2017 12:12:40 PM ******/
+/****** Object:  Trigger [dbo].[update_personalized_character_rank_after_update]    Script Date: 6/14/2017 2:39:25 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -19,7 +19,7 @@ BEGIN
 	Update 
 	[dbo].[PersonalizedCharacter]
 	Set 
-		PointCount = PointCount + 
+		NewPointCount = NewPointCount + 
 		(
 		Select COUNT(*)
 		From inserted I 
@@ -33,7 +33,7 @@ BEGIN
 	Update 
 	[dbo].[PersonalizedCharacter]
 	Set 
-		PointCount = PointCount - 
+		NewPointCount = NewPointCount - 
 		(
 		Select COUNT(*)
 		From deleted I 
