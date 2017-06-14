@@ -46,14 +46,5 @@ namespace Falcon.Web.Api.Controllers.V1
             var result = await mCharacteristicsInquiryProcessor.GetLeaderBoard(pagedData , CharacterID);
             return result;
         }
-
-        [Route("AddUser/{UserID}")]
-        [HttpPost]
-        public async Task<SCharcteristicLeaderBoard> VoteFor(int UserID)
-        {
-            var result = await mCharacteristicsMaintenanceProcessor.AddUserCharacteristicToLeaderBoard(new int[] {1 , 2 ,3 , 4} , UserID);
-            //var result2 = await mCharacteristicsMaintenanceProcessor.VoteForUser(1173, 1, new int[] { 1, 2, 3, 4 });
-            return new SCharcteristicLeaderBoard(); 
-        }
     }
 }

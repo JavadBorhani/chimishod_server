@@ -192,6 +192,12 @@
     <Compile Include="DbModel\SpinWheelType.cs">
       <DependentUpon>WhatIfDataModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="DbModel\sp_helpdiagramdefinition_Result.cs">
+      <DependentUpon>WhatIfDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DbModel\sp_helpdiagrams_Result.cs">
+      <DependentUpon>WhatIfDataModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="DbModel\Store.cs">
       <DependentUpon>WhatIfDataModel.tt</DependentUpon>
     </Compile>

@@ -1,5 +1,4 @@
-﻿using Falcon.Common;
-using Falcon.Common.Security;
+﻿using Falcon.EFCommonContext;
 using Falcon.Web.Api.MaintenanceProcessing.Public;
 using Falcon.Web.Api.Utilities.Base;
 using Falcon.Web.Common;
@@ -15,6 +14,7 @@ namespace Falcon.Web.Api.Controllers.V1
     {
         private readonly ICodeGiftsMaintenanceProcessor mCodeGiftMaintenanceProcessor;
 
+        private readonly IDbContext mDb;
         public CodeGiftsController(ICodeGiftsMaintenanceProcessor CodeGiftMaintenanceProcessor)
         {
             mCodeGiftMaintenanceProcessor = CodeGiftMaintenanceProcessor;
@@ -27,6 +27,7 @@ namespace Falcon.Web.Api.Controllers.V1
         {
             var result = await mCodeGiftMaintenanceProcessor.RegisterGiftCodePrize(CodeGiftSerial);
             return result;  
+            
         }
     }
 }

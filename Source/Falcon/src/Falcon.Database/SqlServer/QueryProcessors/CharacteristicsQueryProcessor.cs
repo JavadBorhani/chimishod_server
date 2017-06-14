@@ -244,7 +244,7 @@ namespace Falcon.Database.SqlServer.QueryProcessors
                     LevelProgress = pc.User.LevelProgress,
                     UserName = pc.User.UserName,
                     Rank = pc.Rank,
-                    Score = pc.PointCount,
+                    Score = pc.OldPointCount,
                     UserAvatarUrl = sa.UserAvatar.PicUrl
                 })
                 .OrderBy(pc => pc.Rank);
@@ -280,7 +280,7 @@ namespace Falcon.Database.SqlServer.QueryProcessors
                     LevelProgress = pc.User.LevelProgress,
                     UserName = pc.User.UserName,
                     Rank = pc.Rank,
-                    Score = pc.PointCount,
+                    Score = pc.OldPointCount,
                     UserAvatarUrl = sa.UserAvatar.PicUrl
                 })
                 .OrderBy(pc => pc.Rank);
