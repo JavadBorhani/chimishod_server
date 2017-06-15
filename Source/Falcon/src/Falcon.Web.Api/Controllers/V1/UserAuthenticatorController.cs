@@ -125,7 +125,7 @@ namespace Falcon.Web.Api.Controllers.V1
                     SelectedThemeID = CurrentSelectedTheme.ID
                 };
 
-                var CategoryCharacters = mCharacteristicsInquiryProcessor.GetCategoryAssignedCharacters(selectedCat.ID);
+                var CategoryCharacters = await mCharacteristicsInquiryProcessor.GetCategoryAssignedCharacters(selectedCat.ID);
 
                 var avatar = await mDb.Set<SelectedAvatar>().AsNoTracking()
                     .Where(sa => sa.UserID == user.ID)

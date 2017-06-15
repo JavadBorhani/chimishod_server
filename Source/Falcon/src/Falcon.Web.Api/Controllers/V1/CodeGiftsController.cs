@@ -14,7 +14,6 @@ namespace Falcon.Web.Api.Controllers.V1
     {
         private readonly ICodeGiftsMaintenanceProcessor mCodeGiftMaintenanceProcessor;
 
-        private readonly IDbContext mDb;
         public CodeGiftsController(ICodeGiftsMaintenanceProcessor CodeGiftMaintenanceProcessor)
         {
             mCodeGiftMaintenanceProcessor = CodeGiftMaintenanceProcessor;
@@ -26,8 +25,7 @@ namespace Falcon.Web.Api.Controllers.V1
         public async Task<SCodeGift> RegisterGiftCode([FromUri] string CodeGiftSerial)
         {
             var result = await mCodeGiftMaintenanceProcessor.RegisterGiftCodePrize(CodeGiftSerial);
-            return result;  
-            
+            return result;              
         }
     }
 }
