@@ -27,12 +27,16 @@ using Falcon.Web.Api.PurchaseAuthorizer.Public;
 using Falcon.Web.Api.PurchaseAuthorizer.Private;
 using Falcon.Web.Api.WatchAd.Public;
 using Falcon.Web.Api.WatchAd.Private;
+using Hangfire;
+using Owin;
+using System.Data.Entity.Core.EntityClient;
 
 namespace Falcon.Web.Api
 {
     public class NinjectConfigurator
     {
         private const string DatabaseConnectionName = "name=DbEntity";
+        private const string HangFireDatabase = "HangFire";
         public void Configure(IKernel container)
         {
             AddBindings(container);
@@ -44,10 +48,20 @@ namespace Falcon.Web.Api
             ConfigureEntityFramework(container);
             ConfigureLog4Net(container);
             ConfigureAutoMapper(container);
+            ConfigureHangFire(container);
             AddQueryProcessors(container);
             AddInquiryProcessors(container);
             AddMaintenanceProcessors(container);
             AddAdHoc(container);
+        }
+        private void ConfigureHangFire(IKernel container)
+        {
+            GlobalConfiguration.Configuration.UseNinjectActivator(container);
+            GlobalConfiguration.Configuration.UseLog4NetLogProvider();
+
+            GlobalConfiguration.Configuration.UseSqlServerStorage(HangFireDatabase);
+
+            container.Bind<IDbContext>().ToSelf().InBackgroundJobScope();
 
         }
         private void ConfigureLog4Net(IKernel container)
@@ -57,6 +71,7 @@ namespace Falcon.Web.Api
             var logManager = new LogManagerAdapter();
 
             container.Bind<ILogManager>().ToConstant(logManager);
+            
         }
 
         private void ConfigureUserSession(IKernel container)

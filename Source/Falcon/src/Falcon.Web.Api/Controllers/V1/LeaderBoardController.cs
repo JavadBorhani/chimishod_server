@@ -38,7 +38,7 @@ namespace Falcon.Web.Api.Controllers.V1
         [HttpPost]
         public async Task<IHttpActionResult> GetLeaderBoardList()
         {
-
+            
             int topNumberToShow = mAppState.GetState().Leader_TopNumberToShow;
             var leaderboard = await mDb.Set<User>().AsNoTracking()
                                         .OrderByDescending(u => u.Score)

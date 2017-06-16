@@ -33,6 +33,7 @@ namespace Falcon.Web.Api
             });
             var resolver = new NinjectDependencyResolver(container);
             GlobalConfiguration.Configuration.DependencyResolver = resolver;
+
         }
         
         /// <summary>
