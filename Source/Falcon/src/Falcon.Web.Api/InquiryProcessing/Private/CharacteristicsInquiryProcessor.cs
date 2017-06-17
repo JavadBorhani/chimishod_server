@@ -70,5 +70,11 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
 
             return data;
         }
+
+        public async Task<List<SUserCharacter>> GetUserCharacter(int UserID)
+        {
+            var data = await mCharacteristicsQueryProcessor.GetUserCharacter(UserID);
+            return data;
+        }
     }
 }

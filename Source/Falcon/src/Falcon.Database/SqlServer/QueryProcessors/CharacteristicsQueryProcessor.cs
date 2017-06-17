@@ -23,6 +23,8 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             public int Id { get; set; }
             public string Icon{ get; set; }
             public string Title{ get; set; }
+            public int UserCount { get; set; }
+            public int Priority { get; set; }
             public List<CharacterAlia> Alias { get; set; }
         }
 
@@ -42,6 +44,8 @@ namespace Falcon.Database.SqlServer.QueryProcessors
                             Id = u.ID,
                             Icon = u.Icon,
                             Title = u.Title,
+                            UserCount = u.UserCount,
+                            Priority = u.Priority,
                             Alias = u.CharacterAlias.ToList()
                         })
                 .ToArrayAsync();
@@ -64,6 +68,8 @@ namespace Falcon.Database.SqlServer.QueryProcessors
                     ID = query[i].Id,
                     Icon = query[i].Icon,
                     Title = query[i].Title,
+                    UserCount = query[i].UserCount,
+                    Priority = query[i].Priority,
                     Alias = alias
                 });
             }
@@ -297,6 +303,22 @@ namespace Falcon.Database.SqlServer.QueryProcessors
                 .CountAsync() == Characters.Length;
 
             return result;
+        }
+
+        public async Task<List<SUserCharacter>> GetUserCharacter(int UserID)
+        {
+            var data = await mDb.Set<PersonalizedCharacter>()
+                .AsNoTracking()
+                .Where(pc => pc.UserID == UserID).Select(pc => new SUserCharacter
+                {
+                    UserID = pc.UserID,
+                    CharacterID = pc.CharacterID,
+                    Rank = pc.Rank,
+                    Score = pc.OldPointCount
+                })
+                .ToListAsync();
+
+            return data;    
         }
     }
 }

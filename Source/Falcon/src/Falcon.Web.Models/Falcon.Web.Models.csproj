@@ -47,6 +47,7 @@
     <Compile Include="Api\ClientAppState.cs" />
     <Compile Include="Api\SCharacteristic.cs" />
     <Compile Include="Api\SCharcteristicLeaderBoard.cs" />
+    <Compile Include="Api\SUserCharacter.cs" />
     <Compile Include="Api\SUserStat.cs" />
     <Compile Include="Api\SAchieveSpinWheelValidation.cs" />
     <Compile Include="Api\SAppAdvert.cs" />

@@ -213,6 +213,8 @@
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Title" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Icon" Type="varchar" MaxLength="150" Nullable="false" />
+          <Property Name="UserCount" Type="int" Nullable="false" />
+          <Property Name="Priority" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="CodeGift">
           <Key>
@@ -2473,7 +2475,7 @@
             <End Role="WatchAdProvider" EntitySet="WatchAdProviders" />
             <End Role="WatchedAd" EntitySet="WatchedAds" />
           </AssociationSet>
-        </EntityContainer>
+          </EntityContainer>
         <ComplexType Name="sp_helpdiagramdefinition_Result">
           <Property Type="Int32" Name="version" Nullable="true" />
           <Property Type="Binary" Name="definition" Nullable="true" />
@@ -2728,6 +2730,8 @@
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Title" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Icon" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="UserCount" Type="Int32" Nullable="false" />
+          <Property Name="Priority" Type="Int32" Nullable="false" />
           <NavigationProperty Name="AssignedCharacters" Relationship="Falcon.DbModel.FK_AssignedCharacter_Characters" FromRole="Character" ToRole="AssignedCharacter" />
           <NavigationProperty Name="CharacterAlias" Relationship="Falcon.DbModel.FK_CharacterAlias_Characters" FromRole="Character" ToRole="CharacterAlia" />
           <NavigationProperty Name="CharacterPoints" Relationship="Falcon.DbModel.FK_CharacterPoints_Characters" FromRole="Character" ToRole="CharacterPoint" />
@@ -4568,6 +4572,8 @@
           <EntitySetMapping Name="Characters">
             <EntityTypeMapping TypeName="Falcon.DbModel.Character">
               <MappingFragment StoreEntitySet="Characters">
+                <ScalarProperty Name="Priority" ColumnName="Priority" />
+                <ScalarProperty Name="UserCount" ColumnName="UserCount" />
                 <ScalarProperty Name="Icon" ColumnName="Icon" />
                 <ScalarProperty Name="Title" ColumnName="Title" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
@@ -5076,7 +5082,7 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-        </EntityContainerMapping>
+          </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
   </edmx:Runtime>

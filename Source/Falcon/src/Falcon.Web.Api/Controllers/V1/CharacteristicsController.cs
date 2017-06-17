@@ -46,5 +46,13 @@ namespace Falcon.Web.Api.Controllers.V1
             var result = await mCharacteristicsInquiryProcessor.GetLeaderBoard(pagedData , CharacterID);
             return result;
         }
+
+        [Route("Characteristics/{UserID}")]
+        [HttpPost]
+        public async Task<List<SUserCharacter>> GetUserCharacter(int UserID)
+        {
+            var result = await mCharacteristicsInquiryProcessor.GetUserCharacter(UserID);
+            return result;
+        }
     }
 }
