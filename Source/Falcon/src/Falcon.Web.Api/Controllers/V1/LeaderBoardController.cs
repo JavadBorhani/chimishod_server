@@ -15,68 +15,34 @@ using Falcon.EFCommonContext;
 using Falcon.Web.Api.Utilities.Base;
 using Falcon.Common.Security;
 using Falcon.Web.Api.MaintenanceProcessing.Public;
+using Falcon.Web.Api.InquiryProcessing.Public;
 
 namespace Falcon.Web.Api.Controllers.V1
 {
     [UnitOfWorkActionFilter]
     public class LeaderBoardController : FalconApiController
     {
-        private readonly IDbContext mDb;
-        private readonly IMapper mMapper;
-        private readonly IWebUserSession mUserSession;
-        private readonly IGlobalApplicationState mAppState;
+        private readonly IUserStatsInquiryProcessor mUserStatsInquiryProcessor;
+        private readonly SApplicationState mAppState;
+        private readonly IPagedDataRequestFactory mPagedDataRequestFactory;
 
-        public LeaderBoardController(IMapper Mapper, IDbContext Database , IWebUserSession UserSession , IGlobalApplicationState AppState)
+        public LeaderBoardController(
+            IUserStatsInquiryProcessor UserStatsInquiryProcessor , 
+            IGlobalApplicationState ApplicationState , 
+            IPagedDataRequestFactory PagedDataRequestFactory)
         {
-            mMapper = Mapper;
-            mDb = Database;
-            mUserSession = UserSession;
-            mAppState = AppState;
+            mUserStatsInquiryProcessor = UserStatsInquiryProcessor;
+            mAppState = ApplicationState.GetState();
+            mPagedDataRequestFactory = PagedDataRequestFactory;
         }
 
-        [Route("LeaderBoard/")]
+        [Route("LeaderBoard/{PageNumber}")]
         [HttpPost]
-        public async Task<IHttpActionResult> GetLeaderBoardList()
+        public async Task<SGlobalRankLeaderBoard> GetLeaderBoardList(int PageNumber)
         {
-            
-            int topNumberToShow = mAppState.GetState().Leader_TopNumberToShow;
-            var leaderboard = await mDb.Set<User>().AsNoTracking()
-                                        .OrderByDescending(u => u.Score)
-                                        .Include(u => u.Level)
-                                        .Take(topNumberToShow)
-                                        .Select(u => new SLeaderBoard
-                                        {
-                                            UserID = u.ID,
-                                            UserName = u.UserName,
-                                            LevelCeil = u.Level.ScoreCeil,
-                                            LevelNumber = u.Level.LevelNumber,
-                                            LevelProgress = u.LevelProgress,
-                                            Score = u.Score,
-                                            Rank = 0,
-                                            UserAvatarUrl = ""
-                                        })
-                                        .ToArrayAsync();
-
-            var userIDs = leaderboard.Select(l => l.UserID).ToList();
-
-            var userAvatarPics = await mDb.Set<SelectedAvatar>().AsNoTracking()
-                .Where(sa => userIDs.Contains(sa.UserID))
-                .Include(sa => sa.UserAvatar)
-                .Select(sa => new { sa.UserAvatar.PicUrl , sa.UserID})
-                .ToListAsync();
-
-            for(int i = 0; i < leaderboard.Length; ++i)
-            {
-                leaderboard[i].Rank = (i + 1);
-                var temp = userAvatarPics.Find(uap => uap.UserID == leaderboard[i].UserID);
-                if(temp != null)
-                {
-                    leaderboard[i].UserAvatarUrl = temp.PicUrl;
-                    userAvatarPics.Remove(temp);
-                }
-            }
-
-            return Response(HttpStatusCode.OK, leaderboard);
+            var pagedData = mPagedDataRequestFactory.Create(PageNumber, mAppState.Paging_DefaultPageSize);
+            var result = await mUserStatsInquiryProcessor.GetLeaderBoard(pagedData);
+            return result;
         }
     }
 }

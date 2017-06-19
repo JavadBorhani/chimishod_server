@@ -16,5 +16,9 @@ namespace Falcon.EFCommonContext
         Task<int> SaveChangesAsync(CancellationToken cancellationToken);
         DbEntityEntry Entry(object entity);
         DbEntityEntry<TEntity> Entry<TEntity>(TEntity entity) where TEntity : class;
+        
+        // Stored Procedures 
+        int UpdateCharacterRank();
+        int UpdateUserGlobalRank();
     }
 }

@@ -50,8 +50,9 @@ namespace Falcon.Web.Api.Security.Private
             {
                 isAuthenticated = Authenticate(request , isGranted);
             }
-            catch
+            catch(Exception e)
             {
+                mLogger.Error("Access to Database " + e.Message + "\n Issues : "+ e.ToString());
                 return CreateUnauthorizedResponse();
             }
             if(isAuthenticated)

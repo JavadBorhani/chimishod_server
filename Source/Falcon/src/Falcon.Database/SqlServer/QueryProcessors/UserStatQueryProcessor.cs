@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Falcon.Web.Models.Api;
+using Falcon.Data;
 
 namespace Falcon.Database.SqlServer.QueryProcessors
 {
@@ -36,6 +37,44 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             return result;
         }
 
+        public Task<List<SUserCharacter>> GetLeaderBoard()
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<QueryResult<SLeaderBoard>> GetLeaderBoard(PagedDataRequest RequestInfo)
+        {
+            var userAvatar = mDb.Set<SelectedAvatar>()
+                .AsNoTracking()
+                .Include(sa => sa.UserAvatar);
+
+            var query = mDb.Set<UserStat>()
+                .AsNoTracking()
+                .OrderBy(pc => pc.Rank)
+                .Include(pc => pc.User)
+                .Include(pc => pc.User.Level)
+                .Join(userAvatar , pc => pc.UserID , sa => sa.UserID, (pc, sa ) => new SLeaderBoard
+                {
+                    UserID = pc.User.ID,
+                    LevelNumber = pc.User.Level.LevelNumber,
+                    UserName = pc.User.UserName,
+                    Rank = pc.Rank,
+                    Score = pc.OldScore,
+                    UserAvatarUrl = sa.UserAvatar.PicUrl
+                })
+                .OrderBy(pc => pc.Rank);
+
+            var totalItemCount = await query.CountAsync();
+
+            var startIndex = ResultPagingUtility.CalculateStartIndex(RequestInfo.PageNumber, RequestInfo.PageSize);
+
+            var players = await query.Skip(startIndex).Take(RequestInfo.PageSize).ToListAsync();
+
+            var queryResult = new QueryResult<SLeaderBoard>(players, totalItemCount, RequestInfo.PageSize);
+
+            return queryResult;
+        }
+
         public async Task<int> GetRemainedFortune()
         {
             var amount = await mDb.Set<UserStat>()
@@ -45,6 +84,33 @@ namespace Falcon.Database.SqlServer.QueryProcessors
                 .SingleOrDefaultAsync();
 
             return amount;
+        }
+
+        public async Task<SLeaderBoard> GetUserLeaderBoard()
+        {
+            var userAvatar = mDb.Set<SelectedAvatar>()
+                .AsNoTracking()
+                .Include(sa => sa.UserAvatar);
+
+            var query = mDb.Set<UserStat>()
+                .AsNoTracking()
+                .Where(pc => pc.UserID == mUserSession.ID)
+                .OrderBy(pc => pc.Rank)
+                .Include(pc => pc.User)
+                .Include(pc => pc.User.Level)
+                .Join(userAvatar, pc => pc.UserID, sa => sa.UserID, (pc, sa) => new SLeaderBoard
+                {
+                    UserID = pc.User.ID,
+                    LevelNumber = pc.User.Level.LevelNumber,
+                    UserName = pc.User.UserName,
+                    Rank = pc.Rank,
+                    Score = pc.OldScore,
+                    UserAvatarUrl = sa.UserAvatar.PicUrl
+                })
+                .OrderBy(pc => pc.Rank);
+
+            var result = await query.SingleOrDefaultAsync();
+            return result;
         }
     }
 }

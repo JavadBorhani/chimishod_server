@@ -61,7 +61,7 @@ namespace Falcon.Web.Api
 
             GlobalConfiguration.Configuration.UseSqlServerStorage(HangFireDatabase);
 
-            container.Bind<IDbContext>().ToSelf().InBackgroundJobScope();
+            //container.Bind<IDbContext>().ToSelf().InBackgroundJobScope();
 
         }
         private void ConfigureLog4Net(IKernel container)
@@ -128,6 +128,7 @@ namespace Falcon.Web.Api
             container.Bind<ICategoriesInquiryProcessor>().To<CategoriesInquiryProcessor>().InRequestScope();
             container.Bind<IAvatarsInquiryProcessor>().To<AvatarsInquiryProcessor>().InRequestScope();
             container.Bind<ICharacteristicsInquiryProcessor>().To<CharacteristicsInquiryProcessor>().InRequestScope();
+            container.Bind<IUserStatsInquiryProcessor>().To<UserStatsInquiryProcessor>().InRequestScope();
 
         }
         private void  AddMaintenanceProcessors(IKernel container)

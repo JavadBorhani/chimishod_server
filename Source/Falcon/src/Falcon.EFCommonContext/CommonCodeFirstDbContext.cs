@@ -1,4 +1,5 @@
-﻿using System.Data.Entity;
+﻿using System;
+using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 
 namespace Falcon.EFCommonContext
@@ -8,6 +9,16 @@ namespace Falcon.EFCommonContext
         internal CommonCodeFirstDbContext(string nameOrConnectionString, DbCompiledModel model)
             : base(nameOrConnectionString, model)
         {
+        }
+
+        public int UpdateCharacterRank()
+        {
+            return this.UpdateCharacterRank();
+        }
+
+        public int UpdateUserGlobalRank()
+        {
+            return this.UpdateUserGlobalRank();
         }
     }
 }

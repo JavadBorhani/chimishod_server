@@ -20,6 +20,5 @@ namespace Falcon.Web.Models.Api
         public ICollection<CharacterAlias> Alias { get; set; }
         public string Icon { get; set; }
         public int UserCount { get; set; }
-        public int Priority { get; set; }
     }
 }

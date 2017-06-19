@@ -17,8 +17,6 @@ namespace Falcon.Web.Api.AutoMappingConfiguration.LeaderBoard
                 .ForMember(s => s.UserName, m => m.MapFrom( u => u.UserName))
                 .ForMember(s => s.Score , m => m.MapFrom( u => u.Score))
                 .ForMember(s => s.LevelNumber , m => m.MapFrom( u => u.Level.LevelNumber))
-                .ForMember(s => s.LevelProgress , m => m.MapFrom( u => u.LevelProgress))
-                .ForMember(s => s.LevelCeil , m => m.MapFrom(u => u.Level.ScoreCeil))
                 .ForMember(s => s.UserAvatarUrl , m => m.Ignore())
                 .ForMember(s => s.Rank , m => m.Ignore());
         }

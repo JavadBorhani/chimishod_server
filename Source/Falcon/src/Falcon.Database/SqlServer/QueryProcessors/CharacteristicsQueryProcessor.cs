@@ -48,6 +48,7 @@ namespace Falcon.Database.SqlServer.QueryProcessors
                             Priority = u.Priority,
                             Alias = u.CharacterAlias.ToList()
                         })
+                .OrderBy( u => u.Priority)
                 .ToArrayAsync();
 
             var characters = new List<SCharacteristic>();
@@ -69,7 +70,6 @@ namespace Falcon.Database.SqlServer.QueryProcessors
                     Icon = query[i].Icon,
                     Title = query[i].Title,
                     UserCount = query[i].UserCount,
-                    Priority = query[i].Priority,
                     Alias = alias
                 });
             }
@@ -246,8 +246,6 @@ namespace Falcon.Database.SqlServer.QueryProcessors
                 {
                     UserID = pc.User.ID,
                     LevelNumber = pc.User.Level.LevelNumber,
-                    LevelCeil = pc.User.Level.ScoreCeil,
-                    LevelProgress = pc.User.LevelProgress,
                     UserName = pc.User.UserName,
                     Rank = pc.Rank,
                     Score = pc.OldPointCount,
@@ -282,8 +280,6 @@ namespace Falcon.Database.SqlServer.QueryProcessors
                 {
                     UserID = pc.User.ID,
                     LevelNumber = pc.User.Level.LevelNumber,
-                    LevelCeil = pc.User.Level.ScoreCeil,
-                    LevelProgress = pc.User.LevelProgress,
                     UserName = pc.User.UserName,
                     Rank = pc.Rank,
                     Score = pc.OldPointCount,
