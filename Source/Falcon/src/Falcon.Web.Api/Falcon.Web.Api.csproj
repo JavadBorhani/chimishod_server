@@ -295,6 +295,7 @@
     <None Include="Properties\PublishProfiles\ApiAsp.pubxml" />
     <None Include="Properties\PublishProfiles\Chimishod.pubxml" />
     <None Include="Properties\PublishProfiles\VPS.pubxml" />
+    <None Include="Properties\PublishProfiles\WebDeploy.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
