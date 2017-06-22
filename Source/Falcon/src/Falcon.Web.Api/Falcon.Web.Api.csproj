@@ -179,6 +179,7 @@
     <Compile Include="Controllers\V1\CharacteristicsController.cs" />
     <Compile Include="Controllers\V1\CodeGiftsController.cs" />
     <Compile Include="Controllers\V1\DWMController.cs" />
+    <Compile Include="Controllers\V1\JobTestController.cs" />
     <Compile Include="Controllers\V1\LeaderBoardController.cs" />
     <Compile Include="Controllers\V1\LevelsController.cs" />
     <Compile Include="Controllers\V1\NotificationController.cs" />
@@ -239,6 +240,7 @@
     <Compile Include="MaintenanceProcessing\Public\IStoresMaintenanceProcessor.cs" />
     <Compile Include="MaintenanceProcessing\Public\IThemesMaintenanceProcessor.cs" />
     <Compile Include="MaintenanceProcessing\Public\IWatchAdMaintenanceProcessor.cs" />
+    <Compile Include="Security\Private\HangfireDashboardAuthorizationFilter.cs" />
     <Compile Include="Security\Private\NumberEncryptor.cs" />
     <Compile Include="Security\Private\SpinItem.cs" />
     <Compile Include="Security\Public\IEncryptor.cs" />
