@@ -292,11 +292,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
+    <None Include="Properties\PublishProfiles\Api.Chimishod.ir.pubxml" />
     <None Include="Properties\PublishProfiles\ApiAsp.pubxml" />
-    <None Include="Properties\PublishProfiles\Chimishod.pubxml" />
     <None Include="Properties\PublishProfiles\development.pubxml" />
-    <None Include="Properties\PublishProfiles\VPS.pubxml" />
-    <None Include="Properties\PublishProfiles\WebDeploy.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
