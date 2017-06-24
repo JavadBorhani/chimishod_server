@@ -11,23 +11,27 @@ namespace Falcon.Web.Api.JobSystem.Public
     public abstract class JobBase : IJob
     {
         protected bool Done;
+
+        protected IDbContext _mDb;
         protected virtual IDbContext mDb
         {
             get
             {
-                if (mDb == null)
+                if (_mDb == null)
                 {
-                    BeginTransaction();
+                    _mDb = new CommonModelFirstDbContext(null);
+                    _mDb.Database.Connection.Open();
+                    _mDb.Database.BeginTransaction();
                 }
-                return mDb;
+                return _mDb;
             }
             set
             {
-                mDb = value;
+                _mDb = value;
             }
         }
 
-        protected virtual IJobManager mJobManager
+        protected static IJobManager mJobManager
         {
             get { return WebContainerManager.Get<IJobManager>();}
         }
@@ -35,14 +39,10 @@ namespace Falcon.Web.Api.JobSystem.Public
         public JobBase()
         {
         }
-        public void BeginTransaction()
-        {
-            mDb = new CommonModelFirstDbContext(null);
-            mDb.Database.Connection.Open();
-            mDb.Database.BeginTransaction();
-        }
 
         public abstract void StartJob();
+
+        public abstract void Activate();
 
         public void EndTransaction()
         {

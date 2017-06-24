@@ -14,7 +14,10 @@ namespace Falcon.Web.Api
         protected void Application_Start()
         {
             GlobalConfiguration.Configure(WebApiConfig.Register);
-            //Activator.CreateInstance(typeof(RankUpdateJob));
+
+            //var data = new RankUpdateJob();
+            //data.Activate();
+
             RegisterHandlers();
         }
 

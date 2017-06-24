@@ -10,20 +10,23 @@ namespace Falcon.Web.Api.JobSystem.Private.Jobs
 {
     public class RankUpdateJob : JobBase
     {
-        
         public RankUpdateJob()
         {
-            mJobManager.AddOrUpdate(() => StartJob() , Cron.Minutely());
         }
 
         public override void StartJob()
         {
-            if(mDb.UpdateUserGlobalRank() == 0 )
+            int value = mDb.UpdateUserGlobalRank();
+            if (value >= 0 )
             {
                 Done = true;
             }
-
             EndTransaction();
+        }
+
+        public override void Activate()
+        {
+            mJobManager.AddOrUpdate(() => StartJob(), Cron.MinuteInterval(2));
         }
     }
 }
