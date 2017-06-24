@@ -39,6 +39,8 @@ namespace Falcon.EFCommonContext.DbModel
         public string Host_SupportMail { get; set; }
         public string Host_SupportMailPassword { get; set; }
         public string Host_SmtpServer { get; set; }
+        public string HostCredentialUserName { get; set; }
+        public string HostCredentialPassword { get; set; }
         public int Store_DefaultReturnAmount { get; set; }
         public int WatchAdCoin { get; set; }
         public int SpinWheelFortuneThreshold { get; set; }

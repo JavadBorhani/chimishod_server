@@ -56,6 +56,8 @@ namespace Falcon.Web.Api.AutoMappingConfiguration.ApplicationStateMap
                 .ForMember(s => s.Host_SupportMail, ca => ca.MapFrom(y => y.Host_SupportMail))
                 .ForMember(s => s.Host_SupportMailPassword, ca => ca.MapFrom(y => y.Host_SupportMailPassword))
                 .ForMember(s => s.Host_SmtpServer, ca => ca.MapFrom(y => y.Host_SmtpServer))
+                .ForMember(s => s.HostCredentialUserName , ca => ca.MapFrom(y => y.HostCredentialUserName))
+                .ForMember(s => s.HostCredentialPassword , ca => ca.MapFrom(y => y.HostCredentialPassword))
 
                 .ForMember(s => s.ID , ca => ca.Ignore());
         }

@@ -81,6 +81,13 @@ namespace Falcon.Web.Models.Api
         [Required(AllowEmptyStrings = false)]
         public string Host_SmtpServer { get; set; }
 
+
+        [Required(AllowEmptyStrings = false)]
+        public string HostCredentialUserName { get; set; }
+
+        [Required(AllowEmptyStrings = false)]
+        public string HostCredentialPassword { get; set; }
+
         [Required]
         public int Store_DefaultReturnAmount { get; set; }
         [Required]

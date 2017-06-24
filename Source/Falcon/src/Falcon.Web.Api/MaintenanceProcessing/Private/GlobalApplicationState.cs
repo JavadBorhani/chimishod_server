@@ -68,6 +68,8 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
                 !string.IsNullOrEmpty(model.Host_SupportMailPassword) &&
                 !string.IsNullOrEmpty(model.Host_WebSiteNoReplyMail) &&
                 !string.IsNullOrEmpty(model.Host_WebSiteNoReplyMailPassword) &&
+                !string.IsNullOrEmpty(model.HostCredentialUserName) &&
+                !string.IsNullOrEmpty(model.HostCredentialPassword) &&
                 model.Leader_TopNumberToShow > 0 &&
                 model.Paging_DefaultPageSize > 0 &&
                 model.Prize_AnswerPrize > 0 &&

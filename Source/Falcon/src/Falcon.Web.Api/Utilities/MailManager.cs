@@ -29,7 +29,7 @@ namespace Falcon.Web.Api.Utilities
                 string body = Constants.MailTemplates.Recovery.Replace("{0}", Mail).Replace("{1}" , UserName).Replace("{2}" , Password);
 
                 MailMessage message = new MailMessage(mApplicationState.Host_SupportMail, To, Subject, body);
-                NetworkCredential credentials = new NetworkCredential("Support", mApplicationState.Host_SupportMailPassword);
+                NetworkCredential credentials = new NetworkCredential(mApplicationState.HostCredentialUserName, mApplicationState.HostCredentialPassword);
                 SmtpClient smtpobj = new SmtpClient(mApplicationState.Host_SmtpServer, 25);
                 message.IsBodyHtml = true;
                 smtpobj.UseDefaultCredentials = false;
