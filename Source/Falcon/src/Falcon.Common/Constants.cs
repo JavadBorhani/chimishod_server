@@ -525,7 +525,7 @@ namespace Falcon.Common
 "                                <tr>" +
 "                                    <td class=\"content-cell\">" +
 "                                        <h1>Hi {0},</h1>" +
-"                                        <p>You recently requested to reset your password for your [Product Name] account. Use the button below to reset it. <strong>This password reset is only valid for the next 24 hours.</strong></p>" +
+"                                        <p>You recently requested to get user name and password for Chimishod account.Use following information to enter your account.<strong> Remember to change your password </strong>" +
 "                                        <!-- Action -->" +
 "                                        <table class=\"body-action\" align=\"center\" width=\"100%\" cellpadding=\"0\" cellspacing=\"0\">" +
 "                                            <tr>" +
@@ -548,7 +548,7 @@ namespace Falcon.Common
 "                                                </td>" +
 "                                            </tr>" +
 "                                        </table>" +
-"                                        <p>For security, this request was received from a mobile device. If you did not request a password reset, please ignore this email or <a href=\"{{support_url}}\">contact support</a> if you have questions.</p>" +
+"                                        <p>For security, this request was received from a mobile device. If you did not request a password reset, please ignore this email or <a href=\"{{mailto:support@chimishod.ir}}\">contact support</a> if you have questions.</p>" +
 "                                        <p>" +
 "                                            Thanks," +
 "                                            <br>The FlappCo Team" +

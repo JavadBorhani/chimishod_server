@@ -34,6 +34,7 @@ using Falcon.Web.Api.Controllers;
 using Falcon.Web.Api.Utilities;
 using Falcon.Web.Api.JobSystem.Public;
 using Falcon.Web.Api.JobSystem.Private;
+using Falcon.Web.Api.JobSystem.Private.Jobs;
 
 namespace Falcon.Web.Api
 {
@@ -57,6 +58,7 @@ namespace Falcon.Web.Api
             AddInquiryProcessors(container);
             AddMaintenanceProcessors(container);
             AddAdHoc(container);
+            //StartJobs();
         }
         private void ConfigureHangFire(IKernel container)
         {
@@ -208,6 +210,10 @@ namespace Falcon.Web.Api
                 }
             }
             new AutoMapperConfiguration().Configure(profiles, container); 
+        }
+        private void StartJobs()
+        {
+            
         }
 
     }

@@ -11,9 +11,9 @@ namespace Falcon.Web.Api.JobSystem.Private
 {
     public class JobManager : IJobManager
     {
-        public void AddOrUpdate(Expression<Action> methodCall, Func<string> cronExpression, TimeZoneInfo timeZone = null, string queue = "default")
+        public void AddOrUpdate(Expression<Action> methodCall, string cronExpression, TimeZoneInfo timeZone = null, string queue = "default")
         {
-            RecurringJob.AddOrUpdate(methodCall, cronExpression, timeZone, queue);
+             RecurringJob.AddOrUpdate(methodCall, cronExpression, timeZone, queue);
         }
 
         public string Enqueue([InstantHandle, NotNull] Expression<Action> methodCall)

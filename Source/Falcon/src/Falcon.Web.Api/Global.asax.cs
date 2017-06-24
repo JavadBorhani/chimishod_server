@@ -1,7 +1,9 @@
 ﻿using Falcon.Common.Logging;
+using Falcon.Web.Api.JobSystem.Private.Jobs;
 using Falcon.Web.Api.Security.Private;
 using Falcon.Web.Api.Security.Public;
 using Falcon.Web.Common;
+using System;
 using System.Web.Http;
 
 
@@ -12,7 +14,7 @@ namespace Falcon.Web.Api
         protected void Application_Start()
         {
             GlobalConfiguration.Configure(WebApiConfig.Register);
-
+            //Activator.CreateInstance(typeof(RankUpdateJob));
             RegisterHandlers();
         }
 
@@ -23,6 +25,8 @@ namespace Falcon.Web.Api
                 (logManager, WebContainerManager.Get<IBasicPrincipalSecurityService>()));
 
             //TODO: Add Token builder here 
+
+            
         }
         protected void Application_Error()
         {
