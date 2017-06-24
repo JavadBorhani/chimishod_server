@@ -18,6 +18,10 @@ using Falcon.EFCommonContext;
 using Falcon.Web.Api.Utilities.Base;
 using Falcon.Common.Security;
 using Falcon.Web.Api.MaintenanceProcessing.Public;
+using Falcon.Web.Api.Utilities;
+using Hangfire;
+using Falcon.Web.Api.JobSystem.Public;
+using System;
 
 namespace Falcon.Web.Api.Controllers.V1
 {
@@ -29,13 +33,22 @@ namespace Falcon.Web.Api.Controllers.V1
         private readonly IDateTime mDateTime;
         private readonly IWebUserSession mUserSession;
         private readonly IGlobalApplicationState mAppState;
-
-        public UserInfoesController(IDateTime DateTime, IDbContext Database , IWebUserSession UserSession , IGlobalApplicationState AppState)
+        private readonly IMailManager mMailManager;
+        private readonly IJobManager mJobManager;
+       
+        public UserInfoesController(IDateTime DateTime, 
+            IDbContext Database , 
+            IWebUserSession UserSession , 
+            IGlobalApplicationState AppState , 
+            IMailManager MailManager , 
+            IJobManager JobManager)
         {
             mDateTime = DateTime;
             mDb = Database;
             mUserSession = UserSession;
             mAppState = AppState;
+            mMailManager = MailManager;
+            mJobManager = JobManager;
         }
 
         [ResponseType(typeof(SUserInfo))]
@@ -194,8 +207,10 @@ namespace Falcon.Web.Api.Controllers.V1
                                                         .SingleOrDefaultAsync();
                     if (userInfo != null)
                     {
-                        //TODO : Send mail Async and continue the process
-                        //SendVerificationEmailViaWebApi(Info.Email, userInfo.UserName, userInfo.Password);
+                       
+                        mJobManager.Enqueue(() => 
+                        mMailManager.SendRecoverySupportMail(Info.Email, "بازیابی پسورد", Info.Email, userInfo.UserName, userInfo.Password));                        
+
                         return Ok(true);
                     }
                     else
@@ -213,27 +228,6 @@ namespace Falcon.Web.Api.Controllers.V1
                 return Response(HttpStatusCode.BadRequest, false);
             }
             
-        }
-
-        private void SendVerificationEmailViaWebApi(string EmailToSend, string UserName, string Password)
-        {
-            SApplicationState state= mAppState.GetState();
-
-            string subject = "Verification Mail";
-            string body = string.Format("Flapp Studio - What if Game \n This is password Recovery \n UserName : '{0}' \n Password : '{1}'", UserName, Password);
-            string FromMail = state.Host_WebSiteNoReplyMail;
-            string emailTo = EmailToSend;
-            MailMessage mail = new MailMessage();
-            SmtpClient SmtpServer = new SmtpClient(state.Host_SmtpServer);
-            mail.From = new MailAddress(FromMail);
-            mail.To.Add(emailTo);
-            mail.Subject = subject;
-            mail.Body = body;
-            SmtpServer.Port = 8383;
-            SmtpServer.Credentials = new NetworkCredential(state.Host_WebSiteNoReplyMail, state.Host_WebSiteNoReplyMailPassword);
-            SmtpServer.EnableSsl = false;
-            SmtpServer.Send(mail);
-
         }
 
         private bool IsValidMail(string Mail)

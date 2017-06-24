@@ -216,6 +216,8 @@
     <Compile Include="InquiryProcessing\Public\IThemesInquiryProcessor.cs" />
     <Compile Include="InquiryProcessing\Public\IUsersInquiryProcessor.cs" />
     <Compile Include="InquiryProcessing\Public\IUserStatsInquiryProcessor.cs" />
+    <Compile Include="JobSystem\Private\JobManager.cs" />
+    <Compile Include="JobSystem\Public\IJobManager.cs" />
     <Compile Include="MaintenanceProcessing\Private\AppAdvertsMaintenanceProcessor.cs" />
     <Compile Include="MaintenanceProcessing\Private\AvatarsMaintenanceProcessor.cs" />
     <Compile Include="MaintenanceProcessing\Private\CategoriesMaintenanceProcessor.cs" />
@@ -245,6 +247,8 @@
     <Compile Include="Security\Private\SpinItem.cs" />
     <Compile Include="Security\Public\IEncryptor.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="Utilities\IMailManager.cs" />
+    <Compile Include="Utilities\MailManager.cs" />
     <Compile Include="WatchAd\Private\ErrorToken.cs" />
     <Compile Include="WatchAd\Private\RequestToken.cs" />
     <Compile Include="WatchAd\Private\ResponseToken.cs" />

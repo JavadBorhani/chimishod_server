@@ -30,6 +30,10 @@ using Falcon.Web.Api.WatchAd.Private;
 using Hangfire;
 using Owin;
 using System.Data.Entity.Core.EntityClient;
+using Falcon.Web.Api.Controllers;
+using Falcon.Web.Api.Utilities;
+using Falcon.Web.Api.JobSystem.Public;
+using Falcon.Web.Api.JobSystem.Private;
 
 namespace Falcon.Web.Api
 {
@@ -110,6 +114,15 @@ namespace Falcon.Web.Api
             container.Bind<IAvatarsQueryProcessor>().To<AvatarsQueryProcessor>().InRequestScope();
             container.Bind<IUserStatQueryProcessor>().To<UserStatQueryProcessor>().InRequestScope();
             container.Bind<ICharacteristicsQueryProcessor>().To<CharacteristicsQueryProcessor>().InRequestScope();
+
+
+            //summary: Reusing an special Component With Background Process and Http In RequestScope
+            //container.Bind<IUserStatQueryProcessor>()
+            //    .ToSelf()
+            //    .InNamedOrBackgroundJobScope(context => context.Kernel.Components.GetAll<INinjectHttpApplicationPlugin>()
+            //                                        .Select(c => c.GetRequestScope(context))
+            //                                        .FirstOrDefault(s => s != null));
+
         }
 
         private void AddInquiryProcessors(IKernel container)
@@ -170,6 +183,12 @@ namespace Falcon.Web.Api
 
             //Random
             container.Bind<IRandomGenerator>().To<RandomGeneratorAdapter>().InSingletonScope();
+
+            //Mail Service 
+            container.Bind<IMailManager>().To<MailManager>().InSingletonScope();
+
+            //Job Manager
+            container.Bind<IJobManager>().To<JobManager>().InSingletonScope();
         }
 
         private void ConfigureAutoMapper(IKernel container)
