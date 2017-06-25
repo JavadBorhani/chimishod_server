@@ -46,8 +46,8 @@ namespace Falcon.Web.Api
         public void Configure(IKernel container)
         {
             AddBindings(container);
-            
-        }      
+
+        }
         private void AddBindings(IKernel container)
         {
             ConfigureUserSession(container);
@@ -59,7 +59,7 @@ namespace Falcon.Web.Api
             AddInquiryProcessors(container);
             AddMaintenanceProcessors(container);
             AddAdHoc(container);
-            StartJobs();
+
         }
         private void ConfigureHangFire(IKernel container)
         {
@@ -211,16 +211,6 @@ namespace Falcon.Web.Api
                 }
             }
             new AutoMapperConfiguration().Configure(profiles, container); 
-        }
-        private void StartJobs()
-        {
-            using (var connection = JobStorage.Current.GetConnection())
-            {
-                foreach (var item in connection.GetRecurringJobs())
-                {
-                    RecurringJob.RemoveIfExists(item.Id);
-                }
-            }
         }
 
     }

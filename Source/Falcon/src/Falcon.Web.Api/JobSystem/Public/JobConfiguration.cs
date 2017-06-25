@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Hangfire;
+using Hangfire.Storage;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -10,6 +12,8 @@ namespace Falcon.Web.Api.JobSystem.Public
 
         public void Configure()
         {
+            RemoveRecurringJobs();
+
             var job = typeof(JobBase);
 
             var types = AppDomain.CurrentDomain.GetAssemblies()
@@ -21,6 +25,16 @@ namespace Falcon.Web.Api.JobSystem.Public
             {
                 var instance = (JobBase)Activator.CreateInstance(item);
                 instance.ActivateMode();
+            }
+        }
+        private void RemoveRecurringJobs()
+        {
+            using (var connection = JobStorage.Current.GetConnection())
+            {
+                foreach (var item in connection.GetRecurringJobs())
+                {
+                    RecurringJob.RemoveIfExists(item.Id);
+                }
             }
         }
     }
