@@ -34,7 +34,8 @@ namespace Falcon.Web.Api
         }
         private void RegisterJobs()
         {
-            //new JobConfiguration().Configure();
+            //new JobConfiguration().RemoveRecurringJobs();
+            new JobConfiguration().Configure();
         }
         protected void Application_Error()
         {

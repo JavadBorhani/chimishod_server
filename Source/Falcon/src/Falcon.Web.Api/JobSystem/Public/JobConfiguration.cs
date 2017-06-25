@@ -27,7 +27,7 @@ namespace Falcon.Web.Api.JobSystem.Public
                 instance.ActivateMode();
             }
         }
-        private void RemoveRecurringJobs()
+        public void RemoveRecurringJobs()
         {
             using (var connection = JobStorage.Current.GetConnection())
             {

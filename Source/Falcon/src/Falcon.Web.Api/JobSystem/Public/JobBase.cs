@@ -36,6 +36,7 @@ namespace Falcon.Web.Api.JobSystem.Public
 
         public JobBase()
         {
+
         }
 
         public abstract void StartJob();

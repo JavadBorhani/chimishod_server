@@ -19,10 +19,7 @@ namespace Falcon.Web.Api.JobSystem.Private.Jobs
         public override void StartJob()
         {
             int value = mDb.UpdateUserGlobalRank();
-            if (value >= 0 )
-            {
-                Done = true;
-            }
+            Done = true;
 
             EndTransaction();
         }   

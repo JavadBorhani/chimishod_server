@@ -17,9 +17,7 @@ namespace Falcon.Web.Api.JobSystem.Private.Jobs
         public override void StartJob()
         {
             var value = mDb.UpdateCharacterRank();
-
-            if (value >= 0)
-                Done = true;
+            Done = true;
 
             EndTransaction();
         }
