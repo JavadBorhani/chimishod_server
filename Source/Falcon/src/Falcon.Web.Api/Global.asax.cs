@@ -34,7 +34,7 @@ namespace Falcon.Web.Api
         }
         private void RegisterJobs()
         {
-            new JobConfiguration().Configure();
+            //new JobConfiguration().Configure();
         }
         protected void Application_Error()
         {

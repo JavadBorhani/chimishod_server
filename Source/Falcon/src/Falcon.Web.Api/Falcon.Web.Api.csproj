@@ -217,7 +217,8 @@
     <Compile Include="InquiryProcessing\Public\IUsersInquiryProcessor.cs" />
     <Compile Include="InquiryProcessing\Public\IUserStatsInquiryProcessor.cs" />
     <Compile Include="JobSystem\Private\JobManager.cs" />
-    <Compile Include="JobSystem\Private\Jobs\RankUpdateJob.cs" />
+    <Compile Include="JobSystem\Private\Jobs\CharacterRankUpdate.cs" />
+    <Compile Include="JobSystem\Private\Jobs\GlobalRankUpdate.cs" />
     <Compile Include="JobSystem\Public\IJob.cs" />
     <Compile Include="JobSystem\Public\JobBase.cs" />
     <Compile Include="JobSystem\Public\IJobManager.cs" />
