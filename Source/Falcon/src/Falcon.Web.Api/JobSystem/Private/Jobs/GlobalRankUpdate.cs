@@ -13,7 +13,7 @@ namespace Falcon.Web.Api.JobSystem.Private.Jobs
 
         public override void ActivateMode()
         {
-            mJobManager.AddOrUpdate(() => StartJob(), Cron.MinuteInterval(2));
+            mJobManager.AddOrUpdate(() => StartJob(), Cron.MinuteInterval(5));
         }
 
         public override void StartJob()

@@ -1,6 +1,7 @@
 ﻿using Falcon.Web.Api.InquiryProcessing.Public;
 using Falcon.Web.Api.MaintenanceProcessing.Public;
 using Falcon.Web.Api.Utilities.Base;
+using Falcon.Web.Common;
 using Falcon.Web.Models;
 using Falcon.Web.Models.Api;
 using System;
@@ -12,6 +13,7 @@ using System.Web.Http;
 
 namespace Falcon.Web.Api.Controllers.V1
 {
+    [UnitOfWorkActionFilter]
     public class CharacteristicsController : FalconApiController
     {
         private readonly ICharacteristicsMaintenanceProcessor mCharacteristicsMaintenanceProcessor;

@@ -1,5 +1,6 @@
 ﻿using Falcon.EFCommonContext;
 using Falcon.Web.Common;
+using Hangfire;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -57,6 +58,7 @@ namespace Falcon.Web.Api.JobSystem.Public
                     mDb.Database.CurrentTransaction.Rollback();
                 }
                 mDb.Database.Connection.Close();
+                mDb.Dispose();
             }
 
         }
