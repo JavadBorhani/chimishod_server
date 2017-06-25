@@ -44,7 +44,8 @@ namespace Falcon.Database.SqlServer.QueryProcessors
                     Dislike_Count = u.Dislike_Count,
                     VerifyState = Constants.DefaultValues.CreatedQuestionsVerified,
                     RegisterDateTime = u.CreatedDate,
-                    ServerTime = now
+                    ServerTime = now,
+                    CommentCount = u.CommentCount
                 })
                 .Union(createdQuestion.AsNoTracking().Where(cq => cq.UserID == UserID && (
                         cq.VerifyStateID == Constants.DefaultValues.CreatedQuestionIsInChecking ||
@@ -62,7 +63,8 @@ namespace Falcon.Database.SqlServer.QueryProcessors
                         Dislike_Count = 0 ,
                         VerifyState = cq.VerifyStateID,
                         RegisterDateTime = cq.RegisterDateTime,
-                        ServerTime = now
+                        ServerTime = now,
+                        CommentCount = 0
                     }));
 
 
