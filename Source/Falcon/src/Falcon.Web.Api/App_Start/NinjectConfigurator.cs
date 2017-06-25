@@ -35,6 +35,7 @@ using Falcon.Web.Api.Utilities;
 using Falcon.Web.Api.JobSystem.Public;
 using Falcon.Web.Api.JobSystem.Private;
 using Falcon.Web.Api.JobSystem.Private.Jobs;
+using Hangfire.Storage;
 
 namespace Falcon.Web.Api
 {
@@ -58,7 +59,7 @@ namespace Falcon.Web.Api
             AddInquiryProcessors(container);
             AddMaintenanceProcessors(container);
             AddAdHoc(container);
-            //StartJobs();
+            StartJobs();
         }
         private void ConfigureHangFire(IKernel container)
         {
@@ -213,7 +214,13 @@ namespace Falcon.Web.Api
         }
         private void StartJobs()
         {
-            
+            using (var connection = JobStorage.Current.GetConnection())
+            {
+                foreach (var item in connection.GetRecurringJobs())
+                {
+                    RecurringJob.RemoveIfExists(item.Id);
+                }
+            }
         }
 
     }

@@ -24,7 +24,7 @@ namespace Falcon.Web.Api.JobSystem.Private.Jobs
             EndTransaction();
         }
 
-        public override void Activate()
+        public override void ActivateMode()
         {
             mJobManager.AddOrUpdate(() => StartJob(), Cron.MinuteInterval(2));
         }

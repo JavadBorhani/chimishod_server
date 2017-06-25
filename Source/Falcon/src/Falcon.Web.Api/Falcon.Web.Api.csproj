@@ -221,6 +221,7 @@
     <Compile Include="JobSystem\Public\IJob.cs" />
     <Compile Include="JobSystem\Public\JobBase.cs" />
     <Compile Include="JobSystem\Public\IJobManager.cs" />
+    <Compile Include="JobSystem\Public\JobConfiguration.cs" />
     <Compile Include="MaintenanceProcessing\Private\AppAdvertsMaintenanceProcessor.cs" />
     <Compile Include="MaintenanceProcessing\Private\AvatarsMaintenanceProcessor.cs" />
     <Compile Include="MaintenanceProcessing\Private\CategoriesMaintenanceProcessor.cs" />

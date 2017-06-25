@@ -8,7 +8,7 @@ namespace Falcon.Web.Api.JobSystem.Public
 {
     public interface IJob
     {
-        //void BeginTransaction();
+        void BeginTransaction();
         void StartJob();
         void EndTransaction();
     }

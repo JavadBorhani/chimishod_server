@@ -13,16 +13,14 @@ namespace Falcon.Web.Api.JobSystem.Public
         protected bool Done;
 
         protected IDbContext _mDb;
-        protected virtual IDbContext mDb
+        protected IDbContext mDb
         {
             get
             {
-                if (_mDb == null)
-                {
-                    _mDb = new CommonModelFirstDbContext(null);
-                    _mDb.Database.Connection.Open();
-                    _mDb.Database.BeginTransaction();
-                }
+                if (_mDb != null)
+                    return _mDb;
+
+                BeginTransaction();
                 return _mDb;
             }
             set
@@ -42,18 +40,31 @@ namespace Falcon.Web.Api.JobSystem.Public
 
         public abstract void StartJob();
 
-        public abstract void Activate();
+        public abstract void ActivateMode();
 
         public void EndTransaction()
         {
-            if(Done && mDb != null)
+
+            if(mDb != null)
             {
-                mDb.Database.CurrentTransaction.Commit();
+                if(Done)
+                {
+                    mDb.Database.CurrentTransaction.Commit();
+                }
+                else
+                {
+                    mDb.Database.CurrentTransaction.Rollback();
+                }
+                mDb.Database.Connection.Close();
             }
-            else
-            {
-                mDb.Database.CurrentTransaction.Rollback();
-            }
+
+        }
+
+        public void BeginTransaction()
+        {
+            mDb = new CommonModelFirstDbContext(null);
+            mDb.Database.Connection.Open();
+            mDb.Database.BeginTransaction();
         }
     }
 }

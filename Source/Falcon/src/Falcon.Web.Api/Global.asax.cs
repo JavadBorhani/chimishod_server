@@ -1,9 +1,11 @@
 ﻿using Falcon.Common.Logging;
 using Falcon.Web.Api.JobSystem.Private.Jobs;
+using Falcon.Web.Api.JobSystem.Public;
 using Falcon.Web.Api.Security.Private;
 using Falcon.Web.Api.Security.Public;
 using Falcon.Web.Common;
 using System;
+using System.Linq;
 using System.Web.Http;
 
 
@@ -11,14 +13,13 @@ namespace Falcon.Web.Api
 {
     public class WebApiApplication : System.Web.HttpApplication
     {
+        
         protected void Application_Start()
         {
             GlobalConfiguration.Configure(WebApiConfig.Register);
 
-            //var data = new RankUpdateJob();
-            //data.Activate();
-
             RegisterHandlers();
+            RegisterJobs();
         }
 
         private void RegisterHandlers()
@@ -30,6 +31,10 @@ namespace Falcon.Web.Api
             //TODO: Add Token builder here 
 
             
+        }
+        private void RegisterJobs()
+        {
+            new JobConfiguration().Configure();
         }
         protected void Application_Error()
         {
