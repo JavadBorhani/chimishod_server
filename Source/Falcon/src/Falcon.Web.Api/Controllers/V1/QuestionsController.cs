@@ -79,7 +79,8 @@ namespace Falcon.Web.Api.Controllers.V1
                                                 Banned = question.Banned,
                                                 UserName = manu.User.UserName,
                                                 ActionCoin = question.QuestionAction.Coin,
-                                                ActionId = question.QuestionAction.ActionNumber
+                                                ActionId = question.QuestionAction.ActionNumber,
+                                                CommentCount = question.CommentCount
                                             })
                                             .OrderByDescending(a => a.Weight)
                                             .ToArrayAsync();

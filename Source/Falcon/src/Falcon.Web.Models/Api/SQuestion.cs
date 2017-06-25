@@ -17,5 +17,6 @@ namespace Falcon.Web.Models.Api
         public bool Banned { get; set; }
         public int? ActionCoin { get; set; }
         public int? ActionId { get; set; }
+        public int CommentCount { get; set; }
     }
 }
