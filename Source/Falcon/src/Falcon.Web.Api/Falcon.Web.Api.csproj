@@ -179,7 +179,7 @@
     <Compile Include="Controllers\V1\CharacteristicsController.cs" />
     <Compile Include="Controllers\V1\CodeGiftsController.cs" />
     <Compile Include="Controllers\V1\DWMController.cs" />
-    <Compile Include="Controllers\V1\JobTestController.cs" />
+    <Compile Include="Controllers\V1\TestController.cs" />
     <Compile Include="Controllers\V1\LeaderBoardController.cs" />
     <Compile Include="Controllers\V1\LevelsController.cs" />
     <Compile Include="Controllers\V1\NotificationController.cs" />

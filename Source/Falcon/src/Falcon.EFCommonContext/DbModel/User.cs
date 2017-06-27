@@ -61,6 +61,7 @@ namespace Falcon.EFCommonContext.DbModel
         public System.DateTime PreviousDaySeen { get; set; }
         public int DWMCount { get; set; }
         public bool IsTutorial { get; set; }
+        public byte[] RowVersion { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<AchievedCodeGift> AchievedCodeGifts { get; set; }

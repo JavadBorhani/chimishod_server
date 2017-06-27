@@ -21,6 +21,7 @@ namespace Falcon.EFCommonContext.DbModel
         public int Rank { get; set; }
         public int SpinRemainedChance { get; set; }
         public int SpinWheelCount { get; set; }
+        public byte[] RowVersion { get; set; }
     
         public virtual User User { get; set; }
     }

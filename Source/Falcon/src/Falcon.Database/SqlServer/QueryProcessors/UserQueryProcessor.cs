@@ -7,6 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System;
 using Falcon.Common;
+using System.Data.Entity.Infrastructure;
 
 namespace Falcon.Database.SqlServer.QueryProcessors
 {
@@ -30,7 +31,24 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             var user = await mDb.Set<User>().Where(u => u.ID == mUserSession.ID).SingleOrDefaultAsync();
             user.TotalCoin += Coin;
 
-            await mDb.SaveChangesAsync();
+            var result = mDb.Database.ExecuteSqlCommand("Update [dbo].[User] Set TotalCoin = (TotalCoin + 10) Where ID = " + mUserSession.ID);
+
+            bool SaveFailed = false;
+            do
+            {
+                SaveFailed = false; 
+                try
+                {
+                    await mDb.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException ex)
+                {
+                    SaveFailed = true;
+                    await ex.Entries.Single().ReloadAsync();
+                }
+
+            } while (SaveFailed);
+
             return user.TotalCoin;
         }
 
