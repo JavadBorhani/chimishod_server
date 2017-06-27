@@ -26,8 +26,8 @@ namespace Falcon.Database.SqlServer.QueryProcessors
         public async Task<int> IncreaseCoin(int Coin)
         {
             if (Coin < 0)
-                return -1; 
-            //TODO : Checkout Threading 
+                return -1;
+
             var user = await mDb.Set<User>().Where(u => u.ID == mUserSession.ID).SingleOrDefaultAsync();
 
             bool SaveFailed = false;
@@ -86,9 +86,25 @@ namespace Falcon.Database.SqlServer.QueryProcessors
         public async Task<int> DecreaseCoin(int Coin)
         {
             var user = await mDb.Set<User>().Where(u => u.ID == mUserSession.ID).SingleOrDefaultAsync();
-            user.TotalCoin -= Coin;
+           
+            bool SaveFailed = false;
+            do
+            {
+                SaveFailed = false;
 
-            await mDb.SaveChangesAsync();
+                user.TotalCoin -= Coin;
+                try
+                {
+                    await mDb.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException ex)
+                {
+                    SaveFailed = true;
+                    ex.Entries.Single().Reload();
+                }
+
+            } while (SaveFailed);
+
             return user.TotalCoin;
         }
     }
