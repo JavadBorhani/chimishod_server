@@ -29,14 +29,13 @@ namespace Falcon.Database.SqlServer.QueryProcessors
                 return -1; 
             //TODO : Checkout Threading 
             var user = await mDb.Set<User>().Where(u => u.ID == mUserSession.ID).SingleOrDefaultAsync();
-            user.TotalCoin += Coin;
-
-            var result = mDb.Database.ExecuteSqlCommand("Update [dbo].[User] Set TotalCoin = (TotalCoin + 10) Where ID = " + mUserSession.ID);
 
             bool SaveFailed = false;
             do
             {
-                SaveFailed = false; 
+                SaveFailed = false;
+
+                user.TotalCoin += Coin;
                 try
                 {
                     await mDb.SaveChangesAsync();
@@ -44,7 +43,7 @@ namespace Falcon.Database.SqlServer.QueryProcessors
                 catch (DbUpdateConcurrencyException ex)
                 {
                     SaveFailed = true;
-                    await ex.Entries.Single().ReloadAsync();
+                    ex.Entries.Single().Reload();
                 }
 
             } while (SaveFailed);
