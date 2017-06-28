@@ -72,6 +72,8 @@
     <Compile Include="ErrorHandling\SimpleErrorResult.cs" />
     <Compile Include="ErrorHandling\SimpleExceptionLogger.cs" />
     <Compile Include="IActionTransactionHelper.cs" />
+    <Compile Include="Memory\IMemoryStore.cs" />
+    <Compile Include="Memory\MemeoryStore.cs" />
     <Compile Include="NamespaceHttpControllerSelector.cs" />
     <Compile Include="NinjectDependencyResolver.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -101,6 +103,10 @@
     <ProjectReference Include="..\Falcon.EFCommonContext\Falcon.EFCommonContext.csproj">
       <Project>{3c3db492-5ec4-459a-9dc3-0c083277b6f4}</Project>
       <Name>Falcon.EFCommonContext</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Falcon.Web.Models\Falcon.Web.Models.csproj">
+      <Project>{E4A55063-CBC8-4B7F-A1A6-C4F70F789DF0}</Project>
+      <Name>Falcon.Web.Models</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

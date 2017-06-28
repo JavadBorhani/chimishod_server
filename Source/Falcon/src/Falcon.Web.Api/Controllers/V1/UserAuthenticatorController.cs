@@ -63,7 +63,6 @@ namespace Falcon.Web.Api.Controllers.V1
                     UserName = user.UserName,
                     UserTypeID = user.UserTypeID,
                     TotalCoin = user.TotalCoin,
-                    Score = user.Score,
                     LevelProgress = user.LevelProgress,                    
                     IsAbleToWriteComment = user.IsAbleToWriteComment,
                 };
@@ -71,15 +70,17 @@ namespace Falcon.Web.Api.Controllers.V1
                 var result = await mDb.Set<UserStat>().AsNoTracking().Where(us => us.UserID == user.ID).Select(u => new 
                 {
                     u.SpinRemainedChance ,
-                    u.SpinWheelCount
+                    u.SpinWheelCount,  
+                    u.Score,
                 }).SingleOrDefaultAsync();
+
 
                 UserModel.RemainedSpinChance = result.SpinRemainedChance;
                 UserModel.TotalSpinCount = result.SpinWheelCount;
+                UserModel.Score = result.Score;
                 
                 var CurrentLevel = new Models.Api.SLevel
                 {
-                    ID = user.CurrentLevelID,
                     LevelNumber = user.Level.LevelNumber,
                     Ceil = user.Level.ScoreCeil,
                     Coin = user.Level.Star,
@@ -89,7 +90,6 @@ namespace Falcon.Web.Api.Controllers.V1
                     .Where(l => l.LevelNumber == (CurrentLevel.LevelNumber + 1))
                     .Select( l => new SLevel
                     {
-                        ID = l.ID,
                         LevelNumber = l.LevelNumber,
                         Ceil = l.ScoreCeil,
                         Coin = l.Star
@@ -184,16 +184,14 @@ namespace Falcon.Web.Api.Controllers.V1
                 UserName = mAppState.GetState().User_DefaultUserName,
                 UserTypeID = Constants.DefaultUser.UserTypeID,
                 TotalCoin = mAppState.GetState().User_DefaultUserCoin,
-                Score = Constants.DefaultUser.Score,
                 LevelProgress = Constants.DefaultUser.LevelProgress,
-                CurrentLevelID = Constants.DefaultUser.CurrentLevelD,
+                CurrentLevelNumber = Constants.DefaultUser.CurrentLevelNumber,
                 IsAbleToWriteComment = Constants.DefaultUser.IsAbleToWriteComment,
                 LastSeenDateTime = mDateTime.Now,
                 PrevLastSeenDateTime = mDateTime.Now,
                 PreviousDaySeen = mDateTime.Now,
                 DWMCount = Constants.DefaultUser.DWMDefaultCount , 
                 IsTutorial = true,
-                Rank = 0,
             };
 
             var registeredUser = mDb.Set<User>().Add(user);
@@ -265,7 +263,7 @@ namespace Falcon.Web.Api.Controllers.V1
                 UserName = user.UserName,
                 UserTypeID = user.UserTypeID,
                 TotalCoin = user.TotalCoin,
-                Score = user.Score,
+                Score = userStat.Score,
                 LevelProgress = user.LevelProgress,
                 IsAbleToWriteComment = user.IsAbleToWriteComment,
                 RemainedSpinChance = userStat.SpinRemainedChance,
@@ -290,13 +288,8 @@ namespace Falcon.Web.Api.Controllers.V1
                 .OrderBy( l => l.LevelNumber)
                 .ToArrayAsync();
 
-            if(levelsInfo.Length != 2)
-            {
-                throw new ChildObjectNotFoundException("Level Number Should be 2 but it's " + levelsInfo.Length);
-            }
             var CurrentLevel = new SLevel
             {
-                ID = levelsInfo[0].ID,
                 LevelNumber = levelsInfo[0].LevelNumber,
                 Ceil = levelsInfo[0].ScoreCeil,
                 Coin = levelsInfo[0].Star,
@@ -304,7 +297,6 @@ namespace Falcon.Web.Api.Controllers.V1
 
             var NextLevel = new SLevel
             {
-                ID = levelsInfo[1].ID,
                 LevelNumber = levelsInfo[1].LevelNumber,
                 Ceil = levelsInfo[1].ScoreCeil,
                 Coin = levelsInfo[1].Star,

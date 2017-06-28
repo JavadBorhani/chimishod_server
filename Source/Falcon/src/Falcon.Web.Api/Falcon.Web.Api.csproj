@@ -234,6 +234,8 @@
     <Compile Include="MaintenanceProcessing\Private\SpinWheelMaintenanceProcessor.cs" />
     <Compile Include="MaintenanceProcessing\Private\StoresMaintenanceProcessor.cs" />
     <Compile Include="MaintenanceProcessing\Private\ThemesMaintenanceProcessor.cs" />
+    <Compile Include="MaintenanceProcessing\Private\UsersMaintenanceProcessor.cs" />
+    <Compile Include="MaintenanceProcessing\Private\UserStatsMaintenanceProcessor.cs" />
     <Compile Include="MaintenanceProcessing\Private\WatchAdMaintenanceProcessor.cs" />
     <Compile Include="MaintenanceProcessing\Public\IAppAdvertsMaintenanceProcessor.cs" />
     <Compile Include="MaintenanceProcessing\Public\IAvatarsMaintenanceProcessor.cs" />
@@ -246,14 +248,16 @@
     <Compile Include="MaintenanceProcessing\Public\ISpinWheelMaintenanceProcessor.cs" />
     <Compile Include="MaintenanceProcessing\Public\IStoresMaintenanceProcessor.cs" />
     <Compile Include="MaintenanceProcessing\Public\IThemesMaintenanceProcessor.cs" />
+    <Compile Include="MaintenanceProcessing\Public\IUsersMaintenanceProcessor.cs" />
+    <Compile Include="MaintenanceProcessing\Public\IUserStatsMaintenanceProcessor.cs" />
     <Compile Include="MaintenanceProcessing\Public\IWatchAdMaintenanceProcessor.cs" />
     <Compile Include="Security\Private\HangfireDashboardAuthorizationFilter.cs" />
     <Compile Include="Security\Private\NumberEncryptor.cs" />
     <Compile Include="Security\Private\SpinItem.cs" />
     <Compile Include="Security\Public\IEncryptor.cs" />
     <Compile Include="Startup.cs" />
-    <Compile Include="Utilities\IMailManager.cs" />
-    <Compile Include="Utilities\MailManager.cs" />
+    <Compile Include="Utilities\Mail\IMailManager.cs" />
+    <Compile Include="Utilities\Mail\MailManager.cs" />
     <Compile Include="WatchAd\Private\ErrorToken.cs" />
     <Compile Include="WatchAd\Private\RequestToken.cs" />
     <Compile Include="WatchAd\Private\ResponseToken.cs" />

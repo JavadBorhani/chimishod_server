@@ -49,18 +49,18 @@
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Description" Type="nvarchar" MaxLength="100" Nullable="false" />
-          <Property Name="Star" Type="int" Nullable="false" />
+          <Property Name="Coin" Type="int" Nullable="false" />
           <Property Name="Icon" Type="varchar" MaxLength="150" Nullable="false" />
           <Property Name="RectangleColor" Type="varchar" MaxLength="10" Nullable="false" />
           <Property Name="CreatedDate" Type="datetime" Nullable="false" />
           <Property Name="UpdatedDate" Type="datetime" Nullable="false" />
           <Property Name="QueryTypeID" Type="int" />
           <Property Name="Query" Type="nvarchar" MaxLength="1000" />
-          <Property Name="LevelID" Type="int" />
+          <Property Name="LevelNumber" Type="int" />
           <Property Name="IsActive" Type="bit" Nullable="false" />
           <Property Name="CategoryID" Type="int" />
           <Property Name="CategoryQuantity" Type="int" />
-          <Property Name="Prize" Type="int" Nullable="false" />
+          <Property Name="ScorePrize" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="AchievementQueryType">
           <Key>
@@ -331,9 +331,8 @@
         </EntityType>
         <EntityType Name="Level">
           <Key>
-            <PropertyRef Name="ID" />
+            <PropertyRef Name="LevelNumber" />
           </Key>
-          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="LevelNumber" Type="int" Nullable="false" />
           <Property Name="Star" Type="int" Nullable="false" />
           <Property Name="ScoreCeil" Type="int" Nullable="false" />
@@ -603,13 +602,11 @@
           <Property Name="UserName" Type="nvarchar" MaxLength="40" Nullable="false" />
           <Property Name="UserTypeID" Type="int" />
           <Property Name="TotalCoin" Type="int" Nullable="false" />
-          <Property Name="Score" Type="int" Nullable="false" />
           <Property Name="LevelProgress" Type="int" Nullable="false" />
-          <Property Name="CurrentLevelID" Type="int" />
+          <Property Name="CurrentLevelNumber" Type="int" />
           <Property Name="IsAbleToWriteComment" Type="bit" Nullable="false" />
           <Property Name="LastSeenDateTime" Type="datetime" Nullable="false" />
           <Property Name="PrevLastSeenDateTime" Type="datetime" Nullable="false" />
-          <Property Name="Rank" Type="int" />
           <Property Name="PreviousDaySeen" Type="datetime" Nullable="false" />
           <Property Name="DWMCount" Type="int" Nullable="false" />
           <Property Name="IsTutorial" Type="bit" Nullable="false" />
@@ -835,10 +832,10 @@
           <End Role="Achievement" Type="Self.Achievement" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Level">
-              <PropertyRef Name="ID" />
+              <PropertyRef Name="LevelNumber" />
             </Principal>
             <Dependent Role="Achievement">
-              <PropertyRef Name="LevelID" />
+              <PropertyRef Name="LevelNumber" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1609,10 +1606,10 @@
           <End Role="User" Type="Self.User" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Level">
-              <PropertyRef Name="ID" />
+              <PropertyRef Name="LevelNumber" />
             </Principal>
             <Dependent Role="User">
-              <PropertyRef Name="CurrentLevelID" />
+              <PropertyRef Name="CurrentLevelNumber" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2546,18 +2543,18 @@
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Description" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="Star" Type="Int32" Nullable="false" />
+          <Property Name="Coin" Type="Int32" Nullable="false" />
           <Property Name="Icon" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
           <Property Name="RectangleColor" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="UpdatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="QueryTypeID" Type="Int32" />
           <Property Name="Query" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
-          <Property Name="LevelID" Type="Int32" />
+          <Property Name="LevelNumber" Type="Int32" />
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
           <Property Name="CategoryID" Type="Int32" />
           <Property Name="CategoryQuantity" Type="Int32" />
-          <Property Name="Prize" Type="Int32" Nullable="false" />
+          <Property Name="ScorePrize" Type="Int32" Nullable="false" />
           <NavigationProperty Name="AchievedPosessions" Relationship="Falcon.DbModel.FK_AchievedQuests_Quest" FromRole="Achievement" ToRole="AchievedPosession" />
           <NavigationProperty Name="AchievementQueryType" Relationship="Falcon.DbModel.FK_Achievement_AchievementQueryType" FromRole="Achievement" ToRole="AchievementQueryType" />
           <NavigationProperty Name="Category" Relationship="Falcon.DbModel.FK_Achievement_Category" FromRole="Achievement" ToRole="Category" />
@@ -2877,9 +2874,8 @@
         </EntityType>
         <EntityType Name="Level">
           <Key>
-            <PropertyRef Name="ID" />
+            <PropertyRef Name="LevelNumber" />
           </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="LevelNumber" Type="Int32" Nullable="false" />
           <Property Name="Star" Type="Int32" Nullable="false" />
           <Property Name="ScoreCeil" Type="Int32" Nullable="false" />
@@ -3203,13 +3199,11 @@
           <Property Name="UserName" Type="String" Nullable="false" MaxLength="40" FixedLength="false" Unicode="true" />
           <Property Name="UserTypeID" Type="Int32" />
           <Property Name="TotalCoin" Type="Int32" Nullable="false" />
-          <Property Name="Score" Type="Int32" Nullable="false" />
           <Property Name="LevelProgress" Type="Int32" Nullable="false" />
-          <Property Name="CurrentLevelID" Type="Int32" />
+          <Property Name="CurrentLevelNumber" Type="Int32" />
           <Property Name="IsAbleToWriteComment" Type="Boolean" Nullable="false" />
           <Property Name="LastSeenDateTime" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="PrevLastSeenDateTime" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="Rank" Type="Int32" />
           <Property Name="PreviousDaySeen" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="DWMCount" Type="Int32" Nullable="false" />
           <Property Name="IsTutorial" Type="Boolean" Nullable="false" />
@@ -3473,10 +3467,10 @@
           <End Type="Falcon.DbModel.Achievement" Role="Achievement" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Level">
-              <PropertyRef Name="ID" />
+              <PropertyRef Name="LevelNumber" />
             </Principal>
             <Dependent Role="Achievement">
-              <PropertyRef Name="LevelID" />
+              <PropertyRef Name="LevelNumber" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -3905,10 +3899,10 @@
           <End Type="Falcon.DbModel.User" Role="User" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Level">
-              <PropertyRef Name="ID" />
+              <PropertyRef Name="LevelNumber" />
             </Principal>
             <Dependent Role="User">
-              <PropertyRef Name="CurrentLevelID" />
+              <PropertyRef Name="CurrentLevelNumber" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -4408,18 +4402,18 @@
           <EntitySetMapping Name="Achievements">
             <EntityTypeMapping TypeName="Falcon.DbModel.Achievement">
               <MappingFragment StoreEntitySet="Achievement">
-                <ScalarProperty Name="Prize" ColumnName="Prize" />
+                <ScalarProperty Name="ScorePrize" ColumnName="ScorePrize" />
                 <ScalarProperty Name="CategoryQuantity" ColumnName="CategoryQuantity" />
                 <ScalarProperty Name="CategoryID" ColumnName="CategoryID" />
                 <ScalarProperty Name="IsActive" ColumnName="IsActive" />
-                <ScalarProperty Name="LevelID" ColumnName="LevelID" />
+                <ScalarProperty Name="LevelNumber" ColumnName="LevelNumber" />
                 <ScalarProperty Name="Query" ColumnName="Query" />
                 <ScalarProperty Name="QueryTypeID" ColumnName="QueryTypeID" />
                 <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
                 <ScalarProperty Name="RectangleColor" ColumnName="RectangleColor" />
                 <ScalarProperty Name="Icon" ColumnName="Icon" />
-                <ScalarProperty Name="Star" ColumnName="Star" />
+                <ScalarProperty Name="Coin" ColumnName="Coin" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
@@ -4722,7 +4716,6 @@
                 <ScalarProperty Name="ScoreCeil" ColumnName="ScoreCeil" />
                 <ScalarProperty Name="Star" ColumnName="Star" />
                 <ScalarProperty Name="LevelNumber" ColumnName="LevelNumber" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -5010,13 +5003,11 @@
                 <ScalarProperty Name="IsTutorial" ColumnName="IsTutorial" />
                 <ScalarProperty Name="DWMCount" ColumnName="DWMCount" />
                 <ScalarProperty Name="PreviousDaySeen" ColumnName="PreviousDaySeen" />
-                <ScalarProperty Name="Rank" ColumnName="Rank" />
                 <ScalarProperty Name="PrevLastSeenDateTime" ColumnName="PrevLastSeenDateTime" />
                 <ScalarProperty Name="LastSeenDateTime" ColumnName="LastSeenDateTime" />
                 <ScalarProperty Name="IsAbleToWriteComment" ColumnName="IsAbleToWriteComment" />
-                <ScalarProperty Name="CurrentLevelID" ColumnName="CurrentLevelID" />
+                <ScalarProperty Name="CurrentLevelNumber" ColumnName="CurrentLevelNumber" />
                 <ScalarProperty Name="LevelProgress" ColumnName="LevelProgress" />
-                <ScalarProperty Name="Score" ColumnName="Score" />
                 <ScalarProperty Name="TotalCoin" ColumnName="TotalCoin" />
                 <ScalarProperty Name="UserTypeID" ColumnName="UserTypeID" />
                 <ScalarProperty Name="UserName" ColumnName="UserName" />

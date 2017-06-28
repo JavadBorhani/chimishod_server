@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System;
 using Falcon.Common;
 using System.Data.Entity.Infrastructure;
+using Falcon.Web.Common.Memmory;
 
 namespace Falcon.Database.SqlServer.QueryProcessors
 {
@@ -17,11 +18,13 @@ namespace Falcon.Database.SqlServer.QueryProcessors
         private readonly IDbContext mDb;
         private readonly IWebUserSession mUserSession;
         private readonly IDateTime mDateTime;
-        public UserQueryProcessor(IDbContext Database , IWebUserSession UserSession , IDateTime DateTime)
+        private readonly IMemoryStore mStore;
+        public UserQueryProcessor(IDbContext Database , IWebUserSession UserSession , IDateTime DateTime , IMemoryStore Store)
         {
             mDb = Database;
             mUserSession = UserSession;
             mDateTime = DateTime;
+            mStore = Store; 
         }
         public async Task<int> IncreaseCoin(int Coin)
         {
@@ -39,6 +42,7 @@ namespace Falcon.Database.SqlServer.QueryProcessors
                 try
                 {
                     await mDb.SaveChangesAsync();
+                    mStore.SaveState(GlobalVariables.ConcurrencyIssueResolved, true);
                 }
                 catch (DbUpdateConcurrencyException ex)
                 {
@@ -96,6 +100,7 @@ namespace Falcon.Database.SqlServer.QueryProcessors
                 try
                 {
                     await mDb.SaveChangesAsync();
+                    mStore.SaveState(GlobalVariables.ConcurrencyIssueResolved, true);
                 }
                 catch (DbUpdateConcurrencyException ex)
                 {

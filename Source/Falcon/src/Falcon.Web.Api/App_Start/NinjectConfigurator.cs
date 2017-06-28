@@ -36,6 +36,8 @@ using Falcon.Web.Api.JobSystem.Public;
 using Falcon.Web.Api.JobSystem.Private;
 using Falcon.Web.Api.JobSystem.Private.Jobs;
 using Hangfire.Storage;
+using Falcon.Web.Common.Memmory;
+using Falcon.Web.Api.Utilities.Mail;
 
 namespace Falcon.Web.Api
 {
@@ -160,6 +162,8 @@ namespace Falcon.Web.Api
             container.Bind<IThemesMaintenanceProcessor>().To<ThemesMaintenanceProcessor>().InRequestScope();
             container.Bind<IAvatarsMaintenanceProcessor>().To<AvatarsMaintenanceProcessor>().InRequestScope();
             container.Bind<ICharacteristicsMaintenanceProcessor>().To<CharacteristicsMaintenanceProcessor>().InRequestScope();
+            container.Bind<IUserStatsMaintenanceProcessor>().To<UserStatsMaintenanceProcessor>().InRequestScope();
+            container.Bind<IUsersMaintenanceProcessor>().To<UsersMaintenanceProcessor>().InRequestScope();
 
         }
 
@@ -192,6 +196,9 @@ namespace Falcon.Web.Api
 
             //Job Manager
             container.Bind<IJobManager>().To<JobManager>().InSingletonScope();
+
+            //Temp Memory
+            container.Bind<IMemoryStore>().To<MemeoryStore>().InSingletonScope();
         }
 
         private void ConfigureAutoMapper(IKernel container)

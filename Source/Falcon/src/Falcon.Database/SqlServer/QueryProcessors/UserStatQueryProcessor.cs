@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Falcon.Web.Models.Api;
 using Falcon.Data;
+using System.Data.Entity.Infrastructure;
 
 namespace Falcon.Database.SqlServer.QueryProcessors
 {
@@ -31,15 +32,35 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             return true;
         }
 
+        public async Task<int> AddScore(int Amount)
+        {
+            var user = await mDb.Set<UserStat>().Where(u => u.UserID == mUserSession.ID).SingleOrDefaultAsync();
+
+            bool SaveFailed = false;
+            do
+            {
+                SaveFailed = false;
+
+                user.Score += Amount;
+                try
+                {
+                    await mDb.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException ex)
+                {
+                    SaveFailed = true;
+                    ex.Entries.Single().Reload();
+                }
+
+            } while (SaveFailed);
+
+            return user.Score;
+        }
+
         public async Task<UserStat> GetById(int ID)
         {
             var result =  await mDb.Set<UserStat>().AsNoTracking().FirstOrDefaultAsync(us => us.ID == ID);
             return result;
-        }
-
-        public Task<List<SUserCharacter>> GetLeaderBoard()
-        {
-            throw new NotImplementedException();
         }
 
         public async Task<QueryResult<SLeaderBoard>> GetLeaderBoard(PagedDataRequest RequestInfo)

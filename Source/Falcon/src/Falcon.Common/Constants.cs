@@ -21,7 +21,7 @@ namespace Falcon.Common
             //public const int TotalStar = 200; is in db
             public const int LevelProgress = 0; 
             public const int LevelAnswerdNumber = 0;
-            public const int CurrentLevelD = 1;
+            public const int CurrentLevelNumber = 1;
             public const int LevelNumber = 1; 
             public const int AppThemeID = 1;
             public const int CategoryID = 1;

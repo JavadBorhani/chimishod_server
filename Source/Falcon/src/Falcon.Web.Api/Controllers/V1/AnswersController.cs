@@ -231,7 +231,7 @@ namespace Falcon.Web.Api.Controllers.V1
                                                                 .SingleOrDefaultAsync();
                         if(otherUser != null)
                         {
-                            otherUser.Score         += mAppState.Prize_LikePrize;
+                            otherUser.Score         += mAppState.Prize_LikePrize; // SCORESCORE
                             otherUser.LevelProgress += mAppState.Prize_LikePrize;
                         }
                     }
@@ -246,8 +246,7 @@ namespace Falcon.Web.Api.Controllers.V1
                 int prizeCoefficient = questionToUpdate.Category.PrizeCoefficient;
                 if (mAppState.Prize_AnswerPrize > 0 && prizeCoefficient > 0 )
                 {
-                    int nextLevelId = await GetNextLevelID(user.Level.LevelNumber);
-                    LevelUpChecking(ref user, user.Level.ScoreCeil, mAppState.Prize_AnswerPrize * prizeCoefficient, nextLevelId);
+                    LevelUpChecking(ref user, user.Level.ScoreCeil, mAppState.Prize_AnswerPrize * prizeCoefficient, user.Level.LevelNumber +1);
                     await mDb.SaveChangesAsync();
                 }
                 
@@ -343,12 +342,12 @@ namespace Falcon.Web.Api.Controllers.V1
             return await mDb.Set<Favorite>().CountAsync(e => e.UserID == userID);
         }
 
-        private void LevelUpChecking(ref User user, int levelCeil, int Prize, int nextLevelID)
+        private void LevelUpChecking(ref User user, int levelCeil, int Prize, int nextLevelNumber)
         {
-            user.Score += Prize;
+            user.Score += Prize; //SCORESCORE
             if (user.LevelProgress + Prize >= levelCeil)
             {
-                user.CurrentLevelID = nextLevelID;
+                user.CurrentLevelNumber = nextLevelNumber;
                 int remained = (user.LevelProgress + Prize) - levelCeil;
                 user.LevelProgress = remained;
             }
@@ -358,9 +357,5 @@ namespace Falcon.Web.Api.Controllers.V1
             }
         }
 
-        private async Task<int> GetNextLevelID(int currnetLevelNumber)
-        {
-            return await mDb.Set<Level>().AsNoTracking().Where(l => l.LevelNumber == (currnetLevelNumber + 1)).Select(l => l.ID).SingleOrDefaultAsync();
-        }
     }
 }

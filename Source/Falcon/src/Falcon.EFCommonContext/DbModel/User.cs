@@ -51,13 +51,11 @@ namespace Falcon.EFCommonContext.DbModel
         public string UserName { get; set; }
         public Nullable<int> UserTypeID { get; set; }
         public int TotalCoin { get; set; }
-        public int Score { get; set; }
         public int LevelProgress { get; set; }
-        public Nullable<int> CurrentLevelID { get; set; }
+        public Nullable<int> CurrentLevelNumber { get; set; }
         public bool IsAbleToWriteComment { get; set; }
         public System.DateTime LastSeenDateTime { get; set; }
         public System.DateTime PrevLastSeenDateTime { get; set; }
-        public Nullable<int> Rank { get; set; }
         public System.DateTime PreviousDaySeen { get; set; }
         public int DWMCount { get; set; }
         public bool IsTutorial { get; set; }

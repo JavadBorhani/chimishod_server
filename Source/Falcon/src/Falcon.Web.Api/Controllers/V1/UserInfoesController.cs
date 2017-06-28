@@ -11,17 +11,14 @@ using System.Web.Http.Description;
 using Falcon.EFCommonContext.DbModel;
 using Falcon.Common;
 using Falcon.Web.Models.Api;
-using System.Net.Mail;
 using System.Text.RegularExpressions;
 using Falcon.Web.Common;
 using Falcon.EFCommonContext;
 using Falcon.Web.Api.Utilities.Base;
 using Falcon.Common.Security;
 using Falcon.Web.Api.MaintenanceProcessing.Public;
-using Falcon.Web.Api.Utilities;
-using Hangfire;
 using Falcon.Web.Api.JobSystem.Public;
-using System;
+using Falcon.Web.Api.Utilities.Mail;
 
 namespace Falcon.Web.Api.Controllers.V1
 {
@@ -51,35 +48,35 @@ namespace Falcon.Web.Api.Controllers.V1
             mJobManager = JobManager;
         }
 
-        [ResponseType(typeof(SUserInfo))]
-        [Route("UserInfo/GoogleSignIn/")]
-        [HttpPost]
-        public async Task<IHttpActionResult> GoogleSignIn([FromBody] SGoogleAuthentication GoogleAuthentication) //TODO : Move to User Authenticator
-        {
-            if(ModelState.IsValid)
-            {
-                return Response(HttpStatusCode.OK);
-            }
-            else
-            {
-                return Response(HttpStatusCode.BadRequest);
-            }
-        }
+        //[ResponseType(typeof(SUserInfo))]
+        //[Route("UserInfo/GoogleSignIn/")]
+        //[HttpPost]
+        //public async Task<IHttpActionResult> GoogleSignIn([FromBody] SGoogleAuthentication GoogleAuthentication) //TODO : Move to User Authenticator
+        //{
+        //    if(ModelState.IsValid)
+        //    {
+        //        return Response(HttpStatusCode.OK);
+        //    }
+        //    else
+        //    {
+        //        return Response(HttpStatusCode.BadRequest);
+        //    }
+        //}
 
-        [ResponseType(typeof(SUserInfo))]
-        [Route("UserInfo/GoogleRecovery/")]
-        [HttpPost]
-        public async Task<IHttpActionResult> GoogleRecovery([FromBody] SGoogleAuthentication GoogleAuthentication)
-        {
-            if (ModelState.IsValid)
-            {
-                return Response(HttpStatusCode.OK);
-            }
-            else
-            {
-                return Response(HttpStatusCode.BadRequest);
-            }
-        }
+        //[ResponseType(typeof(SUserInfo))]
+        //[Route("UserInfo/GoogleRecovery/")]
+        //[HttpPost]
+        //public async Task<IHttpActionResult> GoogleRecovery([FromBody] SGoogleAuthentication GoogleAuthentication)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        return Response(HttpStatusCode.OK);
+        //    }
+        //    else
+        //    {
+        //        return Response(HttpStatusCode.BadRequest);
+        //    }
+        //}
 
         [ResponseType(typeof(SUserInfo))]
         [Route("UserInfoChange/")] //TODO : Refactor This 

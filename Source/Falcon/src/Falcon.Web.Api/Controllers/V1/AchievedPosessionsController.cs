@@ -81,7 +81,7 @@ namespace Falcon.Web.Api.Controllers.V1
             else
             {
                 List<Achievement> newAchievables = new List<Achievement>();
-                var userCurrentLevel = await mDb.Set<User>().Where(u => u.ID == mUserSession.ID).Select(u => u.CurrentLevelID).SingleOrDefaultAsync();
+                var userCurrentLevel = await mDb.Set<User>().Where(u => u.ID == mUserSession.ID).Select(u => u.CurrentLevelNumber).SingleOrDefaultAsync();
 
                     
                 var achievableAndAchievedIDList = await mDb.Set<AchievedPosession>()
@@ -97,7 +97,7 @@ namespace Falcon.Web.Api.Controllers.V1
                 adhoc = await mDb.Set<Achievement>().AsNoTracking()
                     .Where( a => a.IsActive && 
                             a.QueryTypeID == Constants.DefaultValues.AchievementAdHocQueryTypeID && 
-                            a.LevelID >= userCurrentLevel && 
+                            a.LevelNumber >= userCurrentLevel && 
                             !achievableAndAchievedIDList.Contains(a.ID))
                     .ToListAsync();
                     
@@ -199,8 +199,8 @@ namespace Falcon.Web.Api.Controllers.V1
                             ID = notAchieved[i].ID,
                             Name = notAchieved[i].Name,
                             Description = notAchieved[i].Description,
-                            Star = notAchieved[i].Star,
-                            Prize = notAchieved[i].Prize,
+                            Star = notAchieved[i].Coin,
+                            Prize = notAchieved[i].ScorePrize,
                             Icon = notAchieved[i].Icon,
                             RectangleColor = notAchieved[i].RectangleColor,
                             AchievementState = Constants.DefaultValues.AchievementDefaultNotAchievedID
@@ -234,14 +234,13 @@ namespace Falcon.Web.Api.Controllers.V1
                                         .SingleOrDefaultAsync();
                 if (achievable != null)
                 {
-                    int prize = achievable.Achievement.Prize;
+                    int prize = achievable.Achievement.ScorePrize;
                    
                     achievable.AchieveStateID = Constants.DefaultValues.AchievementDefaultAchievedID;
                     achievable.AchievedDate = mDateTime.Now;
-                    user.TotalCoin += achievable.Achievement.Star;
+                    user.TotalCoin += achievable.Achievement.Coin;
 
-                    int nextLevelId = await GetNextLevelID(user.Level.LevelNumber);
-                    LevelUpChecking( ref user , user.Level.ScoreCeil, prize , nextLevelId);
+                    LevelUpChecking( ref user , user.Level.ScoreCeil, prize , user.Level.LevelNumber + 1);
 
                     await mDb.SaveChangesAsync();
                     return Response(HttpStatusCode.OK, user.TotalCoin);
@@ -312,12 +311,12 @@ namespace Falcon.Web.Api.Controllers.V1
             
         }
 
-        private void LevelUpChecking(ref User user, int levelCeil ,  int Prize, int nextLevelID)
+        private void LevelUpChecking(ref User user, int levelCeil ,  int Prize, int nextLevelNumber)
         {
-            user.Score += Prize;
+            user.Score += Prize; // SCORESCORE
             if (user.LevelProgress + Prize >= levelCeil)
             {
-                user.CurrentLevelID = nextLevelID;
+                user.CurrentLevelNumber = nextLevelNumber;
                 int remained = (user.LevelProgress + Prize) - levelCeil;
                 user.LevelProgress = remained;
             }
@@ -363,11 +362,6 @@ namespace Falcon.Web.Api.Controllers.V1
                 else
                     breakflag = 0;
             }
-        }
-
-        private async Task<int> GetNextLevelID(int currnetLevelNumber)
-        {
-            return await mDb.Set<Level>().AsNoTracking().Where(l => l.LevelNumber == (currnetLevelNumber + 1)).Select(l => l.ID).SingleOrDefaultAsync();
         }
     }
 }

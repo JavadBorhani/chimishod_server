@@ -97,8 +97,7 @@ namespace Falcon.Web.Api.App_Start
                         mDb.Set<CreatedQuestion>().Add(newQuestion);
                         await mDb.SaveChangesAsync();
 
-                        int nextLevelId = await GetNextLevelID(user.Level.LevelNumber);
-                        LevelUpChecking(ref user, user.Level.ScoreCeil, newQuestionPrize, nextLevelId);
+                        LevelUpChecking(ref user, user.Level.ScoreCeil, newQuestionPrize, user.Level.LevelNumber + 1);
 
 
                         return Response(HttpStatusCode.Created, user.TotalCoin);
@@ -147,12 +146,12 @@ namespace Falcon.Web.Api.App_Start
             return await mDb.Set<CreatedQuestion>().CountAsync(e => e.UserID == userID && e.What_if == What && e.But == but) > 0;
         }
 
-        private void LevelUpChecking(ref User user, int levelCeil, int Prize, int nextLevelID)
+        private void LevelUpChecking(ref User user, int levelCeil, int Prize, int NextLevelNumber)
         {
-            user.Score += Prize;
+            user.Score += Prize; //SCORESCORE
             if (user.LevelProgress + Prize >= levelCeil)
             {
-                user.CurrentLevelID = nextLevelID;
+                user.CurrentLevelNumber = NextLevelNumber;
                 int remained = (user.LevelProgress + Prize) - levelCeil;
                 user.LevelProgress = remained;
             }
@@ -160,11 +159,6 @@ namespace Falcon.Web.Api.App_Start
             {
                 user.LevelProgress += Prize;
             }
-        }
-
-        private async Task<int> GetNextLevelID(int currnetLevelNumber)
-        {
-            return await mDb.Set<Level>().AsNoTracking().Where(l => l.LevelNumber == (currnetLevelNumber + 1)).Select(l => l.ID).SingleOrDefaultAsync();
         }
     }
 }

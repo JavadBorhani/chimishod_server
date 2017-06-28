@@ -13,8 +13,8 @@ namespace Falcon.Data.QueryProcessors
         Task<bool> AddFortune(int Amount);
         Task<UserStat> GetById(int ID);
         Task<int> GetRemainedFortune();
-        Task<List<SUserCharacter>> GetLeaderBoard();
         Task<QueryResult<SLeaderBoard>> GetLeaderBoard(PagedDataRequest RequestInfo);
         Task<SLeaderBoard> GetUserLeaderBoard();
+        Task<int> AddScore(int Amount);
     }
 }

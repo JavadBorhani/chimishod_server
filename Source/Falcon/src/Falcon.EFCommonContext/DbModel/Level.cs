@@ -21,7 +21,6 @@ namespace Falcon.EFCommonContext.DbModel
             this.Users = new HashSet<User>();
         }
     
-        public int ID { get; set; }
         public int LevelNumber { get; set; }
         public int Star { get; set; }
         public int ScoreCeil { get; set; }

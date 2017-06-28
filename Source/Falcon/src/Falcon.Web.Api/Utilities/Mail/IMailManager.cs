@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace Falcon.Web.Api.Utilities
+namespace Falcon.Web.Api.Utilities.Mail
 {
     public interface IMailManager
     {
