@@ -14,7 +14,6 @@ namespace Falcon.Data.QueryProcessors
         Task<UserStat> GetById(int ID);
         Task<int> GetRemainedFortune();
         Task<QueryResult<SLeaderBoard>> GetLeaderBoard(PagedDataRequest RequestInfo);
-        Task<SLeaderBoard> GetUserLeaderBoard();
-        Task<int> AddScore(int Amount);
+        Task<SLeaderBoard> GetUserLeaderBoard();   
     }
 }

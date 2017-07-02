@@ -19,6 +19,7 @@ using Falcon.Web.Api.Utilities.Base;
 using Falcon.Common.Security;
 using Falcon.Web.Api.MaintenanceProcessing.Public;
 using Falcon.Web.Api.InquiryProcessing.Public;
+using Falcon.Data.QueryProcessors;
 
 namespace Falcon.Web.Api.Controllers.V1
 {
@@ -33,6 +34,8 @@ namespace Falcon.Web.Api.Controllers.V1
         private readonly SApplicationState mAppState;
         private readonly ICharacteristicsMaintenanceProcessor mCharacteristicsMaintenanceProcessor;
         private readonly ICharacteristicsInquiryProcessor mCharacteristicsInquiryProcessor;
+        private readonly IScoringQueryProcessor mScoringQueryProcessor;
+        private readonly IUsersMaintenanceProcessor 
 
 
         public AnswersController(IDateTime dateTime , 
@@ -42,7 +45,9 @@ namespace Falcon.Web.Api.Controllers.V1
             IWebUserSession UserSession , 
             IGlobalApplicationState AppState,
             ICharacteristicsMaintenanceProcessor CharacteristicsMaintenanceProcessor ,
-            ICharacteristicsInquiryProcessor CharacteristicsInquiryProcessor)
+            ICharacteristicsInquiryProcessor CharacteristicsInquiryProcessor , 
+            IScoringQueryProcessor ScoringQueryProcessor , 
+            IUsersMaintenanceProcessor UserMaintenanceProcessor)
         {
             mDateTime = dateTime;
             mLogger = logManager.GetLog(typeof(AnswersController));
@@ -52,6 +57,7 @@ namespace Falcon.Web.Api.Controllers.V1
             mAppState = AppState.GetState();
             mCharacteristicsMaintenanceProcessor = CharacteristicsMaintenanceProcessor;
             mCharacteristicsInquiryProcessor = CharacteristicsInquiryProcessor;
+            mScoringQueryProcessor = ScoringQueryProcessor;
         }
 
         public IQueryable<Answer> GetAnswers()
@@ -231,7 +237,7 @@ namespace Falcon.Web.Api.Controllers.V1
                                                                 .SingleOrDefaultAsync();
                         if(otherUser != null)
                         {
-                            otherUser.Score         += mAppState.Prize_LikePrize; // SCORESCORE
+                            await mScoringQueryProcessor.AddScore(otherUser.ID, mAppState.Prize_LikePrize, AchievedScoreType.Answer);
                             otherUser.LevelProgress += mAppState.Prize_LikePrize;
                         }
                     }
@@ -246,6 +252,8 @@ namespace Falcon.Web.Api.Controllers.V1
                 int prizeCoefficient = questionToUpdate.Category.PrizeCoefficient;
                 if (mAppState.Prize_AnswerPrize > 0 && prizeCoefficient > 0 )
                 {
+
+                    m
                     LevelUpChecking(ref user, user.Level.ScoreCeil, mAppState.Prize_AnswerPrize * prizeCoefficient, user.Level.LevelNumber +1);
                     await mDb.SaveChangesAsync();
                 }
@@ -340,21 +348,6 @@ namespace Falcon.Web.Api.Controllers.V1
         private async Task<int> FavoriteCount(int userID)
         {
             return await mDb.Set<Favorite>().CountAsync(e => e.UserID == userID);
-        }
-
-        private void LevelUpChecking(ref User user, int levelCeil, int Prize, int nextLevelNumber)
-        {
-            user.Score += Prize; //SCORESCORE
-            if (user.LevelProgress + Prize >= levelCeil)
-            {
-                user.CurrentLevelNumber = nextLevelNumber;
-                int remained = (user.LevelProgress + Prize) - levelCeil;
-                user.LevelProgress = remained;
-            }
-            else
-            {
-                user.LevelProgress += Prize;
-            }
         }
 
     }

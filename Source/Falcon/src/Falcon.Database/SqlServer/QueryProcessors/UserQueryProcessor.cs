@@ -112,5 +112,36 @@ namespace Falcon.Database.SqlServer.QueryProcessors
 
             return user.TotalCoin;
         }
+
+        public async Task<bool> UpdateLevel(int NewLevelProgress, int LevelNumber)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void LevelUpChecking(ref User user, int levelCeil, int Prize, int nextLevelNumber)
+        {
+            if (user.LevelProgress + Prize >= levelCeil)
+            {
+                user.CurrentLevelNumber = nextLevelNumber;
+                int remained = (user.LevelProgress + Prize) - levelCeil;
+                user.LevelProgress = remained;
+            }
+            else
+            {
+                user.LevelProgress += Prize;
+            }
+        }
+
+        public async Task<bool> LevelExits(int LevelNumber)
+        {
+            var exists = await mDb.Set<Level>().AsNoTracking().CountAsync(l => l.LevelNumber == LevelNumber) > 0;
+            return exists;
+        }
+
+        public async Task<int> GetLevelPrize(int LevelNumber)
+        {
+            int prize = await mDb.Set<Level>().AsNoTracking().Where(l => l.LevelNumber == LevelNumber).Select(l => l.Star).SingleOrDefaultAsync();
+            return prize;
+        }
     }
-}
+}   

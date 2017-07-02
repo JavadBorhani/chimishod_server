@@ -18,6 +18,7 @@ using Falcon.Web.Api.Utilities.Base;
 using Falcon.Common.Security;
 using Falcon.Web.Api.MaintenanceProcessing.Public;
 using Falcon.Web.Api.InquiryProcessing.Public;
+using Falcon.Data.QueryProcessors;
 
 namespace Falcon.Web.Api.Controllers.V1
 {
@@ -29,7 +30,9 @@ namespace Falcon.Web.Api.Controllers.V1
         private readonly IDbContext mDb;
         private readonly IWebUserSession mUserSession;
         private readonly IGlobalApplicationState mAppState;
-        private readonly IAchievementInquiryProcessor mAchievementInquiryProcessor; 
+        private readonly IAchievementInquiryProcessor mAchievementInquiryProcessor;
+        private readonly IUserQueryProcessor mUserQuery;
+        private readonly IScoringQueryProcessor mScoreQuery;
 
         public AchievedPosessionsController(
             IMapper Mapper , 
@@ -37,14 +40,18 @@ namespace Falcon.Web.Api.Controllers.V1
             IDbContext Database , 
             IWebUserSession UserSession , 
             IGlobalApplicationState AppState,
-            IAchievementInquiryProcessor AchievementInquiryProcessor)
+            IAchievementInquiryProcessor AchievementInquiryProcessor , 
+            IUserQueryProcessor mUserQueryProcessor , 
+            IScoringQueryProcessor ScoringQueryProcessor)
         {
             mMapper = Mapper;
             mDateTime = DateTime;
             mDb = Database;
             mUserSession = UserSession;
             mAppState = AppState;
-            mAchievementInquiryProcessor = AchievementInquiryProcessor; 
+            mAchievementInquiryProcessor = AchievementInquiryProcessor;
+            mUserQuery = mUserQueryProcessor;
+            mScoreQuery = ScoringQueryProcessor;
         }
 
         [Route("Achievements/")]
@@ -222,7 +229,7 @@ namespace Falcon.Web.Api.Controllers.V1
         [HttpPost]
         public async Task<IHttpActionResult> ChangeAchievableToAchieved(int AchievementID)
         {
-            var user = await mDb.Set<User>().Where(u => u.UUID == mUserSession.UUID).Include( u => u.Level).SingleOrDefaultAsync();
+            var user = await mDb.Set<User>().AsNoTracking().Where(u => u.UUID == mUserSession.UUID).Include( u => u.Level).SingleOrDefaultAsync();
 
             if (user != null) //user Exists
             {
@@ -234,16 +241,20 @@ namespace Falcon.Web.Api.Controllers.V1
                                         .SingleOrDefaultAsync();
                 if (achievable != null)
                 {
-                    int prize = achievable.Achievement.ScorePrize;
-                   
+                    
                     achievable.AchieveStateID = Constants.DefaultValues.AchievementDefaultAchievedID;
                     achievable.AchievedDate = mDateTime.Now;
-                    user.TotalCoin += achievable.Achievement.Coin;
+
+                    int coin = achievable.Achievement.Coin;
+                    int prize = achievable.Achievement.ScorePrize;
+
+                    int totalCoin = await mUserQuery.IncreaseCoin(coin);
+                    await mScoreQuery.AddScore(mUserSession.ID , prize , AchievedScoreType.Achievement);
 
                     LevelUpChecking( ref user , user.Level.ScoreCeil, prize , user.Level.LevelNumber + 1);
 
                     await mDb.SaveChangesAsync();
-                    return Response(HttpStatusCode.OK, user.TotalCoin);
+                    return Response(HttpStatusCode.OK, totalCoin);
                 }
                 return Response(HttpStatusCode.Unauthorized);
             }
@@ -309,21 +320,6 @@ namespace Falcon.Web.Api.Controllers.V1
             else
                 return Response(HttpStatusCode.NoContent);
             
-        }
-
-        private void LevelUpChecking(ref User user, int levelCeil ,  int Prize, int nextLevelNumber)
-        {
-            user.Score += Prize; // SCORESCORE
-            if (user.LevelProgress + Prize >= levelCeil)
-            {
-                user.CurrentLevelNumber = nextLevelNumber;
-                int remained = (user.LevelProgress + Prize) - levelCeil;
-                user.LevelProgress = remained;
-            }
-            else
-            {
-                user.LevelProgress += Prize;
-            }
         }
 
         private void AddRemainedResults(int RemainedNumber, ref List<Achievement> Usuals, ref List<Achievement> AdHoc, ref List<Achievement> NotAchieved)

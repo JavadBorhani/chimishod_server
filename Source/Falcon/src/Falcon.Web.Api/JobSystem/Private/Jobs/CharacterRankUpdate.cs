@@ -7,19 +7,21 @@ using System.Web;
 
 namespace Falcon.Web.Api.JobSystem.Private.Jobs
 {
-    public class CharacterRankUpdate : JobBase
+    public sealed class CharacterRankUpdate : JobBase
     {
         public override void ActivateMode()
         {
             mJobManager.AddOrUpdate(() => StartJob(), Cron.MinuteInterval(5));
         }
 
-        public override void StartJob()
+        public override string StartJob()
         {
             var value = mDb.UpdateCharacterRank();
             Done = true;
 
             EndTransaction();
+
+            return "Message : " + value;
         }
     }
 }

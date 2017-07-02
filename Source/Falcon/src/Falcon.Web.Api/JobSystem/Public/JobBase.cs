@@ -40,7 +40,7 @@ namespace Falcon.Web.Api.JobSystem.Public
 
         }
 
-        public abstract void StartJob();
+        public abstract string StartJob();
 
         public abstract void ActivateMode();
 

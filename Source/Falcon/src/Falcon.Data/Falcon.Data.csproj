@@ -58,6 +58,7 @@
     <Compile Include="QueryProcessors\IMarketInfoQueryProcessor.cs" />
     <Compile Include="QueryProcessors\INotificationsQueryProcessor.cs" />
     <Compile Include="QueryProcessors\IAppAdvertsQueryProcessor.cs" />
+    <Compile Include="QueryProcessors\IScoringQueryProcessor.cs" />
     <Compile Include="QueryProcessors\ISpinWheelQueryProcessor.cs" />
     <Compile Include="QueryProcessors\IStoresQueryProcessor.cs" />
     <Compile Include="QueryProcessors\IThemesQueryProcessor.cs" />

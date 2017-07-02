@@ -32,6 +32,7 @@ namespace Falcon.EFCommonContext.DbModel
         public virtual DbSet<AchievedCodeGift> AchievedCodeGifts { get; set; }
         public virtual DbSet<AchievedGift> AchievedGifts { get; set; }
         public virtual DbSet<AchievedPosession> AchievedPosessions { get; set; }
+        public virtual DbSet<AchievedScore> AchievedScores { get; set; }
         public virtual DbSet<AchievedSpinWheel> AchievedSpinWheels { get; set; }
         public virtual DbSet<Achievement> Achievements { get; set; }
         public virtual DbSet<AchievementQueryType> AchievementQueryTypes { get; set; }
@@ -70,6 +71,7 @@ namespace Falcon.EFCommonContext.DbModel
         public virtual DbSet<QuestionBoost> QuestionBoosts { get; set; }
         public virtual DbSet<ReportedQuestion> ReportedQuestions { get; set; }
         public virtual DbSet<ReportType> ReportTypes { get; set; }
+        public virtual DbSet<ScoreType> ScoreTypes { get; set; }
         public virtual DbSet<SelectedAvatar> SelectedAvatars { get; set; }
         public virtual DbSet<SelectedCategory> SelectedCategories { get; set; }
         public virtual DbSet<SelectedTheme> SelectedThemes { get; set; }

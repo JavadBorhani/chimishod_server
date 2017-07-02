@@ -65,6 +65,7 @@
     <Compile Include="SqlServer\QueryProcessors\MarketInfoQueryProcessor.cs" />
     <Compile Include="SqlServer\QueryProcessors\NotificationsQueryProcessor.cs" />
     <Compile Include="SqlServer\QueryProcessors\AppAdvertsQueryProcessor.cs" />
+    <Compile Include="SqlServer\QueryProcessors\ScoringQueryProcessor.cs" />
     <Compile Include="SqlServer\QueryProcessors\SpinWheelQueryProcessor.cs" />
     <Compile Include="SqlServer\QueryProcessors\StoresQueryProcessor.cs" />
     <Compile Include="SqlServer\QueryProcessors\ThemesQueryProcessor.cs" />

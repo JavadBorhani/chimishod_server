@@ -8,7 +8,7 @@ using System.Web;
 
 namespace Falcon.Web.Api.JobSystem.Private.Jobs
 {
-    public class GlobalRankUpdate : JobBase
+    public sealed class GlobalRankUpdate : JobBase
     {
 
         public override void ActivateMode()
@@ -16,12 +16,14 @@ namespace Falcon.Web.Api.JobSystem.Private.Jobs
             mJobManager.AddOrUpdate(() => StartJob(), Cron.MinuteInterval(5));
         }
 
-        public override void StartJob()
+        public override string StartJob()
         {
             int value = mDb.UpdateUserGlobalRank();
             Done = true;
 
             EndTransaction();
+
+            return "Message : " + value;
         }   
     }
 }

@@ -28,14 +28,8 @@ using Falcon.Web.Api.PurchaseAuthorizer.Private;
 using Falcon.Web.Api.WatchAd.Public;
 using Falcon.Web.Api.WatchAd.Private;
 using Hangfire;
-using Owin;
-using System.Data.Entity.Core.EntityClient;
-using Falcon.Web.Api.Controllers;
-using Falcon.Web.Api.Utilities;
 using Falcon.Web.Api.JobSystem.Public;
 using Falcon.Web.Api.JobSystem.Private;
-using Falcon.Web.Api.JobSystem.Private.Jobs;
-using Hangfire.Storage;
 using Falcon.Web.Common.Memmory;
 using Falcon.Web.Api.Utilities.Mail;
 
@@ -119,6 +113,7 @@ namespace Falcon.Web.Api
             container.Bind<IAvatarsQueryProcessor>().To<AvatarsQueryProcessor>().InRequestScope();
             container.Bind<IUserStatQueryProcessor>().To<UserStatQueryProcessor>().InRequestScope();
             container.Bind<ICharacteristicsQueryProcessor>().To<CharacteristicsQueryProcessor>().InRequestScope();
+            container.Bind<IScoringQueryProcessor>().To<ScoringQueryProcessor>().InRequestScope();
 
 
             //summary: Reusing an special Component With Background Process and Http In RequestScope

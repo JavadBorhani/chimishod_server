@@ -124,7 +124,10 @@ namespace Falcon.Common
             public const int AchievementCategoryQueryTypeID = 1;  
             public const int AchievementAdHocQueryTypeID = 2;
             public const int LatencyNumber = 3000;
-            public const int FirstPageNumer = 1; 
+            public const int FirstPageNumer = 1;
+            public const int NoLevelUp = -1;
+            public const int NoNewCoin = -1; 
+             
         }
         //public static class DefaultHostConfig
         //{

@@ -21,5 +21,11 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
             int totalCoin = await mUserQueryProcessor.GetTotalCoin();
             return totalCoin;
         }
+
+        public async Task<bool> LevelExist(int LevelNumber)
+        {
+            bool exists = await mUserQueryProcessor.LevelExits(LevelNumber);
+            return exists;   
+        }
     }
 }

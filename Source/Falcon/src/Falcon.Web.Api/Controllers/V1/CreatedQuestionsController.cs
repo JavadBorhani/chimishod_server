@@ -145,20 +145,5 @@ namespace Falcon.Web.Api.App_Start
         {
             return await mDb.Set<CreatedQuestion>().CountAsync(e => e.UserID == userID && e.What_if == What && e.But == but) > 0;
         }
-
-        private void LevelUpChecking(ref User user, int levelCeil, int Prize, int NextLevelNumber)
-        {
-            user.Score += Prize; //SCORESCORE
-            if (user.LevelProgress + Prize >= levelCeil)
-            {
-                user.CurrentLevelNumber = NextLevelNumber;
-                int remained = (user.LevelProgress + Prize) - levelCeil;
-                user.LevelProgress = remained;
-            }
-            else
-            {
-                user.LevelProgress += Prize;
-            }
-        }
     }
 }
