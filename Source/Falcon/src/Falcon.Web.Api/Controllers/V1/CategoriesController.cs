@@ -21,6 +21,7 @@ using Falcon.Web.Api.Utilities.Base;
 using Falcon.Common.Security;
 using Falcon.Web.Api.MaintenanceProcessing.Public;
 using Falcon.Web.Api.InquiryProcessing.Public;
+using Falcon.Data.QueryProcessors;
 
 namespace Falcon.Web.Api.Controllers.V1
 {
@@ -35,14 +36,15 @@ namespace Falcon.Web.Api.Controllers.V1
         private readonly IWebUserSession mUserSession;
         private readonly ICharacteristicsMaintenanceProcessor mCharacteristicsMaintenanceProcessor;
         private readonly ICharacteristicsInquiryProcessor mCharacteristicsInquiryProcessor;
-
+        private readonly IUserQueryProcessor mUserQuery;
         public CategoriesController(IDateTime dateTime , 
             IMapper Mapper , 
             IDbContext Database ,
             ILogManager LogManager , 
             IWebUserSession UserSession , 
             ICharacteristicsMaintenanceProcessor CharacteristicsMaintenanceProcessor,
-            ICharacteristicsInquiryProcessor CharacteristicsInquiryProcessor)
+            ICharacteristicsInquiryProcessor CharacteristicsInquiryProcessor , 
+            IUserQueryProcessor UserQuery)
         {
             mDateTime = dateTime;
             mMapper = Mapper;
@@ -51,6 +53,7 @@ namespace Falcon.Web.Api.Controllers.V1
             mUserSession = UserSession;
             mCharacteristicsMaintenanceProcessor = CharacteristicsMaintenanceProcessor;
             mCharacteristicsInquiryProcessor = CharacteristicsInquiryProcessor;
+            mUserQuery = UserQuery; 
         }
 
         public class SampleData
@@ -130,6 +133,7 @@ namespace Falcon.Web.Api.Controllers.V1
                 bool bought = false;
                 var category = await mDb.Set<Category>().FindAsync(CategoryID);
                 var selectedCategory = await mDb.Set<SelectedCategory>().SingleOrDefaultAsync(sc => sc.UserID == user.ID);
+                int totalCoin;
                 if (category != null)
                 {
                     bool hasBought = (CategoryID == Constants.DefaultUser.AppThemeID) ? true : await mDb.Set<PurchaseCategory>().CountAsync(ph => ph.UserID == user.ID && ph.CategoryID == CategoryID) == 
@@ -142,7 +146,10 @@ namespace Falcon.Web.Api.Controllers.V1
                     {
                         if (user.TotalCoin - category.Price >= 0)
                         {
-                            user.TotalCoin -= category.Price;
+                            totalCoin = await mUserQuery.DecreaseCoin(category.Price);
+
+                            if (totalCoin < 0)
+                                throw new BusinessRuleViolationException("concurrency issue on purchase");
 
                             PurchaseCategory newCategory = new PurchaseCategory
                             {

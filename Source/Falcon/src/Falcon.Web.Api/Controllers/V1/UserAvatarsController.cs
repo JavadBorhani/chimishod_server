@@ -14,6 +14,7 @@ using Falcon.Web.Common;
 using Falcon.EFCommonContext;
 using Falcon.Web.Api.Utilities.Base;
 using Falcon.Common.Security;
+using Falcon.Data.QueryProcessors;
 
 namespace Falcon.Web.Api.Controllers.V1
 {
@@ -23,12 +24,14 @@ namespace Falcon.Web.Api.Controllers.V1
         private readonly IDbContext mDb;
         private readonly IDateTime mDateTime;
         private readonly IWebUserSession mUserSession;
+        private readonly IUserQueryProcessor mUserQuery;
 
-        public UserAvatarsController(IDateTime DateTime, IDbContext Database , IWebUserSession UserSession)
+        public UserAvatarsController(IDateTime DateTime, IDbContext Database , IWebUserSession UserSession , IUserQueryProcessor UserQuery)
         {
             mDateTime = DateTime;
             mDb = Database;
             mUserSession = UserSession;
+            mUserQuery = UserQuery;
         }
 
 
@@ -134,7 +137,7 @@ namespace Falcon.Web.Api.Controllers.V1
                 bool bought = false;
                 var avatar = await mDb.Set<UserAvatar>().FindAsync(UserAvatarID);
                 var selectedAvatar = await mDb.Set<SelectedAvatar>().SingleOrDefaultAsync(sc => sc.UserID == user.ID);
-
+                int totalCoin;
                 if (avatar != null)
                 {
                     bool hasBought = (UserAvatarID == Constants.DefaultUser.AvatarID) ? true : await mDb.Set<PurchaseAvatar>().CountAsync(pa => pa.UserID == user.ID && pa.UserAvatarID == UserAvatarID) > 0;
@@ -146,7 +149,10 @@ namespace Falcon.Web.Api.Controllers.V1
                     {
                         if (user.TotalCoin - avatar.Price >= 0)
                         {
-                            user.TotalCoin -= avatar.Price;
+                            totalCoin = await mUserQuery.DecreaseCoin(avatar.Price);
+
+                            if (totalCoin < 0)
+                                throw new BusinessRuleViolationException("concurrency issue on purchase");
 
                             PurchaseAvatar newAvatar = new PurchaseAvatar
                             {

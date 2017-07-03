@@ -15,6 +15,8 @@ using log4net;
 using Falcon.Common.Logging;
 using Falcon.Web.Api.Utilities.Base;
 using Falcon.Common.Security;
+using Falcon.Web.Api.MaintenanceProcessing.Public;
+using Falcon.Data.QueryProcessors;
 
 namespace Falcon.Web.Api.Controllers.V1
 {
@@ -25,13 +27,16 @@ namespace Falcon.Web.Api.Controllers.V1
         private readonly IDateTime mDateTime;
         private readonly IDbContext mDb;
         private readonly ILog mLogger;
-        private readonly IWebUserSession mUserSessoin;
-        public AppThemesController(IDateTime dateTime , IDbContext Database , ILogManager LogManager , IWebUserSession UserSession)
+        private readonly IWebUserSession mUserSession;
+        private readonly IUserQueryProcessor mUserQuery;
+        public AppThemesController(IDateTime dateTime , IDbContext Database , ILogManager LogManager , IWebUserSession UserSession , 
+            IUserQueryProcessor UserQuery)
         {
             mDateTime = dateTime;
             mDb = Database;
             mLogger = LogManager.GetLog(typeof(AppThemesController));
-            mUserSessoin = UserSession;
+            mUserSession = UserSession;
+            mUserQuery = UserQuery;
         }
 
         [ResponseType(typeof(Models.Api.SAppTheme))]
@@ -41,8 +46,8 @@ namespace Falcon.Web.Api.Controllers.V1
         {
             //TODO : Convert Whole of this into one join 
             var themes = await mDb.Set<AppTheme>().AsNoTracking().ToArrayAsync();
-            var selectedTheme = await mDb.Set<SelectedTheme>().AsNoTracking().Where(st => st.UserID == mUserSessoin.ID).Select( st => st.AppThemeID).SingleOrDefaultAsync();
-            var purchasedThemes = await mDb.Set<PurchaseTheme>().AsNoTracking().Where(pt => pt.UserID == mUserSessoin.ID).Select(c => c.ThemeID).ToListAsync();
+            var selectedTheme = await mDb.Set<SelectedTheme>().AsNoTracking().Where(st => st.UserID == mUserSession.ID).Select( st => st.AppThemeID).SingleOrDefaultAsync();
+            var purchasedThemes = await mDb.Set<PurchaseTheme>().AsNoTracking().Where(pt => pt.UserID == mUserSession.ID).Select(c => c.ThemeID).ToListAsync();
 
             if(themes.Length > 0 && selectedTheme > 0 && purchasedThemes.Count >= 0)
             {
@@ -78,7 +83,7 @@ namespace Falcon.Web.Api.Controllers.V1
         [HttpPost]
         public async Task<IHttpActionResult> SelectAppTheme(int ThemeID)
         {
-            var user = await mDb.Set<User>().AsNoTracking().SingleOrDefaultAsync(u => u.UUID == mUserSessoin.UUID);
+            var user = await mDb.Set<User>().AsNoTracking().SingleOrDefaultAsync(u => u.UUID == mUserSession.UUID);
             if(user != null)
             {
                 var userSelectedTheme = await mDb.Set<SelectedTheme>().SingleOrDefaultAsync(st => st.UserID == user.ID);
@@ -102,7 +107,7 @@ namespace Falcon.Web.Api.Controllers.V1
                         }
                         else
                         {
-                            mLogger.Error("Item has not been purchased + " + mUserSessoin.UUID);
+                            mLogger.Error("Item has not been purchased + " + mUserSession.UUID);
                         }
                     }
 
@@ -133,24 +138,28 @@ namespace Falcon.Web.Api.Controllers.V1
         [HttpPost]
         public async Task<IHttpActionResult> BuyTheme(int ThemeID)
         {
-            var user = await mDb.Set<User>().SingleOrDefaultAsync(u => u.UUID == mUserSessoin.UUID);
+            var user = await mDb.Set<User>().SingleOrDefaultAsync(u => u.UUID == mUserSession.UUID);
             if(user != null)
             {
                 bool bought = false;
                 var theme = await mDb.Set<AppTheme>().FindAsync(ThemeID);
                 var selectedTheme = await mDb.Set<SelectedTheme>().SingleOrDefaultAsync(sc => sc.UserID == user.ID);
+                int totalCoin; 
                 if (theme != null)
                 {
                     bool hasBought = (ThemeID == Constants.DefaultUser.AppThemeID) ? true : await mDb.Set<PurchaseTheme>().CountAsync(ph => ph.UserID == user.ID && ph.ThemeID == ThemeID) > 0;
                     if (hasBought)
                     {
-                        mLogger.Error("Trying to buy an item which has been purchased" + mUserSessoin.UUID);
+                        mLogger.Error("Trying to buy an item which has been purchased" + mUserSession.UUID);
                     }
                     else
                     {
                         if(user.TotalCoin - theme.Price >= 0 )
                         {
-                            user.TotalCoin -= theme.Price;
+                            totalCoin = await mUserQuery.DecreaseCoin(theme.Price);
+
+                            if (totalCoin < 0)
+                                throw new BusinessRuleViolationException("concurrency issue on purchase");
 
                             PurchaseTheme newTheme = new PurchaseTheme
                             {
