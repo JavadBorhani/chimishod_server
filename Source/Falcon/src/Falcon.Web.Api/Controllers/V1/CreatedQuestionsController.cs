@@ -18,6 +18,7 @@ using Falcon.Web.Api.InquiryProcessing.Public;
 using Falcon.Web.Api.Utilities.Base;
 using Falcon.Common.Security;
 using Falcon.Web.Api.MaintenanceProcessing.Public;
+using Falcon.Data.QueryProcessors;
 
 namespace Falcon.Web.Api.App_Start
 {
@@ -31,6 +32,8 @@ namespace Falcon.Web.Api.App_Start
         private readonly IPagedDataRequestFactory mPagedDataRequestFactory;
         private readonly IWebUserSession mUserSession;
         private readonly IGlobalApplicationState mAppState;
+        private readonly IUsersMaintenanceProcessor mUsersMaintenance;
+        private readonly IUserQueryProcessor mUserQuery;
 
         public CreatedQuestionsController(IDateTime DateTime ,
             IMapper Mapper, 
@@ -38,7 +41,9 @@ namespace Falcon.Web.Api.App_Start
             ICreatedQuestionsInquiryProcessor InquiryProcessor , 
             IPagedDataRequestFactory PagedDataRequestFactory , 
             IWebUserSession UserSession , 
-            IGlobalApplicationState AppState)
+            IGlobalApplicationState AppState , 
+            IUsersMaintenanceProcessor UsersMaintenance,
+            IUserQueryProcessor UserQuery)
         {
             mDateTime = DateTime;
             mMapper = Mapper;
@@ -47,6 +52,8 @@ namespace Falcon.Web.Api.App_Start
             mPagedDataRequestFactory = PagedDataRequestFactory;
             mUserSession = UserSession;
             mAppState = AppState;
+            mUsersMaintenance = UsersMaintenance;
+            mUserQuery = UserQuery;
         }
 
         [ResponseType(typeof(SUserState))]
@@ -81,8 +88,6 @@ namespace Falcon.Web.Api.App_Start
 
                     if (HasEnoughMoney(user.TotalCoin, newQuestionPrice, boostPrice)) //TODO Change Create Question Price to get from appState
                     {
-                        user.TotalCoin -= (newQuestionPrice + boostPrice);
-
                         var newQuestion = new CreatedQuestion
                         {
                             CategoryID = CategoryID,
@@ -97,10 +102,10 @@ namespace Falcon.Web.Api.App_Start
                         mDb.Set<CreatedQuestion>().Add(newQuestion);
                         await mDb.SaveChangesAsync();
 
-                        LevelUpChecking(ref user, user.Level.ScoreCeil, newQuestionPrize, user.Level.LevelNumber + 1);
+                        await mUsersMaintenance.LevelUp(newQuestionPrize); //TODO : should
+                        var totalCoin = await mUserQuery.DecreaseCoin(newQuestionPrice + boostPrice);
 
-
-                        return Response(HttpStatusCode.Created, user.TotalCoin);
+                        return Response(HttpStatusCode.Created, totalCoin);
                     }
                     else
                     {

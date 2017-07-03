@@ -19,7 +19,7 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
 
         public async Task<int> LevelUp(int Prize)
         {
-            var newLevel = await mUserQuery.UpdateLevel(0 , 0);
+            var newLevel = await mUserQuery.UpdateLevel(Prize);
             var totalCoin = Constants.DefaultValues.NoNewCoin;
 
             if(newLevel != Constants.DefaultValues.NoLevelUp)
@@ -32,35 +32,6 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
             }
 
             return totalCoin;
-        }
-
-        private async Task<int> LevelUP()
-        {
-            if (Coin < 0)
-                return -1;
-
-            var user = await mDb.Set<User>().Where(u => u.ID == mUserSession.ID).SingleOrDefaultAsync();
-
-            bool SaveFailed = false;
-            do
-            {
-                SaveFailed = false;
-
-                user.TotalCoin += Coin;
-                try
-                {
-                    await mDb.SaveChangesAsync();
-                    mStore.SaveState(GlobalVariables.ConcurrencyIssueResolved, true);
-                }
-                catch (DbUpdateConcurrencyException ex)
-                {
-                    SaveFailed = true;
-                    ex.Entries.Single().Reload();
-                }
-
-            } while (SaveFailed);
-
-            return user.TotalCoin;
         }
        
     }

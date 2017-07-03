@@ -5,7 +5,6 @@ using Falcon.EFCommonContext.DbModel;
 using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
-using System;
 using Falcon.Common;
 using System.Data.Entity.Infrastructure;
 using Falcon.Web.Common.Memmory;
@@ -42,7 +41,6 @@ namespace Falcon.Database.SqlServer.QueryProcessors
                 try
                 {
                     await mDb.SaveChangesAsync();
-                    mStore.SaveState(GlobalVariables.ConcurrencyIssueResolved, true);
                 }
                 catch (DbUpdateConcurrencyException ex)
                 {
@@ -100,7 +98,6 @@ namespace Falcon.Database.SqlServer.QueryProcessors
                 try
                 {
                     await mDb.SaveChangesAsync();
-                    mStore.SaveState(GlobalVariables.ConcurrencyIssueResolved, true);
                 }
                 catch (DbUpdateConcurrencyException ex)
                 {
@@ -113,25 +110,6 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             return user.TotalCoin;
         }
 
-        public async Task<bool> UpdateLevel(int NewLevelProgress, int LevelNumber)
-        {
-            throw new NotImplementedException();
-        }
-
-        private void LevelUpChecking(ref User user, int levelCeil, int Prize, int nextLevelNumber)
-        {
-            if (user.LevelProgress + Prize >= levelCeil)
-            {
-                user.CurrentLevelNumber = nextLevelNumber;
-                int remained = (user.LevelProgress + Prize) - levelCeil;
-                user.LevelProgress = remained;
-            }
-            else
-            {
-                user.LevelProgress += Prize;
-            }
-        }
-
         public async Task<bool> LevelExits(int LevelNumber)
         {
             var exists = await mDb.Set<Level>().AsNoTracking().CountAsync(l => l.LevelNumber == LevelNumber) > 0;
@@ -142,6 +120,47 @@ namespace Falcon.Database.SqlServer.QueryProcessors
         {
             int prize = await mDb.Set<Level>().AsNoTracking().Where(l => l.LevelNumber == LevelNumber).Select(l => l.Star).SingleOrDefaultAsync();
             return prize;
+        }
+        public async Task<int> UpdateLevel(int Prize)
+        {
+            var player = await mDb.Set<User>().FindAsync(mUserSession.ID);
+            int level;
+            bool SaveFailed = false;
+            do
+            {
+                SaveFailed = false;
+
+                level = LevelUpChecking(ref player, player.Level.ScoreCeil, Prize, (player.CurrentLevelNumber ?? 0) + 1);
+                try
+                {
+                    await mDb.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException ex)
+                {
+                    SaveFailed = true;
+                    ex.Entries.Single().Reload();
+                }
+
+            } while (SaveFailed);
+
+            return level;
+        }
+
+        private int LevelUpChecking(ref User User, int LevelCeil, int Prize, int NextLevelNumber)
+        {
+            if (User.LevelProgress + Prize >= LevelCeil)
+            {
+                User.CurrentLevelNumber = NextLevelNumber;
+                int remained = (User.LevelProgress + Prize) - LevelCeil;
+                User.LevelProgress = remained;
+
+                return NextLevelNumber;
+            }
+            else
+            {
+                User.LevelProgress += Prize;
+                return Constants.DefaultValues.NoLevelUp;
+            }
         }
     }
 }   

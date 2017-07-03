@@ -35,7 +35,7 @@ namespace Falcon.Web.Api.Controllers.V1
         private readonly ICharacteristicsMaintenanceProcessor mCharacteristicsMaintenanceProcessor;
         private readonly ICharacteristicsInquiryProcessor mCharacteristicsInquiryProcessor;
         private readonly IScoringQueryProcessor mScoringQueryProcessor;
-        private readonly IUsersMaintenanceProcessor 
+        private readonly IUsersMaintenanceProcessor mUsersMaintenance;
 
 
         public AnswersController(IDateTime dateTime , 
@@ -58,6 +58,8 @@ namespace Falcon.Web.Api.Controllers.V1
             mCharacteristicsMaintenanceProcessor = CharacteristicsMaintenanceProcessor;
             mCharacteristicsInquiryProcessor = CharacteristicsInquiryProcessor;
             mScoringQueryProcessor = ScoringQueryProcessor;
+            mUsersMaintenance = UserMaintenanceProcessor;
+
         }
 
         public IQueryable<Answer> GetAnswers()
@@ -252,9 +254,8 @@ namespace Falcon.Web.Api.Controllers.V1
                 int prizeCoefficient = questionToUpdate.Category.PrizeCoefficient;
                 if (mAppState.Prize_AnswerPrize > 0 && prizeCoefficient > 0 )
                 {
-
-                    m
-                    LevelUpChecking(ref user, user.Level.ScoreCeil, mAppState.Prize_AnswerPrize * prizeCoefficient, user.Level.LevelNumber +1);
+                    int totalCoin = await mUsersMaintenance.LevelUp(mAppState.Prize_AnswerPrize * prizeCoefficient);
+                    if (totalCoin == Constants.DefaultValues.NoNewCoin) // do something 
                     await mDb.SaveChangesAsync();
                 }
                 

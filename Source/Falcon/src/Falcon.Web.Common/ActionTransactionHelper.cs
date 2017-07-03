@@ -65,20 +65,7 @@ namespace Falcon.Web.Common
             }
             else
             {
-                if(filterContext.Exception is DbUpdateConcurrencyException)
-                {
-                    var resolved = mStore.LoadState<bool>(GlobalVariables.ConcurrencyIssueResolved);
-
-                    if (resolved)
-                    {
-                        context.SaveChanges();
-                        context.Database.CurrentTransaction.Commit();
-                    }
-                    else
-                    {
-                        context.Database.CurrentTransaction.Rollback();
-                    }
-                }
+                context.Database.CurrentTransaction.Rollback();
             }
             TransactionHandled = true;
         }

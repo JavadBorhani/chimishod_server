@@ -33,6 +33,7 @@ namespace Falcon.Web.Api.Controllers.V1
         private readonly IAchievementInquiryProcessor mAchievementInquiryProcessor;
         private readonly IUserQueryProcessor mUserQuery;
         private readonly IScoringQueryProcessor mScoreQuery;
+        private readonly IUsersMaintenanceProcessor mUserMaintenance;
 
         public AchievedPosessionsController(
             IMapper Mapper , 
@@ -42,7 +43,8 @@ namespace Falcon.Web.Api.Controllers.V1
             IGlobalApplicationState AppState,
             IAchievementInquiryProcessor AchievementInquiryProcessor , 
             IUserQueryProcessor mUserQueryProcessor , 
-            IScoringQueryProcessor ScoringQueryProcessor)
+            IScoringQueryProcessor ScoringQueryProcessor ,
+            IUsersMaintenanceProcessor UserMaintenance)
         {
             mMapper = Mapper;
             mDateTime = DateTime;
@@ -52,6 +54,7 @@ namespace Falcon.Web.Api.Controllers.V1
             mAchievementInquiryProcessor = AchievementInquiryProcessor;
             mUserQuery = mUserQueryProcessor;
             mScoreQuery = ScoringQueryProcessor;
+            mUserMaintenance = UserMaintenance;
         }
 
         [Route("Achievements/")]
@@ -248,12 +251,13 @@ namespace Falcon.Web.Api.Controllers.V1
                     int coin = achievable.Achievement.Coin;
                     int prize = achievable.Achievement.ScorePrize;
 
-                    int totalCoin = await mUserQuery.IncreaseCoin(coin);
+                    await mUserMaintenance.LevelUp(prize); 
                     await mScoreQuery.AddScore(mUserSession.ID , prize , AchievedScoreType.Achievement);
 
-                    LevelUpChecking( ref user , user.Level.ScoreCeil, prize , user.Level.LevelNumber + 1);
+                    int totalCoin = await mUserQuery.IncreaseCoin(coin);
 
                     await mDb.SaveChangesAsync();
+
                     return Response(HttpStatusCode.OK, totalCoin);
                 }
                 return Response(HttpStatusCode.Unauthorized);

@@ -1,6 +1,7 @@
 ﻿using Falcon.Data.QueryProcessors;
 using Falcon.EFCommonContext;
 using Falcon.EFCommonContext.DbModel;
+using Falcon.Web.Api.MaintenanceProcessing.Public;
 using Falcon.Web.Api.Utilities;
 using Falcon.Web.Api.Utilities.Base;
 using Falcon.Web.Common;
@@ -15,20 +16,16 @@ namespace Falcon.Web.Api.Controllers.V1
     [UnitOfWorkActionFilter]
     public class TestController : FalconApiController
     {
-        private readonly IDbContext mDb;
-        private readonly IUserQueryProcessor mUser;
-        private readonly IMemoryStore mStore;
+        private readonly IUsersMaintenanceProcessor mUsersMaintenace;
 
-        public TestController(IDbContext Database , IUserQueryProcessor User , IMemoryStore Store)
+        public TestController(IUsersMaintenanceProcessor UserMaintenacne)
         {
-            mDb = Database;
-            mUser = User;
-            mStore = Store;
+            mUsersMaintenace = UserMaintenacne;
         }
 
         [Route("TestController")]
         [HttpPost]
-        public IHttpActionResult CreateJob()
+        public async Task<IHttpActionResult> CreateJob()
         {
             return Ok();
         }
