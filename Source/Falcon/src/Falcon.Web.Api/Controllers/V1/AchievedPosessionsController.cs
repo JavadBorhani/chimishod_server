@@ -34,6 +34,7 @@ namespace Falcon.Web.Api.Controllers.V1
         private readonly IUserQueryProcessor mUserQuery;
         private readonly IScoringQueryProcessor mScoreQuery;
         private readonly IUsersMaintenanceProcessor mUserMaintenance;
+        private readonly IAchievementMaintenanceProcessor mAchievementMaintenance;
 
         public AchievedPosessionsController(
             IMapper Mapper , 
@@ -44,7 +45,8 @@ namespace Falcon.Web.Api.Controllers.V1
             IAchievementInquiryProcessor AchievementInquiryProcessor , 
             IUserQueryProcessor mUserQueryProcessor , 
             IScoringQueryProcessor ScoringQueryProcessor ,
-            IUsersMaintenanceProcessor UserMaintenance)
+            IUsersMaintenanceProcessor UserMaintenance , 
+            IAchievementMaintenanceProcessor AchievementMaintenanceProcessor)
         {
             mMapper = Mapper;
             mDateTime = DateTime;
@@ -55,6 +57,7 @@ namespace Falcon.Web.Api.Controllers.V1
             mUserQuery = mUserQueryProcessor;
             mScoreQuery = ScoringQueryProcessor;
             mUserMaintenance = UserMaintenance;
+            mAchievementMaintenance = AchievementMaintenanceProcessor; 
         }
 
         [Route("Achievements/")]
@@ -66,7 +69,7 @@ namespace Falcon.Web.Api.Controllers.V1
                                                         .AsNoTracking()
                                                         .Include( Ap => Ap.Achievement)
                                                         .Where( ap => ap.UserID == mUserSession.ID && 
-                                                                ap.AchieveStateID == Constants.DefaultValues.AchievementDefaultAchievableID)
+                                                                ap.AchieveStateID == (int)AchievementState.AchievementDefaultAchievableID)
                                                         .Select( ap => ap.Achievement)
                                                         .OrderBy( ap => ap.ID)
                                                         .ToListAsync();
@@ -98,7 +101,7 @@ namespace Falcon.Web.Api.Controllers.V1
                                         .AsNoTracking()
                                         .Include(ap => ap.Achievement)
                                         .Where(ap => ap.UserID == mUserSession.ID &&
-                                                ap.AchieveStateID == Constants.DefaultValues.AchievementDefaultAchievedID)
+                                                ap.AchieveStateID == (int)AchievementState.AchievementDefaultAchievedID)
                                         .Select(ap => ap.Achievement.ID).ToListAsync();
 
                 achievableAndAchievedIDList.AddRange(achievables.Select( a => a.ID));
@@ -163,7 +166,7 @@ namespace Falcon.Web.Api.Controllers.V1
                     {
                         UserID = mUserSession.ID,
                         AchievementID = newAchievables[i].ID,
-                        AchieveStateID = Constants.DefaultValues.AchievementDefaultAchievableID,
+                        AchieveStateID = (int)AchievementState.AchievementDefaultAchievableID,
                         AchievedDate = null,    
                         AchievableDate = mDateTime.Now,
                     });
@@ -213,7 +216,7 @@ namespace Falcon.Web.Api.Controllers.V1
                             Prize = notAchieved[i].ScorePrize,
                             Icon = notAchieved[i].Icon,
                             RectangleColor = notAchieved[i].RectangleColor,
-                            AchievementState = Constants.DefaultValues.AchievementDefaultNotAchievedID
+                            AchievementState = AchievementState.AchievementDefaultNotAchievedID
                         });
                 }
 
@@ -225,6 +228,14 @@ namespace Falcon.Web.Api.Controllers.V1
             {
                 return Response(HttpStatusCode.NoContent);
             }
+        }
+
+        [Route("Achievements/new")]
+        [HttpPost]
+        public async Task<Dictionary<int , List<SAchievement>>> PrepareAchievementList()
+        {
+            var data = await mAchievementMaintenance.PrepareAchievementList();
+            return data;
         }
 
         [ResponseType(typeof(int))]
@@ -240,12 +251,12 @@ namespace Falcon.Web.Api.Controllers.V1
                                         .Include(ap => ap.Achievement)
                                         .Where(ap => ap.UserID == user.ID &&
                                                ap.AchievementID == AchievementID &&
-                                               ap.AchieveStateID == Constants.DefaultValues.AchievementDefaultAchievableID)
+                                               ap.AchieveStateID == (int)AchievementState.AchievementDefaultAchievableID)
                                         .SingleOrDefaultAsync();
                 if (achievable != null)
                 {
                     
-                    achievable.AchieveStateID = Constants.DefaultValues.AchievementDefaultAchievedID;
+                    achievable.AchieveStateID = (int)AchievementState.AchievementDefaultAchievedID;
                     achievable.AchievedDate = mDateTime.Now;
 
                     int coin = achievable.Achievement.Coin;
@@ -277,7 +288,7 @@ namespace Falcon.Web.Api.Controllers.V1
                                                         .AsNoTracking()
                                                         .Include( ap => ap.Achievement)
                                                         .Where( ap => ap.UserID == mUserSession.ID && 
-                                                                ap.AchieveStateID == Constants.DefaultValues.AchievementDefaultAchievedID)
+                                                                ap.AchieveStateID == (int)AchievementState.AchievementDefaultAchievedID)
                                                         .Select(ap => ap.Achievement)
                                                         .ToListAsync();
 
@@ -313,7 +324,7 @@ namespace Falcon.Web.Api.Controllers.V1
                                             .AsNoTracking()
                                             .Include(ap => ap.Achievement)
                                             .Where( ap => ap.UserID == mUserSession.ID &&  
-                                                    ap.AchieveStateID == Constants.DefaultValues.AchievementDefaultAchievableID)
+                                                    ap.AchieveStateID == (int)AchievementState.AchievementDefaultAchievableID)
                                             .Select(ap => ap.Achievement)
                                             .ToListAsync();
 

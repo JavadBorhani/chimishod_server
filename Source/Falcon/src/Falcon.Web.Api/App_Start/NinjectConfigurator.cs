@@ -61,11 +61,7 @@ namespace Falcon.Web.Api
         {
             GlobalConfiguration.Configuration.UseNinjectActivator(container);
             GlobalConfiguration.Configuration.UseLog4NetLogProvider();
-
             GlobalConfiguration.Configuration.UseSqlServerStorage(HangFireDatabase);
-
-            //container.Bind<IDbContext>().ToSelf().InBackgroundJobScope();
-
         }
         private void ConfigureLog4Net(IKernel container)
         {
@@ -159,7 +155,7 @@ namespace Falcon.Web.Api
             container.Bind<ICharacteristicsMaintenanceProcessor>().To<CharacteristicsMaintenanceProcessor>().InRequestScope();
             container.Bind<IUserStatsMaintenanceProcessor>().To<UserStatsMaintenanceProcessor>().InRequestScope();
             container.Bind<IUsersMaintenanceProcessor>().To<UsersMaintenanceProcessor>().InRequestScope();
-
+            container.Bind<IAchievementMaintenanceProcessor>().To<AchievementMaintenanceProcessor>().InRequestScope();
         }
 
         private void AddAdHoc(IKernel container)

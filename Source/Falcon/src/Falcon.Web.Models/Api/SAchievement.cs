@@ -1,7 +1,17 @@
 ﻿// Flapp Copyright 2017-2018
 
+using System.Collections.Generic;
+
 namespace Falcon.Web.Models.Api
 {
+    public class AchievementList : Dictionary<int , List<SAchievement>> { }
+
+    public enum AchievementState : int
+    {
+        AchievementDefaultNotAchievedID = 1,
+        AchievementDefaultAchievableID = 2,
+        AchievementDefaultAchievedID = 3
+    }
     public class SAchievement
     {
         public int ID { get; set; }
@@ -11,7 +21,7 @@ namespace Falcon.Web.Models.Api
         public string Icon { get; set; }
         public int Prize { get; set; }
         public string RectangleColor { get; set; }
-        public int AchievementState { get; set; }
+        public AchievementState AchievementState { get; set; }
     }
 
 }

@@ -8,6 +8,7 @@ using Falcon.EFCommonContext.DbModel;
 using Falcon.EFCommonContext;
 using System.Data.Entity;
 using Falcon.Common;
+using Falcon.Web.Models.Api;
 
 namespace Falcon.Database.SqlServer.QueryProcessors
 {
@@ -24,7 +25,7 @@ namespace Falcon.Database.SqlServer.QueryProcessors
                                                         .AsNoTracking()
                                                         .Include(ap => ap.Achievement)
                                                         .Where(ap => ap.UserID == UserID &&
-                                                               ap.AchieveStateID == Constants.DefaultValues.AchievementDefaultAchievedID)
+                                                               ap.AchieveStateID == (int)AchievementState.AchievementDefaultAchievedID)
                                                         .Select(ap => ap.Achievement)
                                                         .ToListAsync();
             return achievedList;
