@@ -19,7 +19,14 @@ namespace Falcon.Database.SqlServer.QueryProcessors
         {
             mDb = Database;
         }
-        public async Task<List<Achievement>> GetAchievementList(int UserID)
+
+        public async Task<List<Achievement>> GetAllAchievementList()
+        {
+            //mDb.Set<Achievement>().AsNoTracking().Select(u => u.)
+            return null;    
+        }
+
+        public async Task<List<Achievement>> GetUserAchievementList(int UserID)
         {
             var achievedList = await mDb.Set<AchievedPosession>()
                                                         .AsNoTracking()

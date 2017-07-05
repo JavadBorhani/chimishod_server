@@ -10,6 +10,7 @@ namespace Falcon.Data.QueryProcessors
     public interface IAchievementQueryProcessor
     {
         Task<bool> IsExists(int ID);
-        Task<List<Achievement>> GetAchievementList(int UserID);
+        Task<List<Achievement>> GetUserAchievementList(int UserID);
+        Task<List<Achievement>> GetAllAchievementList();
     }
 }

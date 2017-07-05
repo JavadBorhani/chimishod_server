@@ -26,13 +26,7 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
         public async Task<AchievementList> PrepareAchievementList()
         {
             var outputList = new AchievementList();
-            outputList.Add(1, new List<SAchievement>()
-            {
-                new SAchievement {ID = 1 , AchievementState = AchievementState.AchievementDefaultAchievableID , Description = "" , Icon = "" , Name = "" , Prize = 10 , Star = 1 } , 
-                new SAchievement {ID = 1 , AchievementState = AchievementState.AchievementDefaultAchievableID , Description = "" , Icon = "" , Name = "" , Prize = 10 , Star = 1 } ,  
-                new SAchievement {ID = 1 , AchievementState = AchievementState.AchievementDefaultAchievableID , Description = "" , Icon = "" , Name = "" , Prize = 10 , Star = 1 } ,
-                new SAchievement {ID = 1 , AchievementState = AchievementState.AchievementDefaultAchievableID , Description = "" , Icon = "" , Name = "" , Prize = 10 , Star = 1 }
-            });
+
 
             return outputList;
         }

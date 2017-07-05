@@ -244,12 +244,20 @@ namespace Falcon.Web.Api.Controllers.V1
                 SpinWheelCount = Constants.DefaultUser.SpinWheelCount
             };
 
-            
+            UserCount userCount = new UserCount
+            {
+                UserID = user.ID,
+                PurchasedAvatarCount = 0,
+                PurchasedCategoryCount = 0,
+                PurchasedThemeCount = 0,
+                CreatedQuestionsCount = 0
+            };
 
+            mDb.Set<UserCount>().Add(userCount);
             mDb.Set<UserStat>().Add(userStat);
+            mDb.Set<UserInfo>().Add(userInfo);
             mDb.Set<SelectedTheme>().Add(selecetedTheme);
             mDb.Set<SelectedCategory>().Add(selectedCategory);
-            mDb.Set<UserInfo>().Add(userInfo);
             mDb.Set<SelectedAvatar>().Add(selectedAvatar);
 
             var CategoryCharacters = await mCharacteristicsInquiryProcessor.GetCategoryAssignedCharacters(Constants.DefaultUser.CategoryID);

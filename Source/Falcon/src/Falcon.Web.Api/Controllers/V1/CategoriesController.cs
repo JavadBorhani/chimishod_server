@@ -155,6 +155,7 @@ namespace Falcon.Web.Api.Controllers.V1
                             {
                                 UserID = user.ID,
                                 CategoryID = CategoryID,
+                                AnswerCount = 0 ,
                                 PurchaseDate = mDateTime.Now
                             };
 

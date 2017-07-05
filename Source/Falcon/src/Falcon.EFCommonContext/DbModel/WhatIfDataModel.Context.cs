@@ -83,11 +83,13 @@ namespace Falcon.EFCommonContext.DbModel
         public virtual DbSet<UnRepeatableAchievedSpinWheel> UnRepeatableAchievedSpinWheels { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<UserAvatar> UserAvatars { get; set; }
+        public virtual DbSet<UserCount> UserCounts { get; set; }
         public virtual DbSet<UserInfo> UserInfoes { get; set; }
         public virtual DbSet<UserStat> UserStats { get; set; }
         public virtual DbSet<UserType> UserTypes { get; set; }
         public virtual DbSet<WatchAdProvider> WatchAdProviders { get; set; }
         public virtual DbSet<WatchedAd> WatchedAds { get; set; }
+        public virtual DbSet<AchievementStatistic> AchievementStatistics { get; set; }
     
         public virtual int sp_alterdiagram(string diagramname, Nullable<int> owner_id, Nullable<int> version, byte[] definition)
         {

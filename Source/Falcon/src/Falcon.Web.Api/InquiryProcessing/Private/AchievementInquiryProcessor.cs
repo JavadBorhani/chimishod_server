@@ -22,7 +22,7 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
 
         public async Task<List<SAchievement>> GetAchievementListByUserID(int UserID)
         {
-            var achievedList = await mAchievementQueryProcessor.GetAchievementList(UserID);
+            var achievedList = await mAchievementQueryProcessor.GetUserAchievementList(UserID);
 
             var results = mMapper.Map<List<SAchievement>>(achievedList);
 

@@ -137,7 +137,7 @@ namespace Falcon.Web.Api.Controllers.V1
 
                     .GroupBy( a => a.CategoryID)
                     .Select( g => g.FirstOrDefault())
-                    .OrderBy(a => a.CategoryQuantity)
+                    .OrderBy(a => a.Quantity)
                     .ToListAsync();
 
                 for(int i = usuals.Count -1; i >= 0; --i)
@@ -148,7 +148,7 @@ namespace Falcon.Web.Api.Controllers.V1
                         .AsNoTracking()
                         .Include(a => a.Question)
                         .Where(u => u.UserID == mUserSession.ID && u.Question.Catgory_ID == (value ?? 0))
-                        .CountAsync() >= usuals[i].CategoryQuantity;
+                        .CountAsync() >= usuals[i].Quantity;
 
                     if (isAchievable)
                     {
@@ -232,7 +232,7 @@ namespace Falcon.Web.Api.Controllers.V1
 
         [Route("Achievements/new")]
         [HttpPost]
-        public async Task<Dictionary<int , List<SAchievement>>> PrepareAchievementList()
+        public async Task<AchievementList> PrepareAchievementList()
         {
             var data = await mAchievementMaintenance.PrepareAchievementList();
             return data;

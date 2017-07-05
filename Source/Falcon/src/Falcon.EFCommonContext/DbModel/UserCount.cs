@@ -12,15 +12,15 @@ namespace Falcon.EFCommonContext.DbModel
     using System;
     using System.Collections.Generic;
     
-    public partial class PurchaseCategory
+    public partial class UserCount
     {
         public int ID { get; set; }
         public int UserID { get; set; }
-        public int CategoryID { get; set; }
-        public int AnswerCount { get; set; }
-        public System.DateTime PurchaseDate { get; set; }
+        public int PurchasedCategoryCount { get; set; }
+        public int PurchasedAvatarCount { get; set; }
+        public int PurchasedThemeCount { get; set; }
+        public int CreatedQuestionsCount { get; set; }
     
-        public virtual Category Category { get; set; }
         public virtual User User { get; set; }
     }
 }

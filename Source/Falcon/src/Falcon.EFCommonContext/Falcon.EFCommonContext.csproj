@@ -83,6 +83,9 @@
     <Compile Include="DbModel\AchievementQueryType.cs">
       <DependentUpon>WhatIfDataModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="DbModel\AchievementStatistic.cs">
+      <DependentUpon>WhatIfDataModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="DbModel\AchieveStateType.cs">
       <DependentUpon>WhatIfDataModel.tt</DependentUpon>
     </Compile>
@@ -228,6 +231,9 @@
       <DependentUpon>WhatIfDataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="DbModel\UserAvatar.cs">
+      <DependentUpon>WhatIfDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DbModel\UserCount.cs">
       <DependentUpon>WhatIfDataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="DbModel\UserInfo.cs">

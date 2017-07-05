@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Falcon.Web.Models.Api
 {
-    public class AchievementList : Dictionary<int , List<SAchievement>> { }
+    public class AchievementList : Dictionary<string , List<SAchievement>> { }
 
     public enum AchievementState : int
     {
