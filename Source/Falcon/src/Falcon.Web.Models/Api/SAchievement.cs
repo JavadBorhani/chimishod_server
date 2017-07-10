@@ -6,6 +6,16 @@ namespace Falcon.Web.Models.Api
 {
     public class AchievementList : Dictionary<string , List<SAchievement>> { }
 
+
+    public enum AchievementStyle
+    {
+        Answer = 1 , 
+        Score = 2 , 
+        Level = 3 , 
+        Avatar = 4 , 
+        Category = 5 
+    }
+
     public enum AchievementState : int
     {
         AchievementDefaultNotAchievedID = 1,

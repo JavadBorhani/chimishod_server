@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 using Falcon.Common;
 using System.Data.Entity.Infrastructure;
 using Falcon.Web.Common.Memmory;
+using Falcon.Web.Models.Api.User;
+using System;
 
 namespace Falcon.Database.SqlServer.QueryProcessors
 {
@@ -18,6 +20,7 @@ namespace Falcon.Database.SqlServer.QueryProcessors
         private readonly IWebUserSession mUserSession;
         private readonly IDateTime mDateTime;
         private readonly IMemoryStore mStore;
+
         public UserQueryProcessor(IDbContext Database , IWebUserSession UserSession , IDateTime DateTime , IMemoryStore Store)
         {
             mDb = Database;
@@ -25,6 +28,7 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             mDateTime = DateTime;
             mStore = Store; 
         }
+
         public async Task<int> IncreaseCoin(int Coin)
         {
             if (Coin < 0)
@@ -66,6 +70,7 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             await mDb.SaveChangesAsync();
             return true;
         }
+
         public async Task<bool> UpdateLastSeenDateTimeToNow()
         {
             var user = await mDb.Set<User>().Where(u => u.ID == mUserSession.ID).SingleOrDefaultAsync();
@@ -121,6 +126,7 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             int prize = await mDb.Set<Level>().AsNoTracking().Where(l => l.LevelNumber == LevelNumber).Select(l => l.Star).SingleOrDefaultAsync();
             return prize;
         }
+
         public async Task<int> UpdateLevel(int Prize)
         {
             var player = await mDb.Set<User>().FindAsync(mUserSession.ID);
@@ -161,6 +167,15 @@ namespace Falcon.Database.SqlServer.QueryProcessors
                 User.LevelProgress += Prize;
                 return Constants.DefaultValues.NoLevelUp;
             }
+        }
+
+        public async Task<UserCount> GetUserCountInfo(int UserID)
+        {
+            var data = await mDb.Set<UserCount>()
+                            .AsNoTracking()
+                            .Where(u => u.UserID == UserID)
+                            .SingleOrDefaultAsync();
+            return data;    
         }
     }
 }   

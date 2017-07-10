@@ -9,12 +9,14 @@ using Falcon.EFCommonContext;
 using System.Data.Entity;
 using Falcon.Common;
 using Falcon.Web.Models.Api;
+using Falcon.Common.Security;
 
 namespace Falcon.Database.SqlServer.QueryProcessors
 {
     public class AchievementQueryProcessor : IAchievementQueryProcessor
     {
         private readonly IDbContext mDb;
+        private readonly IUserSession mUserSession;
         public AchievementQueryProcessor(IDbContext Database)
         {
             mDb = Database;
@@ -26,7 +28,20 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             return null;    
         }
 
-        public async Task<List<Achievement>> GetUserAchievementList(int UserID)
+        public async Task<List<int>> GetUserAchievedPossetionIds()
+        {
+            var achievedList = await mDb.Set<AchievedPosession>()
+                                                        .AsNoTracking()
+                                                        .Include(ap => ap.Achievement)
+                                                        .Where(ap => ap.UserID == mUserSession.ID &&
+                                                               ap.AchieveStateID == (int)AchievementState.AchievementDefaultAchievedID && 
+                                                               ap.AchieveStateID == (int)AchievementState.AchievementDefaultAchievableID)
+                                                        .Select(ap => ap.ID)
+                                                        .ToListAsync();
+            return achievedList;
+        }
+
+        public async Task<List<Achievement>> GetUserAchievements(int UserID)
         {
             var achievedList = await mDb.Set<AchievedPosession>()
                                                         .AsNoTracking()
