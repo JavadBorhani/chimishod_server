@@ -21,6 +21,5 @@ namespace Falcon.EFCommonContext.DbModel
         public System.DateTime AchievedDate { get; set; }
     
         public virtual ScoreType ScoreType { get; set; }
-        public virtual User User { get; set; }
     }
 }

@@ -18,6 +18,7 @@ namespace Falcon.EFCommonContext.DbModel
         public Category()
         {
             this.Achievements = new HashSet<Achievement>();
+            this.Answers = new HashSet<Answer>();
             this.AssignedCharacters = new HashSet<AssignedCharacter>();
             this.CreatedQuestions = new HashSet<CreatedQuestion>();
             this.PurchaseCategories = new HashSet<PurchaseCategory>();
@@ -41,6 +42,8 @@ namespace Falcon.EFCommonContext.DbModel
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Achievement> Achievements { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Answer> Answers { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<AssignedCharacter> AssignedCharacters { get; set; }
         public virtual TagState TagState { get; set; }

@@ -85,6 +85,7 @@
     <Compile Include="Api\SUserStatistics.cs" />
     <Compile Include="Api\SWatchedAd.cs" />
     <Compile Include="Api\SWatchAdValidation.cs" />
+    <Compile Include="Api\User\SUserCount.cs" />
     <Compile Include="IPageContaining.cs" />
     <Compile Include="PagedDataInquiryResponse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

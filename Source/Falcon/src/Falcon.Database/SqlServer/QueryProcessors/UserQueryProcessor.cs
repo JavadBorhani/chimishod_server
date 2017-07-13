@@ -169,13 +169,15 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             }
         }
 
-        public async Task<UserCount> GetUserCountInfo(int UserID)
+        public async Task<SUserCount> GetUserCountInfo(int UserID)
         {
             var data = await mDb.Set<UserCount>()
                             .AsNoTracking()
                             .Where(u => u.UserID == UserID)
                             .SingleOrDefaultAsync();
-            return data;    
+            return null;    
         }
+
+
     }
 }   

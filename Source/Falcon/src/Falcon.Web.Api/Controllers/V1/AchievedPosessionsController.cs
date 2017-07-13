@@ -232,7 +232,7 @@ namespace Falcon.Web.Api.Controllers.V1
 
         [Route("Achievements/new")]
         [HttpPost]
-        public async Task<AchievementList> PrepareAchievementList()
+        public async Task<SAchievementDic> PrepareAchievementList()
         {
             var data = await mAchievementMaintenance.PrepareAchievementList();
             return data;

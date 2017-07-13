@@ -24,11 +24,11 @@ namespace Falcon.Database.SqlServer.QueryProcessors
 
         public async Task<List<Achievement>> GetAllAchievementList()
         {
-            //mDb.Set<Achievement>().AsNoTracking().Select(u => u.)
-            return null;    
+            var data = await mDb.Set<Achievement>().AsNoTracking().ToListAsync(); 
+            return data;        
         }
 
-        public async Task<List<int>> GetUserAchievedPossetionIds()
+        public async Task<List<SAchievementPossesion>> GetUserAchievedPossetionIds()
         {
             var achievedList = await mDb.Set<AchievedPosession>()
                                                         .AsNoTracking()
@@ -36,7 +36,11 @@ namespace Falcon.Database.SqlServer.QueryProcessors
                                                         .Where(ap => ap.UserID == mUserSession.ID &&
                                                                ap.AchieveStateID == (int)AchievementState.AchievementDefaultAchievedID && 
                                                                ap.AchieveStateID == (int)AchievementState.AchievementDefaultAchievableID)
-                                                        .Select(ap => ap.ID)
+                                                        .Select(ap => new SAchievementPossesion
+                                                        {
+                                                            AchievementID = ap.AchievementID,
+                                                            AchievementState = (AchievementState)ap.AchieveStateID
+                                                        })
                                                         .ToListAsync();
             return achievedList;
         }

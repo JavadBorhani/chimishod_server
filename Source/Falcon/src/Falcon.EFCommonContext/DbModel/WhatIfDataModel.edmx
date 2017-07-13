@@ -76,7 +76,7 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ID" Type="int" Nullable="false" />
           <Property Name="QueyName" Type="nvarchar" MaxLength="20" Nullable="false" />
           <Property Name="QueryDescription" Type="nvarchar" MaxLength="100" Nullable="false" />
         </EntityType>
@@ -94,6 +94,7 @@
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="CategoryID" Type="int" Nullable="false" />
           <Property Name="QuestionID" Type="int" Nullable="false" />
           <Property Name="Liked" Type="bit" />
           <Property Name="Dislike" Type="bit" />
@@ -341,13 +342,14 @@
         </EntityType>
         <EntityType Name="Level">
           <Key>
-            <PropertyRef Name="LevelNumber" />
+            <PropertyRef Name="ID" />
           </Key>
           <Property Name="LevelNumber" Type="int" Nullable="false" />
           <Property Name="Star" Type="int" Nullable="false" />
           <Property Name="ScoreCeil" Type="int" Nullable="false" />
           <Property Name="CreatedDate" Type="datetime" Nullable="false" />
           <Property Name="UpdatedDate" Type="datetime" Nullable="false" />
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
         </EntityType>
         <EntityType Name="Manufacture">
           <Key>
@@ -622,12 +624,12 @@
           <Property Name="TotalCoin" Type="int" Nullable="false" />
           <Property Name="LevelProgress" Type="int" Nullable="false" />
           <Property Name="CurrentLevelNumber" Type="int" />
+          <Property Name="DWMCount" Type="int" Nullable="false" />
+          <Property Name="IsTutorial" Type="bit" Nullable="false" />
           <Property Name="IsAbleToWriteComment" Type="bit" Nullable="false" />
           <Property Name="LastSeenDateTime" Type="datetime" Nullable="false" />
           <Property Name="PrevLastSeenDateTime" Type="datetime" Nullable="false" />
           <Property Name="PreviousDaySeen" Type="datetime" Nullable="false" />
-          <Property Name="DWMCount" Type="int" Nullable="false" />
-          <Property Name="IsTutorial" Type="bit" Nullable="false" />
           <Property Name="RowVersion" Type="timestamp" StoreGeneratedPattern="Computed" />
         </EntityType>
         <EntityType Name="UserAvatar">
@@ -707,20 +709,6 @@
           <Property Name="WatchAdProviderId" Type="int" />
           <Property Name="WatchAdId" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="InsertDate" Type="datetime" Nullable="false" />
-        </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'what_if.dbo.AchievementStatistics' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
-        <EntityType Name="AchievementStatistics">
-          <Key>
-            <PropertyRef Name="UserID" />
-          </Key>
-          <Property Name="UserID" Type="int" Nullable="false" />
-          <Property Name="CurrentLevelNumber" Type="int" />
-          <Property Name="Score" Type="int" />
-          <Property Name="PurchasedCategoryCount" Type="int" />
-          <Property Name="PurchasedAvatarCount" Type="int" />
-          <Property Name="PurchasedThemeCount" Type="int" />
-          <Property Name="CreatedQuestionsCount" Type="int" />
         </EntityType>
         <Association Name="FK_AchievedCodeGift_CodeGift">
           <End Role="CodeGift" Type="Self.CodeGift" Multiplicity="1">
@@ -832,20 +820,6 @@ warning 6002: The table/view 'what_if.dbo.AchievementStatistics' does not have a
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_AchievedScore_User">
-          <End Role="User" Type="Self.User" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="AchievedScore" Type="Self.AchievedScore" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="AchievedScore">
-              <PropertyRef Name="UserID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_AchievedSpinWheel_SpinWheel">
           <End Role="SpinWheel" Type="Self.SpinWheel" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -898,15 +872,15 @@ warning 6002: The table/view 'what_if.dbo.AchievementStatistics' does not have a
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Achievement_Level">
-          <End Role="Level" Type="Self.Level" Multiplicity="0..1" />
-          <End Role="Achievement" Type="Self.Achievement" Multiplicity="*" />
+        <Association Name="FK_Answer_Category">
+          <End Role="Category" Type="Self.Category" Multiplicity="1" />
+          <End Role="Answer" Type="Self.Answer" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Level">
-              <PropertyRef Name="LevelNumber" />
+            <Principal Role="Category">
+              <PropertyRef Name="ID" />
             </Principal>
-            <Dependent Role="Achievement">
-              <PropertyRef Name="LevelNumber" />
+            <Dependent Role="Answer">
+              <PropertyRef Name="CategoryID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1677,7 +1651,7 @@ warning 6002: The table/view 'what_if.dbo.AchievementStatistics' does not have a
           <End Role="User" Type="Self.User" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Level">
-              <PropertyRef Name="LevelNumber" />
+              <PropertyRef Name="ID" />
             </Principal>
             <Dependent Role="User">
               <PropertyRef Name="CurrentLevelNumber" />
@@ -1705,20 +1679,6 @@ warning 6002: The table/view 'what_if.dbo.AchievementStatistics' does not have a
             </Principal>
             <Dependent Role="UserAvatar">
               <PropertyRef Name="TagStateID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_UserCounts_User">
-          <End Role="User" Type="Self.User" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="UserCounts" Type="Self.UserCounts" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="UserCounts">
-              <PropertyRef Name="UserID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1870,17 +1830,6 @@ warning 6002: The table/view 'what_if.dbo.AchievementStatistics' does not have a
           <EntitySet Name="UserType" EntityType="Self.UserType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="WatchAdProvider" EntityType="Self.WatchAdProvider" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="WatchedAd" EntityType="Self.WatchedAd" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="AchievementStatistics" EntityType="Self.AchievementStatistics" store:Type="Views" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [AchievementStatistics].[UserID] AS [UserID], 
-    [AchievementStatistics].[CurrentLevelNumber] AS [CurrentLevelNumber], 
-    [AchievementStatistics].[Score] AS [Score], 
-    [AchievementStatistics].[PurchasedCategoryCount] AS [PurchasedCategoryCount], 
-    [AchievementStatistics].[PurchasedAvatarCount] AS [PurchasedAvatarCount], 
-    [AchievementStatistics].[PurchasedThemeCount] AS [PurchasedThemeCount], 
-    [AchievementStatistics].[CreatedQuestionsCount] AS [CreatedQuestionsCount]
-    FROM [dbo].[AchievementStatistics] AS [AchievementStatistics]</DefiningQuery>
-          </EntitySet>
           <AssociationSet Name="FK_AchievedCodeGift_CodeGift" Association="Self.FK_AchievedCodeGift_CodeGift">
             <End Role="CodeGift" EntitySet="CodeGift" />
             <End Role="AchievedCodeGift" EntitySet="AchievedCodeGift" />
@@ -1913,10 +1862,6 @@ warning 6002: The table/view 'what_if.dbo.AchievementStatistics' does not have a
             <End Role="ScoreTypes" EntitySet="ScoreTypes" />
             <End Role="AchievedScore" EntitySet="AchievedScore" />
           </AssociationSet>
-          <AssociationSet Name="FK_AchievedScore_User" Association="Self.FK_AchievedScore_User">
-            <End Role="User" EntitySet="User" />
-            <End Role="AchievedScore" EntitySet="AchievedScore" />
-          </AssociationSet>
           <AssociationSet Name="FK_AchievedSpinWheel_SpinWheel" Association="Self.FK_AchievedSpinWheel_SpinWheel">
             <End Role="SpinWheel" EntitySet="SpinWheel" />
             <End Role="AchievedSpinWheel" EntitySet="AchievedSpinWheel" />
@@ -1933,9 +1878,9 @@ warning 6002: The table/view 'what_if.dbo.AchievementStatistics' does not have a
             <End Role="Category" EntitySet="Category" />
             <End Role="Achievement" EntitySet="Achievement" />
           </AssociationSet>
-          <AssociationSet Name="FK_Achievement_Level" Association="Self.FK_Achievement_Level">
-            <End Role="Level" EntitySet="Level" />
-            <End Role="Achievement" EntitySet="Achievement" />
+          <AssociationSet Name="FK_Answer_Category" Association="Self.FK_Answer_Category">
+            <End Role="Category" EntitySet="Category" />
+            <End Role="Answer" EntitySet="Answer" />
           </AssociationSet>
           <AssociationSet Name="FK_Answer_Question" Association="Self.FK_Answer_Question">
             <End Role="Question" EntitySet="Question" />
@@ -2173,10 +2118,6 @@ warning 6002: The table/view 'what_if.dbo.AchievementStatistics' does not have a
             <End Role="TagState" EntitySet="TagState" />
             <End Role="UserAvatar" EntitySet="UserAvatar" />
           </AssociationSet>
-          <AssociationSet Name="FK_UserCounts_User" Association="Self.FK_UserCounts_User">
-            <End Role="User" EntitySet="User" />
-            <End Role="UserCounts" EntitySet="UserCounts" />
-          </AssociationSet>
           <AssociationSet Name="FK_UserInfo_User" Association="Self.FK_UserInfo_User">
             <End Role="User" EntitySet="User" />
             <End Role="UserInfo" EntitySet="UserInfo" />
@@ -2292,7 +2233,6 @@ warning 6002: The table/view 'what_if.dbo.AchievementStatistics' does not have a
           <EntitySet Name="UserTypes" EntityType="Falcon.DbModel.UserType" />
           <EntitySet Name="WatchAdProviders" EntityType="Falcon.DbModel.WatchAdProvider" />
           <EntitySet Name="WatchedAds" EntityType="Falcon.DbModel.WatchedAd" />
-          <EntitySet Name="AchievementStatistics" EntityType="Falcon.DbModel.AchievementStatistic" />
           <AssociationSet Name="FK_AchievedCodeGift_CodeGift" Association="Falcon.DbModel.FK_AchievedCodeGift_CodeGift">
             <End Role="CodeGift" EntitySet="CodeGifts" />
             <End Role="AchievedCodeGift" EntitySet="AchievedCodeGifts" />
@@ -2325,10 +2265,6 @@ warning 6002: The table/view 'what_if.dbo.AchievementStatistics' does not have a
             <End Role="ScoreType" EntitySet="ScoreTypes" />
             <End Role="AchievedScore" EntitySet="AchievedScores" />
           </AssociationSet>
-          <AssociationSet Name="FK_AchievedScore_User" Association="Falcon.DbModel.FK_AchievedScore_User">
-            <End Role="User" EntitySet="Users" />
-            <End Role="AchievedScore" EntitySet="AchievedScores" />
-          </AssociationSet>
           <AssociationSet Name="FK_AchievedSpinWheel_SpinWheel" Association="Falcon.DbModel.FK_AchievedSpinWheel_SpinWheel">
             <End Role="SpinWheel" EntitySet="SpinWheels" />
             <End Role="AchievedSpinWheel" EntitySet="AchievedSpinWheels" />
@@ -2345,9 +2281,9 @@ warning 6002: The table/view 'what_if.dbo.AchievementStatistics' does not have a
             <End Role="Category" EntitySet="Categories" />
             <End Role="Achievement" EntitySet="Achievements" />
           </AssociationSet>
-          <AssociationSet Name="FK_Achievement_Level" Association="Falcon.DbModel.FK_Achievement_Level">
-            <End Role="Level" EntitySet="Levels" />
-            <End Role="Achievement" EntitySet="Achievements" />
+          <AssociationSet Name="FK_Answer_Category" Association="Falcon.DbModel.FK_Answer_Category">
+            <End Role="Category" EntitySet="Categories" />
+            <End Role="Answer" EntitySet="Answers" />
           </AssociationSet>
           <AssociationSet Name="FK_Answer_Question" Association="Falcon.DbModel.FK_Answer_Question">
             <End Role="Question" EntitySet="Questions" />
@@ -2585,10 +2521,6 @@ warning 6002: The table/view 'what_if.dbo.AchievementStatistics' does not have a
             <End Role="UserType" EntitySet="UserTypes" />
             <End Role="User" EntitySet="Users" />
           </AssociationSet>
-          <AssociationSet Name="FK_UserCounts_User" Association="Falcon.DbModel.FK_UserCounts_User">
-            <End Role="User" EntitySet="Users" />
-            <End Role="UserCount" EntitySet="UserCounts" />
-          </AssociationSet>
           <AssociationSet Name="FK_UserInfo_User" Association="Falcon.DbModel.FK_UserInfo_User">
             <End Role="User" EntitySet="Users" />
             <End Role="UserInfo" EntitySet="UserInfoes" />
@@ -2663,7 +2595,6 @@ warning 6002: The table/view 'what_if.dbo.AchievementStatistics' does not have a
           <Property Name="Score" Type="Int32" Nullable="false" />
           <Property Name="AchievedDate" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="ScoreType" Relationship="Falcon.DbModel.FK_AchievedScore_ScoreTypes" FromRole="AchievedScore" ToRole="ScoreType" />
-          <NavigationProperty Name="User" Relationship="Falcon.DbModel.FK_AchievedScore_User" FromRole="AchievedScore" ToRole="User" />
         </EntityType>
         <EntityType Name="AchievedSpinWheel">
           <Key>
@@ -2697,13 +2628,12 @@ warning 6002: The table/view 'what_if.dbo.AchievementStatistics' does not have a
           <NavigationProperty Name="AchievedPosessions" Relationship="Falcon.DbModel.FK_AchievedQuests_Quest" FromRole="Achievement" ToRole="AchievedPosession" />
           <NavigationProperty Name="AchievementQueryType" Relationship="Falcon.DbModel.FK_Achievement_AchievementQueryType" FromRole="Achievement" ToRole="AchievementQueryType" />
           <NavigationProperty Name="Category" Relationship="Falcon.DbModel.FK_Achievement_Category" FromRole="Achievement" ToRole="Category" />
-          <NavigationProperty Name="Level" Relationship="Falcon.DbModel.FK_Achievement_Level" FromRole="Achievement" ToRole="Level" />
         </EntityType>
         <EntityType Name="AchievementQueryType">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ID" Type="Int32" Nullable="false" />
           <Property Name="QueyName" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="QueryDescription" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Achievements" Relationship="Falcon.DbModel.FK_Achievement_AchievementQueryType" FromRole="AchievementQueryType" ToRole="Achievement" />
@@ -2723,11 +2653,13 @@ warning 6002: The table/view 'what_if.dbo.AchievementStatistics' does not have a
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="CategoryID" Type="Int32" Nullable="false" />
           <Property Name="QuestionID" Type="Int32" Nullable="false" />
           <Property Name="Liked" Type="Boolean" />
           <Property Name="Dislike" Type="Boolean" />
           <Property Name="YesNoState" Type="Boolean" Nullable="false" />
           <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Category" Relationship="Falcon.DbModel.FK_Answer_Category" FromRole="Answer" ToRole="Category" />
           <NavigationProperty Name="Question" Relationship="Falcon.DbModel.FK_Answer_Question" FromRole="Answer" ToRole="Question" />
           <NavigationProperty Name="User" Relationship="Falcon.DbModel.FK_Answer_User" FromRole="Answer" ToRole="User" />
         </EntityType>
@@ -2836,6 +2768,7 @@ warning 6002: The table/view 'what_if.dbo.AchievementStatistics' does not have a
           <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="UpdatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="Achievements" Relationship="Falcon.DbModel.FK_Achievement_Category" FromRole="Category" ToRole="Achievement" />
+          <NavigationProperty Name="Answers" Relationship="Falcon.DbModel.FK_Answer_Category" FromRole="Category" ToRole="Answer" />
           <NavigationProperty Name="AssignedCharacters" Relationship="Falcon.DbModel.FK_AssignedCharacter_Category" FromRole="Category" ToRole="AssignedCharacter" />
           <NavigationProperty Name="TagState" Relationship="Falcon.DbModel.FK_Category_TagState" FromRole="Category" ToRole="TagState" />
           <NavigationProperty Name="CreatedQuestions" Relationship="Falcon.DbModel.FK_CreatedQuestions_Category" FromRole="Category" ToRole="CreatedQuestion" />
@@ -3013,14 +2946,14 @@ warning 6002: The table/view 'what_if.dbo.AchievementStatistics' does not have a
         </EntityType>
         <EntityType Name="Level">
           <Key>
-            <PropertyRef Name="LevelNumber" />
+            <PropertyRef Name="ID" />
           </Key>
           <Property Name="LevelNumber" Type="Int32" Nullable="false" />
           <Property Name="Star" Type="Int32" Nullable="false" />
           <Property Name="ScoreCeil" Type="Int32" Nullable="false" />
           <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="UpdatedDate" Type="DateTime" Nullable="false" Precision="3" />
-          <NavigationProperty Name="Achievements" Relationship="Falcon.DbModel.FK_Achievement_Level" FromRole="Level" ToRole="Achievement" />
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <NavigationProperty Name="Users" Relationship="Falcon.DbModel.FK_User_Level" FromRole="Level" ToRole="User" />
         </EntityType>
         <EntityType Name="Manufacture">
@@ -3349,17 +3282,16 @@ warning 6002: The table/view 'what_if.dbo.AchievementStatistics' does not have a
           <Property Name="TotalCoin" Type="Int32" Nullable="false" />
           <Property Name="LevelProgress" Type="Int32" Nullable="false" />
           <Property Name="CurrentLevelNumber" Type="Int32" />
+          <Property Name="DWMCount" Type="Int32" Nullable="false" />
+          <Property Name="IsTutorial" Type="Boolean" Nullable="false" />
           <Property Name="IsAbleToWriteComment" Type="Boolean" Nullable="false" />
           <Property Name="LastSeenDateTime" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="PrevLastSeenDateTime" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="PreviousDaySeen" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="DWMCount" Type="Int32" Nullable="false" />
-          <Property Name="IsTutorial" Type="Boolean" Nullable="false" />
           <Property Name="RowVersion" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" ConcurrencyMode="Fixed" />
           <NavigationProperty Name="AchievedCodeGifts" Relationship="Falcon.DbModel.FK_AchievedCodeGift_User" FromRole="User" ToRole="AchievedCodeGift" />
           <NavigationProperty Name="AchievedGifts" Relationship="Falcon.DbModel.FK_AchievedGifts_User" FromRole="User" ToRole="AchievedGift" />
           <NavigationProperty Name="AchievedPosessions" Relationship="Falcon.DbModel.FK_AchievedQuests_User" FromRole="User" ToRole="AchievedPosession" />
-          <NavigationProperty Name="AchievedScores" Relationship="Falcon.DbModel.FK_AchievedScore_User" FromRole="User" ToRole="AchievedScore" />
           <NavigationProperty Name="AchievedSpinWheels" Relationship="Falcon.DbModel.FK_AchievedSpinWheel_User" FromRole="User" ToRole="AchievedSpinWheel" />
           <NavigationProperty Name="Answers" Relationship="Falcon.DbModel.FK_Answer_User" FromRole="User" ToRole="Answer" />
           <NavigationProperty Name="CharacterPoints" Relationship="Falcon.DbModel.FK_CharacterPoints_User" FromRole="User" ToRole="CharacterPoint" />
@@ -3383,7 +3315,6 @@ warning 6002: The table/view 'what_if.dbo.AchievementStatistics' does not have a
           <NavigationProperty Name="SelectedThemes" Relationship="Falcon.DbModel.FK_SelectedTheme_User" FromRole="User" ToRole="SelectedTheme" />
           <NavigationProperty Name="UnRepeatableAchievedSpinWheels" Relationship="Falcon.DbModel.FK_UnRepeatableAchievedSpinWheel_User" FromRole="User" ToRole="UnRepeatableAchievedSpinWheel" />
           <NavigationProperty Name="UserType" Relationship="Falcon.DbModel.FK_User_UserType" FromRole="User" ToRole="UserType" />
-          <NavigationProperty Name="UserCounts" Relationship="Falcon.DbModel.FK_UserCounts_User" FromRole="User" ToRole="UserCount" />
           <NavigationProperty Name="UserInfoes" Relationship="Falcon.DbModel.FK_UserInfo_User" FromRole="User" ToRole="UserInfo" />
           <NavigationProperty Name="UserStats" Relationship="Falcon.DbModel.FK_UserStatus_User" FromRole="User" ToRole="UserStat" />
           <NavigationProperty Name="WatchedAds" Relationship="Falcon.DbModel.FK_WatchedAd_User" FromRole="User" ToRole="WatchedAd" />
@@ -3412,7 +3343,6 @@ warning 6002: The table/view 'what_if.dbo.AchievementStatistics' does not have a
           <Property Name="PurchasedAvatarCount" Type="Int32" Nullable="false" />
           <Property Name="PurchasedThemeCount" Type="Int32" Nullable="false" />
           <Property Name="CreatedQuestionsCount" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="User" Relationship="Falcon.DbModel.FK_UserCounts_User" FromRole="UserCount" ToRole="User" />
         </EntityType>
         <EntityType Name="UserInfo">
           <Key>
@@ -3475,18 +3405,6 @@ warning 6002: The table/view 'what_if.dbo.AchievementStatistics' does not have a
           <Property Name="InsertDate" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="User" Relationship="Falcon.DbModel.FK_WatchedAd_User" FromRole="WatchedAd" ToRole="User" />
           <NavigationProperty Name="WatchAdProvider" Relationship="Falcon.DbModel.FK_WatchedAd_WatchAdProvider" FromRole="WatchedAd" ToRole="WatchAdProvider" />
-        </EntityType>
-        <EntityType Name="AchievementStatistic">
-          <Key>
-            <PropertyRef Name="UserID" />
-          </Key>
-          <Property Name="UserID" Type="Int32" Nullable="false" />
-          <Property Name="CurrentLevelNumber" Type="Int32" />
-          <Property Name="Score" Type="Int32" />
-          <Property Name="PurchasedCategoryCount" Type="Int32" />
-          <Property Name="PurchasedAvatarCount" Type="Int32" />
-          <Property Name="PurchasedThemeCount" Type="Int32" />
-          <Property Name="CreatedQuestionsCount" Type="Int32" />
         </EntityType>
         <Association Name="FK_AchievedCodeGift_CodeGift">
           <End Type="Falcon.DbModel.CodeGift" Role="CodeGift" Multiplicity="1">
@@ -3598,20 +3516,6 @@ warning 6002: The table/view 'what_if.dbo.AchievementStatistics' does not have a
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_AchievedScore_User">
-          <End Type="Falcon.DbModel.User" Role="User" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="Falcon.DbModel.AchievedScore" Role="AchievedScore" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="AchievedScore">
-              <PropertyRef Name="UserID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_AchievedSpinWheel_SpinWheel">
           <End Type="Falcon.DbModel.SpinWheel" Role="SpinWheel" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -3664,15 +3568,15 @@ warning 6002: The table/view 'what_if.dbo.AchievementStatistics' does not have a
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Achievement_Level">
-          <End Type="Falcon.DbModel.Level" Role="Level" Multiplicity="0..1" />
-          <End Type="Falcon.DbModel.Achievement" Role="Achievement" Multiplicity="*" />
+        <Association Name="FK_Answer_Category">
+          <End Type="Falcon.DbModel.Category" Role="Category" Multiplicity="1" />
+          <End Type="Falcon.DbModel.Answer" Role="Answer" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Level">
-              <PropertyRef Name="LevelNumber" />
+            <Principal Role="Category">
+              <PropertyRef Name="ID" />
             </Principal>
-            <Dependent Role="Achievement">
-              <PropertyRef Name="LevelNumber" />
+            <Dependent Role="Answer">
+              <PropertyRef Name="CategoryID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -4101,7 +4005,7 @@ warning 6002: The table/view 'what_if.dbo.AchievementStatistics' does not have a
           <End Type="Falcon.DbModel.User" Role="User" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Level">
-              <PropertyRef Name="LevelNumber" />
+              <PropertyRef Name="ID" />
             </Principal>
             <Dependent Role="User">
               <PropertyRef Name="CurrentLevelNumber" />
@@ -4474,20 +4378,6 @@ warning 6002: The table/view 'what_if.dbo.AchievementStatistics' does not have a
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_UserCounts_User">
-          <End Type="Falcon.DbModel.User" Role="User" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="Falcon.DbModel.UserCount" Role="UserCount" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="UserCount">
-              <PropertyRef Name="UserID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_UserInfo_User">
           <End Type="Falcon.DbModel.User" Role="User" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -4673,6 +4563,7 @@ warning 6002: The table/view 'what_if.dbo.AchievementStatistics' does not have a
                 <ScalarProperty Name="Dislike" ColumnName="Dislike" />
                 <ScalarProperty Name="Liked" ColumnName="Liked" />
                 <ScalarProperty Name="QuestionID" ColumnName="QuestionID" />
+                <ScalarProperty Name="CategoryID" ColumnName="CategoryID" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
@@ -4938,6 +4829,7 @@ warning 6002: The table/view 'what_if.dbo.AchievementStatistics' does not have a
           <EntitySetMapping Name="Levels">
             <EntityTypeMapping TypeName="Falcon.DbModel.Level">
               <MappingFragment StoreEntitySet="Level">
+                <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
                 <ScalarProperty Name="ScoreCeil" ColumnName="ScoreCeil" />
@@ -5236,12 +5128,12 @@ warning 6002: The table/view 'what_if.dbo.AchievementStatistics' does not have a
             <EntityTypeMapping TypeName="Falcon.DbModel.User">
               <MappingFragment StoreEntitySet="User">
                 <ScalarProperty Name="RowVersion" ColumnName="RowVersion" />
-                <ScalarProperty Name="IsTutorial" ColumnName="IsTutorial" />
-                <ScalarProperty Name="DWMCount" ColumnName="DWMCount" />
                 <ScalarProperty Name="PreviousDaySeen" ColumnName="PreviousDaySeen" />
                 <ScalarProperty Name="PrevLastSeenDateTime" ColumnName="PrevLastSeenDateTime" />
                 <ScalarProperty Name="LastSeenDateTime" ColumnName="LastSeenDateTime" />
                 <ScalarProperty Name="IsAbleToWriteComment" ColumnName="IsAbleToWriteComment" />
+                <ScalarProperty Name="IsTutorial" ColumnName="IsTutorial" />
+                <ScalarProperty Name="DWMCount" ColumnName="DWMCount" />
                 <ScalarProperty Name="CurrentLevelNumber" ColumnName="CurrentLevelNumber" />
                 <ScalarProperty Name="LevelProgress" ColumnName="LevelProgress" />
                 <ScalarProperty Name="TotalCoin" ColumnName="TotalCoin" />
@@ -5334,19 +5226,6 @@ warning 6002: The table/view 'what_if.dbo.AchievementStatistics' does not have a
                 <ScalarProperty Name="WatchAdProviderId" ColumnName="WatchAdProviderId" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="AchievementStatistics">
-            <EntityTypeMapping TypeName="Falcon.DbModel.AchievementStatistic">
-              <MappingFragment StoreEntitySet="AchievementStatistics">
-                <ScalarProperty Name="CreatedQuestionsCount" ColumnName="CreatedQuestionsCount" />
-                <ScalarProperty Name="PurchasedThemeCount" ColumnName="PurchasedThemeCount" />
-                <ScalarProperty Name="PurchasedAvatarCount" ColumnName="PurchasedAvatarCount" />
-                <ScalarProperty Name="PurchasedCategoryCount" ColumnName="PurchasedCategoryCount" />
-                <ScalarProperty Name="Score" ColumnName="Score" />
-                <ScalarProperty Name="CurrentLevelNumber" ColumnName="CurrentLevelNumber" />
-                <ScalarProperty Name="UserID" ColumnName="UserID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -30,8 +30,9 @@ namespace Falcon.Web.Api.Controllers.V1
         [HttpPost]
         public async Task<IHttpActionResult> CreateJob(int UserID)
         {
-            var data =await mContext.Set<AchievementStatistic>().Where(u => u.UserID == UserID).SingleOrDefaultAsync();
-            return Ok(data);    
+            //var data =await mContext.Set<AchievementStatistic>().Where(u => u.UserID == UserID).SingleOrDefaultAsync();
+            //return Ok(data);    
+            return null;    
         }
     }
 }

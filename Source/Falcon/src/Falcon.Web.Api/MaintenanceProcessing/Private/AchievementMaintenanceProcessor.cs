@@ -24,14 +24,14 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
             mAchievementQuery = AchievementQueryProcessor;
             mUserInquiry = UserQuery;
         }
-        public async Task<AchievementList> PrepareAchievementList()
+        public async Task<SAchievementDic> PrepareAchievementList()
         {
-            var outputList = new AchievementList();
+            var outputList = new SAchievementDic();
 
             var allAchievementList = await mAchievementQuery.GetAllAchievementList();
             var userAchievedAndAchievable = await mAchievementQuery.GetUserAchievedPossetionIds();
-
             var countTable = await mUserInquiry.GetUserCountInfo(mUserSession.ID);
+
 
 
 

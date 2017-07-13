@@ -16,12 +16,14 @@ namespace Falcon.EFCommonContext.DbModel
     {
         public int ID { get; set; }
         public int UserID { get; set; }
+        public int CategoryID { get; set; }
         public int QuestionID { get; set; }
         public Nullable<bool> Liked { get; set; }
         public Nullable<bool> Dislike { get; set; }
         public bool YesNoState { get; set; }
         public System.DateTime CreatedDate { get; set; }
     
+        public virtual Category Category { get; set; }
         public virtual Question Question { get; set; }
         public virtual User User { get; set; }
     }

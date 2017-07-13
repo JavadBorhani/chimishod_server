@@ -1,4 +1,5 @@
 ﻿using Falcon.EFCommonContext.DbModel;
+using Falcon.Web.Models.Api;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +13,6 @@ namespace Falcon.Data.QueryProcessors
         Task<bool> IsExists(int ID);
         Task<List<Achievement>> GetUserAchievements(int UserID);
         Task<List<Achievement>> GetAllAchievementList();
-        Task<List<int>> GetUserAchievedPossetionIds();
+        Task<List<SAchievementPossesion>> GetUserAchievedPossetionIds();
     }
 }
