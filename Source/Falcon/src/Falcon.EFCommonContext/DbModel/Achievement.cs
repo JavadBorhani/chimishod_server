@@ -40,5 +40,6 @@ namespace Falcon.EFCommonContext.DbModel
         public virtual ICollection<AchievedPosession> AchievedPosessions { get; set; }
         public virtual AchievementQueryType AchievementQueryType { get; set; }
         public virtual Category Category { get; set; }
+        public virtual Level Level { get; set; }
     }
 }

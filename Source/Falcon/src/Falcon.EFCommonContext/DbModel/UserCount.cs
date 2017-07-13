@@ -20,5 +20,7 @@ namespace Falcon.EFCommonContext.DbModel
         public int PurchasedAvatarCount { get; set; }
         public int PurchasedThemeCount { get; set; }
         public int CreatedQuestionsCount { get; set; }
+    
+        public virtual User User { get; set; }
     }
 }

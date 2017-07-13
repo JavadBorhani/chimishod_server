@@ -20,6 +20,7 @@ namespace Falcon.EFCommonContext.DbModel
             this.AchievedCodeGifts = new HashSet<AchievedCodeGift>();
             this.AchievedGifts = new HashSet<AchievedGift>();
             this.AchievedPosessions = new HashSet<AchievedPosession>();
+            this.AchievedScores = new HashSet<AchievedScore>();
             this.AchievedSpinWheels = new HashSet<AchievedSpinWheel>();
             this.Answers = new HashSet<Answer>();
             this.CharacterPoints = new HashSet<CharacterPoint>();
@@ -41,6 +42,7 @@ namespace Falcon.EFCommonContext.DbModel
             this.SelectedCategories = new HashSet<SelectedCategory>();
             this.SelectedThemes = new HashSet<SelectedTheme>();
             this.UnRepeatableAchievedSpinWheels = new HashSet<UnRepeatableAchievedSpinWheel>();
+            this.UserCounts = new HashSet<UserCount>();
             this.UserInfoes = new HashSet<UserInfo>();
             this.UserStats = new HashSet<UserStat>();
             this.WatchedAds = new HashSet<WatchedAd>();
@@ -67,6 +69,8 @@ namespace Falcon.EFCommonContext.DbModel
         public virtual ICollection<AchievedGift> AchievedGifts { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<AchievedPosession> AchievedPosessions { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<AchievedScore> AchievedScores { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<AchievedSpinWheel> AchievedSpinWheels { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -111,6 +115,8 @@ namespace Falcon.EFCommonContext.DbModel
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<UnRepeatableAchievedSpinWheel> UnRepeatableAchievedSpinWheels { get; set; }
         public virtual UserType UserType { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<UserCount> UserCounts { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<UserInfo> UserInfoes { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

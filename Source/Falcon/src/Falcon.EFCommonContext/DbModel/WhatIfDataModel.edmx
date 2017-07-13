@@ -342,14 +342,13 @@
         </EntityType>
         <EntityType Name="Level">
           <Key>
-            <PropertyRef Name="ID" />
+            <PropertyRef Name="LevelNumber" />
           </Key>
           <Property Name="LevelNumber" Type="int" Nullable="false" />
           <Property Name="Star" Type="int" Nullable="false" />
           <Property Name="ScoreCeil" Type="int" Nullable="false" />
           <Property Name="CreatedDate" Type="datetime" Nullable="false" />
           <Property Name="UpdatedDate" Type="datetime" Nullable="false" />
-          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
         </EntityType>
         <EntityType Name="Manufacture">
           <Key>
@@ -820,6 +819,20 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_AchievedScore_User">
+          <End Role="User" Type="Self.User" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="AchievedScore" Type="Self.AchievedScore" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="AchievedScore">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_AchievedSpinWheel_SpinWheel">
           <End Role="SpinWheel" Type="Self.SpinWheel" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -869,6 +882,18 @@
             </Principal>
             <Dependent Role="Achievement">
               <PropertyRef Name="CategoryID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Achievement_Level">
+          <End Role="Level" Type="Self.Level" Multiplicity="0..1" />
+          <End Role="Achievement" Type="Self.Achievement" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Level">
+              <PropertyRef Name="LevelNumber" />
+            </Principal>
+            <Dependent Role="Achievement">
+              <PropertyRef Name="LevelNumber" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1651,7 +1676,7 @@
           <End Role="User" Type="Self.User" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Level">
-              <PropertyRef Name="ID" />
+              <PropertyRef Name="LevelNumber" />
             </Principal>
             <Dependent Role="User">
               <PropertyRef Name="CurrentLevelNumber" />
@@ -1679,6 +1704,20 @@
             </Principal>
             <Dependent Role="UserAvatar">
               <PropertyRef Name="TagStateID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserCounts_User">
+          <End Role="User" Type="Self.User" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="UserCounts" Type="Self.UserCounts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="UserCounts">
+              <PropertyRef Name="UserID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1862,6 +1901,10 @@
             <End Role="ScoreTypes" EntitySet="ScoreTypes" />
             <End Role="AchievedScore" EntitySet="AchievedScore" />
           </AssociationSet>
+          <AssociationSet Name="FK_AchievedScore_User" Association="Self.FK_AchievedScore_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="AchievedScore" EntitySet="AchievedScore" />
+          </AssociationSet>
           <AssociationSet Name="FK_AchievedSpinWheel_SpinWheel" Association="Self.FK_AchievedSpinWheel_SpinWheel">
             <End Role="SpinWheel" EntitySet="SpinWheel" />
             <End Role="AchievedSpinWheel" EntitySet="AchievedSpinWheel" />
@@ -1876,6 +1919,10 @@
           </AssociationSet>
           <AssociationSet Name="FK_Achievement_Category" Association="Self.FK_Achievement_Category">
             <End Role="Category" EntitySet="Category" />
+            <End Role="Achievement" EntitySet="Achievement" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Achievement_Level" Association="Self.FK_Achievement_Level">
+            <End Role="Level" EntitySet="Level" />
             <End Role="Achievement" EntitySet="Achievement" />
           </AssociationSet>
           <AssociationSet Name="FK_Answer_Category" Association="Self.FK_Answer_Category">
@@ -2118,6 +2165,10 @@
             <End Role="TagState" EntitySet="TagState" />
             <End Role="UserAvatar" EntitySet="UserAvatar" />
           </AssociationSet>
+          <AssociationSet Name="FK_UserCounts_User" Association="Self.FK_UserCounts_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="UserCounts" EntitySet="UserCounts" />
+          </AssociationSet>
           <AssociationSet Name="FK_UserInfo_User" Association="Self.FK_UserInfo_User">
             <End Role="User" EntitySet="User" />
             <End Role="UserInfo" EntitySet="UserInfo" />
@@ -2265,6 +2316,10 @@
             <End Role="ScoreType" EntitySet="ScoreTypes" />
             <End Role="AchievedScore" EntitySet="AchievedScores" />
           </AssociationSet>
+          <AssociationSet Name="FK_AchievedScore_User" Association="Falcon.DbModel.FK_AchievedScore_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="AchievedScore" EntitySet="AchievedScores" />
+          </AssociationSet>
           <AssociationSet Name="FK_AchievedSpinWheel_SpinWheel" Association="Falcon.DbModel.FK_AchievedSpinWheel_SpinWheel">
             <End Role="SpinWheel" EntitySet="SpinWheels" />
             <End Role="AchievedSpinWheel" EntitySet="AchievedSpinWheels" />
@@ -2279,6 +2334,10 @@
           </AssociationSet>
           <AssociationSet Name="FK_Achievement_Category" Association="Falcon.DbModel.FK_Achievement_Category">
             <End Role="Category" EntitySet="Categories" />
+            <End Role="Achievement" EntitySet="Achievements" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Achievement_Level" Association="Falcon.DbModel.FK_Achievement_Level">
+            <End Role="Level" EntitySet="Levels" />
             <End Role="Achievement" EntitySet="Achievements" />
           </AssociationSet>
           <AssociationSet Name="FK_Answer_Category" Association="Falcon.DbModel.FK_Answer_Category">
@@ -2521,6 +2580,10 @@
             <End Role="UserType" EntitySet="UserTypes" />
             <End Role="User" EntitySet="Users" />
           </AssociationSet>
+          <AssociationSet Name="FK_UserCounts_User" Association="Falcon.DbModel.FK_UserCounts_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="UserCount" EntitySet="UserCounts" />
+          </AssociationSet>
           <AssociationSet Name="FK_UserInfo_User" Association="Falcon.DbModel.FK_UserInfo_User">
             <End Role="User" EntitySet="Users" />
             <End Role="UserInfo" EntitySet="UserInfoes" />
@@ -2595,6 +2658,7 @@
           <Property Name="Score" Type="Int32" Nullable="false" />
           <Property Name="AchievedDate" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="ScoreType" Relationship="Falcon.DbModel.FK_AchievedScore_ScoreTypes" FromRole="AchievedScore" ToRole="ScoreType" />
+          <NavigationProperty Name="User" Relationship="Falcon.DbModel.FK_AchievedScore_User" FromRole="AchievedScore" ToRole="User" />
         </EntityType>
         <EntityType Name="AchievedSpinWheel">
           <Key>
@@ -2628,6 +2692,7 @@
           <NavigationProperty Name="AchievedPosessions" Relationship="Falcon.DbModel.FK_AchievedQuests_Quest" FromRole="Achievement" ToRole="AchievedPosession" />
           <NavigationProperty Name="AchievementQueryType" Relationship="Falcon.DbModel.FK_Achievement_AchievementQueryType" FromRole="Achievement" ToRole="AchievementQueryType" />
           <NavigationProperty Name="Category" Relationship="Falcon.DbModel.FK_Achievement_Category" FromRole="Achievement" ToRole="Category" />
+          <NavigationProperty Name="Level" Relationship="Falcon.DbModel.FK_Achievement_Level" FromRole="Achievement" ToRole="Level" />
         </EntityType>
         <EntityType Name="AchievementQueryType">
           <Key>
@@ -2946,14 +3011,14 @@
         </EntityType>
         <EntityType Name="Level">
           <Key>
-            <PropertyRef Name="ID" />
+            <PropertyRef Name="LevelNumber" />
           </Key>
           <Property Name="LevelNumber" Type="Int32" Nullable="false" />
           <Property Name="Star" Type="Int32" Nullable="false" />
           <Property Name="ScoreCeil" Type="Int32" Nullable="false" />
           <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="UpdatedDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="Achievements" Relationship="Falcon.DbModel.FK_Achievement_Level" FromRole="Level" ToRole="Achievement" />
           <NavigationProperty Name="Users" Relationship="Falcon.DbModel.FK_User_Level" FromRole="Level" ToRole="User" />
         </EntityType>
         <EntityType Name="Manufacture">
@@ -3292,6 +3357,7 @@
           <NavigationProperty Name="AchievedCodeGifts" Relationship="Falcon.DbModel.FK_AchievedCodeGift_User" FromRole="User" ToRole="AchievedCodeGift" />
           <NavigationProperty Name="AchievedGifts" Relationship="Falcon.DbModel.FK_AchievedGifts_User" FromRole="User" ToRole="AchievedGift" />
           <NavigationProperty Name="AchievedPosessions" Relationship="Falcon.DbModel.FK_AchievedQuests_User" FromRole="User" ToRole="AchievedPosession" />
+          <NavigationProperty Name="AchievedScores" Relationship="Falcon.DbModel.FK_AchievedScore_User" FromRole="User" ToRole="AchievedScore" />
           <NavigationProperty Name="AchievedSpinWheels" Relationship="Falcon.DbModel.FK_AchievedSpinWheel_User" FromRole="User" ToRole="AchievedSpinWheel" />
           <NavigationProperty Name="Answers" Relationship="Falcon.DbModel.FK_Answer_User" FromRole="User" ToRole="Answer" />
           <NavigationProperty Name="CharacterPoints" Relationship="Falcon.DbModel.FK_CharacterPoints_User" FromRole="User" ToRole="CharacterPoint" />
@@ -3315,6 +3381,7 @@
           <NavigationProperty Name="SelectedThemes" Relationship="Falcon.DbModel.FK_SelectedTheme_User" FromRole="User" ToRole="SelectedTheme" />
           <NavigationProperty Name="UnRepeatableAchievedSpinWheels" Relationship="Falcon.DbModel.FK_UnRepeatableAchievedSpinWheel_User" FromRole="User" ToRole="UnRepeatableAchievedSpinWheel" />
           <NavigationProperty Name="UserType" Relationship="Falcon.DbModel.FK_User_UserType" FromRole="User" ToRole="UserType" />
+          <NavigationProperty Name="UserCounts" Relationship="Falcon.DbModel.FK_UserCounts_User" FromRole="User" ToRole="UserCount" />
           <NavigationProperty Name="UserInfoes" Relationship="Falcon.DbModel.FK_UserInfo_User" FromRole="User" ToRole="UserInfo" />
           <NavigationProperty Name="UserStats" Relationship="Falcon.DbModel.FK_UserStatus_User" FromRole="User" ToRole="UserStat" />
           <NavigationProperty Name="WatchedAds" Relationship="Falcon.DbModel.FK_WatchedAd_User" FromRole="User" ToRole="WatchedAd" />
@@ -3343,6 +3410,7 @@
           <Property Name="PurchasedAvatarCount" Type="Int32" Nullable="false" />
           <Property Name="PurchasedThemeCount" Type="Int32" Nullable="false" />
           <Property Name="CreatedQuestionsCount" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="User" Relationship="Falcon.DbModel.FK_UserCounts_User" FromRole="UserCount" ToRole="User" />
         </EntityType>
         <EntityType Name="UserInfo">
           <Key>
@@ -3516,6 +3584,20 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_AchievedScore_User">
+          <End Type="Falcon.DbModel.User" Role="User" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="Falcon.DbModel.AchievedScore" Role="AchievedScore" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="AchievedScore">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_AchievedSpinWheel_SpinWheel">
           <End Type="Falcon.DbModel.SpinWheel" Role="SpinWheel" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -3565,6 +3647,18 @@
             </Principal>
             <Dependent Role="Achievement">
               <PropertyRef Name="CategoryID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Achievement_Level">
+          <End Type="Falcon.DbModel.Level" Role="Level" Multiplicity="0..1" />
+          <End Type="Falcon.DbModel.Achievement" Role="Achievement" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Level">
+              <PropertyRef Name="LevelNumber" />
+            </Principal>
+            <Dependent Role="Achievement">
+              <PropertyRef Name="LevelNumber" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -4005,7 +4099,7 @@
           <End Type="Falcon.DbModel.User" Role="User" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Level">
-              <PropertyRef Name="ID" />
+              <PropertyRef Name="LevelNumber" />
             </Principal>
             <Dependent Role="User">
               <PropertyRef Name="CurrentLevelNumber" />
@@ -4375,6 +4469,20 @@
             </Principal>
             <Dependent Role="User">
               <PropertyRef Name="UserTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserCounts_User">
+          <End Type="Falcon.DbModel.User" Role="User" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="Falcon.DbModel.UserCount" Role="UserCount" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="UserCount">
+              <PropertyRef Name="UserID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -4829,7 +4937,6 @@
           <EntitySetMapping Name="Levels">
             <EntityTypeMapping TypeName="Falcon.DbModel.Level">
               <MappingFragment StoreEntitySet="Level">
-                <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
                 <ScalarProperty Name="ScoreCeil" ColumnName="ScoreCeil" />

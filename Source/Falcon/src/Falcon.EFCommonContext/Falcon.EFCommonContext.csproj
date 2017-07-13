@@ -270,7 +270,9 @@
     <Compile Include="WebContextFactory.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
     <EntityDeploy Include="DbModel\WhatIfDataModel.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>WhatIfDataModel.Designer.cs</LastGenOutput>
