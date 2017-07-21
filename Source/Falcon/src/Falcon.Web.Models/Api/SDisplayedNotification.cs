@@ -11,6 +11,6 @@ namespace Falcon.Web.Models.Api
         public int UserID { get; set; }
         public int NotificationID { get; set; }
         public DateTime ExpireDate { get; set; }
-        public DateTime InsertDate { get; set; }
+        public DateTime InsertDate { get; set; } 
     }
 }

@@ -83,6 +83,9 @@
     <Compile Include="DbModel\AchievementQueryType.cs">
       <DependentUpon>WhatIfDataModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="DbModel\AchievementStatistic.cs">
+      <DependentUpon>WhatIfDataModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="DbModel\AchieveStateType.cs">
       <DependentUpon>WhatIfDataModel.tt</DependentUpon>
     </Compile>

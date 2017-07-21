@@ -10,6 +10,7 @@ using System.Data.Entity;
 using Falcon.Common;
 using Falcon.Web.Models.Api;
 using Falcon.Common.Security;
+using Falcon.Web.Models.Api.Achievement;
 
 namespace Falcon.Database.SqlServer.QueryProcessors
 {
@@ -22,13 +23,18 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             mDb = Database;
         }
 
-        public async Task<List<Achievement>> GetAllAchievementList()
+        public async Task<Achievement[]> GetAllAchievementList()
         {
-            var data = await mDb.Set<Achievement>().AsNoTracking().ToListAsync(); 
+            var data = await mDb.Set<Achievement>()
+                .AsNoTracking()
+                .OrderBy(s => s.QueryTypeID)
+                .ThenBy(s => s.CategoryID)
+                .ToArrayAsync(); 
+
             return data;        
         }
 
-        public async Task<List<SAchievementPossesion>> GetUserAchievedPossetionIds()
+        public async Task<SAchievementPossesion[]> GetUserAchievedPossetionIds()
         {
             var achievedList = await mDb.Set<AchievedPosession>()
                                                         .AsNoTracking()
@@ -41,7 +47,7 @@ namespace Falcon.Database.SqlServer.QueryProcessors
                                                             AchievementID = ap.AchievementID,
                                                             AchievementState = (AchievementState)ap.AchieveStateID
                                                         })
-                                                        .ToListAsync();
+                                                        .ToArrayAsync();
             return achievedList;
         }
 
@@ -55,6 +61,16 @@ namespace Falcon.Database.SqlServer.QueryProcessors
                                                         .Select(ap => ap.Achievement)
                                                         .ToListAsync();
             return achievedList;
+        }
+
+        public async Task<AchievementStatistic> GetUserAchievementStats(int UserID)
+        {
+            var data = await mDb.Set<AchievementStatistic>()
+                                                .AsNoTracking()
+                                                .Where(s => s.UserID == UserID)
+                                                .SingleOrDefaultAsync();
+
+            return data;
         }
 
         public async Task<bool> IsExists(int ID)

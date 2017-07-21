@@ -62,15 +62,14 @@
           <Property Name="QueryTypeID" Type="int" />
           <Property Name="CategoryID" Type="int" />
           <Property Name="Quantity" Type="int" />
-          <Property Name="LevelNumber" Type="int" />
-          <Property Name="Query" Type="nvarchar" MaxLength="1000" />
           <Property Name="Coin" Type="int" Nullable="false" />
           <Property Name="ScorePrize" Type="int" Nullable="false" />
           <Property Name="Icon" Type="varchar" MaxLength="150" Nullable="false" />
-          <Property Name="RectangleColor" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+          <Property Name="Priority" Type="int" Nullable="false" />
+          <Property Name="Query" Type="nvarchar" MaxLength="500" />
           <Property Name="CreatedDate" Type="datetime" Nullable="false" />
           <Property Name="UpdatedDate" Type="datetime" Nullable="false" />
-          <Property Name="IsActive" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="AchievementQueryType">
           <Key>
@@ -709,6 +708,20 @@
           <Property Name="WatchAdId" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="InsertDate" Type="datetime" Nullable="false" />
         </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'what_if.dbo.AchievementStatistics' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="AchievementStatistics">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="LevelNumber" Type="int" />
+          <Property Name="Score" Type="int" />
+          <Property Name="PurchasedCategoryCount" Type="int" />
+          <Property Name="PurchasedAvatarCount" Type="int" />
+          <Property Name="PurchasedThemeCount" Type="int" />
+          <Property Name="CreatedQuestionsCount" Type="int" />
+        </EntityType>
         <Association Name="FK_AchievedCodeGift_CodeGift">
           <End Role="CodeGift" Type="Self.CodeGift" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -882,18 +895,6 @@
             </Principal>
             <Dependent Role="Achievement">
               <PropertyRef Name="CategoryID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Achievement_Level">
-          <End Role="Level" Type="Self.Level" Multiplicity="0..1" />
-          <End Role="Achievement" Type="Self.Achievement" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Level">
-              <PropertyRef Name="LevelNumber" />
-            </Principal>
-            <Dependent Role="Achievement">
-              <PropertyRef Name="LevelNumber" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1869,6 +1870,17 @@
           <EntitySet Name="UserType" EntityType="Self.UserType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="WatchAdProvider" EntityType="Self.WatchAdProvider" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="WatchedAd" EntityType="Self.WatchedAd" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AchievementStatistics" EntityType="Self.AchievementStatistics" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [AchievementStatistics].[UserID] AS [UserID], 
+    [AchievementStatistics].[LevelNumber] AS [LevelNumber], 
+    [AchievementStatistics].[Score] AS [Score], 
+    [AchievementStatistics].[PurchasedCategoryCount] AS [PurchasedCategoryCount], 
+    [AchievementStatistics].[PurchasedAvatarCount] AS [PurchasedAvatarCount], 
+    [AchievementStatistics].[PurchasedThemeCount] AS [PurchasedThemeCount], 
+    [AchievementStatistics].[CreatedQuestionsCount] AS [CreatedQuestionsCount]
+    FROM [dbo].[AchievementStatistics] AS [AchievementStatistics]</DefiningQuery>
+          </EntitySet>
           <AssociationSet Name="FK_AchievedCodeGift_CodeGift" Association="Self.FK_AchievedCodeGift_CodeGift">
             <End Role="CodeGift" EntitySet="CodeGift" />
             <End Role="AchievedCodeGift" EntitySet="AchievedCodeGift" />
@@ -1919,10 +1931,6 @@
           </AssociationSet>
           <AssociationSet Name="FK_Achievement_Category" Association="Self.FK_Achievement_Category">
             <End Role="Category" EntitySet="Category" />
-            <End Role="Achievement" EntitySet="Achievement" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Achievement_Level" Association="Self.FK_Achievement_Level">
-            <End Role="Level" EntitySet="Level" />
             <End Role="Achievement" EntitySet="Achievement" />
           </AssociationSet>
           <AssociationSet Name="FK_Answer_Category" Association="Self.FK_Answer_Category">
@@ -2284,6 +2292,7 @@
           <EntitySet Name="UserTypes" EntityType="Falcon.DbModel.UserType" />
           <EntitySet Name="WatchAdProviders" EntityType="Falcon.DbModel.WatchAdProvider" />
           <EntitySet Name="WatchedAds" EntityType="Falcon.DbModel.WatchedAd" />
+          <EntitySet Name="AchievementStatistics" EntityType="Falcon.DbModel.AchievementStatistic" />
           <AssociationSet Name="FK_AchievedCodeGift_CodeGift" Association="Falcon.DbModel.FK_AchievedCodeGift_CodeGift">
             <End Role="CodeGift" EntitySet="CodeGifts" />
             <End Role="AchievedCodeGift" EntitySet="AchievedCodeGifts" />
@@ -2334,10 +2343,6 @@
           </AssociationSet>
           <AssociationSet Name="FK_Achievement_Category" Association="Falcon.DbModel.FK_Achievement_Category">
             <End Role="Category" EntitySet="Categories" />
-            <End Role="Achievement" EntitySet="Achievements" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Achievement_Level" Association="Falcon.DbModel.FK_Achievement_Level">
-            <End Role="Level" EntitySet="Levels" />
             <End Role="Achievement" EntitySet="Achievements" />
           </AssociationSet>
           <AssociationSet Name="FK_Answer_Category" Association="Falcon.DbModel.FK_Answer_Category">
@@ -2680,19 +2685,17 @@
           <Property Name="QueryTypeID" Type="Int32" />
           <Property Name="CategoryID" Type="Int32" />
           <Property Name="Quantity" Type="Int32" />
-          <Property Name="LevelNumber" Type="Int32" />
-          <Property Name="Query" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
           <Property Name="Coin" Type="Int32" Nullable="false" />
           <Property Name="ScorePrize" Type="Int32" Nullable="false" />
           <Property Name="Icon" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
-          <Property Name="RectangleColor" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="Priority" Type="Int32" Nullable="false" />
+          <Property Name="Query" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="UpdatedDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="IsActive" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="AchievedPosessions" Relationship="Falcon.DbModel.FK_AchievedQuests_Quest" FromRole="Achievement" ToRole="AchievedPosession" />
           <NavigationProperty Name="AchievementQueryType" Relationship="Falcon.DbModel.FK_Achievement_AchievementQueryType" FromRole="Achievement" ToRole="AchievementQueryType" />
           <NavigationProperty Name="Category" Relationship="Falcon.DbModel.FK_Achievement_Category" FromRole="Achievement" ToRole="Category" />
-          <NavigationProperty Name="Level" Relationship="Falcon.DbModel.FK_Achievement_Level" FromRole="Achievement" ToRole="Level" />
         </EntityType>
         <EntityType Name="AchievementQueryType">
           <Key>
@@ -3018,7 +3021,6 @@
           <Property Name="ScoreCeil" Type="Int32" Nullable="false" />
           <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="UpdatedDate" Type="DateTime" Nullable="false" Precision="3" />
-          <NavigationProperty Name="Achievements" Relationship="Falcon.DbModel.FK_Achievement_Level" FromRole="Level" ToRole="Achievement" />
           <NavigationProperty Name="Users" Relationship="Falcon.DbModel.FK_User_Level" FromRole="Level" ToRole="User" />
         </EntityType>
         <EntityType Name="Manufacture">
@@ -3474,6 +3476,18 @@
           <NavigationProperty Name="User" Relationship="Falcon.DbModel.FK_WatchedAd_User" FromRole="WatchedAd" ToRole="User" />
           <NavigationProperty Name="WatchAdProvider" Relationship="Falcon.DbModel.FK_WatchedAd_WatchAdProvider" FromRole="WatchedAd" ToRole="WatchAdProvider" />
         </EntityType>
+        <EntityType Name="AchievementStatistic">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="LevelNumber" Type="Int32" />
+          <Property Name="Score" Type="Int32" />
+          <Property Name="PurchasedCategoryCount" Type="Int32" />
+          <Property Name="PurchasedAvatarCount" Type="Int32" />
+          <Property Name="PurchasedThemeCount" Type="Int32" />
+          <Property Name="CreatedQuestionsCount" Type="Int32" />
+        </EntityType>
         <Association Name="FK_AchievedCodeGift_CodeGift">
           <End Type="Falcon.DbModel.CodeGift" Role="CodeGift" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -3647,18 +3661,6 @@
             </Principal>
             <Dependent Role="Achievement">
               <PropertyRef Name="CategoryID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Achievement_Level">
-          <End Type="Falcon.DbModel.Level" Role="Level" Multiplicity="0..1" />
-          <End Type="Falcon.DbModel.Achievement" Role="Achievement" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Level">
-              <PropertyRef Name="LevelNumber" />
-            </Principal>
-            <Dependent Role="Achievement">
-              <PropertyRef Name="LevelNumber" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -4627,15 +4629,14 @@
           <EntitySetMapping Name="Achievements">
             <EntityTypeMapping TypeName="Falcon.DbModel.Achievement">
               <MappingFragment StoreEntitySet="Achievement">
-                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
                 <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-                <ScalarProperty Name="RectangleColor" ColumnName="RectangleColor" />
+                <ScalarProperty Name="Query" ColumnName="Query" />
+                <ScalarProperty Name="Priority" ColumnName="Priority" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
                 <ScalarProperty Name="Icon" ColumnName="Icon" />
                 <ScalarProperty Name="ScorePrize" ColumnName="ScorePrize" />
                 <ScalarProperty Name="Coin" ColumnName="Coin" />
-                <ScalarProperty Name="Query" ColumnName="Query" />
-                <ScalarProperty Name="LevelNumber" ColumnName="LevelNumber" />
                 <ScalarProperty Name="Quantity" ColumnName="Quantity" />
                 <ScalarProperty Name="CategoryID" ColumnName="CategoryID" />
                 <ScalarProperty Name="QueryTypeID" ColumnName="QueryTypeID" />
@@ -5333,6 +5334,19 @@
                 <ScalarProperty Name="WatchAdProviderId" ColumnName="WatchAdProviderId" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AchievementStatistics">
+            <EntityTypeMapping TypeName="Falcon.DbModel.AchievementStatistic">
+              <MappingFragment StoreEntitySet="AchievementStatistics">
+                <ScalarProperty Name="CreatedQuestionsCount" ColumnName="CreatedQuestionsCount" />
+                <ScalarProperty Name="PurchasedThemeCount" ColumnName="PurchasedThemeCount" />
+                <ScalarProperty Name="PurchasedAvatarCount" ColumnName="PurchasedAvatarCount" />
+                <ScalarProperty Name="PurchasedCategoryCount" ColumnName="PurchasedCategoryCount" />
+                <ScalarProperty Name="Score" ColumnName="Score" />
+                <ScalarProperty Name="LevelNumber" ColumnName="LevelNumber" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -26,20 +26,18 @@ namespace Falcon.EFCommonContext.DbModel
         public Nullable<int> QueryTypeID { get; set; }
         public Nullable<int> CategoryID { get; set; }
         public Nullable<int> Quantity { get; set; }
-        public Nullable<int> LevelNumber { get; set; }
-        public string Query { get; set; }
         public int Coin { get; set; }
         public int ScorePrize { get; set; }
         public string Icon { get; set; }
-        public string RectangleColor { get; set; }
+        public bool IsActive { get; set; }
+        public int Priority { get; set; }
+        public string Query { get; set; }
         public System.DateTime CreatedDate { get; set; }
         public System.DateTime UpdatedDate { get; set; }
-        public bool IsActive { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<AchievedPosession> AchievedPosessions { get; set; }
         public virtual AchievementQueryType AchievementQueryType { get; set; }
         public virtual Category Category { get; set; }
-        public virtual Level Level { get; set; }
     }
 }

@@ -30,13 +30,15 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
 
             var allAchievementList = await mAchievementQuery.GetAllAchievementList();
             var userAchievedAndAchievable = await mAchievementQuery.GetUserAchievedPossetionIds();
-            var countTable = await mUserInquiry.GetUserCountInfo(mUserSession.ID);
 
+            var userStatRecord = await mAchievementQuery.GetUserAchievementStats(mUserSession.ID);
 
 
 
             return outputList;
         }
+
+
 
     }
 }   
