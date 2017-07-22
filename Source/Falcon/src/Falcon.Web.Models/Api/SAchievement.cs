@@ -13,7 +13,8 @@ namespace Falcon.Web.Models.Api
         Score = 2 , 
         Level = 3 , 
         Avatar = 4 , 
-        Category = 5 
+        Category = 5 ,
+        CreatedQuestions = 6
     }
 
     public enum AchievementState : int
@@ -34,7 +35,7 @@ namespace Falcon.Web.Models.Api
         public AchievementState AchievementState { get; set; }
     }
 
-    public class UserAchievementTable
+    public class UserAchievementRecord
     {
         public int ID { get; set; }
         public string Name { get; set; }

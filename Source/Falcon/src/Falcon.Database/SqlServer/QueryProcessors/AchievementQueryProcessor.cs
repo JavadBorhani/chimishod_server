@@ -11,6 +11,7 @@ using Falcon.Common;
 using Falcon.Web.Models.Api;
 using Falcon.Common.Security;
 using Falcon.Web.Models.Api.Achievement;
+using AutoMapper;
 
 namespace Falcon.Database.SqlServer.QueryProcessors
 {
@@ -18,11 +19,36 @@ namespace Falcon.Database.SqlServer.QueryProcessors
     {
         private readonly IDbContext mDb;
         private readonly IUserSession mUserSession;
+        private readonly IDateTime mDateTime;
+        private readonly IMapper mMapper; 
 
-        public AchievementQueryProcessor(IDbContext Database , IUserSession UserSession)
+        public AchievementQueryProcessor(IDbContext Database , IUserSession UserSession , IDateTime DateTime , IMapper Mapper)
         {
             mDb = Database;
             mUserSession = UserSession;
+            mDateTime = DateTime;
+            mMapper = Mapper;   
+        }
+
+        public async Task<bool> AddingAchievementPossetionItems(int UserID , List<int> Items, AchievementState AchievementState)
+        {
+            var data = new AchievedPosession[Items.Count];
+
+            for(int i = 0; i < Items.Count; ++i)
+            {
+                data[i] = new AchievedPosession
+                {
+                    UserID = UserID, 
+                    AchievementID = Items[i],
+                    AchieveStateID = (int)AchievementState,
+                    AchievableDate = mDateTime.Now,
+                };
+            }
+
+            mDb.Set<AchievedPosession>().AddRange(data);
+            await mDb.SaveChangesAsync();
+
+            return true;
         }
 
         public async Task<Achievement[]> GetAllAchievementList()
@@ -35,12 +61,10 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             return data;        
         }
 
-        public async Task<UserAchievementTable[]> GetAllAchievementWithUserState(int UserID)
+        public async Task<UserAchievementRecord[]> GetAllAchievementWithUserState(int UserID)
         {
             var userAchievedPossesion = mDb.Set<AchievedPosession>().AsNoTracking()
-                                                                .Where(ap => ap.UserID == mUserSession.ID &&
-                                                               ap.AchieveStateID == (int)AchievementState.AchievementDefaultAchievedID &&
-                                                               ap.AchieveStateID == (int)AchievementState.AchievementDefaultAchievableID);
+                                                                .Where(ap => ap.UserID == mUserSession.ID);
 
             var data = await mDb.Set<Achievement>()
                             .AsNoTracking()
@@ -49,11 +73,11 @@ namespace Falcon.Database.SqlServer.QueryProcessors
                                 achievement = achievement,
                                 achievePos = achievePos
                             })
-                            .SelectMany(temp => temp.achievePos.DefaultIfEmpty(), (joinData, achievePos) => new UserAchievementTable
+                            .SelectMany(temp => temp.achievePos.DefaultIfEmpty(), (joinData, achievePos) => new UserAchievementRecord
                             {
                                 ID = joinData.achievement.ID,
                                 Coin = joinData.achievement.Coin,
-                                AchievementState = (achievePos != null) ? (AchievementState) achievePos.AchieveStateID : AchievementState.NotSpecified,
+                                AchievementState = (achievePos != null) ? (AchievementState)achievePos.AchieveStateID : AchievementState.NotSpecified,
                                 CategoryID = joinData.achievement.CategoryID,
                                 Icon = joinData.achievement.Icon,
                                 IsActive = joinData.achievement.IsActive,
@@ -64,7 +88,10 @@ namespace Falcon.Database.SqlServer.QueryProcessors
                                 QueryTypeID = joinData.achievement.QueryTypeID,
                                 ScorePrize = joinData.achievement.ScorePrize,
                             })
+                            .OrderBy(AchievementRecord => AchievementRecord.Priority)
                             .ToArrayAsync();
+
+
             return data;    
         }
 
@@ -97,14 +124,16 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             return achievedList;
         }
 
-        public async Task<AchievementStatistic> GetUserAchievementStats(int UserID)
+        public async Task<SAchievementStatistic> GetUserAchievementStats(int UserID)
         {
             var data = await mDb.Set<AchievementStatistic>()
                                                 .AsNoTracking()
                                                 .Where(s => s.UserID == UserID)
                                                 .SingleOrDefaultAsync();
 
-            return data;
+            var result = mMapper.Map<SAchievementStatistic>(data);
+
+            return result;
         }
 
         public async Task<bool> IsExists(int ID)

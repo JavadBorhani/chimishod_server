@@ -15,7 +15,8 @@ namespace Falcon.Data.QueryProcessors
         Task<List<Achievement>> GetUserAchievements(int UserID);
         Task<Achievement[]> GetAllAchievementList();
         Task<SAchievementPossesion[]> GetUserAchievedPossetionIds();
-        Task<AchievementStatistic> GetUserAchievementStats(int UserID); // bring user statistic information based on his actions
-        Task<UserAchievementTable[]> GetAllAchievementWithUserState(int UserID);
+        Task<SAchievementStatistic> GetUserAchievementStats(int UserID); // bring user statistic information based on his actions
+        Task<UserAchievementRecord[]> GetAllAchievementWithUserState(int UserID);
+        Task<bool> AddingAchievementPossetionItems(int UserID, List<int> Items, AchievementState AchievementState);
     }
 }

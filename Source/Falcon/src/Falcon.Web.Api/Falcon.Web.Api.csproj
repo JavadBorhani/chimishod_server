@@ -156,6 +156,7 @@
   <ItemGroup>
     <Compile Include="App_Start\AutoMapperConfiguration.cs" />
     <Compile Include="AutoMappingConfiguration\AchievementMap\AchievementStatisticToSAchievementStatistic.cs" />
+    <Compile Include="AutoMappingConfiguration\AchievementMap\UserAchievementRecordToSAchievementAutoTypeConfiguration.cs" />
     <Compile Include="AutoMappingConfiguration\AppAdvertisementsMap\AppAdvertisementsToSAppAdvertAutoTypeConfiguration.cs" />
     <Compile Include="AutoMappingConfiguration\ApplicationStateMap\ApplicationStateToClientAppStateAutoTypeConfiguration.cs" />
     <Compile Include="AutoMappingConfiguration\ApplicationStateMap\ApplicationStateToSApplicationStateAutoTypeConfiguration.cs" />
