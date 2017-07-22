@@ -14,26 +14,34 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
         private readonly IAchievementQueryProcessor mAchievementQuery;
         private readonly IUsersInquiryProcessor mUserInquiry;
         private readonly IUserSession mUserSession;
+        private readonly ICategoriesQueryProcessor mCategoriesQueryProcessor;
 
         public AchievementMaintenanceProcessor
             (
             IAchievementQueryProcessor AchievementQueryProcessor ,
-            IUsersInquiryProcessor UserQuery
+            IUsersInquiryProcessor UserQuery,
+            IUserSession UserSession,
+            ICategoriesQueryProcessor CategoriesQueryProcessor
             )
         {
             mAchievementQuery = AchievementQueryProcessor;
             mUserInquiry = UserQuery;
+            mUserSession = UserSession;
+            mCategoriesQueryProcessor = CategoriesQueryProcessor;
         }
         public async Task<SAchievementDic> PrepareAchievementList()
         {
             var outputList = new SAchievementDic();
 
-            var allAchievementList = await mAchievementQuery.GetAllAchievementList();
-            var userAchievedAndAchievable = await mAchievementQuery.GetUserAchievedPossetionIds();
+            var allAchievementList = await mAchievementQuery.GetAllAchievementWithUserState(mUserSession.ID);
 
             var userStatRecord = await mAchievementQuery.GetUserAchievementStats(mUserSession.ID);
 
+            var userAnswerCount = await mCategoriesQueryProcessor.GetUserAnswerCount(mUserSession.ID);
 
+            
+
+            
 
             return outputList;
         }

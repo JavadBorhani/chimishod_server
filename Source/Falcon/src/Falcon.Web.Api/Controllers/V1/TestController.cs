@@ -17,22 +17,20 @@ namespace Falcon.Web.Api.Controllers.V1
     [UnitOfWorkActionFilter]
     public class TestController : FalconApiController
     {
-        private readonly IUsersMaintenanceProcessor mUsersMaintenace;
-        private readonly IDbContext mContext;
 
-        public TestController(IUsersMaintenanceProcessor UserMaintenacne , IDbContext Database)
+        private readonly IAchievementMaintenanceProcessor mAchievementProcessor;
+
+        public TestController(IAchievementMaintenanceProcessor AchievementController)
         {
-            mUsersMaintenace = UserMaintenacne;
-            mContext = Database;
+            mAchievementProcessor = AchievementController;
         }
 
         [Route("TestController/{UserID}")]
         [HttpPost]
         public async Task<IHttpActionResult> CreateJob(int UserID)
         {
-            //var data =await mContext.Set<AchievementStatistic>().Where(u => u.UserID == UserID).SingleOrDefaultAsync();
-            //return Ok(data);    
-            return null;    
+            var data = await mAchievementProcessor.PrepareAchievementList();
+            return null;
         }
     }
 }

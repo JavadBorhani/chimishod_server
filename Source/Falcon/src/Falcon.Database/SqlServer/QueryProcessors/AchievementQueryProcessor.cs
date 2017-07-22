@@ -18,20 +18,54 @@ namespace Falcon.Database.SqlServer.QueryProcessors
     {
         private readonly IDbContext mDb;
         private readonly IUserSession mUserSession;
-        public AchievementQueryProcessor(IDbContext Database)
+
+        public AchievementQueryProcessor(IDbContext Database , IUserSession UserSession)
         {
             mDb = Database;
+            mUserSession = UserSession;
         }
 
         public async Task<Achievement[]> GetAllAchievementList()
         {
             var data = await mDb.Set<Achievement>()
                 .AsNoTracking()
-                .OrderBy(s => s.QueryTypeID)
-                .ThenBy(s => s.CategoryID)
+                .OrderBy(s => s.Priority)
                 .ToArrayAsync(); 
 
             return data;        
+        }
+
+        public async Task<UserAchievementTable[]> GetAllAchievementWithUserState(int UserID)
+        {
+            var userAchievedPossesion = mDb.Set<AchievedPosession>().AsNoTracking()
+                                                                .Where(ap => ap.UserID == mUserSession.ID &&
+                                                               ap.AchieveStateID == (int)AchievementState.AchievementDefaultAchievedID &&
+                                                               ap.AchieveStateID == (int)AchievementState.AchievementDefaultAchievableID);
+
+            var data = await mDb.Set<Achievement>()
+                            .AsNoTracking()
+                            .GroupJoin(userAchievedPossesion, achievement => achievement.ID, achievePos => achievePos.AchievementID, (achievement, achievePos) => new
+                            {
+                                achievement = achievement,
+                                achievePos = achievePos
+                            })
+                            .SelectMany(temp => temp.achievePos.DefaultIfEmpty(), (joinData, achievePos) => new UserAchievementTable
+                            {
+                                ID = joinData.achievement.ID,
+                                Coin = joinData.achievement.Coin,
+                                AchievementState = (achievePos != null) ? (AchievementState) achievePos.AchieveStateID : AchievementState.NotSpecified,
+                                CategoryID = joinData.achievement.CategoryID,
+                                Icon = joinData.achievement.Icon,
+                                IsActive = joinData.achievement.IsActive,
+                                Priority = joinData.achievement.Priority,
+                                Description = joinData.achievement.Description,
+                                Name = joinData.achievement.Name,
+                                Quantity = joinData.achievement.Quantity,
+                                QueryTypeID = joinData.achievement.QueryTypeID,
+                                ScorePrize = joinData.achievement.ScorePrize,
+                            })
+                            .ToArrayAsync();
+            return data;    
         }
 
         public async Task<SAchievementPossesion[]> GetUserAchievedPossetionIds()

@@ -151,10 +151,12 @@ namespace Falcon.Web.Api.Controllers.V1
                     mLogger.WarnFormat("Question ID {0} has a value in database", answer.QuestionID);
                     return Response(HttpStatusCode.Unauthorized);
                 }
+                var questionToUpdate = await mDb.Set<Question>().Where(q => q.ID == answer.QuestionID).Include(q => q.Category).SingleOrDefaultAsync();
 
                 var newAnswer = new Answer
                 {
                     QuestionID = answer.QuestionID,
+                    CategoryID = questionToUpdate.Catgory_ID, 
                     UserID = user.ID,
                     YesNoState = answer.YesNoState,
                     Liked = answer.Liked,
@@ -197,7 +199,7 @@ namespace Falcon.Web.Api.Controllers.V1
                         }
                     }
                 }
-                var questionToUpdate = await mDb.Set<Question>().Where(q => q.ID ==  answer.QuestionID).Include( q => q.Category).SingleOrDefaultAsync();
+                
 
                 if (questionToUpdate != null)
                 {

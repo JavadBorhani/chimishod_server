@@ -20,7 +20,8 @@ namespace Falcon.Web.Models.Api
     {
         AchievementDefaultNotAchievedID = 1,
         AchievementDefaultAchievableID = 2,
-        AchievementDefaultAchievedID = 3
+        AchievementDefaultAchievedID = 3,
+        NotSpecified = 4,
     }
     public class SAchievement
     {
@@ -30,7 +31,22 @@ namespace Falcon.Web.Models.Api
         public int Star { get; set; }
         public string Icon { get; set; }
         public int Prize { get; set; }
-        public string RectangleColor { get; set; }
+        public AchievementState AchievementState { get; set; }
+    }
+
+    public class UserAchievementTable
+    {
+        public int ID { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public int? QueryTypeID { get; set; }
+        public int? CategoryID { get; set; }
+        public int? Quantity { get; set; }
+        public int Coin { get; set; }
+        public int ScorePrize { get; set; }
+        public string Icon { get; set; }
+        public bool IsActive { get; set; }
+        public int Priority { get; set; }
         public AchievementState AchievementState { get; set; }
     }
 

@@ -9,6 +9,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Falcon.Web.Models.Api;
 
 namespace Falcon.Database.SqlServer.QueryProcessors
 {
@@ -54,5 +55,19 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             return exists;
         }
 
+        public async Task<List<CategoryAnswerCount>> GetUserAnswerCount(int UserID)
+        {
+            var data = await mDb.Set<PurchaseCategory>()
+                .AsNoTracking()
+                .Where(pc => pc.UserID == UserID)
+                .Select(pc => new CategoryAnswerCount
+                {
+                    AnswerCount = pc.AnswerCount,
+                    CategoryID = pc.CategoryID
+                })
+                .ToListAsync();
+
+            return data;
+        }
     }
 }

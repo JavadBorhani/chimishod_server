@@ -4,6 +4,13 @@ using System.Collections.Generic;
 
 namespace Falcon.Web.Models.Api
 {
+    public class CategoryAnswerCount
+    {
+        public int CategoryID { get; set; }
+        public int AnswerCount { get; set; }
+    }
+
+
     public class SCategory
     {
         public int ID { get; set; }

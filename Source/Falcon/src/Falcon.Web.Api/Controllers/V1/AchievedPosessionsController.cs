@@ -109,8 +109,8 @@ namespace Falcon.Web.Api.Controllers.V1
                 //Get list of Ad-hoc 
                 adhoc = await mDb.Set<Achievement>().AsNoTracking()
                     .Where( a => a.IsActive && 
-                            a.QueryTypeID == Constants.DefaultValues.AchievementAdHocQueryTypeID && 
-                            a.LevelNumber >= userCurrentLevel && 
+                            a.QueryTypeID == Constants.DefaultValues.AchievementAdHocQueryTypeID &&
+                            //a.LevelNumber >= userCurrentLevel && 
                             !achievableAndAchievedIDList.Contains(a.ID))
                     .ToListAsync();
                     
@@ -215,7 +215,6 @@ namespace Falcon.Web.Api.Controllers.V1
                             Star = notAchieved[i].Coin,
                             Prize = notAchieved[i].ScorePrize,
                             Icon = notAchieved[i].Icon,
-                            RectangleColor = notAchieved[i].RectangleColor,
                             AchievementState = AchievementState.AchievementDefaultNotAchievedID
                         });
                 }
