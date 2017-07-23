@@ -189,9 +189,7 @@
           <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="ShortDescription" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="LongDescription" Type="nvarchar" MaxLength="150" Nullable="false" />
-          <Property Name="SquareColor" Type="varchar" MaxLength="10" Nullable="false" />
-          <Property Name="CircleColor" Type="varchar" MaxLength="10" Nullable="false" />
-          <Property Name="RectangleColor" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="Icon" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="Price" Type="int" Nullable="false" />
           <Property Name="PrizeCoefficient" Type="int" Nullable="false" />
           <Property Name="DiscountAmount" Type="int" Nullable="false" />
@@ -2826,9 +2824,7 @@ warning 6002: The table/view 'what_if.dbo.AchievementStatistics' does not have a
           <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="ShortDescription" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="LongDescription" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
-          <Property Name="SquareColor" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
-          <Property Name="CircleColor" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
-          <Property Name="RectangleColor" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="Icon" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="Price" Type="Int32" Nullable="false" />
           <Property Name="PrizeCoefficient" Type="Int32" Nullable="false" />
           <Property Name="DiscountAmount" Type="Int32" Nullable="false" />
@@ -4772,9 +4768,7 @@ warning 6002: The table/view 'what_if.dbo.AchievementStatistics' does not have a
                 <ScalarProperty Name="DiscountAmount" ColumnName="DiscountAmount" />
                 <ScalarProperty Name="PrizeCoefficient" ColumnName="PrizeCoefficient" />
                 <ScalarProperty Name="Price" ColumnName="Price" />
-                <ScalarProperty Name="RectangleColor" ColumnName="RectangleColor" />
-                <ScalarProperty Name="CircleColor" ColumnName="CircleColor" />
-                <ScalarProperty Name="SquareColor" ColumnName="SquareColor" />
+                <ScalarProperty Name="Icon" ColumnName="Icon" />
                 <ScalarProperty Name="LongDescription" ColumnName="LongDescription" />
                 <ScalarProperty Name="ShortDescription" ColumnName="ShortDescription" />
                 <ScalarProperty Name="Name" ColumnName="Name" />

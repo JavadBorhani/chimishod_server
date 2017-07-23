@@ -103,9 +103,7 @@ namespace Falcon.Web.Api.Controllers.V1
                         Name = categories[i].Cat.Name,
                         ShortDescription = categories[i].Cat.ShortDescription,
                         LongDescription = categories[i].Cat.LongDescription,
-                        SquareColor = categories[i].Cat.SquareColor,
-                        CircleColor = categories[i].Cat.CircleColor,
-                        RectangleColor = categories[i].Cat.RectangleColor,
+                        Icon = categories[i].Cat.Icon,
                         Price = categories[i].Cat.Price,
                         PrizeCoefficient = categories[i].Cat.PrizeCoefficient,
                         IsPurchased = (categories[i].Cat.ID == Constants.DefaultUser.CategoryID) ? true : purchasedCategories.Contains(categories[i].Cat.ID), // TODO : remember to remove what has checked to increase checking time
