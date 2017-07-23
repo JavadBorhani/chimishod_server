@@ -253,9 +253,35 @@ namespace Falcon.Web.Api.Controllers.V1
                 CreatedQuestionsCount = 0
             };
 
+            var catePurchase = new PurchaseCategory
+            {
+                UserID = user.ID,
+                CategoryID = Constants.DefaultUser.CategoryID,
+                AnswerCount = 0,
+                PurchaseDate = mDateTime.Now
+            };
+
+            var themePurchase = new PurchaseTheme
+            {
+                UserID = user.ID,
+                ThemeID = Constants.DefaultUser.AppThemeID,
+                PurchaseDate = mDateTime.Now,
+            };
+            var avatarPurchase = new PurchaseAvatar
+            {
+                UserID = user.ID,
+                UserAvatarID = Constants.DefaultUser.AvatarID,
+                PurchasedDate = mDateTime.Now,
+            };
+
             mDb.Set<UserCount>().Add(userCount);
             mDb.Set<UserStat>().Add(userStat);
             mDb.Set<UserInfo>().Add(userInfo);
+
+            mDb.Set<PurchaseCategory>().Add(catePurchase);
+            mDb.Set<PurchaseTheme>().Add(themePurchase);
+            mDb.Set<PurchaseAvatar>().Add(avatarPurchase);
+
             mDb.Set<SelectedTheme>().Add(selecetedTheme);
             mDb.Set<SelectedCategory>().Add(selectedCategory);
             mDb.Set<SelectedAvatar>().Add(selectedAvatar);
