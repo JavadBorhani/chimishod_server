@@ -8,7 +8,6 @@ namespace Falcon.Web.Models.Api
 {
     public class SUserCharacter
     {
-        public int UserID { get; set;}
         public int CharacterID { get; set; }
         public int Score { get; set; }
         public int Rank { get; set; }
