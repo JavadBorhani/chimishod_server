@@ -24,6 +24,6 @@ namespace Falcon.Data.QueryProcessors
         Task<int> AddCharacterToUsers(int CharacterID, int[] UserIDs);
         Task<QueryResult<SLeaderBoard>> GetLeaderBoard(PagedDataRequest RequestInfo, int CharacterID);
         Task<SLeaderBoard> GetUserLeaderBoard(int CharacterID);
-        Task<SUserCharacter[]> GetUserCharacter();
+        Task<SUserCharacter[]> GetUserCharacter(int UserID = 0 );
     }
 }

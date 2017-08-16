@@ -301,11 +301,12 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             return result;
         }
 
-        public async Task<SUserCharacter[]> GetUserCharacter()
+        public async Task<SUserCharacter[]> GetUserCharacter(int UserID = 0)
         {
+            var userID = (UserID == 0) ? mUserSession.ID : UserID;
             var data = await mDb.Set<PersonalizedCharacter>()
                 .AsNoTracking()
-                .Where(pc => pc.UserID == mUserSession.ID).Select(pc => new SUserCharacter
+                .Where(pc => pc.UserID == userID).Select(pc => new SUserCharacter
                 {
                     CharacterID = pc.CharacterID,
                     Rank = pc.Rank,
