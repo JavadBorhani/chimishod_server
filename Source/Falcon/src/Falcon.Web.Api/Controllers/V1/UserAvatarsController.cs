@@ -55,6 +55,7 @@ namespace Falcon.Web.Api.Controllers.V1
                         ID = avatars[i].ID,
                         PicUrl = avatars[i].PicUrl,
                         Price = avatars[i].Price,
+                        Name =  avatars[i].Name,
                         IsPurchased = (avatars[i].ID == Constants.DefaultUser.AvatarID) ? true : purchasedAvatars.Contains(avatars[i].ID), // TODO : remember to remove what has checked to decrease checking time
                         IsActive = (selectedAvatar == avatars[i].ID) ? true : false,
                         DiscountAmount = avatars[i].DiscountAmount,

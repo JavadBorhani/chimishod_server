@@ -37,6 +37,7 @@ namespace Falcon.Web.Api.Controllers.V1
         private readonly ICharacteristicsMaintenanceProcessor mCharacteristicsMaintenanceProcessor;
         private readonly ICharacteristicsInquiryProcessor mCharacteristicsInquiryProcessor;
         private readonly IUserQueryProcessor mUserQuery;
+
         public CategoriesController(IDateTime dateTime , 
             IMapper Mapper , 
             IDbContext Database ,
