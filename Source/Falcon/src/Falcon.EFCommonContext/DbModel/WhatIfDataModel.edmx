@@ -131,8 +131,8 @@
           <Property Name="Question_CreateQuestionPrice" Type="int" Nullable="false" />
           <Property Name="Question_DefaultReturnAmount" Type="int" Nullable="false" />
           <Property Name="Question_NumberToSkip" Type="int" Nullable="false" />
-          <Property Name="Question_NoQuestionFoundWhat" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="Question_NoQuestionFoundBut" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Question_NoQuestionFoundWhat" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Question_NoQuestionFoundBut" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="Question_NoQuestionFoundID" Type="int" Nullable="false" />
           <Property Name="Question_ServerBurntReturnAmount" Type="int" Nullable="false" />
           <Property Name="Prize_AnswerPrize" Type="int" Nullable="false" />
@@ -480,6 +480,10 @@
           <Property Name="ActionNumber" Type="int" Nullable="false" />
           <Property Name="Coin" Type="int" Nullable="false" />
           <Property Name="Priority" Type="int" Nullable="false" />
+          <Property Name="ActionNavigationNumber" Type="int" />
+          <Property Name="MarketPackageName" Type="varchar" MaxLength="100" />
+          <Property Name="MarketIntentString" Type="varchar" MaxLength="100" />
+          <Property Name="AppStoreUri" Type="varchar" MaxLength="100" />
         </EntityType>
         <EntityType Name="QuestionBoost">
           <Key>
@@ -2761,8 +2765,8 @@ warning 6002: The table/view 'what_if.dbo.AchievementStatistics' does not have a
           <Property Name="Question_CreateQuestionPrice" Type="Int32" Nullable="false" />
           <Property Name="Question_DefaultReturnAmount" Type="Int32" Nullable="false" />
           <Property Name="Question_NumberToSkip" Type="Int32" Nullable="false" />
-          <Property Name="Question_NoQuestionFoundWhat" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Question_NoQuestionFoundBut" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Question_NoQuestionFoundWhat" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Question_NoQuestionFoundBut" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="Question_NoQuestionFoundID" Type="Int32" Nullable="false" />
           <Property Name="Question_ServerBurntReturnAmount" Type="Int32" Nullable="false" />
           <Property Name="Prize_AnswerPrize" Type="Int32" Nullable="false" />
@@ -3177,6 +3181,10 @@ warning 6002: The table/view 'what_if.dbo.AchievementStatistics' does not have a
           <Property Name="ActionNumber" Type="Int32" Nullable="false" />
           <Property Name="Coin" Type="Int32" Nullable="false" />
           <Property Name="Priority" Type="Int32" Nullable="false" />
+          <Property Name="ActionNavigationNumber" Type="Int32" />
+          <Property Name="MarketPackageName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="MarketIntentString" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="AppStoreUri" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Questions" Relationship="Falcon.DbModel.FK_Question_QuestionAction" FromRole="QuestionAction" ToRole="Question" />
         </EntityType>
         <EntityType Name="QuestionBoost">
@@ -5077,6 +5085,10 @@ warning 6002: The table/view 'what_if.dbo.AchievementStatistics' does not have a
           <EntitySetMapping Name="QuestionActions">
             <EntityTypeMapping TypeName="Falcon.DbModel.QuestionAction">
               <MappingFragment StoreEntitySet="QuestionAction">
+                <ScalarProperty Name="AppStoreUri" ColumnName="AppStoreUri" />
+                <ScalarProperty Name="MarketIntentString" ColumnName="MarketIntentString" />
+                <ScalarProperty Name="MarketPackageName" ColumnName="MarketPackageName" />
+                <ScalarProperty Name="ActionNavigationNumber" ColumnName="ActionNavigationNumber" />
                 <ScalarProperty Name="Priority" ColumnName="Priority" />
                 <ScalarProperty Name="Coin" ColumnName="Coin" />
                 <ScalarProperty Name="ActionNumber" ColumnName="ActionNumber" />

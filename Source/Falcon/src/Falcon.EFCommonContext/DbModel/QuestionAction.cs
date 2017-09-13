@@ -25,6 +25,10 @@ namespace Falcon.EFCommonContext.DbModel
         public int ActionNumber { get; set; }
         public int Coin { get; set; }
         public int Priority { get; set; }
+        public Nullable<int> ActionNavigationNumber { get; set; }
+        public string MarketPackageName { get; set; }
+        public string MarketIntentString { get; set; }
+        public string AppStoreUri { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Question> Questions { get; set; }

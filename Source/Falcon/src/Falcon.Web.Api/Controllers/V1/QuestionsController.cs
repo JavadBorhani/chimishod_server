@@ -78,8 +78,15 @@ namespace Falcon.Web.Api.Controllers.V1
                                                 Weight = question.Weight,
                                                 Banned = question.Banned,
                                                 UserName = manu.User.UserName,
-                                                ActionCoin = question.QuestionAction.Coin,
-                                                ActionId = question.QuestionAction.ActionNumber,
+                                                ActionInfo = new SActionQuestion
+                                                {
+                                                    ActionCoin = question.QuestionAction.Coin,
+                                                    ActionId = question.QuestionAction.ActionNumber,
+                                                    ActionNavigationPageNumber = question.QuestionAction.ActionNavigationNumber,
+                                                    MarketPackageName = question.QuestionAction.MarketPackageName,
+                                                    MarketIntentString = question.QuestionAction.MarketIntentString,
+                                                    AppStoreUri = question.QuestionAction.AppStoreUri,
+                                                },
                                                 CommentCount = question.CommentCount
                                             })
                                             .OrderByDescending(a => a.Weight)
