@@ -46,6 +46,8 @@
   <ItemGroup>
     <Compile Include="Api\Achievement\SAchievementStatistic.cs" />
     <Compile Include="Api\ClientAppState.cs" />
+    <Compile Include="Api\Input\Questions\EditInfo.cs" />
+    <Compile Include="Api\Input\Questions\RemoveInfo.cs" />
     <Compile Include="Api\SCharacteristic.cs" />
     <Compile Include="Api\SCharcteristicLeaderBoard.cs" />
     <Compile Include="Api\SGlobalRankLeaderBoard.cs" />

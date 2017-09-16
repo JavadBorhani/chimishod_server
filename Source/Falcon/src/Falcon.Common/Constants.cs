@@ -29,7 +29,7 @@ namespace Falcon.Common
             public const int EditableCount = 2; 
             public const int AvatarID = 1;
             public const int DWMDefaultCount = 0;
-            public const int SpinWheelChance = 3;
+            public const int SpinWheelChance = 1;
             public const int SpinWheelCount  = 0;
             public const int SpinWheelAnotherFortune = 1; 
         }
@@ -112,9 +112,6 @@ namespace Falcon.Common
             public const int CategoryNumberOfSelectAllowed = 1;
             public const int ThemeNumberOfSelectAllowed = 1;
             //public const int CreateNewQuestionPrice = 30;
-            public const int CreatedQuestionsVerified = 3;
-            public const int CreatedQuestionIsInChecking = 2;
-            public const int CreatedQuestionRejected = 1;
             //public const int StoreNumberToSend = 20;
             public const int CreatedQuestionsDefaultID = -1;
             public const int AchievementsMinimumAchievables = 5;

@@ -19,6 +19,8 @@ using Falcon.Web.Api.Utilities.Base;
 using Falcon.Common.Security;
 using Falcon.Web.Api.MaintenanceProcessing.Public;
 using Falcon.Data.QueryProcessors;
+using Falcon.Web.Models.Api.Input;
+using Falcon.Web.Models.Api.Input.Questions;
 
 namespace Falcon.Web.Api.App_Start
 {
@@ -34,6 +36,7 @@ namespace Falcon.Web.Api.App_Start
         private readonly IGlobalApplicationState mAppState;
         private readonly IUsersMaintenanceProcessor mUsersMaintenance;
         private readonly IUserQueryProcessor mUserQuery;
+        private readonly ICreatedQuestionsMaintenanceProcessor mCreatedQuestionsMaintenanceProcessor;
 
         public CreatedQuestionsController(IDateTime DateTime ,
             IMapper Mapper, 
@@ -43,7 +46,8 @@ namespace Falcon.Web.Api.App_Start
             IWebUserSession UserSession , 
             IGlobalApplicationState AppState , 
             IUsersMaintenanceProcessor UsersMaintenance,
-            IUserQueryProcessor UserQuery)
+            IUserQueryProcessor UserQuery ,
+            ICreatedQuestionsMaintenanceProcessor CreatedQuestionsMaintenanceProcessor)
         {
             mDateTime = DateTime;
             mMapper = Mapper;
@@ -54,6 +58,7 @@ namespace Falcon.Web.Api.App_Start
             mAppState = AppState;
             mUsersMaintenance = UsersMaintenance;
             mUserQuery = UserQuery;
+            mCreatedQuestionsMaintenanceProcessor = CreatedQuestionsMaintenanceProcessor;
         }
 
         [ResponseType(typeof(SUserState))]
@@ -95,7 +100,7 @@ namespace Falcon.Web.Api.App_Start
                             But = createdQuestion.But,
                             UserID = user.ID,
                             QuestionBoostID = boostID,
-                            VerifyStateID = Constants.DefaultValues.CreatedQuestionIsInChecking,
+                            VerifyStateID = (int)CreatedQuestionState.CreatedQuestionIsInChecking,
                             RegisterDateTime = mDateTime.Now,
                         };
 
@@ -126,6 +131,28 @@ namespace Falcon.Web.Api.App_Start
             var createdQuestions = await mCreatedQuestionsInquiryProcessor.GetQuestionList(page , mUserSession.ID);
             return createdQuestions;
         }
+
+        [ResponseType(typeof(bool))]
+        [HttpDelete]
+        [Route("CreatedQuestions/Delete/")]
+        public async Task<bool> DeleteQuestionLogically([FromBody] RemoveInfo Info)
+        {
+            if (!ModelState.IsValid)
+                return false;
+
+            var response = await mCreatedQuestionsMaintenanceProcessor.DeleteLogically(Info);
+            return response;
+        }
+
+        [ResponseType(typeof(bool))]
+        [HttpPatch]
+        [Route("CreatedQuestions/Edit/")]
+        public async Task<bool> EditCreatedQuestion([FromBody] EditInfo Info)
+        {
+            var response = await mCreatedQuestionsMaintenanceProcessor.Edit(Info);
+            return response;
+        }
+
 
         private bool HasEnoughMoney(int TotalStar , int QuestionPrice , int BoostPrice)
         {    

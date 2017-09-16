@@ -7,6 +7,9 @@ using System.Linq;
 using System.Data.Entity;
 using Falcon.Common;
 using Falcon.Web.Models.Api;
+using System;
+using Falcon.Web.Models.Api.Input.Questions;
+using Falcon.Common.Security;
 
 namespace Falcon.Database.SqlServer.QueryProcessors
 {
@@ -14,10 +17,12 @@ namespace Falcon.Database.SqlServer.QueryProcessors
     {
         private readonly IDbContext mDb;
         private readonly IDateTime mDateTime;
-        public CreatedQuestionsQueryProcessor(IDbContext Database , IDateTime DateTime)
+        private readonly IUserSession mUserSession;
+        public CreatedQuestionsQueryProcessor(IDbContext Database , IDateTime DateTime , IUserSession UserSession)
         {
             mDb = Database;
             mDateTime = DateTime;
+            mUserSession = UserSession;
         }
         public async Task<QueryResult<SNewCreatedQuestions>> GetCreatedQuestions(PagedDataRequest requestInfo, int UserID)
         {
@@ -30,7 +35,7 @@ namespace Falcon.Database.SqlServer.QueryProcessors
                 .Where(u => u.UserID == UserID)
                 .Include( c => c.Question)
                 .Select(u => u.Question)
-                .Where(u => u.Banned == false)
+                .Where(u => u.Banned == false && u.RemovedByCreator == false)
                 .Include( u => u.Category.Name)
                 .Select( u => new SNewCreatedQuestions
                 {
@@ -42,14 +47,14 @@ namespace Falcon.Database.SqlServer.QueryProcessors
                     Yes_Count = u.Yes_Count,
                     No_Count = u.No_Count,
                     Dislike_Count = u.Dislike_Count,
-                    VerifyState = Constants.DefaultValues.CreatedQuestionsVerified,
+                    VerifyState = (int)CreatedQuestionState.CreatedQuestionsVerified,
                     RegisterDateTime = u.CreatedDate,
                     ServerTime = now,
                     CommentCount = u.CommentCount
                 })
                 .Union(createdQuestion.AsNoTracking().Where(cq => cq.UserID == UserID && (
-                        cq.VerifyStateID == Constants.DefaultValues.CreatedQuestionIsInChecking ||
-                        cq.VerifyStateID == Constants.DefaultValues.CreatedQuestionRejected
+                        cq.VerifyStateID == (int)CreatedQuestionState.CreatedQuestionIsInChecking ||
+                        cq.VerifyStateID == (int)CreatedQuestionState.CreatedQuestionRejected
                     )).Include(cq => cq.Category.Name)
                     .Select(cq => new SNewCreatedQuestions
                     {
@@ -78,6 +83,56 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             var queryResult = new QueryResult<SNewCreatedQuestions>(createdQuestions, totalItemCount, requestInfo.PageSize);
 
             return queryResult;
+        }
+
+        public async Task<bool> Delete(int QuestionID)
+        {
+
+            var item = await mDb.Set<CreatedQuestion>().AsNoTracking().Where(sq => sq.ID ==  QuestionID).SingleOrDefaultAsync();
+
+            if(item != null)
+            {
+                mDb.Set<CreatedQuestion>().Remove(item);
+                await mDb.SaveChangesAsync();
+
+                return true;
+            }
+
+            return false;
+        }
+
+        public async Task<bool> Edit(EditInfo Info)
+        {
+            var item = await mDb.Set<CreatedQuestion>().FindAsync(Info.ID);
+            if (item != null)
+            {
+                item.What_if = Info.What;
+                item.But = Info.But;
+            }
+            return false;
+        }
+
+        public async Task<bool> IsDeletable(int QuestionID)
+        {
+            var question = await mDb.Set<CreatedQuestion>()
+                .AsNoTracking()
+                .Where(cq => cq.UserID == mUserSession.ID && cq.ID == QuestionID)
+                .SingleOrDefaultAsync();
+
+            if(question != null)
+            {
+                if(question.Lock != false && 
+                    (question.VerifyStateID == (int)CreatedQuestionState.CreatedQuestionIsInChecking 
+                    || question.VerifyStateID == (int)CreatedQuestionState.CreatedQuestionRejected ))
+
+                return true;
+            }
+
+            return false;
+        }
+        public Task<bool> IsEditable(int QuestionID)
+        {
+            throw new NotImplementedException();
         }
     }
 }

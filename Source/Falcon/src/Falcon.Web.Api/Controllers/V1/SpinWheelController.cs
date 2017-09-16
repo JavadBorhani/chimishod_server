@@ -24,6 +24,7 @@ namespace Falcon.Web.Api.Controllers.V1
         private readonly ISpinWheelInquiryProcessor mSpinWheelInquiryProcessor;
         private readonly ISpinWheelMaintenanceProcessor mSpinWheelMaintenanceProcessor;
         private readonly IEncryptor mNumberEncyptor; 
+
         public SpinWheelController(
             ISpinWheelInquiryProcessor SpinWheelInquiryProcessor, 
             ISpinWheelMaintenanceProcessor SpinWheelMaintenanceProcessor , 
@@ -58,5 +59,6 @@ namespace Falcon.Web.Api.Controllers.V1
             }
             return null;
         }
+
     }
 }

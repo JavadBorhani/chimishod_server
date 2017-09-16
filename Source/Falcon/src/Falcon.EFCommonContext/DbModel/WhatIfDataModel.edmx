@@ -470,6 +470,7 @@
           <Property Name="Banned" Type="bit" Nullable="false" />
           <Property Name="QuestionBoostID" Type="int" />
           <Property Name="ActionID" Type="int" />
+          <Property Name="RemovedByCreator" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="QuestionAction">
           <Key>
@@ -3162,6 +3163,7 @@ warning 6002: The table/view 'what_if.dbo.AchievementStatistics' does not have a
           <Property Name="Banned" Type="Boolean" Nullable="false" />
           <Property Name="QuestionBoostID" Type="Int32" />
           <Property Name="ActionID" Type="Int32" />
+          <Property Name="RemovedByCreator" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Answers" Relationship="Falcon.DbModel.FK_Answer_Question" FromRole="Question" ToRole="Answer" />
           <NavigationProperty Name="Category" Relationship="Falcon.DbModel.FK_Question_Category" FromRole="Question" ToRole="Category" />
           <NavigationProperty Name="CharacterPoints" Relationship="Falcon.DbModel.FK_CharacterPoints_Question" FromRole="Question" ToRole="CharacterPoint" />
@@ -5064,6 +5066,7 @@ warning 6002: The table/view 'what_if.dbo.AchievementStatistics' does not have a
           <EntitySetMapping Name="Questions">
             <EntityTypeMapping TypeName="Falcon.DbModel.Question">
               <MappingFragment StoreEntitySet="Question">
+                <ScalarProperty Name="RemovedByCreator" ColumnName="RemovedByCreator" />
                 <ScalarProperty Name="ActionID" ColumnName="ActionID" />
                 <ScalarProperty Name="QuestionBoostID" ColumnName="QuestionBoostID" />
                 <ScalarProperty Name="Banned" ColumnName="Banned" />

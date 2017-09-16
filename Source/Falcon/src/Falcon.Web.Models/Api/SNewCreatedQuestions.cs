@@ -6,6 +6,12 @@ using System.Threading.Tasks;
 
 namespace Falcon.Web.Models.Api
 {
+    public enum CreatedQuestionState
+    {
+        CreatedQuestionRejected = 1 ,
+        CreatedQuestionIsInChecking = 2,
+        CreatedQuestionsVerified = 3,
+    }
     public class SNewCreatedQuestions
     {
         public int ID { get; set; }
