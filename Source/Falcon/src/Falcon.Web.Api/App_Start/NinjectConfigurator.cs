@@ -110,6 +110,7 @@ namespace Falcon.Web.Api
             container.Bind<IUserStatQueryProcessor>().To<UserStatQueryProcessor>().InRequestScope();
             container.Bind<ICharacteristicsQueryProcessor>().To<CharacteristicsQueryProcessor>().InRequestScope();
             container.Bind<IScoringQueryProcessor>().To<ScoringQueryProcessor>().InRequestScope();
+            container.Bind<IQuestionsQueryProcessor>().To<QuestionsQueryProcessor>().InRequestScope();
 
 
             //summary: Reusing an special Component With Background Process and Http In RequestScope
@@ -156,6 +157,7 @@ namespace Falcon.Web.Api
             container.Bind<IUserStatsMaintenanceProcessor>().To<UserStatsMaintenanceProcessor>().InRequestScope();
             container.Bind<IUsersMaintenanceProcessor>().To<UsersMaintenanceProcessor>().InRequestScope();
             container.Bind<IAchievementMaintenanceProcessor>().To<AchievementMaintenanceProcessor>().InRequestScope();
+            container.Bind<ICreatedQuestionsMaintenanceProcessor>().To<CreatedQuestionsMaintenanceProcessor>().InRequestScope();
         }
 
         private void AddAdHoc(IKernel container)

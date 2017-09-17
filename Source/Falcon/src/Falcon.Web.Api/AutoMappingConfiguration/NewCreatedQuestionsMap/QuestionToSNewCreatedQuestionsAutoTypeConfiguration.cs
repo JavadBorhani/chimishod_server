@@ -21,6 +21,7 @@ namespace Falcon.Web.Api.AutoMappingConfiguration.NewCreatedQuestions
                 .ForMember(sn => sn.Dislike_Count ,     m => m.MapFrom( q => q.Dislike_Count))
                 .ForMember(sn => sn.VerifyState ,       m => m.UseValue((int)CreatedQuestionState.CreatedQuestionsVerified))
                 .ForMember(sn => sn.ServerTime,         m => m.Ignore())
+                .ForMember(sn => sn.Locked,             m => m.Ignore())   
                 .ForMember(sn => sn.RegisterDateTime ,  m => m.MapFrom( q => q.CreatedDate))
                 .ForMember(sn => sn.CommentCount,       m => m.MapFrom(sn => sn.CommentCount));
         }

@@ -5,6 +5,7 @@ using Falcon.EFCommonContext;
 using Falcon.EFCommonContext.DbModel;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -36,6 +37,22 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             }
 
             return false;
+        }
+
+        public async Task<bool> IsDeletable(int QuestionID)
+        {
+            var item = await mDb.Set<Manufacture>().AsNoTracking()
+                .Where(u => u.UserID == mUserSession.ID)
+                .Include(c => c.Question)
+                .Select(u => u.Question)
+                .Where(u => u.ID == QuestionID && u.RemovedByCreator == false)
+                .SingleOrDefaultAsync();
+
+            if(item != null)
+            {
+                return true;
+            }
+            return false;   
         }
     }
 }

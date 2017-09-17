@@ -149,6 +149,9 @@ namespace Falcon.Web.Api.App_Start
         [Route("CreatedQuestions/Edit/")]
         public async Task<bool> EditCreatedQuestion([FromBody] EditInfo Info)
         {
+            if (!ModelState.IsValid)
+                return false;
+
             var response = await mCreatedQuestionsMaintenanceProcessor.Edit(Info);
             return response;
         }

@@ -22,6 +22,7 @@ namespace Falcon.EFCommonContext.DbModel
         public int VerifyStateID { get; set; }
         public Nullable<int> CategoryID { get; set; }
         public Nullable<int> QuestionBoostID { get; set; }
+        public bool Lock { get; set; }
     
         public virtual Category Category { get; set; }
         public virtual CreatedQuestionsVerifyType CreatedQuestionsVerifyType { get; set; }

@@ -13,10 +13,10 @@ namespace Falcon.Web.Models.Api.Input.Questions
         [Required]
         public int ID{ get; set; }
 
-        [Required]
+        [Required(AllowEmptyStrings =false)]
         public string What { get; set; }
 
-        [Required]
+        [Required(AllowEmptyStrings = false)]
         public string But { get; set; }
     }
 }

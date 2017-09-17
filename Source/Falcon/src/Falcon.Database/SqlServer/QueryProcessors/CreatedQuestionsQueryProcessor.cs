@@ -33,11 +33,11 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             //TODO : refactor this 
             var query = manu.AsNoTracking()
                 .Where(u => u.UserID == UserID)
-                .Include( c => c.Question)
+                .Include(c => c.Question)
                 .Select(u => u.Question)
                 .Where(u => u.Banned == false && u.RemovedByCreator == false)
-                .Include( u => u.Category.Name)
-                .Select( u => new SNewCreatedQuestions
+                .Include(u => u.Category.Name)
+                .Select(u => new SNewCreatedQuestions
                 {
                     ID = u.ID,
                     What_if = u.What_if,
@@ -50,7 +50,8 @@ namespace Falcon.Database.SqlServer.QueryProcessors
                     VerifyState = (int)CreatedQuestionState.CreatedQuestionsVerified,
                     RegisterDateTime = u.CreatedDate,
                     ServerTime = now,
-                    CommentCount = u.CommentCount
+                    CommentCount = u.CommentCount,
+                    Locked = true,
                 })
                 .Union(createdQuestion.AsNoTracking().Where(cq => cq.UserID == UserID && (
                         cq.VerifyStateID == (int)CreatedQuestionState.CreatedQuestionIsInChecking ||
@@ -69,7 +70,8 @@ namespace Falcon.Database.SqlServer.QueryProcessors
                         VerifyState = cq.VerifyStateID,
                         RegisterDateTime = cq.RegisterDateTime,
                         ServerTime = now,
-                        CommentCount = 0
+                        CommentCount = 0,
+                        Locked = cq.Lock
                     }));
 
 
@@ -121,7 +123,7 @@ namespace Falcon.Database.SqlServer.QueryProcessors
 
             if(question != null)
             {
-                if(question.Lock != false && 
+                if(question.Lock == false && 
                     (question.VerifyStateID == (int)CreatedQuestionState.CreatedQuestionIsInChecking 
                     || question.VerifyStateID == (int)CreatedQuestionState.CreatedQuestionRejected ))
 
@@ -130,9 +132,18 @@ namespace Falcon.Database.SqlServer.QueryProcessors
 
             return false;
         }
-        public Task<bool> IsEditable(int QuestionID)
+        public async Task<bool> IsEditable(int QuestionID)
         {
-            throw new NotImplementedException();
+            var question = await mDb.Set<CreatedQuestion>()
+                .AsNoTracking()
+                .Where(cq => cq.UserID == mUserSession.ID && cq.ID == QuestionID)
+                .SingleOrDefaultAsync();
+            if(question != null)
+            {
+                if (question.Lock == false && (question.VerifyStateID == (int)CreatedQuestionState.CreatedQuestionIsInChecking))
+                    return true;
+            }
+            return false;
         }
     }
 }

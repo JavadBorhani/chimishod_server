@@ -24,18 +24,32 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
 
         public async Task<bool> DeleteLogically(RemoveInfo Info)
         {
-            //TODO : Adding Delete Policy 
-
+            
+            
             switch (Info.State)
             {
                 case CreatedQuestionState.CreatedQuestionIsInChecking:
                 case CreatedQuestionState.CreatedQuestionRejected:
 
-                    return await mCreatedQuery.Delete(Info.ID);
+                    var isDeletable = await mCreatedQuery.IsDeletable(Info.ID);
+                    if(isDeletable)
+                    {
+                        var response = await mCreatedQuery.Delete(Info.ID);
+                        return response;
+                    }
+                    return false;
 
                 case CreatedQuestionState.CreatedQuestionsVerified:
 
-                    return await mQuestionQuery.LogicallyRemoveByCreator(Info.ID);
+                    var deletable = await mQuestionQuery.IsDeletable(Info.ID);
+                    
+                    if (deletable)
+                    {
+                        var response = await mQuestionQuery.LogicallyRemoveByCreator(Info.ID);
+                        return response;
+                    }
+
+                    return false;
 
             }
 
@@ -43,11 +57,17 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
         }
 
 
-        public Task<bool> Edit(EditInfo Info)
+        public async Task<bool> Edit(EditInfo Info)
         {
-            //TODO : Checking Remove Policy ;
+            var isEditable = await mCreatedQuery.IsEditable(Info.ID);
 
-            return mCreatedQuery.Edit(Info);
+            if(isEditable)
+            {
+                var response = await mCreatedQuery.Edit(Info);
+                return response;
+            }
+
+            return false;
         }
     }
 }

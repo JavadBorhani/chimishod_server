@@ -265,6 +265,7 @@
           <Property Name="VerifyStateID" Type="int" Nullable="false" />
           <Property Name="CategoryID" Type="int" />
           <Property Name="QuestionBoostID" Type="int" />
+          <Property Name="Lock" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="CreatedQuestionsVerifyType">
           <Key>
@@ -2925,6 +2926,7 @@ warning 6002: The table/view 'what_if.dbo.AchievementStatistics' does not have a
           <Property Name="VerifyStateID" Type="Int32" Nullable="false" />
           <Property Name="CategoryID" Type="Int32" />
           <Property Name="QuestionBoostID" Type="Int32" />
+          <Property Name="Lock" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Category" Relationship="Falcon.DbModel.FK_CreatedQuestions_Category" FromRole="CreatedQuestion" ToRole="Category" />
           <NavigationProperty Name="CreatedQuestionsVerifyType" Relationship="Falcon.DbModel.FK_CreatedQuestions_CreatedQuestionsVerifyType" FromRole="CreatedQuestion" ToRole="CreatedQuestionsVerifyType" />
           <NavigationProperty Name="QuestionBoost" Relationship="Falcon.DbModel.FK_CreatedQuestions_QuestionBoost" FromRole="CreatedQuestion" ToRole="QuestionBoost" />
@@ -4850,6 +4852,7 @@ warning 6002: The table/view 'what_if.dbo.AchievementStatistics' does not have a
           <EntitySetMapping Name="CreatedQuestions">
             <EntityTypeMapping TypeName="Falcon.DbModel.CreatedQuestion">
               <MappingFragment StoreEntitySet="CreatedQuestions">
+                <ScalarProperty Name="Lock" ColumnName="Lock" />
                 <ScalarProperty Name="QuestionBoostID" ColumnName="QuestionBoostID" />
                 <ScalarProperty Name="CategoryID" ColumnName="CategoryID" />
                 <ScalarProperty Name="VerifyStateID" ColumnName="VerifyStateID" />
