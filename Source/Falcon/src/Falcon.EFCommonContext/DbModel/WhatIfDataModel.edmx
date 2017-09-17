@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="Falcon.DbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="Falcon.DbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="AchievedCodeGift">
           <Key>
             <PropertyRef Name="ID" />
@@ -266,6 +266,14 @@
           <Property Name="CategoryID" Type="int" />
           <Property Name="QuestionBoostID" Type="int" />
           <Property Name="Lock" Type="bit" Nullable="false" />
+          <Property Name="RejectMessageID" Type="int" />
+        </EntityType>
+        <EntityType Name="CreatedQuestionsRejectType">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="Message" Type="nvarchar" MaxLength="200" Nullable="false" />
         </EntityType>
         <EntityType Name="CreatedQuestionsVerifyType">
           <Key>
@@ -1100,6 +1108,18 @@ warning 6002: The table/view 'what_if.dbo.AchievementStatistics' does not have a
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_CreatedQuestions_CreatedQuestionsRejectType">
+          <End Role="CreatedQuestionsRejectType" Type="Self.CreatedQuestionsRejectType" Multiplicity="0..1" />
+          <End Role="CreatedQuestions" Type="Self.CreatedQuestions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CreatedQuestionsRejectType">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="CreatedQuestions">
+              <PropertyRef Name="RejectMessageID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_CreatedQuestions_CreatedQuestionsVerifyType">
           <End Role="CreatedQuestionsVerifyType" Type="Self.CreatedQuestionsVerifyType" Multiplicity="1" />
           <End Role="CreatedQuestions" Type="Self.CreatedQuestions" Multiplicity="*" />
@@ -1834,6 +1854,7 @@ warning 6002: The table/view 'what_if.dbo.AchievementStatistics' does not have a
           <EntitySet Name="CodeGift" EntityType="Self.CodeGift" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Comment" EntityType="Self.Comment" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CreatedQuestions" EntityType="Self.CreatedQuestions" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CreatedQuestionsRejectType" EntityType="Self.CreatedQuestionsRejectType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CreatedQuestionsVerifyType" EntityType="Self.CreatedQuestionsVerifyType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DailyRewards" EntityType="Self.DailyRewards" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DailyRewardsAchieved" EntityType="Self.DailyRewardsAchieved" Schema="dbo" store:Type="Tables" />
@@ -1995,6 +2016,10 @@ warning 6002: The table/view 'what_if.dbo.AchievementStatistics' does not have a
           </AssociationSet>
           <AssociationSet Name="FK_CreatedQuestions_Category" Association="Self.FK_CreatedQuestions_Category">
             <End Role="Category" EntitySet="Category" />
+            <End Role="CreatedQuestions" EntitySet="CreatedQuestions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CreatedQuestions_CreatedQuestionsRejectType" Association="Self.FK_CreatedQuestions_CreatedQuestionsRejectType">
+            <End Role="CreatedQuestionsRejectType" EntitySet="CreatedQuestionsRejectType" />
             <End Role="CreatedQuestions" EntitySet="CreatedQuestions" />
           </AssociationSet>
           <AssociationSet Name="FK_CreatedQuestions_CreatedQuestionsVerifyType" Association="Self.FK_CreatedQuestions_CreatedQuestionsVerifyType">
@@ -2198,8 +2223,7 @@ warning 6002: The table/view 'what_if.dbo.AchievementStatistics' does not have a
             <End Role="WatchedAd" EntitySet="WatchedAd" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="Falcon.DbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -2256,6 +2280,7 @@ warning 6002: The table/view 'what_if.dbo.AchievementStatistics' does not have a
           <EntitySet Name="CodeGifts" EntityType="Falcon.DbModel.CodeGift" />
           <EntitySet Name="Comments" EntityType="Falcon.DbModel.Comment" />
           <EntitySet Name="CreatedQuestions" EntityType="Falcon.DbModel.CreatedQuestion" />
+          <EntitySet Name="CreatedQuestionsRejectTypes" EntityType="Falcon.DbModel.CreatedQuestionsRejectType" />
           <EntitySet Name="CreatedQuestionsVerifyTypes" EntityType="Falcon.DbModel.CreatedQuestionsVerifyType" />
           <EntitySet Name="DailyRewards" EntityType="Falcon.DbModel.DailyReward" />
           <EntitySet Name="DailyRewardsAchieveds" EntityType="Falcon.DbModel.DailyRewardsAchieved" />
@@ -2437,6 +2462,10 @@ warning 6002: The table/view 'what_if.dbo.AchievementStatistics' does not have a
             <End Role="User" EntitySet="Users" />
             <End Role="Comment" EntitySet="Comments" />
           </AssociationSet>
+          <AssociationSet Name="FK_CreatedQuestions_CreatedQuestionsRejectType" Association="Falcon.DbModel.FK_CreatedQuestions_CreatedQuestionsRejectType">
+            <End Role="CreatedQuestionsRejectType" EntitySet="CreatedQuestionsRejectTypes" />
+            <End Role="CreatedQuestion" EntitySet="CreatedQuestions" />
+          </AssociationSet>
           <AssociationSet Name="FK_CreatedQuestions_CreatedQuestionsVerifyType" Association="Falcon.DbModel.FK_CreatedQuestions_CreatedQuestionsVerifyType">
             <End Role="CreatedQuestionsVerifyType" EntitySet="CreatedQuestionsVerifyTypes" />
             <End Role="CreatedQuestion" EntitySet="CreatedQuestions" />
@@ -2609,7 +2638,7 @@ warning 6002: The table/view 'what_if.dbo.AchievementStatistics' does not have a
             <End Role="WatchAdProvider" EntitySet="WatchAdProviders" />
             <End Role="WatchedAd" EntitySet="WatchedAds" />
           </AssociationSet>
-        </EntityContainer>
+          </EntityContainer>
         <ComplexType Name="sp_helpdiagramdefinition_Result">
           <Property Type="Int32" Name="version" Nullable="true" />
           <Property Type="Binary" Name="definition" Nullable="true" />
@@ -2927,10 +2956,20 @@ warning 6002: The table/view 'what_if.dbo.AchievementStatistics' does not have a
           <Property Name="CategoryID" Type="Int32" />
           <Property Name="QuestionBoostID" Type="Int32" />
           <Property Name="Lock" Type="Boolean" Nullable="false" />
+          <Property Name="RejectMessageID" Type="Int32" />
           <NavigationProperty Name="Category" Relationship="Falcon.DbModel.FK_CreatedQuestions_Category" FromRole="CreatedQuestion" ToRole="Category" />
+          <NavigationProperty Name="CreatedQuestionsRejectType" Relationship="Falcon.DbModel.FK_CreatedQuestions_CreatedQuestionsRejectType" FromRole="CreatedQuestion" ToRole="CreatedQuestionsRejectType" />
           <NavigationProperty Name="CreatedQuestionsVerifyType" Relationship="Falcon.DbModel.FK_CreatedQuestions_CreatedQuestionsVerifyType" FromRole="CreatedQuestion" ToRole="CreatedQuestionsVerifyType" />
           <NavigationProperty Name="QuestionBoost" Relationship="Falcon.DbModel.FK_CreatedQuestions_QuestionBoost" FromRole="CreatedQuestion" ToRole="QuestionBoost" />
           <NavigationProperty Name="User" Relationship="Falcon.DbModel.FK_CreatedQuestions_User" FromRole="CreatedQuestion" ToRole="User" />
+        </EntityType>
+        <EntityType Name="CreatedQuestionsRejectType">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="Message" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="CreatedQuestions" Relationship="Falcon.DbModel.FK_CreatedQuestions_CreatedQuestionsRejectType" FromRole="CreatedQuestionsRejectType" ToRole="CreatedQuestion" />
         </EntityType>
         <EntityType Name="CreatedQuestionsVerifyType">
           <Key>
@@ -3363,7 +3402,7 @@ warning 6002: The table/view 'what_if.dbo.AchievementStatistics' does not have a
           <Property Name="LastSeenDateTime" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="PrevLastSeenDateTime" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="PreviousDaySeen" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="RowVersion" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" ConcurrencyMode="Fixed" />
+          <Property Name="RowVersion" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
           <NavigationProperty Name="AchievedCodeGifts" Relationship="Falcon.DbModel.FK_AchievedCodeGift_User" FromRole="User" ToRole="AchievedCodeGift" />
           <NavigationProperty Name="AchievedGifts" Relationship="Falcon.DbModel.FK_AchievedGifts_User" FromRole="User" ToRole="AchievedGift" />
           <NavigationProperty Name="AchievedPosessions" Relationship="Falcon.DbModel.FK_AchievedQuests_User" FromRole="User" ToRole="AchievedPosession" />
@@ -3450,7 +3489,7 @@ warning 6002: The table/view 'what_if.dbo.AchievementStatistics' does not have a
           <Property Name="Rank" Type="Int32" Nullable="false" />
           <Property Name="SpinRemainedChance" Type="Int32" Nullable="false" />
           <Property Name="SpinWheelCount" Type="Int32" Nullable="false" />
-          <Property Name="RowVersion" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" ConcurrencyMode="Fixed" />
+          <Property Name="RowVersion" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
           <NavigationProperty Name="User" Relationship="Falcon.DbModel.FK_UserStatus_User" FromRole="UserStat" ToRole="User" />
         </EntityType>
         <EntityType Name="UserType">
@@ -3965,6 +4004,18 @@ warning 6002: The table/view 'what_if.dbo.AchievementStatistics' does not have a
             </Principal>
             <Dependent Role="Comment">
               <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CreatedQuestions_CreatedQuestionsRejectType">
+          <End Type="Falcon.DbModel.CreatedQuestionsRejectType" Role="CreatedQuestionsRejectType" Multiplicity="0..1" />
+          <End Type="Falcon.DbModel.CreatedQuestion" Role="CreatedQuestion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CreatedQuestionsRejectType">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="CreatedQuestion">
+              <PropertyRef Name="RejectMessageID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -4550,7 +4601,7 @@ warning 6002: The table/view 'what_if.dbo.AchievementStatistics' does not have a
             </Dependent>
           </ReferentialConstraint>
         </Association>
-      </Schema>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -4852,6 +4903,7 @@ warning 6002: The table/view 'what_if.dbo.AchievementStatistics' does not have a
           <EntitySetMapping Name="CreatedQuestions">
             <EntityTypeMapping TypeName="Falcon.DbModel.CreatedQuestion">
               <MappingFragment StoreEntitySet="CreatedQuestions">
+                <ScalarProperty Name="RejectMessageID" ColumnName="RejectMessageID" />
                 <ScalarProperty Name="Lock" ColumnName="Lock" />
                 <ScalarProperty Name="QuestionBoostID" ColumnName="QuestionBoostID" />
                 <ScalarProperty Name="CategoryID" ColumnName="CategoryID" />
@@ -4860,6 +4912,14 @@ warning 6002: The table/view 'what_if.dbo.AchievementStatistics' does not have a
                 <ScalarProperty Name="But" ColumnName="But" />
                 <ScalarProperty Name="What_if" ColumnName="What_if" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CreatedQuestionsRejectTypes">
+            <EntityTypeMapping TypeName="Falcon.DbModel.CreatedQuestionsRejectType">
+              <MappingFragment StoreEntitySet="CreatedQuestionsRejectType">
+                <ScalarProperty Name="Message" ColumnName="Message" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -5362,7 +5422,7 @@ warning 6002: The table/view 'what_if.dbo.AchievementStatistics' does not have a
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-        </EntityContainerMapping>
+          </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
   </edmx:Runtime>

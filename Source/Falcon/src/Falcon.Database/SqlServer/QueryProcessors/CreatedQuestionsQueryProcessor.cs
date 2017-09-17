@@ -52,11 +52,13 @@ namespace Falcon.Database.SqlServer.QueryProcessors
                     ServerTime = now,
                     CommentCount = u.CommentCount,
                     Locked = true,
+                    RejectMessage = string.Empty
                 })
                 .Union(createdQuestion.AsNoTracking().Where(cq => cq.UserID == UserID && (
                         cq.VerifyStateID == (int)CreatedQuestionState.CreatedQuestionIsInChecking ||
                         cq.VerifyStateID == (int)CreatedQuestionState.CreatedQuestionRejected
                     )).Include(cq => cq.Category.Name)
+                    .Include(cq => cq.CreatedQuestionsRejectType)
                     .Select(cq => new SNewCreatedQuestions
                     {
                         ID = cq.ID,
@@ -71,7 +73,8 @@ namespace Falcon.Database.SqlServer.QueryProcessors
                         RegisterDateTime = cq.RegisterDateTime,
                         ServerTime = now,
                         CommentCount = 0,
-                        Locked = cq.Lock
+                        Locked = cq.Lock,
+                        RejectMessage = cq.CreatedQuestionsRejectType.Message
                     }));
 
 

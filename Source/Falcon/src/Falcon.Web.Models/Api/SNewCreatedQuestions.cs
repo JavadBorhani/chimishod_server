@@ -28,5 +28,6 @@ namespace Falcon.Web.Models.Api
         public int CommentCount { get; set; }
         public DateTime RegisterDateTime { get; set; }
         public DateTime ServerTime { get; set; }
+        public string RejectMessage { get; set; }
     }
 }

@@ -125,6 +125,9 @@
     <Compile Include="DbModel\CreatedQuestion.cs">
       <DependentUpon>WhatIfDataModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="DbModel\CreatedQuestionsRejectType.cs">
+      <DependentUpon>WhatIfDataModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="DbModel\CreatedQuestionsVerifyType.cs">
       <DependentUpon>WhatIfDataModel.tt</DependentUpon>
     </Compile>
