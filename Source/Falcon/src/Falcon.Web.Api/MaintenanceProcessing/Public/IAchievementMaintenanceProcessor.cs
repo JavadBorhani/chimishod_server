@@ -10,5 +10,6 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Public
     public interface IAchievementMaintenanceProcessor
     {
         Task<SAchievementDic> PrepareAchievementList();
+        Task<int> AchieveItem(int AchievementID);
     }
 }

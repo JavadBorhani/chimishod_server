@@ -32,8 +32,7 @@ namespace Falcon.Web.Api.Controllers.V1
         private readonly IGlobalApplicationState mAppState;
         private readonly IAchievementInquiryProcessor mAchievementInquiryProcessor;
         private readonly IUserQueryProcessor mUserQuery;
-        private readonly IScoringQueryProcessor mScoreQuery;
-        private readonly IUsersMaintenanceProcessor mUserMaintenance;
+
         private readonly IAchievementMaintenanceProcessor mAchievementMaintenance;
 
         public AchievedPosessionsController(
@@ -44,8 +43,6 @@ namespace Falcon.Web.Api.Controllers.V1
             IGlobalApplicationState AppState,
             IAchievementInquiryProcessor AchievementInquiryProcessor , 
             IUserQueryProcessor mUserQueryProcessor , 
-            IScoringQueryProcessor ScoringQueryProcessor ,
-            IUsersMaintenanceProcessor UserMaintenance , 
             IAchievementMaintenanceProcessor AchievementMaintenanceProcessor)
         {
             mMapper = Mapper;
@@ -55,8 +52,6 @@ namespace Falcon.Web.Api.Controllers.V1
             mAppState = AppState;
             mAchievementInquiryProcessor = AchievementInquiryProcessor;
             mUserQuery = mUserQueryProcessor;
-            mScoreQuery = ScoringQueryProcessor;
-            mUserMaintenance = UserMaintenance;
             mAchievementMaintenance = AchievementMaintenanceProcessor; 
         }
 
@@ -73,42 +68,10 @@ namespace Falcon.Web.Api.Controllers.V1
         [ResponseType(typeof(int))]
         [Route("Achievements/Change/{AchievementID}")]
         [HttpPost]
-        public async Task<IHttpActionResult> ChangeAchievableToAchieved(int AchievementID)
+        public async Task<int> ChangeAchievableToAchieved(int AchievementID)
         {
-            var user = await mDb.Set<User>().AsNoTracking().Where(u => u.UUID == mUserSession.UUID).Include( u => u.Level).SingleOrDefaultAsync();
-
-            if (user != null) //user Exists
-            {
-                var achievable = await mDb.Set<AchievedPosession>()
-                                        .Include(ap => ap.Achievement)
-                                        .Where(ap => ap.UserID == user.ID &&
-                                               ap.AchievementID == AchievementID &&
-                                               ap.AchieveStateID == (int)AchievementState.AchievementDefaultAchievableID)
-                                        .SingleOrDefaultAsync();
-                if (achievable != null)
-                {
-                    
-                    achievable.AchieveStateID = (int)AchievementState.AchievementDefaultAchievedID;
-                    achievable.AchievedDate = mDateTime.Now;
-
-                    int coin = achievable.Achievement.Coin;
-                    int prize = achievable.Achievement.ScorePrize;
-
-                    await mUserMaintenance.LevelUp(prize); 
-                    await mScoreQuery.AddScore(mUserSession.ID , prize , AchievedScoreType.Achievement);
-
-                    int totalCoin = await mUserQuery.IncreaseCoin(coin);
-
-                    await mDb.SaveChangesAsync();
-
-                    return Response(HttpStatusCode.OK, totalCoin);
-                }
-                return Response(HttpStatusCode.Unauthorized);
-            }
-            else
-            {
-                return Response(HttpStatusCode.Unauthorized);
-            }
+            var coinAmount = await mAchievementMaintenance.AchieveItem(AchievementID);
+            return coinAmount;
         }
 
         [Route("Achievements/Achieved/")]
@@ -168,44 +131,6 @@ namespace Falcon.Web.Api.Controllers.V1
             else
                 return Response(HttpStatusCode.NoContent);
             
-        }
-
-        private void AddRemainedResults(int RemainedNumber, ref List<Achievement> Usuals, ref List<Achievement> AdHoc, ref List<Achievement> NotAchieved)
-        {
-            int counter = 0;
-            int adhocSize = AdHoc.Count;
-            int usualsSize = Usuals.Count;
-            int breakflag = 0;
-
-            for (int i = 0; i < RemainedNumber; ++i)
-            {
-                if (i < adhocSize)
-                {
-                    NotAchieved.Add(AdHoc[i]);
-                    ++counter;
-                }
-                else
-                {
-                    ++breakflag;
-                }
-                if (counter == RemainedNumber) break;
-
-                if (i < usualsSize)
-                {
-                    NotAchieved.Add(Usuals[i]);
-                    ++counter;
-                }
-                else
-                {
-                    ++breakflag;
-                }
-
-                if (counter == RemainedNumber) break;
-                if (breakflag == 2)
-                    break;
-                else
-                    breakflag = 0;
-            }
         }
     }
 }   

@@ -17,19 +17,28 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
         private readonly IUsersInquiryProcessor mUserInquiry;
         private readonly IUserSession mUserSession;
         private readonly ICategoriesQueryProcessor mCategoriesQueryProcessor;
+        private readonly IScoringQueryProcessor mScoreQuery;
+        private readonly IUsersMaintenanceProcessor mUserMaintenance;
+        private readonly IUserQueryProcessor mUserQuery;
         private readonly IMapper mMapper;
 
         public AchievementMaintenanceProcessor
             (
             IAchievementQueryProcessor AchievementQueryProcessor ,
-            IUsersInquiryProcessor UserQuery,
+            IUsersInquiryProcessor UserInquiry,
             IUserSession UserSession,
             ICategoriesQueryProcessor CategoriesQueryProcessor,
-            IMapper Mapper
+            IMapper Mapper, 
+            IScoringQueryProcessor ScoreQuery , 
+            IUsersMaintenanceProcessor UserMaintenance,
+            IUserQueryProcessor UserQuery
             )
         {
+            mScoreQuery = ScoreQuery;
+            mUserQuery = UserQuery;
+            mUserMaintenance = UserMaintenance;
             mAchievementQuery = AchievementQueryProcessor;
-            mUserInquiry = UserQuery;
+            mUserInquiry = UserInquiry;
             mUserSession = UserSession;
             mCategoriesQueryProcessor = CategoriesQueryProcessor;
             mMapper = Mapper;   
@@ -170,6 +179,25 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
 
             Data.AchievementState = state;
             return state;
+        }
+
+        public async Task<int> AchieveItem(int AchievementID)
+        {
+            var achievedItem = await mAchievementQuery.AchieveItem(AchievementID);
+
+            if (achievedItem != null) //achieved something 
+            {
+                int coin = achievedItem.Coin;
+                int prize = achievedItem.ScorePrize;
+
+                await mUserMaintenance.LevelUp(prize);
+                await mScoreQuery.AddScore(mUserSession.ID, prize, AchievedScoreType.Achievement);
+
+                int totalCoin = await mUserQuery.IncreaseCoin(coin);
+                return totalCoin;
+            }
+
+            return -1; 
         }
     }
 }   

@@ -20,25 +20,25 @@ namespace Falcon.Database.SqlServer.QueryProcessors
         private readonly IDbContext mDb;
         private readonly IUserSession mUserSession;
         private readonly IDateTime mDateTime;
-        private readonly IMapper mMapper; 
+        private readonly IMapper mMapper;
 
-        public AchievementQueryProcessor(IDbContext Database , IUserSession UserSession , IDateTime DateTime , IMapper Mapper)
+        public AchievementQueryProcessor(IDbContext Database, IUserSession UserSession, IDateTime DateTime, IMapper Mapper)
         {
             mDb = Database;
             mUserSession = UserSession;
             mDateTime = DateTime;
-            mMapper = Mapper;   
+            mMapper = Mapper;
         }
 
-        public async Task<bool> AddingAchievementPossetionItems(int UserID , List<int> Items, AchievementState AchievementState)
+        public async Task<bool> AddingAchievementPossetionItems(int UserID, List<int> Items, AchievementState AchievementState)
         {
             var data = new AchievedPosession[Items.Count];
 
-            for(int i = 0; i < Items.Count; ++i)
+            for (int i = 0; i < Items.Count; ++i)
             {
                 data[i] = new AchievedPosession
                 {
-                    UserID = UserID, 
+                    UserID = UserID,
                     AchievementID = Items[i],
                     AchieveStateID = (int)AchievementState,
                     AchievableDate = mDateTime.Now,
@@ -56,9 +56,9 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             var data = await mDb.Set<Achievement>()
                 .AsNoTracking()
                 .OrderBy(s => s.Priority)
-                .ToArrayAsync(); 
+                .ToArrayAsync();
 
-            return data;        
+            return data;
         }
 
         public async Task<UserAchievementRecord[]> GetAllAchievementWithUserState(int UserID)
@@ -92,7 +92,7 @@ namespace Falcon.Database.SqlServer.QueryProcessors
                             .ToArrayAsync();
 
 
-            return data;    
+            return data;
         }
 
         public async Task<SAchievementPossesion[]> GetUserAchievedPossetionIds()
@@ -101,7 +101,7 @@ namespace Falcon.Database.SqlServer.QueryProcessors
                                                         .AsNoTracking()
                                                         .Include(ap => ap.Achievement)
                                                         .Where(ap => ap.UserID == mUserSession.ID &&
-                                                               ap.AchieveStateID == (int)AchievementState.AchievementDefaultAchievedID && 
+                                                               ap.AchieveStateID == (int)AchievementState.AchievementDefaultAchievedID &&
                                                                ap.AchieveStateID == (int)AchievementState.AchievementDefaultAchievableID)
                                                         .Select(ap => new SAchievementPossesion
                                                         {
@@ -138,7 +138,27 @@ namespace Falcon.Database.SqlServer.QueryProcessors
 
         public async Task<bool> IsExists(int ID)
         {
-            return await mDb.Set<Achievement>().AsNoTracking().CountAsync(a => a.ID == ID) > 0 ;
+            return await mDb.Set<Achievement>().AsNoTracking().CountAsync(a => a.ID == ID) > 0;
+        }
+
+        public async Task<Achievement> AchieveItem(int AchievementID)
+        {
+            var achievablePossesionItem = await mDb.Set<AchievedPosession>()
+                                      .Include(ap => ap.Achievement)
+                                      .Where(ap => ap.UserID == mUserSession.ID &&
+                                             ap.AchievementID == AchievementID &&
+                                             ap.AchieveStateID == (int)AchievementState.AchievementDefaultAchievableID)
+                                      .SingleOrDefaultAsync();
+
+            if(achievablePossesionItem != null)
+            {
+                achievablePossesionItem.AchieveStateID = (int)AchievementState.AchievementDefaultAchievedID;
+                achievablePossesionItem.AchievedDate = mDateTime.Now;
+                await mDb.SaveChangesAsync();
+
+                return achievablePossesionItem.Achievement;
+            }
+            return null;
         }
     }
 }
