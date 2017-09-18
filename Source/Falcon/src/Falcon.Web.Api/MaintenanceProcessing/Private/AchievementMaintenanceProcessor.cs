@@ -130,7 +130,7 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
 
                 case AchievementStyle.Avatar:
 
-                    if (Data.Quantity >= AchieveStats.PurchasedAvatarCount)
+                    if (AchieveStats.PurchasedAvatarCount >= Data.Quantity)
                         state = AchievementState.AchievementDefaultAchievableID;
 
                     break;
@@ -138,7 +138,7 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
 
                 case AchievementStyle.Category:
 
-                    if (Data.Quantity >= AchieveStats.PurchasedCategoryCount)
+                    if (AchieveStats.PurchasedCategoryCount >= Data.Quantity)
                         state = AchievementState.AchievementDefaultAchievableID;
 
                     break;
@@ -146,7 +146,7 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
 
                 case AchievementStyle.Level:
 
-                    if (Data.Quantity >= AchieveStats.LevelNumber)
+                    if (AchieveStats.LevelNumber >= Data.Quantity)
                         state = AchievementState.AchievementDefaultAchievableID;
 
                     break;
@@ -155,14 +155,14 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
 
                 case AchievementStyle.Score:
 
-                    if (Data.Quantity >= AchieveStats.Score)
+                    if (AchieveStats.Score >= Data.Quantity)
                         state = AchievementState.AchievementDefaultAchievableID;
 
                     break;
 
                 case AchievementStyle.CreatedQuestions:
 
-                    if (Data.Quantity >= AchieveStats.CreatedQuestionsCount)
+                    if (AchieveStats.CreatedQuestionsCount >= Data.Quantity)
                         state = AchievementState.AchievementDefaultAchievableID;
 
                     break;  
