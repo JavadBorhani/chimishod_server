@@ -20,6 +20,7 @@ namespace Falcon.Web.Api.Controllers.V1
 
         private readonly IAppAdvertsInquiryProcessor mAppAdvertisementsInquiryProcessor;
         private readonly IAppAdvertsMaintenanceProcessor mAppAdvertsMaintenanceProcessor;
+
         public AppAdvertisementsController(IAppAdvertsInquiryProcessor AppAdvertisementsInquiryProcessor, IAppAdvertsMaintenanceProcessor AppAdvertsMaintenanceProcessor)
         {
             mAppAdvertisementsInquiryProcessor = AppAdvertisementsInquiryProcessor;

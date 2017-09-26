@@ -30,7 +30,6 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
                     totalCoin = await mUserQuery.IncreaseCoin(levelPrize);
                 }
             }
-
             return totalCoin;
         }
        
