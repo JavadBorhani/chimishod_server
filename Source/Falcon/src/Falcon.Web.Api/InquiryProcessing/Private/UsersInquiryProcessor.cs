@@ -39,6 +39,6 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
         {
             bool exists = await mUserQueryProcessor.LevelExits(LevelNumber);
             return exists;   
-        }
+        }   
     }
 }

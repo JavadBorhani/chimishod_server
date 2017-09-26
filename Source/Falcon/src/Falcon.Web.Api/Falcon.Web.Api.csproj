@@ -192,6 +192,7 @@
     <Compile Include="Controllers\V1\SpinWheelController.cs" />
     <Compile Include="Controllers\V1\WatchAdController.cs" />
     <Compile Include="InquiryProcessing\Private\AchievementInquiryProcessor.cs" />
+    <Compile Include="InquiryProcessing\Private\AnswerInquiryProcessor.cs" />
     <Compile Include="InquiryProcessing\Private\AppAdvertsInquiryProcessor.cs" />
     <Compile Include="InquiryProcessing\Private\AvatarsInquiryProcessor.cs" />
     <Compile Include="InquiryProcessing\Private\CategoriesInquiryProcessor.cs" />
@@ -206,6 +207,7 @@
     <Compile Include="InquiryProcessing\Private\NotificationInquiryProcessor.cs" />
     <Compile Include="InquiryProcessing\Private\UserStatsInquiryProcessor.cs" />
     <Compile Include="InquiryProcessing\Public\IAchievementInquiryProcessor.cs" />
+    <Compile Include="InquiryProcessing\Public\IAnswerInquiryProcessor.cs" />
     <Compile Include="InquiryProcessing\Public\IAppAdvertsInquiryProcessor.cs" />
     <Compile Include="InquiryProcessing\Public\IAvatarsInquiryProcessor.cs" />
     <Compile Include="InquiryProcessing\Public\ICategoriesInquiryProcessor.cs" />

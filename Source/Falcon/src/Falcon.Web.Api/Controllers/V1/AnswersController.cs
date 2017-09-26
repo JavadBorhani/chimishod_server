@@ -258,7 +258,7 @@ namespace Falcon.Web.Api.Controllers.V1
                 {
                     int totalCoin = await mUsersMaintenance.LevelUp(mAppState.Prize_AnswerPrize * prizeCoefficient);
                     if (totalCoin == Constants.DefaultValues.NoNewCoin) // do something 
-                    await mDb.SaveChangesAsync();
+                        await mDb.SaveChangesAsync();
                 }
                 
                 SQuestion[] Questions;
