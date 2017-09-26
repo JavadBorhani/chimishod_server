@@ -17,7 +17,7 @@ namespace Falcon.Web.Api.AutoMappingConfiguration.AchievementMap
                 .ForMember(s => s.Description, m => m.MapFrom(ua => ua.Description))
                 .ForMember(s => s.Star, m => m.MapFrom(ua => ua.Coin))
                 .ForMember(s => s.Icon, m => m.MapFrom(ua => ua.Icon))
-                .ForMember(s => s.Prize, m => m.MapFrom(ua => ua.ScorePrize))
+                .ForMember(s => s.XP, m => m.MapFrom(ua => ua.XpPrize))
                 .ForMember(s => s.AchievementState, m => m.MapFrom(ua => ua.AchievementState));
         }
     }

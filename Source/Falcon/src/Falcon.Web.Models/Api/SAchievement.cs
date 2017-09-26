@@ -31,7 +31,7 @@ namespace Falcon.Web.Models.Api
         public string Description { get; set; }
         public int Star { get; set; }
         public string Icon { get; set; }
-        public int Prize { get; set; }
+        public int XP { get; set; }
         public AchievementState AchievementState { get; set; }
     }
 
@@ -44,7 +44,7 @@ namespace Falcon.Web.Models.Api
         public int? CategoryID { get; set; }
         public int? Quantity { get; set; }
         public int Coin { get; set; }
-        public int ScorePrize { get; set; }
+        public int XpPrize { get; set; }
         public string Icon { get; set; }
         public bool IsActive { get; set; }
         public int Priority { get; set; }
