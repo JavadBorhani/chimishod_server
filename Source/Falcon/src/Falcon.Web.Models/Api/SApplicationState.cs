@@ -41,16 +41,24 @@ namespace Falcon.Web.Models.Api
         public int Question_ServerBurntReturnAmount { get; set; }
 
         [Required]
-        public int Prize_AnswerPrize { get; set; }
+        public int Prize_AnswerXP { get; set; }
 
         [Required]
-        public int Prize_LikePrize { get; set; }
+        public int Prize_LikeScoreAmount { get; set; }
 
         [Required]
-        public int Prize_CreateNewQuestionPrize { get; set; }
+        public int Prize_CreateNewQuestionXP { get; set; }
 
         [Required]
-        public int Prize_NewQuestionAcceptedPrize { get; set; }
+        public int Prize_NewQuestionAcceptedXP { get; set; }
+
+        [Required]
+        public int Prize_CreateNewQuestionScore { get; set; }
+        [Required]
+        public int Prize_NewQuestionAcceptedScore { get; set; }
+
+        [Required]
+        public int Prize_AnswerScoreAmount { get; set; }
 
         [Required]
         public int Paging_DefaultPageSize { get; set; }
@@ -98,5 +106,7 @@ namespace Falcon.Web.Models.Api
 
         [Required]
         public int SpinWheelLoopPrice { get; set; }
+
+
     }
 }

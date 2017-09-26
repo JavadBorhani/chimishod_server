@@ -114,7 +114,7 @@ namespace Falcon.Web.Api.Controllers.V1
                 var selectedCat = await mDb.Set<SelectedCategory>().AsNoTracking()
                     .Where(sc => sc.UserID == user.ID)
                     .Include(sc => sc.Category)
-                    .Select(u => new { u.Category.ID , u.Category.Name , u.Category.PrizeCoefficient ,})
+                    .Select(u => new { u.Category.ID , u.Category.Name , u.Category.ScoreCoefficient, })
                     .SingleOrDefaultAsync();
 
                 var UserState = new SUserState
@@ -122,7 +122,7 @@ namespace Falcon.Web.Api.Controllers.V1
                     UserStar = user.TotalCoin,
                     SelectedCategoryID = selectedCat.ID,
                     SelectedCategoryName = selectedCat.Name,
-                    SelectedCategoryCoEfficient = selectedCat.PrizeCoefficient,
+                    SelectedCategoryCoEfficient = selectedCat.ScoreCoefficient,
                     SelectedThemeID = CurrentSelectedTheme.ID
                 };
 
@@ -339,7 +339,7 @@ namespace Falcon.Web.Api.Controllers.V1
 
             var catInfo = await mDb.Set<Category>().AsNoTracking()
                                                 .Where(c => c.ID == Constants.DefaultUser.CategoryID)
-                                                .Select(c => new { c.Name, c.PrizeCoefficient })
+                                                .Select(c => new { c.Name, c.ScoreCoefficient })
                                                 .SingleOrDefaultAsync();
 
             var avatar = await mDb.Set<SelectedAvatar>().AsNoTracking()
@@ -362,7 +362,7 @@ namespace Falcon.Web.Api.Controllers.V1
                     SelectedCategoryID = Constants.DefaultUser.CategoryID,
                     SelectedThemeID = Constants.DefaultUser.AppThemeID,
                     SelectedCategoryName = catInfo.Name,
-                    SelectedCategoryCoEfficient = catInfo.PrizeCoefficient,
+                    SelectedCategoryCoEfficient = catInfo.ScoreCoefficient,
                 };
                 return ResponseMessage(Request.CreateResponse(HttpStatusCode.Created, new
                 {

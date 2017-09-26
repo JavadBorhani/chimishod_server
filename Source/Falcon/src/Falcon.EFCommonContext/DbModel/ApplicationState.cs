@@ -26,10 +26,13 @@ namespace Falcon.EFCommonContext.DbModel
         public string Question_NoQuestionFoundBut { get; set; }
         public int Question_NoQuestionFoundID { get; set; }
         public int Question_ServerBurntReturnAmount { get; set; }
-        public int Prize_AnswerPrize { get; set; }
-        public int Prize_LikePrize { get; set; }
-        public int Prize_CreateNewQuestionPrize { get; set; }
-        public int Prize_NewQuestionAcceptedPrize { get; set; }
+        public int Prize_AnswerXP { get; set; }
+        public int Prize_LikeScoreAmount { get; set; }
+        public int Prize_CreateNewQuestionXP { get; set; }
+        public int Prize_NewQuestionAcceptedXP { get; set; }
+        public int Prize_CreateNewQuestionScore { get; set; }
+        public int Prize_NewQuestionAcceptedScore { get; set; }
+        public int Prize_AnswerScoreAmount { get; set; }
         public int Paging_DefaultPageSize { get; set; }
         public int Leader_TopNumberToShow { get; set; }
         public int Comment_DefaultNumberAmount { get; set; }

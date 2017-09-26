@@ -188,7 +188,7 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
             if (achievedItem != null) //achieved something 
             {
                 int coin = achievedItem.Coin;
-                int prize = achievedItem.ScorePrize;
+                int prize = achievedItem.XP;
 
                 await mUserMaintenance.LevelUp(prize);
                 await mScoreQuery.AddScore(mUserSession.ID, prize, AchievedScoreType.Achievement);

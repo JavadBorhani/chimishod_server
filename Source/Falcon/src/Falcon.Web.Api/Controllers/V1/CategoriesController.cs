@@ -106,7 +106,7 @@ namespace Falcon.Web.Api.Controllers.V1
                         LongDescription = categories[i].Cat.LongDescription,
                         Icon = categories[i].Cat.Icon,
                         Price = categories[i].Cat.Price,
-                        PrizeCoefficient = categories[i].Cat.PrizeCoefficient,
+                        PrizeCoefficient = categories[i].Cat.ScoreCoefficient,
                         IsPurchased = (categories[i].Cat.ID == Constants.DefaultUser.CategoryID) ? true : purchasedCategories.Contains(categories[i].Cat.ID), // TODO : remember to remove what has checked to increase checking time
                         IsActive = (selectedCategory == categories[i].Cat.ID) ? true : false,
                         DiscountAmount = categories[i].Cat.DiscountAmount,

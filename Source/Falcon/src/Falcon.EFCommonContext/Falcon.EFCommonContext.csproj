@@ -227,6 +227,9 @@
     <Compile Include="DbModel\TagState.cs">
       <DependentUpon>WhatIfDataModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="DbModel\Tutorial.cs">
+      <DependentUpon>WhatIfDataModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="DbModel\UnRepeatableAchievedSpinWheel.cs">
       <DependentUpon>WhatIfDataModel.tt</DependentUpon>
     </Compile>

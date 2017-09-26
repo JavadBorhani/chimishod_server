@@ -241,8 +241,7 @@ namespace Falcon.Web.Api.Controllers.V1
                                                                 .SingleOrDefaultAsync();
                         if(otherUser != null)
                         {
-                            await mScoringQueryProcessor.AddScore(otherUser.ID, mAppState.Prize_LikePrize, AchievedScoreType.Answer);
-                            otherUser.LevelProgress += mAppState.Prize_LikePrize;
+                            await mScoringQueryProcessor.AddScore(otherUser.ID, mAppState.Prize_LikeScoreAmount, AchievedScoreType.Answer);
                         }
                     }
                     else if (answer.Dislike != null)
@@ -253,10 +252,10 @@ namespace Falcon.Web.Api.Controllers.V1
                     await mDb.SaveChangesAsync();
                 }
 
-                int prizeCoefficient = questionToUpdate.Category.PrizeCoefficient;
-                if (mAppState.Prize_AnswerPrize > 0 && prizeCoefficient > 0 )
+                int prizeCoefficient = questionToUpdate.Category.ScoreCoefficient;
+                if (mAppState.Prize_AnswerScoreAmount > 0 && prizeCoefficient > 0 )
                 {
-                    int totalCoin = await mUsersMaintenance.LevelUp(mAppState.Prize_AnswerPrize * prizeCoefficient);
+                    int totalCoin = await mUsersMaintenance.LevelUp(mAppState.Prize_AnswerScoreAmount * prizeCoefficient);
                     if (totalCoin == Constants.DefaultValues.NoNewCoin) // do something 
                         await mDb.SaveChangesAsync();
                 }

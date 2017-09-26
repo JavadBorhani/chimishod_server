@@ -86,7 +86,7 @@ namespace Falcon.Database.SqlServer.QueryProcessors
                                 Name = joinData.achievement.Name,
                                 Quantity = joinData.achievement.Quantity,
                                 QueryTypeID = joinData.achievement.QueryTypeID,
-                                ScorePrize = joinData.achievement.ScorePrize,
+                                ScorePrize = joinData.achievement.XP,
                             })
                             .OrderBy(AchievementRecord => AchievementRecord.Priority)
                             .ToArrayAsync();

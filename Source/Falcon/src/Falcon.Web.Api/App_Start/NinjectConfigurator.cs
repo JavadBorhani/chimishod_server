@@ -139,6 +139,7 @@ namespace Falcon.Web.Api
             container.Bind<IAvatarsInquiryProcessor>().To<AvatarsInquiryProcessor>().InRequestScope();
             container.Bind<ICharacteristicsInquiryProcessor>().To<CharacteristicsInquiryProcessor>().InRequestScope();
             container.Bind<IUserStatsInquiryProcessor>().To<UserStatsInquiryProcessor>().InRequestScope();
+            container.Bind<IAnswerInquiryProcessor>().To<AnswerInquiryProcessor>().InRequestScope();
 
         }
         private void  AddMaintenanceProcessors(IKernel container)
@@ -158,6 +159,7 @@ namespace Falcon.Web.Api
             container.Bind<IUsersMaintenanceProcessor>().To<UsersMaintenanceProcessor>().InRequestScope();
             container.Bind<IAchievementMaintenanceProcessor>().To<AchievementMaintenanceProcessor>().InRequestScope();
             container.Bind<ICreatedQuestionsMaintenanceProcessor>().To<CreatedQuestionsMaintenanceProcessor>().InRequestScope();
+            container.Bind<IAnswerMaintenanceProcessor>().To<AnswerMaintenanceProcessor>().InRequestScope();
         }
 
         private void AddAdHoc(IKernel container)

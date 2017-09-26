@@ -28,10 +28,12 @@ namespace Falcon.Web.Api.AutoMappingConfiguration.ApplicationStateMap
                 .ForMember(s => s.Question_ServerBurntReturnAmount, ca => ca.MapFrom(y => y.Question_ServerBurntReturnAmount))
 
                 //Prize
-                .ForMember(s => s.Prize_AnswerPrize, ca => ca.MapFrom(y => y.Prize_AnswerPrize))
-                .ForMember(s => s.Prize_LikePrize, ca => ca.MapFrom(y => y.Prize_LikePrize))
-                .ForMember(s => s.Prize_CreateNewQuestionPrize, ca => ca.MapFrom(y => y.Prize_CreateNewQuestionPrize))
-                .ForMember(s => s.Prize_NewQuestionAcceptedPrize, ca => ca.MapFrom(y => y.Prize_NewQuestionAcceptedPrize))
+                .ForMember(s => s.Prize_AnswerXP, ca => ca.MapFrom(y => y.Prize_AnswerXP))
+                .ForMember(s => s.Prize_LikeScoreAmount, ca => ca.MapFrom(y => y.Prize_LikeScoreAmount))
+                .ForMember(s => s.Prize_CreateNewQuestionXP, ca => ca.MapFrom(y => y.Prize_CreateNewQuestionXP))
+                .ForMember(s => s.Prize_NewQuestionAcceptedXP, ca => ca.MapFrom(y => y.Prize_NewQuestionAcceptedXP))
+                .ForMember(s => s.Prize_CreateNewQuestionScore, ca => ca.MapFrom(y => y.Prize_CreateNewQuestionScore))
+                .ForMember(s => s.Prize_NewQuestionAcceptedScore, ca => ca.MapFrom(y => y.Prize_NewQuestionAcceptedScore))
 
                 .ForMember(s => s.Store_DefaultReturnAmount, ca => ca.MapFrom(y => y.Store_DefaultReturnAmount))
 

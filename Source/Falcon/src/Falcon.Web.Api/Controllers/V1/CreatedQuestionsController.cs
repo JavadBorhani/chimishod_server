@@ -89,7 +89,7 @@ namespace Falcon.Web.Api.App_Start
                     int? boostID = (boost == null) ? (int?)null : boost.ID;
 
                     int newQuestionPrice = mAppState.GetState().Question_CreateQuestionPrice;
-                    int newQuestionPrize = mAppState.GetState().Prize_CreateNewQuestionPrize;
+                    int newQuestionXp = mAppState.GetState().Prize_CreateNewQuestionXP;
 
                     if (HasEnoughMoney(user.TotalCoin, newQuestionPrice, boostPrice)) //TODO Change Create Question Price to get from appState
                     {
@@ -107,7 +107,7 @@ namespace Falcon.Web.Api.App_Start
                         mDb.Set<CreatedQuestion>().Add(newQuestion);
                         await mDb.SaveChangesAsync();
 
-                        await mUsersMaintenance.LevelUp(newQuestionPrize); //TODO : should
+                        await mUsersMaintenance.LevelUp(newQuestionXp); //TODO : should
                         var totalCoin = await mUserQuery.DecreaseCoin(newQuestionPrice + boostPrice);
 
                         return Response(HttpStatusCode.Created, totalCoin);

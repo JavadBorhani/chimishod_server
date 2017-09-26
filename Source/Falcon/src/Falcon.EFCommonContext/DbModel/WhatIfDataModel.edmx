@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="Falcon.DbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="Falcon.DbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="AchievedCodeGift">
           <Key>
             <PropertyRef Name="ID" />
@@ -63,7 +63,7 @@
           <Property Name="CategoryID" Type="int" />
           <Property Name="Quantity" Type="int" />
           <Property Name="Coin" Type="int" Nullable="false" />
-          <Property Name="ScorePrize" Type="int" Nullable="false" />
+          <Property Name="XP" Type="int" Nullable="false" />
           <Property Name="Icon" Type="varchar" MaxLength="150" Nullable="false" />
           <Property Name="IsActive" Type="bit" Nullable="false" />
           <Property Name="Priority" Type="int" Nullable="false" />
@@ -135,10 +135,13 @@
           <Property Name="Question_NoQuestionFoundBut" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="Question_NoQuestionFoundID" Type="int" Nullable="false" />
           <Property Name="Question_ServerBurntReturnAmount" Type="int" Nullable="false" />
-          <Property Name="Prize_AnswerPrize" Type="int" Nullable="false" />
-          <Property Name="Prize_LikePrize" Type="int" Nullable="false" />
-          <Property Name="Prize_CreateNewQuestionPrize" Type="int" Nullable="false" />
-          <Property Name="Prize_NewQuestionAcceptedPrize" Type="int" Nullable="false" />
+          <Property Name="Prize_AnswerXP" Type="int" Nullable="false" />
+          <Property Name="Prize_LikeScoreAmount" Type="int" Nullable="false" />
+          <Property Name="Prize_CreateNewQuestionXP" Type="int" Nullable="false" />
+          <Property Name="Prize_NewQuestionAcceptedXP" Type="int" Nullable="false" />
+          <Property Name="Prize_CreateNewQuestionScore" Type="int" Nullable="false" />
+          <Property Name="Prize_NewQuestionAcceptedScore" Type="int" Nullable="false" />
+          <Property Name="Prize_AnswerScoreAmount" Type="int" Nullable="false" />
           <Property Name="Paging_DefaultPageSize" Type="int" Nullable="false" />
           <Property Name="Leader_TopNumberToShow" Type="int" Nullable="false" />
           <Property Name="Comment_DefaultNumberAmount" Type="int" Nullable="false" />
@@ -191,11 +194,12 @@
           <Property Name="LongDescription" Type="nvarchar" MaxLength="150" Nullable="false" />
           <Property Name="Icon" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="Price" Type="int" Nullable="false" />
-          <Property Name="PrizeCoefficient" Type="int" Nullable="false" />
+          <Property Name="ScoreCoefficient" Type="int" Nullable="false" />
           <Property Name="DiscountAmount" Type="int" Nullable="false" />
           <Property Name="TagStateID" Type="int" Nullable="false" />
           <Property Name="CreatedDate" Type="datetime" Nullable="false" />
           <Property Name="UpdatedDate" Type="datetime" Nullable="false" />
+          <Property Name="Priority" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="CharacterAlias">
           <Key>
@@ -615,6 +619,14 @@
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
+        <EntityType Name="Tutorial">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="QuestionID" Type="int" Nullable="false" />
+          <Property Name="Priority" Type="int" Nullable="false" />
+        </EntityType>
         <EntityType Name="UnRepeatableAchievedSpinWheel">
           <Key>
             <PropertyRef Name="ID" />
@@ -670,7 +682,7 @@
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="UserID" Type="int" Nullable="false" />
-          <Property Name="Email" Type="varchar" MaxLength="50" />
+          <Property Name="Email" Type="nvarchar" MaxLength="50" />
           <Property Name="Password" Type="nvarchar" MaxLength="50" />
           <Property Name="PhoneNumber" Type="varchar" MaxLength="20" />
           <Property Name="GoogleID" Type="varchar" MaxLength="40" />
@@ -1886,6 +1898,7 @@ warning 6002: The table/view 'what_if.dbo.AchievementStatistics' does not have a
           <EntitySet Name="Store" EntityType="Self.Store" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TagState" EntityType="Self.TagState" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tutorial" EntityType="Self.Tutorial" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UnRepeatableAchievedSpinWheel" EntityType="Self.UnRepeatableAchievedSpinWheel" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserAvatar" EntityType="Self.UserAvatar" Schema="dbo" store:Type="Tables" />
@@ -2223,7 +2236,8 @@ warning 6002: The table/view 'what_if.dbo.AchievementStatistics' does not have a
             <End Role="WatchedAd" EntitySet="WatchedAd" />
           </AssociationSet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="Falcon.DbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -2312,6 +2326,7 @@ warning 6002: The table/view 'what_if.dbo.AchievementStatistics' does not have a
           <EntitySet Name="Stores" EntityType="Falcon.DbModel.Store" />
           <EntitySet Name="sysdiagrams" EntityType="Falcon.DbModel.sysdiagram" />
           <EntitySet Name="TagStates" EntityType="Falcon.DbModel.TagState" />
+          <EntitySet Name="Tutorials" EntityType="Falcon.DbModel.Tutorial" />
           <EntitySet Name="UnRepeatableAchievedSpinWheels" EntityType="Falcon.DbModel.UnRepeatableAchievedSpinWheel" />
           <EntitySet Name="Users" EntityType="Falcon.DbModel.User" />
           <EntitySet Name="UserAvatars" EntityType="Falcon.DbModel.UserAvatar" />
@@ -2638,7 +2653,7 @@ warning 6002: The table/view 'what_if.dbo.AchievementStatistics' does not have a
             <End Role="WatchAdProvider" EntitySet="WatchAdProviders" />
             <End Role="WatchedAd" EntitySet="WatchedAds" />
           </AssociationSet>
-          </EntityContainer>
+        </EntityContainer>
         <ComplexType Name="sp_helpdiagramdefinition_Result">
           <Property Type="Int32" Name="version" Nullable="true" />
           <Property Type="Binary" Name="definition" Nullable="true" />
@@ -2719,7 +2734,7 @@ warning 6002: The table/view 'what_if.dbo.AchievementStatistics' does not have a
           <Property Name="CategoryID" Type="Int32" />
           <Property Name="Quantity" Type="Int32" />
           <Property Name="Coin" Type="Int32" Nullable="false" />
-          <Property Name="ScorePrize" Type="Int32" Nullable="false" />
+          <Property Name="XP" Type="Int32" Nullable="false" />
           <Property Name="Icon" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
           <Property Name="Priority" Type="Int32" Nullable="false" />
@@ -2800,10 +2815,13 @@ warning 6002: The table/view 'what_if.dbo.AchievementStatistics' does not have a
           <Property Name="Question_NoQuestionFoundBut" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="Question_NoQuestionFoundID" Type="Int32" Nullable="false" />
           <Property Name="Question_ServerBurntReturnAmount" Type="Int32" Nullable="false" />
-          <Property Name="Prize_AnswerPrize" Type="Int32" Nullable="false" />
-          <Property Name="Prize_LikePrize" Type="Int32" Nullable="false" />
-          <Property Name="Prize_CreateNewQuestionPrize" Type="Int32" Nullable="false" />
-          <Property Name="Prize_NewQuestionAcceptedPrize" Type="Int32" Nullable="false" />
+          <Property Name="Prize_AnswerXP" Type="Int32" Nullable="false" />
+          <Property Name="Prize_LikeScoreAmount" Type="Int32" Nullable="false" />
+          <Property Name="Prize_CreateNewQuestionXP" Type="Int32" Nullable="false" />
+          <Property Name="Prize_NewQuestionAcceptedXP" Type="Int32" Nullable="false" />
+          <Property Name="Prize_CreateNewQuestionScore" Type="Int32" Nullable="false" />
+          <Property Name="Prize_NewQuestionAcceptedScore" Type="Int32" Nullable="false" />
+          <Property Name="Prize_AnswerScoreAmount" Type="Int32" Nullable="false" />
           <Property Name="Paging_DefaultPageSize" Type="Int32" Nullable="false" />
           <Property Name="Leader_TopNumberToShow" Type="Int32" Nullable="false" />
           <Property Name="Comment_DefaultNumberAmount" Type="Int32" Nullable="false" />
@@ -2861,11 +2879,12 @@ warning 6002: The table/view 'what_if.dbo.AchievementStatistics' does not have a
           <Property Name="LongDescription" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
           <Property Name="Icon" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="Price" Type="Int32" Nullable="false" />
-          <Property Name="PrizeCoefficient" Type="Int32" Nullable="false" />
+          <Property Name="ScoreCoefficient" Type="Int32" Nullable="false" />
           <Property Name="DiscountAmount" Type="Int32" Nullable="false" />
           <Property Name="TagStateID" Type="Int32" Nullable="false" />
           <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="UpdatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Priority" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Achievements" Relationship="Falcon.DbModel.FK_Achievement_Category" FromRole="Category" ToRole="Achievement" />
           <NavigationProperty Name="Answers" Relationship="Falcon.DbModel.FK_Answer_Category" FromRole="Category" ToRole="Answer" />
           <NavigationProperty Name="AssignedCharacters" Relationship="Falcon.DbModel.FK_AssignedCharacter_Category" FromRole="Category" ToRole="AssignedCharacter" />
@@ -3375,6 +3394,14 @@ warning 6002: The table/view 'what_if.dbo.AchievementStatistics' does not have a
           <NavigationProperty Name="Categories" Relationship="Falcon.DbModel.FK_Category_TagState" FromRole="TagState" ToRole="Category" />
           <NavigationProperty Name="UserAvatars" Relationship="Falcon.DbModel.FK_UserAvatar_TagState" FromRole="TagState" ToRole="UserAvatar" />
         </EntityType>
+        <EntityType Name="Tutorial">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="QuestionID" Type="Int32" Nullable="false" />
+          <Property Name="Priority" Type="Int32" Nullable="false" />
+        </EntityType>
         <EntityType Name="UnRepeatableAchievedSpinWheel">
           <Key>
             <PropertyRef Name="ID" />
@@ -3402,7 +3429,7 @@ warning 6002: The table/view 'what_if.dbo.AchievementStatistics' does not have a
           <Property Name="LastSeenDateTime" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="PrevLastSeenDateTime" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="PreviousDaySeen" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="RowVersion" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="RowVersion" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" ConcurrencyMode="Fixed" />
           <NavigationProperty Name="AchievedCodeGifts" Relationship="Falcon.DbModel.FK_AchievedCodeGift_User" FromRole="User" ToRole="AchievedCodeGift" />
           <NavigationProperty Name="AchievedGifts" Relationship="Falcon.DbModel.FK_AchievedGifts_User" FromRole="User" ToRole="AchievedGift" />
           <NavigationProperty Name="AchievedPosessions" Relationship="Falcon.DbModel.FK_AchievedQuests_User" FromRole="User" ToRole="AchievedPosession" />
@@ -3467,7 +3494,7 @@ warning 6002: The table/view 'what_if.dbo.AchievementStatistics' does not have a
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="UserID" Type="Int32" Nullable="false" />
-          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="PhoneNumber" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="GoogleID" Type="String" MaxLength="40" FixedLength="false" Unicode="false" />
@@ -3489,7 +3516,7 @@ warning 6002: The table/view 'what_if.dbo.AchievementStatistics' does not have a
           <Property Name="Rank" Type="Int32" Nullable="false" />
           <Property Name="SpinRemainedChance" Type="Int32" Nullable="false" />
           <Property Name="SpinWheelCount" Type="Int32" Nullable="false" />
-          <Property Name="RowVersion" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="RowVersion" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" ConcurrencyMode="Fixed" />
           <NavigationProperty Name="User" Relationship="Falcon.DbModel.FK_UserStatus_User" FromRole="UserStat" ToRole="User" />
         </EntityType>
         <EntityType Name="UserType">
@@ -4601,7 +4628,7 @@ warning 6002: The table/view 'what_if.dbo.AchievementStatistics' does not have a
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        </Schema>
+      </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -4694,7 +4721,7 @@ warning 6002: The table/view 'what_if.dbo.AchievementStatistics' does not have a
                 <ScalarProperty Name="Priority" ColumnName="Priority" />
                 <ScalarProperty Name="IsActive" ColumnName="IsActive" />
                 <ScalarProperty Name="Icon" ColumnName="Icon" />
-                <ScalarProperty Name="ScorePrize" ColumnName="ScorePrize" />
+                <ScalarProperty Name="XP" ColumnName="XP" />
                 <ScalarProperty Name="Coin" ColumnName="Coin" />
                 <ScalarProperty Name="Quantity" ColumnName="Quantity" />
                 <ScalarProperty Name="CategoryID" ColumnName="CategoryID" />
@@ -4775,10 +4802,13 @@ warning 6002: The table/view 'what_if.dbo.AchievementStatistics' does not have a
                 <ScalarProperty Name="Comment_DefaultNumberAmount" ColumnName="Comment_DefaultNumberAmount" />
                 <ScalarProperty Name="Leader_TopNumberToShow" ColumnName="Leader_TopNumberToShow" />
                 <ScalarProperty Name="Paging_DefaultPageSize" ColumnName="Paging_DefaultPageSize" />
-                <ScalarProperty Name="Prize_NewQuestionAcceptedPrize" ColumnName="Prize_NewQuestionAcceptedPrize" />
-                <ScalarProperty Name="Prize_CreateNewQuestionPrize" ColumnName="Prize_CreateNewQuestionPrize" />
-                <ScalarProperty Name="Prize_LikePrize" ColumnName="Prize_LikePrize" />
-                <ScalarProperty Name="Prize_AnswerPrize" ColumnName="Prize_AnswerPrize" />
+                <ScalarProperty Name="Prize_AnswerScoreAmount" ColumnName="Prize_AnswerScoreAmount" />
+                <ScalarProperty Name="Prize_NewQuestionAcceptedScore" ColumnName="Prize_NewQuestionAcceptedScore" />
+                <ScalarProperty Name="Prize_CreateNewQuestionScore" ColumnName="Prize_CreateNewQuestionScore" />
+                <ScalarProperty Name="Prize_NewQuestionAcceptedXP" ColumnName="Prize_NewQuestionAcceptedXP" />
+                <ScalarProperty Name="Prize_CreateNewQuestionXP" ColumnName="Prize_CreateNewQuestionXP" />
+                <ScalarProperty Name="Prize_LikeScoreAmount" ColumnName="Prize_LikeScoreAmount" />
+                <ScalarProperty Name="Prize_AnswerXP" ColumnName="Prize_AnswerXP" />
                 <ScalarProperty Name="Question_ServerBurntReturnAmount" ColumnName="Question_ServerBurntReturnAmount" />
                 <ScalarProperty Name="Question_NoQuestionFoundID" ColumnName="Question_NoQuestionFoundID" />
                 <ScalarProperty Name="Question_NoQuestionFoundBut" ColumnName="Question_NoQuestionFoundBut" />
@@ -4825,11 +4855,12 @@ warning 6002: The table/view 'what_if.dbo.AchievementStatistics' does not have a
           <EntitySetMapping Name="Categories">
             <EntityTypeMapping TypeName="Falcon.DbModel.Category">
               <MappingFragment StoreEntitySet="Category">
+                <ScalarProperty Name="Priority" ColumnName="Priority" />
                 <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
                 <ScalarProperty Name="TagStateID" ColumnName="TagStateID" />
                 <ScalarProperty Name="DiscountAmount" ColumnName="DiscountAmount" />
-                <ScalarProperty Name="PrizeCoefficient" ColumnName="PrizeCoefficient" />
+                <ScalarProperty Name="ScoreCoefficient" ColumnName="ScoreCoefficient" />
                 <ScalarProperty Name="Price" ColumnName="Price" />
                 <ScalarProperty Name="Icon" ColumnName="Icon" />
                 <ScalarProperty Name="LongDescription" ColumnName="LongDescription" />
@@ -5295,6 +5326,15 @@ warning 6002: The table/view 'what_if.dbo.AchievementStatistics' does not have a
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="Tutorials">
+            <EntityTypeMapping TypeName="Falcon.DbModel.Tutorial">
+              <MappingFragment StoreEntitySet="Tutorial">
+                <ScalarProperty Name="Priority" ColumnName="Priority" />
+                <ScalarProperty Name="QuestionID" ColumnName="QuestionID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="UnRepeatableAchievedSpinWheels">
             <EntityTypeMapping TypeName="Falcon.DbModel.UnRepeatableAchievedSpinWheel">
               <MappingFragment StoreEntitySet="UnRepeatableAchievedSpinWheel">
@@ -5422,7 +5462,7 @@ warning 6002: The table/view 'what_if.dbo.AchievementStatistics' does not have a
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          </EntityContainerMapping>
+        </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
   </edmx:Runtime>

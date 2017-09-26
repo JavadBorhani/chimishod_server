@@ -27,7 +27,7 @@ namespace Falcon.EFCommonContext.DbModel
         public Nullable<int> CategoryID { get; set; }
         public Nullable<int> Quantity { get; set; }
         public int Coin { get; set; }
-        public int ScorePrize { get; set; }
+        public int XP { get; set; }
         public string Icon { get; set; }
         public bool IsActive { get; set; }
         public int Priority { get; set; }
