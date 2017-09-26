@@ -8,7 +8,7 @@ namespace Falcon.Data.QueryProcessors
 {
     public enum AchievedScoreType
     {
-        Achievement = 1,
+        CreateQuestion = 1,
         Liked = 2,
         Answer = 3,
     }

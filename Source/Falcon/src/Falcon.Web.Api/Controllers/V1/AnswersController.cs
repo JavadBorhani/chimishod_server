@@ -221,45 +221,32 @@ namespace Falcon.Web.Api.Controllers.V1
                                         
                     if (answer.YesNoState)
                     {
-                        ++questionToUpdate.Yes_Count;
-
                         if(questionToUpdate.ActionID != null)
                         {
                             user.TotalCoin += questionToUpdate.QuestionAction.Coin;
                         }
                     }
-                    else
-                    {
-                        ++questionToUpdate.No_Count;
-                    }
+
                     if (answer.Liked != null)
                     {
-                        ++questionToUpdate.Like_Count;
-                        var otherUser = await mDb.Set<Manufacture>().Where(m => m.QuestionID == answer.QuestionID)
+                        var otherUserID = await mDb.Set<Manufacture>().Where(m => m.QuestionID == answer.QuestionID)
                                                                 .Include(m => m.User)
-                                                                .Select(m => m.User)
+                                                                .Select(m => m.User.ID)
                                                                 .SingleOrDefaultAsync();
-                        if(otherUser != null)
+                        if(otherUserID != 0)
                         {
-                            await mScoringQueryProcessor.AddScore(otherUser.ID, mAppState.Prize_LikeScoreAmount, AchievedScoreType.Answer);
+                            await mScoringQueryProcessor.AddScore(otherUserID, mAppState.Prize_LikeScoreAmount, AchievedScoreType.Answer);
                         }
                     }
-                    else if (answer.Dislike != null)
-                    {
-                        ++questionToUpdate.Dislike_Count;
-                    }
-
                     await mDb.SaveChangesAsync();
                 }
 
-                int prizeCoefficient = questionToUpdate.Category.ScoreCoefficient;
-                if (mAppState.Prize_AnswerScoreAmount > 0 && prizeCoefficient > 0 )
-                {
-                    int totalCoin = await mUsersMaintenance.LevelUp(mAppState.Prize_AnswerScoreAmount * prizeCoefficient);
-                    if (totalCoin == Constants.DefaultValues.NoNewCoin) // do something 
-                        await mDb.SaveChangesAsync();
-                }
-                
+                int scoreCoefficient = questionToUpdate.Category.ScoreCoefficient;
+                int xp = mAppState.Prize_AnswerXP;
+               
+                await mScoringQueryProcessor.AddScore(user.ID, mAppState.Prize_AnswerScoreAmount * scoreCoefficient, AchievedScoreType.Answer);
+                await mUsersMaintenance.LevelUp(xp); // will return new total coin or Constants.DefaultValues.NoNewCoin
+
                 SQuestion[] Questions;
                 if (answer.SendQuestion)
                 {

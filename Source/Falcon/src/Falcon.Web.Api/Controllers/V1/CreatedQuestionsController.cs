@@ -33,9 +33,10 @@ namespace Falcon.Web.Api.App_Start
         private readonly ICreatedQuestionsInquiryProcessor mCreatedQuestionsInquiryProcessor;
         private readonly IPagedDataRequestFactory mPagedDataRequestFactory;
         private readonly IWebUserSession mUserSession;
-        private readonly IGlobalApplicationState mAppState;
+        private readonly SApplicationState mAppState;
         private readonly IUsersMaintenanceProcessor mUsersMaintenance;
         private readonly IUserQueryProcessor mUserQuery;
+        private readonly IScoringQueryProcessor mScoringQuery;
         private readonly ICreatedQuestionsMaintenanceProcessor mCreatedQuestionsMaintenanceProcessor;
 
         public CreatedQuestionsController(IDateTime DateTime ,
@@ -47,6 +48,7 @@ namespace Falcon.Web.Api.App_Start
             IGlobalApplicationState AppState , 
             IUsersMaintenanceProcessor UsersMaintenance,
             IUserQueryProcessor UserQuery ,
+            IScoringQueryProcessor ScoringQuery,
             ICreatedQuestionsMaintenanceProcessor CreatedQuestionsMaintenanceProcessor)
         {
             mDateTime = DateTime;
@@ -55,10 +57,11 @@ namespace Falcon.Web.Api.App_Start
             mCreatedQuestionsInquiryProcessor = InquiryProcessor;
             mPagedDataRequestFactory = PagedDataRequestFactory;
             mUserSession = UserSession;
-            mAppState = AppState;
+            mAppState = AppState.GetState();
             mUsersMaintenance = UsersMaintenance;
             mUserQuery = UserQuery;
             mCreatedQuestionsMaintenanceProcessor = CreatedQuestionsMaintenanceProcessor;
+            mScoringQuery = ScoringQuery;
         }
 
         [ResponseType(typeof(SUserState))]
@@ -88,8 +91,9 @@ namespace Falcon.Web.Api.App_Start
                     int boostPrice = (boost != null) ? boost.Price : 0;
                     int? boostID = (boost == null) ? (int?)null : boost.ID;
 
-                    int newQuestionPrice = mAppState.GetState().Question_CreateQuestionPrice;
-                    int newQuestionXp = mAppState.GetState().Prize_CreateNewQuestionXP;
+                    int newQuestionPrice = mAppState.Question_CreateQuestionPrice;
+                    int newQuestionXp = mAppState.Prize_CreateNewQuestionXP;
+                    int scorePrize = mAppState.Prize_CreateNewQuestionScore;
 
                     if (HasEnoughMoney(user.TotalCoin, newQuestionPrice, boostPrice)) //TODO Change Create Question Price to get from appState
                     {
@@ -108,6 +112,8 @@ namespace Falcon.Web.Api.App_Start
                         await mDb.SaveChangesAsync();
 
                         await mUsersMaintenance.LevelUp(newQuestionXp); //TODO : should
+                        await mScoringQuery.AddScore(user.ID, scorePrize, AchievedScoreType.CreateQuestion);
+                      
                         var totalCoin = await mUserQuery.DecreaseCoin(newQuestionPrice + boostPrice);
 
                         return Response(HttpStatusCode.Created, totalCoin);
@@ -127,7 +133,7 @@ namespace Falcon.Web.Api.App_Start
         [Route("CreatedQuestions/Get/{PageNumber}")]
         public async Task<PagedDataInquiryResponse<SNewCreatedQuestions>> GetCreatedQuestionList(int PageNumber)
         {
-            var page = mPagedDataRequestFactory.Create(PageNumber, mAppState.GetState().Paging_DefaultPageSize);
+            var page = mPagedDataRequestFactory.Create(PageNumber, mAppState.Paging_DefaultPageSize);
             var createdQuestions = await mCreatedQuestionsInquiryProcessor.GetQuestionList(page , mUserSession.ID);
             return createdQuestions;
         }

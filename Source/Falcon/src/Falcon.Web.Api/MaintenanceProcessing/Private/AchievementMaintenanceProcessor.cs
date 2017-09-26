@@ -17,7 +17,6 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
         private readonly IUsersInquiryProcessor mUserInquiry;
         private readonly IUserSession mUserSession;
         private readonly ICategoriesQueryProcessor mCategoriesQueryProcessor;
-        private readonly IScoringQueryProcessor mScoreQuery;
         private readonly IUsersMaintenanceProcessor mUserMaintenance;
         private readonly IUserQueryProcessor mUserQuery;
         private readonly IMapper mMapper;
@@ -29,12 +28,10 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
             IUserSession UserSession,
             ICategoriesQueryProcessor CategoriesQueryProcessor,
             IMapper Mapper, 
-            IScoringQueryProcessor ScoreQuery , 
             IUsersMaintenanceProcessor UserMaintenance,
             IUserQueryProcessor UserQuery
             )
         {
-            mScoreQuery = ScoreQuery;
             mUserQuery = UserQuery;
             mUserMaintenance = UserMaintenance;
             mAchievementQuery = AchievementQueryProcessor;
@@ -191,7 +188,6 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
                 int prize = achievedItem.XP;
 
                 await mUserMaintenance.LevelUp(prize);
-                await mScoreQuery.AddScore(mUserSession.ID, prize, AchievedScoreType.Achievement);
 
                 int totalCoin = await mUserQuery.IncreaseCoin(coin);
                 return totalCoin;
