@@ -49,13 +49,13 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
 
         public bool SetState(SApplicationState NewState)
         {
-            if(ModelIsValid(NewState))
+            if (ModelIsValid(NewState))
             {
                 var dbAppState = mDB.Set<ApplicationState>().SingleOrDefault();
                 dbAppState = mMapper.Map<ApplicationState>(NewState);
                 mDB.SaveChanges();
             }
-            return false;   
+            return false;
         }
 
         private bool ModelIsValid(SApplicationState model)
@@ -72,10 +72,13 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
                 !string.IsNullOrEmpty(model.HostCredentialPassword) &&
                 model.Leader_TopNumberToShow > 0 &&
                 model.Paging_DefaultPageSize > 0 &&
-                model.Prize_AnswerPrize > 0 &&
-                model.Prize_CreateNewQuestionPrize > 0 &&
-                model.Prize_LikePrize > 0 &&
-                model.Prize_NewQuestionAcceptedPrize >= 0 &&
+                model.Prize_AnswerXP > 0 &&
+                model.Prize_LikeScoreAmount > 0 &&
+                model.Prize_CreateNewQuestionXP > 0 &&
+                model.Prize_NewQuestionAcceptedXP >= 0 &&
+                model.Prize_CreateNewQuestionScore >= 0 &&
+                model.Prize_NewQuestionAcceptedScore >= 0 &&
+                model.Prize_AnswerScoreAmount >= 0 &&
                 model.Question_CreateQuestionPrice >= 0 &&
                 model.Question_DefaultReturnAmount >= 0 &&
                 !string.IsNullOrEmpty(model.Question_NoQuestionFoundBut) &&
@@ -85,10 +88,9 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
                 model.Question_ServerBurntReturnAmount >= 0 &&
                 model.Store_DefaultReturnAmount >= 0 &&
                 model.User_DefaultUserCoin >= 0 &&
-                model.WatchAdCoin >= 0 && 
+                model.WatchAdCoin >= 0 &&
                 !string.IsNullOrEmpty(model.User_DefaultUserName)
                 );
-
         }
     }
 }
