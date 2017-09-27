@@ -113,6 +113,8 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             {
                 item.What_if = Info.What;
                 item.But = Info.But;
+
+                await mDb.SaveChangesAsync();
                 return true;
             }
             return false;

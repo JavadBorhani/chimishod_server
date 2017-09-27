@@ -139,7 +139,7 @@ namespace Falcon.Web.Api.App_Start
         }
 
         [ResponseType(typeof(bool))]
-        [HttpDelete]
+        [HttpPost]
         [Route("CreatedQuestions/Delete/")]
         public async Task<bool> DeleteQuestionLogically([FromBody] RemoveInfo Info)
         {
@@ -151,7 +151,7 @@ namespace Falcon.Web.Api.App_Start
         }
 
         [ResponseType(typeof(bool))]
-        [HttpPatch]
+        [HttpPost]
         [Route("CreatedQuestions/Edit/")]
         public async Task<bool> EditCreatedQuestion([FromBody] EditInfo Info)
         {
