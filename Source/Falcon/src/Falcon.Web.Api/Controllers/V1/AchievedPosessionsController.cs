@@ -116,6 +116,7 @@ namespace Falcon.Web.Api.Controllers.V1
         public async Task<IHttpActionResult> GetAchievableList()
         {
             //TODO : It's not working anymore. check out Mapping Configuration 
+
             var achievableList = await mDb.Set<AchievedPosession>()
                                             .AsNoTracking()
                                             .Include(ap => ap.Achievement)

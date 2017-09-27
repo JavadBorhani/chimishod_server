@@ -93,7 +93,7 @@ namespace Falcon.Database.SqlServer.QueryProcessors
         public async Task<bool> Delete(int QuestionID)
         {
 
-            var item = await mDb.Set<CreatedQuestion>().AsNoTracking().Where(sq => sq.ID ==  QuestionID).SingleOrDefaultAsync();
+            var item = await mDb.Set<CreatedQuestion>().Where(sq => sq.ID ==  QuestionID).SingleOrDefaultAsync();
 
             if(item != null)
             {
@@ -113,6 +113,7 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             {
                 item.What_if = Info.What;
                 item.But = Info.But;
+                return true;
             }
             return false;
         }
