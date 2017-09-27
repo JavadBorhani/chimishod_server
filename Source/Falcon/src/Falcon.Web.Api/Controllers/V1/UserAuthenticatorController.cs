@@ -10,6 +10,7 @@ using Falcon.Web.Api.MaintenanceProcessing.Public;
 using Falcon.Web.Api.Utilities.Base;
 using Falcon.Web.Common;
 using Falcon.Web.Models.Api;
+using Falcon.Web.Models.Api.Level;
 using System;
 using System.Data.Entity;
 using System.Linq;
@@ -80,7 +81,7 @@ namespace Falcon.Web.Api.Controllers.V1
                 UserModel.TotalSpinCount = result.SpinWheelCount;
                 UserModel.Score = result.Score;
                 
-                var CurrentLevel = new Models.Api.SLevel
+                var CurrentLevel = new SLevel
                 {
                     LevelNumber = user.Level.LevelNumber,
                     Ceil = user.Level.ScoreCeil,

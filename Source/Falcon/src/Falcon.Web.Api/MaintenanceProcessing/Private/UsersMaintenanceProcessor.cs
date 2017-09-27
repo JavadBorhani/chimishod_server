@@ -1,6 +1,7 @@
 ﻿using Falcon.Common;
 using Falcon.Data.QueryProcessors;
 using Falcon.Web.Api.MaintenanceProcessing.Public;
+using Falcon.Web.Models.Api.Level;
 using System;
 using System.Threading.Tasks;
 
@@ -19,19 +20,28 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
 
         public async Task<int> LevelUp(int Prize)
         {
-            var newLevel = await mUserQuery.UpdateLevel(Prize);
             var totalCoin = Constants.DefaultValues.NoNewCoin;
 
-            if(newLevel != Constants.DefaultValues.NoLevelUp)
+            SLevelUpInfo info;
+            do
             {
-                var levelPrize = await mUserQuery.GetLevelPrize(newLevel);
-                if(levelPrize >= 0 )
+                info = await mUserQuery.UpdateLevel(Prize);
+
+                if (info.LevelUpMode != LevelUpMode.NotLeveledUp)
                 {
-                    totalCoin = await mUserQuery.IncreaseCoin(levelPrize);
+                    var levelPrize = await mUserQuery.GetLevelPrize(info.LevelUpNumber);
+
+                    if (levelPrize >= 0)
+                    {
+                        totalCoin = await mUserQuery.IncreaseCoin(levelPrize);
+                    }
                 }
-            }
+
+                Prize = 0; 
+
+            } while (info.LevelUpMode == LevelUpMode.LeveledUpAndNeedAnother);
+
             return totalCoin;
         }
-       
     }
 }

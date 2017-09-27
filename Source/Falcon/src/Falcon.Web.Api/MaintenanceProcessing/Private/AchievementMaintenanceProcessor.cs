@@ -158,7 +158,6 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
                     break;
 
 
-
                 case AchievementStyle.Score:
 
                     if (AchieveStats.Score >= Data.Quantity)

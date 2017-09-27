@@ -200,6 +200,7 @@
     <Compile Include="InquiryProcessing\Private\CommentsInquiryProcessor.cs" />
     <Compile Include="InquiryProcessing\Private\CreatedQuestionsInquiryProcessor.cs" />
     <Compile Include="InquiryProcessing\Private\DWMInquiryProcessor.cs" />
+    <Compile Include="InquiryProcessing\Private\LevelInquiryProcessor.cs" />
     <Compile Include="InquiryProcessing\Private\SpinWheelInquiryProcessor.cs" />
     <Compile Include="InquiryProcessing\Private\StoresInquiryProcessor.cs" />
     <Compile Include="InquiryProcessing\Private\ThemesInquiryProcessor.cs" />
@@ -215,6 +216,7 @@
     <Compile Include="InquiryProcessing\Public\ICommentsInquiryProcessor.cs" />
     <Compile Include="InquiryProcessing\Public\ICreatedQuestionsInquiryProcessor.cs" />
     <Compile Include="InquiryProcessing\Public\IDWMInquiryProcessor.cs" />
+    <Compile Include="InquiryProcessing\Public\ILevelInquiryProcessor.cs" />
     <Compile Include="InquiryProcessing\Public\IPagedDataRequestFactory.cs" />
     <Compile Include="InquiryProcessing\Private\PagedDataRequestFactory.cs" />
     <Compile Include="InquiryProcessing\Public\INotificationInquiryProcessor.cs" />

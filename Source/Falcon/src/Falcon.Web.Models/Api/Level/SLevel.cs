@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Falcon.Web.Models.Api
+namespace Falcon.Web.Models.Api.Level
 {
     public class SLevel
     {

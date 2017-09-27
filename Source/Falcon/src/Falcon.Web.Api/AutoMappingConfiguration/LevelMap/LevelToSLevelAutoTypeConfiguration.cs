@@ -1,10 +1,6 @@
 ﻿using AutoMapper;
 using Falcon.EFCommonContext.DbModel;
-using Falcon.Web.Models.Api;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+using Falcon.Web.Models.Api.Level;
 
 namespace Falcon.Web.Api.AutoMappingConfiguration.LevelMap
 {

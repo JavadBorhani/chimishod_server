@@ -45,9 +45,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Api\Achievement\SAchievementStatistic.cs" />
+    <Compile Include="Api\Cache\SLevelCache.cs" />
     <Compile Include="Api\ClientAppState.cs" />
     <Compile Include="Api\Input\Questions\EditInfo.cs" />
     <Compile Include="Api\Input\Questions\RemoveInfo.cs" />
+    <Compile Include="Api\Level\SLevelUpInfo.cs" />
     <Compile Include="Api\SCharacteristic.cs" />
     <Compile Include="Api\SCharcteristicLeaderBoard.cs" />
     <Compile Include="Api\SGlobalRankLeaderBoard.cs" />
@@ -74,7 +76,7 @@
     <Compile Include="Api\SHardCurrency.cs" />
     <Compile Include="Api\SHardCurrencyPurchasedVerification.cs" />
     <Compile Include="Api\SLeaderBoard.cs" />
-    <Compile Include="Api\SLevel.cs" />
+    <Compile Include="Api\Level\SLevel.cs" />
     <Compile Include="Api\SMarketInfo.cs" />
     <Compile Include="Api\SNewCreatedQuestions.cs" />
     <Compile Include="Api\SNotify.cs" />

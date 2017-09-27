@@ -10,6 +10,7 @@ using System.Data.Entity.Infrastructure;
 using Falcon.Web.Common.Memmory;
 using Falcon.Web.Models.Api.User;
 using System;
+using Falcon.Web.Models.Api.Level;
 
 namespace Falcon.Database.SqlServer.QueryProcessors
 {
@@ -19,14 +20,12 @@ namespace Falcon.Database.SqlServer.QueryProcessors
         private readonly IDbContext mDb;
         private readonly IWebUserSession mUserSession;
         private readonly IDateTime mDateTime;
-        private readonly IMemoryStore mStore;
 
-        public UserQueryProcessor(IDbContext Database , IWebUserSession UserSession , IDateTime DateTime , IMemoryStore Store)
+        public UserQueryProcessor(IDbContext Database , IWebUserSession UserSession , IDateTime DateTime)
         {
             mDb = Database;
             mUserSession = UserSession;
             mDateTime = DateTime;
-            mStore = Store; 
         }
 
         public async Task<int> IncreaseCoin(int Coin)
@@ -127,19 +126,27 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             return prize;
         }
 
-        public async Task<int> UpdateLevel(int Prize)
+        public async Task<SLevelUpInfo> UpdateLevel(int Prize)
         {
             var player = await mDb.Set<User>().FindAsync(mUserSession.ID);
-            int level;
+            SLevelUpInfo level;
             bool SaveFailed = false;
+
             do
             {
                 SaveFailed = false;
-
                 level = LevelUpChecking(ref player, player.Level.ScoreCeil, Prize, (player.CurrentLevelNumber ?? 0) + 1);
                 try
                 {
                     await mDb.SaveChangesAsync();
+
+                    var need = CheckIfNeedAnotherLevelUp(ref player); 
+
+                    if(need)
+                    {
+                        level.LevelUpMode = LevelUpMode.LeveledUpAndNeedAnother;
+                    }
+
                 }
                 catch (DbUpdateConcurrencyException ex)
                 {
@@ -152,21 +159,33 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             return level;
         }
 
-        private int LevelUpChecking(ref User User, int LevelCeil, int Prize, int NextLevelNumber)
+        private bool CheckIfNeedAnotherLevelUp(ref User User)
         {
+            if (User.LevelProgress >= User.Level.ScoreCeil)
+                return true;
+            return false;   
+        }
+        private SLevelUpInfo LevelUpChecking(ref User User, int LevelCeil, int Prize, int NextLevelNumber)
+        {
+            SLevelUpInfo info = new SLevelUpInfo();
+
             if (User.LevelProgress + Prize >= LevelCeil)
             {
                 User.CurrentLevelNumber = NextLevelNumber;
                 int remained = (User.LevelProgress + Prize) - LevelCeil;
                 User.LevelProgress = remained;
 
-                return NextLevelNumber;
+                info.LevelUpMode = LevelUpMode.LeveledUp;
+                info.LevelUpNumber = NextLevelNumber;
             }
             else
             {
                 User.LevelProgress += Prize;
-                return Constants.DefaultValues.NoLevelUp;
+
+                info.LevelUpMode = LevelUpMode.NotLeveledUp;
+                info.LevelUpNumber = Constants.DefaultValues.NoLevelUp;
             }
+            return info;
         }
 
         public async Task<SUserCount> GetUserCountInfo(int UserID)
