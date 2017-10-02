@@ -9,9 +9,5 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
 {
     public class AnswerInquiryProcessor : IAnswerInquiryProcessor
     {
-        public async Task<bool> Answer()
-        {
-            return false;   
-        }
     }
 }

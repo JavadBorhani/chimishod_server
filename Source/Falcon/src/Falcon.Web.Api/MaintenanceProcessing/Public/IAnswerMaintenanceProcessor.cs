@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Threading.Tasks;
 
 namespace Falcon.Web.Api.MaintenanceProcessing.Public
 {
     public interface IAnswerMaintenanceProcessor
     {
-
+        Task<bool> Answer(SAnswer Answer);
     }
 }

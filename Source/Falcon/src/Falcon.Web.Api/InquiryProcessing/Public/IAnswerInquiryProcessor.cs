@@ -8,6 +8,6 @@ namespace Falcon.Web.Api.InquiryProcessing.Public
 {
     public interface IAnswerInquiryProcessor
     {
-        Task<bool> Answer();
+        
     }
 }
