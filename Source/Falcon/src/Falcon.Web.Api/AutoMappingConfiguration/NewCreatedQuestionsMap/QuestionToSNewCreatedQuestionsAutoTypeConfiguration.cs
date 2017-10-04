@@ -23,6 +23,7 @@ namespace Falcon.Web.Api.AutoMappingConfiguration.NewCreatedQuestions
                 .ForMember(sn => sn.ServerTime,         m => m.Ignore())
                 .ForMember(sn => sn.Locked,             m => m.Ignore())   
                 .ForMember(sn => sn.RejectMessage ,     m => m.Ignore())
+                .ForMember(sn => sn.AuthorName,         m => m.Ignore())
                 .ForMember(sn => sn.RegisterDateTime ,  m => m.MapFrom( q => q.CreatedDate))
                 .ForMember(sn => sn.CommentCount,       m => m.MapFrom(sn => sn.CommentCount));
         }
