@@ -24,8 +24,8 @@ namespace Falcon.EFCommonContext.DbModel
 
         public DbEntity(string NameOrConnectionString) : base(NameOrConnectionString)
         {
-        }
 
+        }
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             throw new UnintentionalCodeFirstException();

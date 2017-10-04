@@ -24,6 +24,7 @@ namespace Falcon.Web.Api.AutoMappingConfiguration.NewCreatedQuestions
                 .ForMember(sn => sn.Locked,             m => m.MapFrom(cq => cq.Lock))
                 .ForMember(sn => sn.RejectMessage ,     m => m.MapFrom(cq => cq.CreatedQuestionsRejectType.Message))
                 .ForMember(sn => sn.VerifyState ,       m => m.MapFrom( cq => cq.VerifyStateID))
+                .ForMember(sn => sn.AuthorName,         m => m.Ignore())
                 .ForMember(sn => sn.RegisterDateTime ,  m => m.MapFrom(cq => cq.RegisterDateTime));
         }
     }

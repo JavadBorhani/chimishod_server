@@ -29,5 +29,6 @@ namespace Falcon.Web.Models.Api
         public DateTime RegisterDateTime { get; set; }
         public DateTime ServerTime { get; set; }
         public string RejectMessage { get; set; }
+        public string AuthorName { get; set;}
     }
 }

@@ -57,6 +57,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SqlServer\Mapping\VersionedClassMap.cs" />
     <Compile Include="SqlServer\QueryProcessors\AchievementQueryProcessor.cs" />
+    <Compile Include="SqlServer\QueryProcessors\AnswerQueryProcessor.cs" />
     <Compile Include="SqlServer\QueryProcessors\AvatarsQueryProcessor.cs" />
     <Compile Include="SqlServer\QueryProcessors\CategoriesQueryProcessor.cs" />
     <Compile Include="SqlServer\QueryProcessors\CharacteristicsQueryProcessor.cs" />

@@ -1680,6 +1680,20 @@ warning 6002: The table/view 'what_if.dbo.AchievementStatistics' does not have a
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Tutorial_Question">
+          <End Role="Question" Type="Self.Question" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Tutorial" Type="Self.Tutorial" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Question">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Tutorial">
+              <PropertyRef Name="QuestionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_UnRepeatableAchievedSpinWheel_SpinWheel">
           <End Role="SpinWheel" Type="Self.SpinWheel" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -2195,6 +2209,10 @@ warning 6002: The table/view 'what_if.dbo.AchievementStatistics' does not have a
             <End Role="MarketInfo" EntitySet="MarketInfo" />
             <End Role="Store" EntitySet="Store" />
           </AssociationSet>
+          <AssociationSet Name="FK_Tutorial_Question" Association="Self.FK_Tutorial_Question">
+            <End Role="Question" EntitySet="Question" />
+            <End Role="Tutorial" EntitySet="Tutorial" />
+          </AssociationSet>
           <AssociationSet Name="FK_UnRepeatableAchievedSpinWheel_SpinWheel" Association="Self.FK_UnRepeatableAchievedSpinWheel_SpinWheel">
             <End Role="SpinWheel" EntitySet="SpinWheel" />
             <End Role="UnRepeatableAchievedSpinWheel" EntitySet="UnRepeatableAchievedSpinWheel" />
@@ -2584,6 +2602,10 @@ warning 6002: The table/view 'what_if.dbo.AchievementStatistics' does not have a
           <AssociationSet Name="FK_ReportedQuestions_Question" Association="Falcon.DbModel.FK_ReportedQuestions_Question">
             <End Role="Question" EntitySet="Questions" />
             <End Role="ReportedQuestion" EntitySet="ReportedQuestions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tutorial_Question" Association="Falcon.DbModel.FK_Tutorial_Question">
+            <End Role="Question" EntitySet="Questions" />
+            <End Role="Tutorial" EntitySet="Tutorials" />
           </AssociationSet>
           <AssociationSet Name="FK_ReportedQuestions_ReportType" Association="Falcon.DbModel.FK_ReportedQuestions_ReportType">
             <End Role="ReportType" EntitySet="ReportTypes" />
@@ -3233,6 +3255,7 @@ warning 6002: The table/view 'what_if.dbo.AchievementStatistics' does not have a
           <NavigationProperty Name="QuestionAction" Relationship="Falcon.DbModel.FK_Question_QuestionAction" FromRole="Question" ToRole="QuestionAction" />
           <NavigationProperty Name="QuestionBoost" Relationship="Falcon.DbModel.FK_Question_QuestionBoost" FromRole="Question" ToRole="QuestionBoost" />
           <NavigationProperty Name="ReportedQuestions" Relationship="Falcon.DbModel.FK_ReportedQuestions_Question" FromRole="Question" ToRole="ReportedQuestion" />
+          <NavigationProperty Name="Tutorials" Relationship="Falcon.DbModel.FK_Tutorial_Question" FromRole="Question" ToRole="Tutorial" />
         </EntityType>
         <EntityType Name="QuestionAction">
           <Key>
@@ -3401,6 +3424,7 @@ warning 6002: The table/view 'what_if.dbo.AchievementStatistics' does not have a
           <Property Name="ID" Type="Int32" Nullable="false" />
           <Property Name="QuestionID" Type="Int32" Nullable="false" />
           <Property Name="Priority" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Question" Relationship="Falcon.DbModel.FK_Tutorial_Question" FromRole="Tutorial" ToRole="Question" />
         </EntityType>
         <EntityType Name="UnRepeatableAchievedSpinWheel">
           <Key>
@@ -4396,6 +4420,20 @@ warning 6002: The table/view 'what_if.dbo.AchievementStatistics' does not have a
               <PropertyRef Name="ID" />
             </Principal>
             <Dependent Role="ReportedQuestion">
+              <PropertyRef Name="QuestionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tutorial_Question">
+          <End Type="Falcon.DbModel.Question" Role="Question" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="Falcon.DbModel.Tutorial" Role="Tutorial" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Question">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Tutorial">
               <PropertyRef Name="QuestionID" />
             </Dependent>
           </ReferentialConstraint>

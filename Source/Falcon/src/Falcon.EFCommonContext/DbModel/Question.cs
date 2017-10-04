@@ -23,6 +23,7 @@ namespace Falcon.EFCommonContext.DbModel
             this.Favorites = new HashSet<Favorite>();
             this.Manufactures = new HashSet<Manufacture>();
             this.ReportedQuestions = new HashSet<ReportedQuestion>();
+            this.Tutorials = new HashSet<Tutorial>();
         }
     
         public int ID { get; set; }
@@ -57,5 +58,7 @@ namespace Falcon.EFCommonContext.DbModel
         public virtual QuestionBoost QuestionBoost { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ReportedQuestion> ReportedQuestions { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Tutorial> Tutorials { get; set; }
     }
 }

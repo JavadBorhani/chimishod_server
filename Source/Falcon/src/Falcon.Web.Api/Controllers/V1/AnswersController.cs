@@ -36,6 +36,7 @@ namespace Falcon.Web.Api.Controllers.V1
         private readonly ICharacteristicsInquiryProcessor mCharacteristicsInquiryProcessor;
         private readonly IScoringQueryProcessor mScoringQueryProcessor;
         private readonly IUsersMaintenanceProcessor mUsersMaintenance;
+        private readonly IAnswerMaintenanceProcessor mAnswerMaintenance;
 
 
         public AnswersController(IDateTime dateTime , 
@@ -47,7 +48,8 @@ namespace Falcon.Web.Api.Controllers.V1
             ICharacteristicsMaintenanceProcessor CharacteristicsMaintenanceProcessor ,
             ICharacteristicsInquiryProcessor CharacteristicsInquiryProcessor , 
             IScoringQueryProcessor ScoringQueryProcessor , 
-            IUsersMaintenanceProcessor UserMaintenanceProcessor)
+            IUsersMaintenanceProcessor UserMaintenanceProcessor , 
+            IAnswerMaintenanceProcessor AnswerMaintenance) 
         {
             mDateTime = dateTime;
             mLogger = logManager.GetLog(typeof(AnswersController));
@@ -59,6 +61,7 @@ namespace Falcon.Web.Api.Controllers.V1
             mCharacteristicsInquiryProcessor = CharacteristicsInquiryProcessor;
             mScoringQueryProcessor = ScoringQueryProcessor;
             mUsersMaintenance = UserMaintenanceProcessor;
+            mAnswerMaintenance = AnswerMaintenance;
 
         }
 
@@ -137,203 +140,89 @@ namespace Falcon.Web.Api.Controllers.V1
         [HttpPost]
         public async Task<IHttpActionResult> PostingAnswer([FromBody] SAnswer answer)
         {
-            var user = await mDb.Set<User>().SingleOrDefaultAsync(u => u.UUID == mUserSession.UUID);
-            //TODO : Remember to Remove Extar Save Changes on database ;
-            if (user != null)
+            var result = await mAnswerMaintenance.Answer(answer);
+
+            SQuestion[] Questions;
+            if (answer.SendQuestion)
             {
-                if (!ModelState.IsValid)
+                bool isAbleToGetCategory;
+
+                if (answer.CategoryToGetQuestion == Constants.DefaultUser.CategoryID)
+                    isAbleToGetCategory = true;
+                else
+                    isAbleToGetCategory = await mDb.Set<PurchaseCategory>().AsNoTracking().CountAsync(pc => pc.UserID == mUserSession.ID && pc.CategoryID == answer.CategoryToGetQuestion) == 1;
+
+                int CatToGet = -1;
+                if (isAbleToGetCategory)
                 {
-                    return BadRequest(ModelState);
-                }
-
-                if (await AnswerExists(user.ID, answer.QuestionID))
-                {
-                    mLogger.WarnFormat("Question ID {0} has a value in database", answer.QuestionID);
-                    return Response(HttpStatusCode.Unauthorized);
-                }
-                var questionToUpdate = await mDb.Set<Question>().Where(q => q.ID == answer.QuestionID).Include(q => q.Category).SingleOrDefaultAsync();
-
-                var newAnswer = new Answer
-                {
-                    QuestionID = answer.QuestionID,
-                    CategoryID = questionToUpdate.Catgory_ID, 
-                    UserID = user.ID,
-                    YesNoState = answer.YesNoState,
-                    Liked = answer.Liked,
-                    Dislike = answer.Dislike,
-                    CreatedDate = mDateTime.Now
-                };
-
-                mDb.Set<Answer>().Add(newAnswer);
-                await mDb.SaveChangesAsync();
-
-
-                if (answer.IsFavorited == true) // means user favourited the current question
-                {
-                    var favoriteCount = await FavoriteCount(user.ID);
-                    if (favoriteCount < mAppState.Favorite_FreeNumberToFavorite)
-                    {
-                        var newFavorite = new Favorite
-                        {
-                            UserID = user.ID,
-                            QuestionID = answer.QuestionID,
-                            SelectedDate = mDateTime.Now
-                        };
-                        mDb.Set<Favorite>().Add(newFavorite);
-                        await mDb.SaveChangesAsync();
-                    }
-                    else
-                    {
-                        if (user.TotalCoin - mAppState.Favorite_FavoritePrice >= 0)
-                        {
-                            user.TotalCoin -= mAppState.Favorite_FavoritePrice;
-
-                            var newFavorite = new Favorite
-                            {
-                                UserID = user.ID,
-                                QuestionID = answer.QuestionID,
-                                SelectedDate = mDateTime.Now
-                            };
-                            mDb.Set<Favorite>().Add(newFavorite);
-                            await mDb.SaveChangesAsync();
-                        }
-                    }
-                }
-                
-
-                if (questionToUpdate != null)
-                {
-                    
-                    if(answer.ChosenCharacters.Length > 0 )
-                    {
-                        bool validation = await mCharacteristicsInquiryProcessor.CategoryHasCharacters(questionToUpdate.Catgory_ID, answer.ChosenCharacters);
-                        if(validation)
-                        {
-                            var designerID = await mDb.Set<Manufacture>()
-                                .AsNoTracking()
-                                .Where(m => m.QuestionID == answer.QuestionID)
-                                .Select(u => u.UserID)
-                                .SingleOrDefaultAsync();
-
-                            await mCharacteristicsMaintenanceProcessor.VoteForUser(designerID, questionToUpdate.ID, answer.ChosenCharacters);
-                        }
-                    }
-                                        
-                    if (answer.YesNoState)
-                    {
-                        if(questionToUpdate.ActionID != null)
-                        {
-                            user.TotalCoin += questionToUpdate.QuestionAction.Coin;
-                        }
-                    }
-
-                    if (answer.Liked != null)
-                    {
-                        var otherUserID = await mDb.Set<Manufacture>().Where(m => m.QuestionID == answer.QuestionID)
-                                                                .Include(m => m.User)
-                                                                .Select(m => m.User.ID)
-                                                                .SingleOrDefaultAsync();
-                        if(otherUserID != 0)
-                        {
-                            await mScoringQueryProcessor.AddScore(otherUserID, mAppState.Prize_LikeScoreAmount, AchievedScoreType.Answer);
-                        }
-                    }
-                    await mDb.SaveChangesAsync();
-                }
-
-                int scoreCoefficient = questionToUpdate.Category.ScoreCoefficient;
-                int xp = mAppState.Prize_AnswerXP;
-               
-                await mScoringQueryProcessor.AddScore(user.ID, mAppState.Prize_AnswerScoreAmount * scoreCoefficient, AchievedScoreType.Answer);
-                await mUsersMaintenance.LevelUp(xp); // will return new total coin or Constants.DefaultValues.NoNewCoin
-
-                SQuestion[] Questions;
-                if (answer.SendQuestion)
-                {
-                    bool isAbleToGetCategory;
-
-                    if (answer.CategoryToGetQuestion == Constants.DefaultUser.CategoryID)
-                        isAbleToGetCategory = true;
-                    else
-                        isAbleToGetCategory = await mDb.Set<PurchaseCategory>().AsNoTracking().CountAsync(pc => pc.UserID == user.ID && pc.CategoryID == answer.CategoryToGetQuestion) == 1;
-
-                    int CatToGet = -1;
-                    if (isAbleToGetCategory)
-                    {
-                        CatToGet = answer.CategoryToGetQuestion;
-                    }
-                    else
-                    {
-                        CatToGet = await mDb.Set<SelectedCategory>().AsNoTracking().Where(sc => sc.UserID == user.ID).Select(sc => sc.CategoryID).SingleOrDefaultAsync();
-                    }
-
-                    var answerRef = mDb.Set<Answer>();
-                    var manuRef = mDb.Set<Manufacture>();
-
-                    Questions = await mDb.Set<Question>().AsNoTracking().Where(question => question.Banned == false && question.Catgory_ID == CatToGet &&
-                                                   !answerRef.Where(a => a.UserID == user.ID)
-                                                   .Select(y => y.QuestionID)
-                                                   .ToList()
-                                                   .Contains(question.ID))
-                                                   .OrderByDescending(question => question.Weight)
-                                                   .Include( q => q.QuestionAction)
-                                                   .Take(mAppState.Question_DefaultReturnAmount)
-                                                   .Join(manuRef, question => question.ID, manu => manu.QuestionID, (question, manu) => new SQuestion
-                                                   {
-                                                       ID = question.ID,
-                                                       What_if = question.What_if,
-                                                       But = question.But,
-                                                       Catgory_ID = question.Catgory_ID,
-                                                       Yes_Count = question.Yes_Count,
-                                                       No_Count = question.No_Count,
-                                                       Like_Count = question.Like_Count,
-                                                       Dislike_Count = question.Dislike_Count,
-                                                       Weight = question.Weight,
-                                                       Banned = question.Banned,
-                                                       UserName = manu.User.UserName, 
-                                                       ActionInfo = new SActionQuestion
-                                                       {
-                                                           ActionCoin = question.QuestionAction.Coin,
-                                                           ActionId = question.QuestionAction.ActionNumber,
-                                                           ActionNavigationPageNumber = question.QuestionAction.ActionNavigationNumber,
-                                                           MarketPackageName = question.QuestionAction.MarketPackageName,
-                                                           MarketIntentString = question.QuestionAction.MarketIntentString,
-                                                           AppStoreUri = question.QuestionAction.AppStoreUri,
-                                                       },
-                                                       CommentCount = question.CommentCount
-                                                   })
-                                                   .OrderByDescending(a => a.Weight)
-                                                   .ToArrayAsync();
-
-                    if (Questions.Length > 0)
-                    {
-                      
-                        return ResponseMessage(Request.CreateResponse(HttpStatusCode.OK, new { Questions, answer.QuestionID }));
-                    }
-
-                    Questions = new SQuestion[mAppState.Question_ServerBurntReturnAmount];
-                    for (int i = 0; i < mAppState.Question_ServerBurntReturnAmount; ++i)
-                    {
-                        Questions[i] = new SQuestion
-                        {
-                            ID = mAppState.Question_NoQuestionFoundID,
-                            What_if = mAppState.Question_NoQuestionFoundWhat,
-                            But = mAppState.Question_NoQuestionFoundBut
-                        };
-                    }
-                    return ResponseMessage(Request.CreateResponse(HttpStatusCode.OK, new { Questions, answer.QuestionID }));
+                    CatToGet = answer.CategoryToGetQuestion;
                 }
                 else
                 {
-                    return Response(HttpStatusCode.OK, answer.QuestionID);
+                    CatToGet = await mDb.Set<SelectedCategory>().AsNoTracking().Where(sc => sc.UserID == mUserSession.ID).Select(sc => sc.CategoryID).SingleOrDefaultAsync();
                 }
 
+                var answerRef = mDb.Set<Answer>();
+                var manuRef = mDb.Set<Manufacture>();
+
+                Questions = await mDb.Set<Question>().AsNoTracking().Where(question => question.Banned == false && question.Catgory_ID == CatToGet &&
+                                                !answerRef.Where(a => a.UserID == mUserSession.ID)
+                                                .Select(y => y.QuestionID)
+                                                .ToList()
+                                                .Contains(question.ID))
+                                                .OrderByDescending(question => question.Weight)
+                                                .Include(q => q.QuestionAction)
+                                                .Take(mAppState.Question_DefaultReturnAmount)
+                                                .Join(manuRef, question => question.ID, manu => manu.QuestionID, (question, manu) => new SQuestion
+                                                {
+                                                    ID = question.ID,
+                                                    What_if = question.What_if,
+                                                    But = question.But,
+                                                    Catgory_ID = question.Catgory_ID,
+                                                    Yes_Count = question.Yes_Count,
+                                                    No_Count = question.No_Count,
+                                                    Like_Count = question.Like_Count,
+                                                    Dislike_Count = question.Dislike_Count,
+                                                    Weight = question.Weight,
+                                                    Banned = question.Banned,
+                                                    UserName = manu.User.UserName,
+                                                    ActionInfo = new SActionQuestion
+                                                    {
+                                                        ActionCoin = question.QuestionAction.Coin,
+                                                        ActionId = question.QuestionAction.ActionNumber,
+                                                        ActionNavigationPageNumber = question.QuestionAction.ActionNavigationNumber,
+                                                        MarketPackageName = question.QuestionAction.MarketPackageName,
+                                                        MarketIntentString = question.QuestionAction.MarketIntentString,
+                                                        AppStoreUri = question.QuestionAction.AppStoreUri,
+                                                    },
+                                                    CommentCount = question.CommentCount
+                                                })
+                                                .OrderByDescending(a => a.Weight)
+                                                .ToArrayAsync();
+
+                if (Questions.Length > 0)
+                {
+
+                    return ResponseMessage(Request.CreateResponse(HttpStatusCode.OK, new { Questions, answer.QuestionID }));
+                }
+
+                Questions = new SQuestion[mAppState.Question_ServerBurntReturnAmount];
+                for (int i = 0; i < mAppState.Question_ServerBurntReturnAmount; ++i)
+                {
+                    Questions[i] = new SQuestion
+                    {
+                        ID = mAppState.Question_NoQuestionFoundID,
+                        What_if = mAppState.Question_NoQuestionFoundWhat,
+                        But = mAppState.Question_NoQuestionFoundBut
+                    };
+                }
+                return ResponseMessage(Request.CreateResponse(HttpStatusCode.OK, new { Questions, answer.QuestionID }));
             }
             else
             {
-                return Response(HttpStatusCode.Unauthorized);
+                return Response(HttpStatusCode.OK, answer.QuestionID);
             }
-            
+
         }
 
         private async Task<bool> AnswerExists(int userID , int questionID)

@@ -17,5 +17,7 @@ namespace Falcon.EFCommonContext.DbModel
         public int ID { get; set; }
         public int QuestionID { get; set; }
         public int Priority { get; set; }
+    
+        public virtual Question Question { get; set; }
     }
 }
