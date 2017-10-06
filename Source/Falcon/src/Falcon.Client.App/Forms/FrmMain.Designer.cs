@@ -47,7 +47,7 @@
             this.ckbYes = new System.Windows.Forms.CheckBox();
             this.btnLoadUser = new System.Windows.Forms.Button();
             this.txtUserNumber = new System.Windows.Forms.TextBox();
-            this.progressBar1 = new System.Windows.Forms.ProgressBar();
+            this.AnswerProgressbar = new System.Windows.Forms.ProgressBar();
             this.AnswerGroupBox.SuspendLayout();
             this.AnswerStatus.SuspendLayout();
             this.SuspendLayout();
@@ -72,7 +72,7 @@
             // 
             // AnswerGroupBox
             // 
-            this.AnswerGroupBox.Controls.Add(this.progressBar1);
+            this.AnswerGroupBox.Controls.Add(this.AnswerProgressbar);
             this.AnswerGroupBox.Controls.Add(this.btnGenerate);
             this.AnswerGroupBox.Controls.Add(this.txtNoPercent);
             this.AnswerGroupBox.Controls.Add(this.txtYesPercent);
@@ -236,12 +236,12 @@
             this.txtUserNumber.Text = "Total Number of Users";
             this.txtUserNumber.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
-            // progressBar1
+            // AnswerProgressbar
             // 
-            this.progressBar1.Location = new System.Drawing.Point(23, 174);
-            this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(235, 23);
-            this.progressBar1.TabIndex = 8;
+            this.AnswerProgressbar.Location = new System.Drawing.Point(23, 174);
+            this.AnswerProgressbar.Name = "AnswerProgressbar";
+            this.AnswerProgressbar.Size = new System.Drawing.Size(235, 23);
+            this.AnswerProgressbar.TabIndex = 8;
             // 
             // FrmMain
             // 
@@ -288,7 +288,7 @@
         private System.Windows.Forms.CheckBox ckbYes;
         private System.Windows.Forms.Button btnLoadUser;
         private System.Windows.Forms.TextBox txtUserNumber;
-        private System.Windows.Forms.ProgressBar progressBar1;
+        private System.Windows.Forms.ProgressBar AnswerProgressbar;
     }
 }
 

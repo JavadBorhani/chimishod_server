@@ -19,6 +19,8 @@ namespace Falcon.Client.App
 
             users = DataAccessor.LoadUsers(Utils.FileSystem.FileTypes.Users);
 
+            ckbYes.Checked = true;
+
         }
 
         private void Frm_Load(object sender, EventArgs e)
@@ -31,7 +33,7 @@ namespace Falcon.Client.App
 
             if(users == null)
             {
-                users = UUIDGenerator.Generate(1);
+                users = UUIDGenerator.Generate(Convert.ToInt32(txtUserNumber.Text));
 
                 for (int i = 0; i < users.Length; ++i)
                 {
@@ -54,8 +56,38 @@ namespace Falcon.Client.App
 
         private void btnGenerate_Click(object sender, EventArgs e)
         {
+            if (users == null)
+                return;
+
             btnGenerate.Enabled = false;
 
+            int yesCount = (int)((Convert.ToInt32(txtYesPercent.Text) / 100.0f) * users.Length);
+
+            int noCount = (int)((Convert.ToInt32(txtNoPercent.Text) / 100.0f) * users.Length); 
+
+            for(int i = 0; i < users.Length; ++i)
+            {
+                if ( i > yesCount)
+                {
+                    ckbYes.Checked = false;
+                }
+                mRequestManger.SendAnswerAsync(users[i] , Convert.ToInt32(txtQuestionID.Text) , ckbYes.Checked , ckbLike.Checked , ckbDislike.Checked , UpdateProgress);
+                
+            }
+
+        }
+
+        private void UpdateProgress(IRestResponse response)
+        {
+            Console.WriteLine("answer result" + response.ResponseStatus);
+
+            AnswerProgressbar.Invoke((MethodInvoker) delegate 
+            {
+                if(AnswerProgressbar.Value <= 100)
+                {
+                    AnswerProgressbar.Value = AnswerProgressbar.Value++;
+                }
+            });
         }
     }
 }
