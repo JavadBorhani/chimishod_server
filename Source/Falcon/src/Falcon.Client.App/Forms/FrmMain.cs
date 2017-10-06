@@ -10,10 +10,14 @@ namespace Falcon.Client.App
         public const string ServerURI = "http://development.chimishod.ir/";
         RestClientManager mRequestManger;
 
+        string[] users; 
+
         public FrmMain()
         {
             InitializeComponent();
             mRequestManger = new RestClientManager(ServerURI);
+
+            users = DataAccessor.LoadUsers(Utils.FileSystem.FileTypes.Users);
 
         }
 
@@ -24,12 +28,19 @@ namespace Falcon.Client.App
 
         private void btnCreateUser_Click(object sender, EventArgs e)
         {
-            var users = UUIDGenerator.Generate(50);
 
-            for(int i =0; i < users.Length; ++i)
+            if(users == null)
             {
-                mRequestManger.CreateUserAsync(users[i], AddToListBox);
+                users = UUIDGenerator.Generate(1);
+
+                for (int i = 0; i < users.Length; ++i)
+                {
+                    mRequestManger.CreateUserAsync(users[i], AddToListBox);
+                }
+
+                DataAccessor.SaveUsers(users);
             }
+              
         }
 
 
@@ -38,7 +49,7 @@ namespace Falcon.Client.App
             if(RequestResultListBox == null)
                 RequestResultListBox = new ListBox();
 
-            RequestResultListBox.Invoke((MethodInvoker)delegate { RequestResultListBox.Items.Add("response : " + response.ResponseStatus); });
+            RequestResultListBox.Invoke((MethodInvoker) delegate { RequestResultListBox.Items.Add("response : " + response.Request.Parameters.Count); });
         }
 
     }
