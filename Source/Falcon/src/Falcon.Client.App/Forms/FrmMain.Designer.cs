@@ -31,22 +31,23 @@
             this.btnCreateUser = new System.Windows.Forms.Button();
             this.RequestResultListBox = new System.Windows.Forms.ListBox();
             this.AnswerGroupBox = new System.Windows.Forms.GroupBox();
-            this.AnswerStatus = new System.Windows.Forms.GroupBox();
-            this.ckbYes = new System.Windows.Forms.CheckBox();
-            this.ckbNo = new System.Windows.Forms.CheckBox();
-            this.txtQuestionID = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.ckbLike = new System.Windows.Forms.CheckBox();
-            this.ckbDislike = new System.Windows.Forms.CheckBox();
-            this.txtNumberOfAnswers = new System.Windows.Forms.TextBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.txtYesPercent = new System.Windows.Forms.TextBox();
-            this.txtNoPercent = new System.Windows.Forms.TextBox();
             this.btnGenerate = new System.Windows.Forms.Button();
+            this.txtNoPercent = new System.Windows.Forms.TextBox();
+            this.txtYesPercent = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.txtNumberOfAnswers = new System.Windows.Forms.TextBox();
+            this.AnswerStatus = new System.Windows.Forms.GroupBox();
+            this.ckbDislike = new System.Windows.Forms.CheckBox();
+            this.ckbLike = new System.Windows.Forms.CheckBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.txtQuestionID = new System.Windows.Forms.TextBox();
+            this.ckbNo = new System.Windows.Forms.CheckBox();
+            this.ckbYes = new System.Windows.Forms.CheckBox();
             this.btnLoadUser = new System.Windows.Forms.Button();
             this.txtUserNumber = new System.Windows.Forms.TextBox();
+            this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.AnswerGroupBox.SuspendLayout();
             this.AnswerStatus.SuspendLayout();
             this.SuspendLayout();
@@ -71,6 +72,7 @@
             // 
             // AnswerGroupBox
             // 
+            this.AnswerGroupBox.Controls.Add(this.progressBar1);
             this.AnswerGroupBox.Controls.Add(this.btnGenerate);
             this.AnswerGroupBox.Controls.Add(this.txtNoPercent);
             this.AnswerGroupBox.Controls.Add(this.txtYesPercent);
@@ -85,6 +87,64 @@
             this.AnswerGroupBox.TabIndex = 3;
             this.AnswerGroupBox.TabStop = false;
             this.AnswerGroupBox.Text = "Answer";
+            // 
+            // btnGenerate
+            // 
+            this.btnGenerate.Location = new System.Drawing.Point(23, 135);
+            this.btnGenerate.Name = "btnGenerate";
+            this.btnGenerate.Size = new System.Drawing.Size(235, 33);
+            this.btnGenerate.TabIndex = 7;
+            this.btnGenerate.Text = "Generate";
+            this.btnGenerate.UseVisualStyleBackColor = true;
+            this.btnGenerate.Click += new System.EventHandler(this.btnGenerate_Click);
+            // 
+            // txtNoPercent
+            // 
+            this.txtNoPercent.Location = new System.Drawing.Point(158, 100);
+            this.txtNoPercent.Name = "txtNoPercent";
+            this.txtNoPercent.Size = new System.Drawing.Size(100, 20);
+            this.txtNoPercent.TabIndex = 6;
+            // 
+            // txtYesPercent
+            // 
+            this.txtYesPercent.Location = new System.Drawing.Point(158, 65);
+            this.txtYesPercent.Name = "txtYesPercent";
+            this.txtYesPercent.Size = new System.Drawing.Size(100, 20);
+            this.txtYesPercent.TabIndex = 5;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(82, 103);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(67, 13);
+            this.label4.TabIndex = 4;
+            this.label4.Text = "No Percent :";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(78, 68);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(71, 13);
+            this.label3.TabIndex = 3;
+            this.label3.Text = "Yes Percent :";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(20, 28);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(129, 13);
+            this.label2.TabIndex = 2;
+            this.label2.Text = "Total Number Of Answer :";
+            // 
+            // txtNumberOfAnswers
+            // 
+            this.txtNumberOfAnswers.Location = new System.Drawing.Point(158, 25);
+            this.txtNumberOfAnswers.Name = "txtNumberOfAnswers";
+            this.txtNumberOfAnswers.Size = new System.Drawing.Size(100, 20);
+            this.txtNumberOfAnswers.TabIndex = 1;
             // 
             // AnswerStatus
             // 
@@ -101,41 +161,15 @@
             this.AnswerStatus.TabStop = false;
             this.AnswerStatus.Text = "AnswerStatus";
             // 
-            // ckbYes
+            // ckbDislike
             // 
-            this.ckbYes.AutoSize = true;
-            this.ckbYes.Location = new System.Drawing.Point(68, 94);
-            this.ckbYes.Name = "ckbYes";
-            this.ckbYes.Size = new System.Drawing.Size(44, 17);
-            this.ckbYes.TabIndex = 0;
-            this.ckbYes.Text = "Yes";
-            this.ckbYes.UseVisualStyleBackColor = true;
-            // 
-            // ckbNo
-            // 
-            this.ckbNo.AutoSize = true;
-            this.ckbNo.Location = new System.Drawing.Point(68, 132);
-            this.ckbNo.Name = "ckbNo";
-            this.ckbNo.Size = new System.Drawing.Size(40, 17);
-            this.ckbNo.TabIndex = 1;
-            this.ckbNo.Text = "No";
-            this.ckbNo.UseVisualStyleBackColor = true;
-            // 
-            // txtQuestionID
-            // 
-            this.txtQuestionID.Location = new System.Drawing.Point(68, 46);
-            this.txtQuestionID.Name = "txtQuestionID";
-            this.txtQuestionID.Size = new System.Drawing.Size(100, 20);
-            this.txtQuestionID.TabIndex = 2;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(6, 49);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(60, 13);
-            this.label1.TabIndex = 3;
-            this.label1.Text = "QuestionID";
+            this.ckbDislike.AutoSize = true;
+            this.ckbDislike.Location = new System.Drawing.Point(68, 209);
+            this.ckbDislike.Name = "ckbDislike";
+            this.ckbDislike.Size = new System.Drawing.Size(57, 17);
+            this.ckbDislike.TabIndex = 5;
+            this.ckbDislike.Text = "Dislike";
+            this.ckbDislike.UseVisualStyleBackColor = true;
             // 
             // ckbLike
             // 
@@ -147,72 +181,41 @@
             this.ckbLike.Text = "Like";
             this.ckbLike.UseVisualStyleBackColor = true;
             // 
-            // ckbDislike
+            // label1
             // 
-            this.ckbDislike.AutoSize = true;
-            this.ckbDislike.Location = new System.Drawing.Point(68, 209);
-            this.ckbDislike.Name = "ckbDislike";
-            this.ckbDislike.Size = new System.Drawing.Size(57, 17);
-            this.ckbDislike.TabIndex = 5;
-            this.ckbDislike.Text = "Dislike";
-            this.ckbDislike.UseVisualStyleBackColor = true;
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(6, 49);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(60, 13);
+            this.label1.TabIndex = 3;
+            this.label1.Text = "QuestionID";
             // 
-            // txtNumberOfAnswers
+            // txtQuestionID
             // 
-            this.txtNumberOfAnswers.Location = new System.Drawing.Point(158, 25);
-            this.txtNumberOfAnswers.Name = "txtNumberOfAnswers";
-            this.txtNumberOfAnswers.Size = new System.Drawing.Size(100, 20);
-            this.txtNumberOfAnswers.TabIndex = 1;
+            this.txtQuestionID.Location = new System.Drawing.Point(68, 46);
+            this.txtQuestionID.Name = "txtQuestionID";
+            this.txtQuestionID.Size = new System.Drawing.Size(100, 20);
+            this.txtQuestionID.TabIndex = 2;
             // 
-            // label2
+            // ckbNo
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(20, 28);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(129, 13);
-            this.label2.TabIndex = 2;
-            this.label2.Text = "Total Number Of Answer :";
+            this.ckbNo.AutoSize = true;
+            this.ckbNo.Location = new System.Drawing.Point(68, 132);
+            this.ckbNo.Name = "ckbNo";
+            this.ckbNo.Size = new System.Drawing.Size(40, 17);
+            this.ckbNo.TabIndex = 1;
+            this.ckbNo.Text = "No";
+            this.ckbNo.UseVisualStyleBackColor = true;
             // 
-            // label3
+            // ckbYes
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(78, 68);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(71, 13);
-            this.label3.TabIndex = 3;
-            this.label3.Text = "Yes Percent :";
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(82, 103);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(67, 13);
-            this.label4.TabIndex = 4;
-            this.label4.Text = "No Percent :";
-            // 
-            // txtYesPercent
-            // 
-            this.txtYesPercent.Location = new System.Drawing.Point(158, 65);
-            this.txtYesPercent.Name = "txtYesPercent";
-            this.txtYesPercent.Size = new System.Drawing.Size(100, 20);
-            this.txtYesPercent.TabIndex = 5;
-            // 
-            // txtNoPercent
-            // 
-            this.txtNoPercent.Location = new System.Drawing.Point(158, 100);
-            this.txtNoPercent.Name = "txtNoPercent";
-            this.txtNoPercent.Size = new System.Drawing.Size(100, 20);
-            this.txtNoPercent.TabIndex = 6;
-            // 
-            // btnGenerate
-            // 
-            this.btnGenerate.Location = new System.Drawing.Point(23, 135);
-            this.btnGenerate.Name = "btnGenerate";
-            this.btnGenerate.Size = new System.Drawing.Size(235, 33);
-            this.btnGenerate.TabIndex = 7;
-            this.btnGenerate.Text = "Generate";
-            this.btnGenerate.UseVisualStyleBackColor = true;
+            this.ckbYes.AutoSize = true;
+            this.ckbYes.Location = new System.Drawing.Point(68, 94);
+            this.ckbYes.Name = "ckbYes";
+            this.ckbYes.Size = new System.Drawing.Size(44, 17);
+            this.ckbYes.TabIndex = 0;
+            this.ckbYes.Text = "Yes";
+            this.ckbYes.UseVisualStyleBackColor = true;
             // 
             // btnLoadUser
             // 
@@ -232,6 +235,13 @@
             this.txtUserNumber.TabIndex = 8;
             this.txtUserNumber.Text = "Total Number of Users";
             this.txtUserNumber.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // progressBar1
+            // 
+            this.progressBar1.Location = new System.Drawing.Point(23, 174);
+            this.progressBar1.Name = "progressBar1";
+            this.progressBar1.Size = new System.Drawing.Size(235, 23);
+            this.progressBar1.TabIndex = 8;
             // 
             // FrmMain
             // 
@@ -278,6 +288,7 @@
         private System.Windows.Forms.CheckBox ckbYes;
         private System.Windows.Forms.Button btnLoadUser;
         private System.Windows.Forms.TextBox txtUserNumber;
+        private System.Windows.Forms.ProgressBar progressBar1;
     }
 }
 

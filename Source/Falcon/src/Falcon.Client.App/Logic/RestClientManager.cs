@@ -24,16 +24,21 @@ namespace Falcon.Client.App.Logic
             
         }
 
-        public void SendAnswerAsync(string UUID, int QuestionID, bool Yes, bool No, bool Like, bool Dislike , Action<IRestResponse> Callback)
+        public void SendAnswerAsync(string UUID, int QuestionID, bool Yes, bool Like, bool Dislike , Action<IRestResponse> Callback)
         {
-            var request = RequestUtils.CreateRequest("Answers/Answer", Method.POST, UUID);
+            var request = RequestUtils.CreateRequest("Answers/Answer", Method.POST, UUID , new
+            {
+                QuestionID = QuestionID,
+                Like = Like,
+                Dislike = Dislike,
+                YesNoState = Yes, 
+            });
 
             mClient.ExecuteAsync(request , res =>
             {
                 Callback.Invoke(res);
             });
         }
-
 
         
 

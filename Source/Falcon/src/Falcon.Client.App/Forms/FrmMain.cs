@@ -52,5 +52,10 @@ namespace Falcon.Client.App
             RequestResultListBox.Invoke((MethodInvoker) delegate { RequestResultListBox.Items.Add("response : " + response.Request.Parameters.Count); });
         }
 
+        private void btnGenerate_Click(object sender, EventArgs e)
+        {
+            btnGenerate.Enabled = false;
+
+        }
     }
 }
