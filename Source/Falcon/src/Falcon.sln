@@ -25,6 +25,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Falcon.EFCommonContext", "F
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Falcon.Web.Site", "Falcon.Web.Site\Falcon.Web.Site.csproj", "{D8E55F82-AEFE-4208-8FD6-4E693AA521BE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Falcon.Client.App", "Falcon.Client.App\Falcon.Client.App.csproj", "{FD6E24C5-EBED-4A48-80FA-1EA190BAB98A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -71,6 +73,10 @@ Global
 		{D8E55F82-AEFE-4208-8FD6-4E693AA521BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D8E55F82-AEFE-4208-8FD6-4E693AA521BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D8E55F82-AEFE-4208-8FD6-4E693AA521BE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FD6E24C5-EBED-4A48-80FA-1EA190BAB98A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FD6E24C5-EBED-4A48-80FA-1EA190BAB98A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FD6E24C5-EBED-4A48-80FA-1EA190BAB98A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FD6E24C5-EBED-4A48-80FA-1EA190BAB98A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

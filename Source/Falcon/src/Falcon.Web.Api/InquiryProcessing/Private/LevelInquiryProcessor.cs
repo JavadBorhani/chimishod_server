@@ -1,22 +1,17 @@
-﻿using Falcon.Web.Api.InquiryProcessing.Public;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Falcon.Web.Models.Api;
+﻿using AutoMapper;
 using Falcon.EFCommonContext;
+using Falcon.Web.Api.InquiryProcessing.Public;
 using Falcon.Web.Common;
-using AutoMapper;
-using Falcon.Web.Models.Api.Level;
 using Falcon.Web.Models.Api.Cache;
+using System;
+using System.Threading.Tasks;
 
 namespace Falcon.Web.Api.InquiryProcessing.Private
 {
     public class LevelInquiryProcessor : ILevelInquiryProcessor
     {
 
-        private SLevelCache[] mLevels;
+        //private SLevelCache[] mLevels;
 
         public virtual IDbContext mDB
         {
