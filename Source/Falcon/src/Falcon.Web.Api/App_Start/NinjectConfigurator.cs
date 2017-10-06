@@ -1,37 +1,37 @@
 ﻿// Flapp Copyright 2017-2018
 
-using Falcon.Common.Logging;
+using AutoMapper;
 using Falcon.Common;
-using log4net.Config;
-using Ninject;
-using Falcon.Web.Common;
-using Ninject.Web.Common;
-using Falcon.EFCommonContext;
-using Falcon.Web.Common.Security;
+using Falcon.Common.Logging;
 using Falcon.Common.Security;
+using Falcon.Common.Serialization;
 using Falcon.Data.QueryProcessors;
 using Falcon.Database.SqlServer.QueryProcessors;
-using System;
-using System.Linq;
-using AutoMapper;
-using System.Collections.Generic;
+using Falcon.EFCommonContext;
 using Falcon.Web.Api.App_Start;
 using Falcon.Web.Api.InquiryProcessing.Private;
 using Falcon.Web.Api.InquiryProcessing.Public;
-using Falcon.Web.Api.Security.Public;
-using Falcon.Web.Api.Security.Private;
-using Falcon.Web.Api.MaintenanceProcessing.Public;
-using Falcon.Web.Api.MaintenanceProcessing.Private;
-using Falcon.Common.Serialization;
-using Falcon.Web.Api.PurchaseAuthorizer.Public;
-using Falcon.Web.Api.PurchaseAuthorizer.Private;
-using Falcon.Web.Api.WatchAd.Public;
-using Falcon.Web.Api.WatchAd.Private;
-using Hangfire;
-using Falcon.Web.Api.JobSystem.Public;
 using Falcon.Web.Api.JobSystem.Private;
-using Falcon.Web.Common.Memmory;
+using Falcon.Web.Api.JobSystem.Public;
+using Falcon.Web.Api.MaintenanceProcessing.Private;
+using Falcon.Web.Api.MaintenanceProcessing.Public;
+using Falcon.Web.Api.PurchaseAuthorizer.Private;
+using Falcon.Web.Api.PurchaseAuthorizer.Public;
+using Falcon.Web.Api.Security.Private;
+using Falcon.Web.Api.Security.Public;
 using Falcon.Web.Api.Utilities.Mail;
+using Falcon.Web.Api.WatchAd.Private;
+using Falcon.Web.Api.WatchAd.Public;
+using Falcon.Web.Common;
+using Falcon.Web.Common.Memmory;
+using Falcon.Web.Common.Security;
+using Hangfire;
+using log4net.Config;
+using Ninject;
+using Ninject.Web.Common;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Falcon.Web.Api
 {
@@ -112,6 +112,8 @@ namespace Falcon.Web.Api
             container.Bind<IScoringQueryProcessor>().To<ScoringQueryProcessor>().InRequestScope();
             container.Bind<IQuestionsQueryProcessor>().To<QuestionsQueryProcessor>().InRequestScope();
             container.Bind<IAnswerQueryProcessor>().To<AnswerQueryProcessor>().InRequestScope();
+            container.Bind<IGameConfigQueryProcessor>().To<GameConfigQueryProcessor>().InRequestScope();
+            container.Bind<IQuestionSelectorQueryProcessor>().To<QuestionSelectorQueryProcessor>().InRequestScope();
 
             //summary: Reusing an special Component With Background Process and Http In RequestScope
             //container.Bind<IUserStatQueryProcessor>()
@@ -141,6 +143,7 @@ namespace Falcon.Web.Api
             container.Bind<IUserStatsInquiryProcessor>().To<UserStatsInquiryProcessor>().InRequestScope();
             container.Bind<IAnswerInquiryProcessor>().To<AnswerInquiryProcessor>().InRequestScope();
             container.Bind<IQuestionsInquiryProcessor>().To<QuestionsInquiryProcessor>().InRequestScope();
+            container.Bind<IGameConfigInquiryProcessor>().To<GameConfigInqiuryProcessor>().InRequestScope();
 
         }
         private void  AddMaintenanceProcessors(IKernel container)

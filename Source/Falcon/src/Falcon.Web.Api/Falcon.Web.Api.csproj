@@ -167,6 +167,7 @@
     <Compile Include="AutoMappingConfiguration\CategoryMap\CategoryToSCategoryAutoTypeConfiguration.cs" />
     <Compile Include="AutoMappingConfiguration\CommentsMap\CommentToSCommentAutoTypeConfiguration.cs" />
     <Compile Include="AutoMappingConfiguration\DailyRewardMap\DailyRewardToSDailyInactiveRewardAutoTypeConfiguration.cs" />
+    <Compile Include="AutoMappingConfiguration\GameConfig\QSConfigToSQuestionSelectorAutoTypeConfiguration.cs" />
     <Compile Include="AutoMappingConfiguration\GiftMap\GiftToSGiftAutoTypeConfiguration.cs" />
     <Compile Include="AutoMappingConfiguration\GiftMap\SGiftToSNotifyAutoTypeConfiguration.cs" />
     <Compile Include="AutoMappingConfiguration\LeaderBoard\UserToSLeaderBoardAutoTypeConfiguration.cs" />
@@ -200,6 +201,7 @@
     <Compile Include="InquiryProcessing\Private\CommentsInquiryProcessor.cs" />
     <Compile Include="InquiryProcessing\Private\CreatedQuestionsInquiryProcessor.cs" />
     <Compile Include="InquiryProcessing\Private\DWMInquiryProcessor.cs" />
+    <Compile Include="InquiryProcessing\Private\GameConfigInqiuryProcessor.cs" />
     <Compile Include="InquiryProcessing\Private\LevelInquiryProcessor.cs" />
     <Compile Include="InquiryProcessing\Private\QuestionsInquiryProcessor.cs" />
     <Compile Include="InquiryProcessing\Private\SpinWheelInquiryProcessor.cs" />
@@ -217,6 +219,7 @@
     <Compile Include="InquiryProcessing\Public\ICommentsInquiryProcessor.cs" />
     <Compile Include="InquiryProcessing\Public\ICreatedQuestionsInquiryProcessor.cs" />
     <Compile Include="InquiryProcessing\Public\IDWMInquiryProcessor.cs" />
+    <Compile Include="InquiryProcessing\Public\IGameConfigInquiryProcessor.cs" />
     <Compile Include="InquiryProcessing\Public\ILevelInquiryProcessor.cs" />
     <Compile Include="InquiryProcessing\Public\IPagedDataRequestFactory.cs" />
     <Compile Include="InquiryProcessing\Private\PagedDataRequestFactory.cs" />

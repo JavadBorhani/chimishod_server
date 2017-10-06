@@ -11,10 +11,9 @@ namespace Falcon.EFCommonContext.DbModel
 {
     using System;
     using System.Data.Entity;
-    using System.Data.Entity.Infrastructure;
     using System.Data.Entity.Core.Objects;
-    using System.Linq;
-    
+    using System.Data.Entity.Infrastructure;
+
     public partial class DbEntity : DbContext
     {
         public DbEntity()
@@ -26,6 +25,7 @@ namespace Falcon.EFCommonContext.DbModel
         {
 
         }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             throw new UnintentionalCodeFirstException();
@@ -72,6 +72,7 @@ namespace Falcon.EFCommonContext.DbModel
         public virtual DbSet<Question> Questions { get; set; }
         public virtual DbSet<QuestionAction> QuestionActions { get; set; }
         public virtual DbSet<QuestionBoost> QuestionBoosts { get; set; }
+        public virtual DbSet<QuestionSelectorConfig> QuestionSelectorConfigs { get; set; }
         public virtual DbSet<ReportedQuestion> ReportedQuestions { get; set; }
         public virtual DbSet<ReportType> ReportTypes { get; set; }
         public virtual DbSet<ScoreType> ScoreTypes { get; set; }

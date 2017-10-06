@@ -1,6 +1,5 @@
 ﻿// Flapp Copyright 2017-2018
 
-using System.IO;
 
 namespace Falcon.Common
 {
@@ -123,24 +122,11 @@ namespace Falcon.Common
             public const int LatencyNumber = 3000;
             public const int FirstPageNumer = 1;
             public const int NoLevelUp = -1;
-            public const int NoNewCoin = -1; 
+            public const int NoNewCoin = -1;
+            public const int QuestionSelectorConfigID = 1; 
              
         }
-        //public static class DefaultHostConfig
-        //{
-        //    //public const string WebSiteNoReplyMail = "noreply@vglr.ir";
-        //    //public const string WebSiteNoReplyMailPassword = "@@@Visualbasic7";
-        //    //public const string WebSiteSupportMail = "";
-        //    //public const string WebSiteSupportMailPassword = "";
-        //    //public const string HostSmtpServer = "31.25.89.211"; 
-        //}
-        //public static class Prize
-        //{
-        //    //public const int CreateQuestionPrize = 10; is in database
-        //    //public const int CreatedQuestionAccepted = 10;
-        //    //public const int LikeQuestion = 1; in db
-        //    //public const int Answering = 1; is in db
-        //}
+
         public static class RoutesToIgnoreAuthentication
         {
             public const string UserAuthenticator = "UserAuthenticator";

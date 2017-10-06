@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="Falcon.DbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="Falcon.DbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="AchievedCodeGift">
           <Key>
             <PropertyRef Name="ID" />
@@ -511,6 +511,17 @@
           <Property Name="RectangleColor" Type="varchar" MaxLength="10" Nullable="false" />
           <Property Name="CreatedDate" Type="datetime" Nullable="false" />
           <Property Name="UpdatedDate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="QuestionSelectorConfig">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="TotalNumberOfQuestions" Type="int" Nullable="false" />
+          <Property Name="CreatedQuestionsPercent" Type="int" Nullable="false" />
+          <Property Name="VerifiedQuestionsPercent" Type="int" Nullable="false" />
+          <Property Name="BoostedQuestionsPercent" Type="int" Nullable="false" />
+          <Property Name="ActionBasedQuestionsPercent" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="ReportedQuestions">
           <Key>
@@ -1901,6 +1912,7 @@ warning 6002: The table/view 'what_if.dbo.AchievementStatistics' does not have a
           <EntitySet Name="Question" EntityType="Self.Question" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="QuestionAction" EntityType="Self.QuestionAction" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="QuestionBoost" EntityType="Self.QuestionBoost" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="QuestionSelectorConfig" EntityType="Self.QuestionSelectorConfig" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ReportedQuestions" EntityType="Self.ReportedQuestions" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ReportType" EntityType="Self.ReportType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ScoreTypes" EntityType="Self.ScoreTypes" Schema="dbo" store:Type="Tables" />
@@ -2254,8 +2266,7 @@ warning 6002: The table/view 'what_if.dbo.AchievementStatistics' does not have a
             <End Role="WatchedAd" EntitySet="WatchedAd" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="Falcon.DbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -2333,6 +2344,7 @@ warning 6002: The table/view 'what_if.dbo.AchievementStatistics' does not have a
           <EntitySet Name="Questions" EntityType="Falcon.DbModel.Question" />
           <EntitySet Name="QuestionActions" EntityType="Falcon.DbModel.QuestionAction" />
           <EntitySet Name="QuestionBoosts" EntityType="Falcon.DbModel.QuestionBoost" />
+          <EntitySet Name="QuestionSelectorConfigs" EntityType="Falcon.DbModel.QuestionSelectorConfig" />
           <EntitySet Name="ReportedQuestions" EntityType="Falcon.DbModel.ReportedQuestion" />
           <EntitySet Name="ReportTypes" EntityType="Falcon.DbModel.ReportType" />
           <EntitySet Name="ScoreTypes" EntityType="Falcon.DbModel.ScoreType" />
@@ -2675,7 +2687,7 @@ warning 6002: The table/view 'what_if.dbo.AchievementStatistics' does not have a
             <End Role="WatchAdProvider" EntitySet="WatchAdProviders" />
             <End Role="WatchedAd" EntitySet="WatchedAds" />
           </AssociationSet>
-        </EntityContainer>
+          </EntityContainer>
         <ComplexType Name="sp_helpdiagramdefinition_Result">
           <Property Type="Int32" Name="version" Nullable="true" />
           <Property Type="Binary" Name="definition" Nullable="true" />
@@ -3287,6 +3299,17 @@ warning 6002: The table/view 'what_if.dbo.AchievementStatistics' does not have a
           <NavigationProperty Name="CreatedQuestions" Relationship="Falcon.DbModel.FK_CreatedQuestions_QuestionBoost" FromRole="QuestionBoost" ToRole="CreatedQuestion" />
           <NavigationProperty Name="Questions" Relationship="Falcon.DbModel.FK_Question_QuestionBoost" FromRole="QuestionBoost" ToRole="Question" />
         </EntityType>
+        <EntityType Name="QuestionSelectorConfig">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="TotalNumberOfQuestions" Type="Int32" Nullable="false" />
+          <Property Name="CreatedQuestionsPercent" Type="Int32" Nullable="false" />
+          <Property Name="VerifiedQuestionsPercent" Type="Int32" Nullable="false" />
+          <Property Name="BoostedQuestionsPercent" Type="Int32" Nullable="false" />
+          <Property Name="ActionBasedQuestionsPercent" Type="Int32" Nullable="false" />
+        </EntityType>
         <EntityType Name="ReportedQuestion">
           <Key>
             <PropertyRef Name="ID" />
@@ -3453,7 +3476,7 @@ warning 6002: The table/view 'what_if.dbo.AchievementStatistics' does not have a
           <Property Name="LastSeenDateTime" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="PrevLastSeenDateTime" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="PreviousDaySeen" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="RowVersion" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" ConcurrencyMode="Fixed" />
+          <Property Name="RowVersion" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
           <NavigationProperty Name="AchievedCodeGifts" Relationship="Falcon.DbModel.FK_AchievedCodeGift_User" FromRole="User" ToRole="AchievedCodeGift" />
           <NavigationProperty Name="AchievedGifts" Relationship="Falcon.DbModel.FK_AchievedGifts_User" FromRole="User" ToRole="AchievedGift" />
           <NavigationProperty Name="AchievedPosessions" Relationship="Falcon.DbModel.FK_AchievedQuests_User" FromRole="User" ToRole="AchievedPosession" />
@@ -3540,7 +3563,7 @@ warning 6002: The table/view 'what_if.dbo.AchievementStatistics' does not have a
           <Property Name="Rank" Type="Int32" Nullable="false" />
           <Property Name="SpinRemainedChance" Type="Int32" Nullable="false" />
           <Property Name="SpinWheelCount" Type="Int32" Nullable="false" />
-          <Property Name="RowVersion" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" ConcurrencyMode="Fixed" />
+          <Property Name="RowVersion" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
           <NavigationProperty Name="User" Relationship="Falcon.DbModel.FK_UserStatus_User" FromRole="UserStat" ToRole="User" />
         </EntityType>
         <EntityType Name="UserType">
@@ -4666,7 +4689,7 @@ warning 6002: The table/view 'what_if.dbo.AchievementStatistics' does not have a
             </Dependent>
           </ReferentialConstraint>
         </Association>
-      </Schema>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -5246,6 +5269,18 @@ warning 6002: The table/view 'what_if.dbo.AchievementStatistics' does not have a
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="QuestionSelectorConfigs">
+            <EntityTypeMapping TypeName="Falcon.DbModel.QuestionSelectorConfig">
+              <MappingFragment StoreEntitySet="QuestionSelectorConfig">
+                <ScalarProperty Name="ActionBasedQuestionsPercent" ColumnName="ActionBasedQuestionsPercent" />
+                <ScalarProperty Name="BoostedQuestionsPercent" ColumnName="BoostedQuestionsPercent" />
+                <ScalarProperty Name="VerifiedQuestionsPercent" ColumnName="VerifiedQuestionsPercent" />
+                <ScalarProperty Name="CreatedQuestionsPercent" ColumnName="CreatedQuestionsPercent" />
+                <ScalarProperty Name="TotalNumberOfQuestions" ColumnName="TotalNumberOfQuestions" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="ReportedQuestions">
             <EntityTypeMapping TypeName="Falcon.DbModel.ReportedQuestion">
               <MappingFragment StoreEntitySet="ReportedQuestions">
@@ -5500,7 +5535,7 @@ warning 6002: The table/view 'what_if.dbo.AchievementStatistics' does not have a
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-        </EntityContainerMapping>
+          </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
   </edmx:Runtime>

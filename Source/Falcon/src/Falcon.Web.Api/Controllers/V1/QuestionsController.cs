@@ -1,19 +1,20 @@
 ﻿// Flapp Copyright 2017-2018
 
+using Falcon.Common;
+using Falcon.Common.Security;
+using Falcon.EFCommonContext;
+using Falcon.EFCommonContext.DbModel;
+using Falcon.Web.Api.InquiryProcessing.Public;
+using Falcon.Web.Api.MaintenanceProcessing.Public;
+using Falcon.Web.Api.Utilities.Base;
+using Falcon.Web.Common;
+using Falcon.Web.Models.Api;
 using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
-using Falcon.Common;
-using Falcon.EFCommonContext.DbModel;
-using Falcon.Web.Common;
-using Falcon.EFCommonContext;
-using Falcon.Web.Api.Utilities.Base;
-using Falcon.Common.Security;
-using Falcon.Web.Api.MaintenanceProcessing.Public;
-using Falcon.Web.Models.Api;
 
 namespace Falcon.Web.Api.Controllers.V1
 {
@@ -23,26 +24,28 @@ namespace Falcon.Web.Api.Controllers.V1
         private readonly IDbContext mDb;
         private readonly IWebUserSession mUserSession;
         private readonly SApplicationState mAppState;
+        private readonly IQuestionsInquiryProcessor mQuestionInquiry;
 
-        public QuestionsController(IDbContext Database , IWebUserSession UserSession , IGlobalApplicationState AppState)
+        public QuestionsController(IDbContext Database, IWebUserSession UserSession, IGlobalApplicationState AppState , IQuestionsInquiryProcessor QuestionInquiry)
         {
             mDb = Database;
             mUserSession = UserSession;
             mAppState = AppState.GetState();
+            mQuestionInquiry = QuestionInquiry;
         }
 
         [ResponseType(typeof(Models.Api.SQuestion))]
         [Route("Questions/Question/{CategoryID}")]
         [HttpGet]
 
-        public  async Task<IHttpActionResult> GettingQuestion(int CategoryID)
+        public async Task<IHttpActionResult> GettingQuestion(int CategoryID)
         {
-            
+
             bool isAbleToGetCategory;
             if (CategoryID == Constants.DefaultUser.CategoryID)
-                isAbleToGetCategory = true; 
+                isAbleToGetCategory = true;
             else
-                isAbleToGetCategory = await mDb.Set<PurchaseCategory>().AsNoTracking().CountAsync( pc => pc.UserID == mUserSession.ID && pc.CategoryID == CategoryID ) == 1;
+                isAbleToGetCategory = await mDb.Set<PurchaseCategory>().AsNoTracking().CountAsync(pc => pc.UserID == mUserSession.ID && pc.CategoryID == CategoryID) == 1;
 
             int CatToGet = -1;
             if (isAbleToGetCategory)
@@ -65,7 +68,7 @@ namespace Falcon.Web.Api.Controllers.V1
                                             .OrderByDescending(question => question.Weight)
                                             .Include(q => q.QuestionAction)
                                             .Take(mAppState.Question_DefaultReturnAmount)
-                                            .Join(manuRef, question => question.ID , manu => manu.QuestionID ,  (question, manu) => new SQuestion
+                                            .Join(manuRef, question => question.ID, manu => manu.QuestionID, (question, manu) => new SQuestion
                                             {
                                                 ID = question.ID,
                                                 What_if = question.What_if,
@@ -97,7 +100,7 @@ namespace Falcon.Web.Api.Controllers.V1
                 return Ok(result);
             }
 
-            Models.Api.SQuestion[] noQuestion = new Models.Api.SQuestion[mAppState.Question_ServerBurntReturnAmount];
+            SQuestion[] noQuestion = new Models.Api.SQuestion[mAppState.Question_ServerBurntReturnAmount];
             for (int i = 0; i < mAppState.Question_ServerBurntReturnAmount; ++i)
             {
                 noQuestion[i] = new Models.Api.SQuestion
@@ -110,5 +113,14 @@ namespace Falcon.Web.Api.Controllers.V1
             return Ok(noQuestion);
         }
 
+        [ResponseType(typeof(SQuestion[]))]
+        [Route("Questions/{CategoryID}")]
+        [HttpPost]
+
+        public async Task<SQuestion[]> RetrieveQuestion(int CategoryID)
+        {
+            var result = await mQuestionInquiry.PrepareQuestionList(CategoryID);
+            return result;
+        }
     }
 }

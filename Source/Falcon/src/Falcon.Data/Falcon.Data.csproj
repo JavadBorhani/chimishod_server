@@ -55,10 +55,12 @@
     <Compile Include="QueryProcessors\ICommentsQueryProcessor.cs" />
     <Compile Include="QueryProcessors\ICreatedQuestionsQueryProcessor.cs" />
     <Compile Include="QueryProcessors\IDWMQueryProcessor.cs" />
+    <Compile Include="QueryProcessors\IGameConfigQueryProcessor.cs" />
     <Compile Include="QueryProcessors\IGiftQueryProcessor.cs" />
     <Compile Include="QueryProcessors\IMarketInfoQueryProcessor.cs" />
     <Compile Include="QueryProcessors\INotificationsQueryProcessor.cs" />
     <Compile Include="QueryProcessors\IAppAdvertsQueryProcessor.cs" />
+    <Compile Include="QueryProcessors\IQuestionSelectorQueryProcessor.cs" />
     <Compile Include="QueryProcessors\IQuestionsQueryProcessor.cs" />
     <Compile Include="QueryProcessors\IScoringQueryProcessor.cs" />
     <Compile Include="QueryProcessors\ISpinWheelQueryProcessor.cs" />
