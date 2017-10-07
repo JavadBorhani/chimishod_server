@@ -30,16 +30,16 @@ namespace Falcon.Client.App
 
         private void btnCreateUser_Click(object sender, EventArgs e)
         {
-
+            
             if(users == null)
             {
                 users = UUIDGenerator.Generate(Convert.ToInt32(txtUserNumber.Text));
-
+                AddToListBox("start creating...");
                 for (int i = 0; i < users.Length; ++i)
                 {
                     mRequestManger.CreateUserAsync(users[i], AddToListBox);
                 }
-
+                AddToListBox("end creating....");
                 DataAccessor.SaveUsers(users);
             }
               
@@ -52,6 +52,13 @@ namespace Falcon.Client.App
                 RequestResultListBox = new ListBox();
 
             RequestResultListBox.Invoke((MethodInvoker) delegate { RequestResultListBox.Items.Add("response : " + response.Request.Parameters.Count); });
+        }
+        private void AddToListBox(string text)
+        {
+            if (RequestResultListBox == null)
+                RequestResultListBox = new ListBox();
+
+            RequestResultListBox.Invoke((MethodInvoker)delegate { RequestResultListBox.Items.Add(text); });
         }
 
         private void btnGenerate_Click(object sender, EventArgs e)
