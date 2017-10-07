@@ -1,7 +1,6 @@
-﻿using System;
-using System.Threading.Tasks;
-using Falcon.Data.QueryProcessors;
+﻿using Falcon.Data.QueryProcessors;
 using Falcon.Web.Api.MaintenanceProcessing.Public;
+using System.Threading.Tasks;
 
 namespace Falcon.Web.Api.MaintenanceProcessing.Private
 {
