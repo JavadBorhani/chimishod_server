@@ -6,6 +6,5 @@ namespace Falcon.Web.Api.InquiryProcessing.Public
     public interface IGameConfigInquiryProcessor
     {
         Task<SQuestionSelectorConfig> GetQuestionSelectorConfig();
-
     }
 }

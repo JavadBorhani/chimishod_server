@@ -40,7 +40,10 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
             var userAnsweredIds = await mAnswerInquiry.GetUserAnswerQuestions(mUserSession.ID);
 
             // 1- get user created questions
-            // 2- get 
+            // 2- get usual questions based on weeks 
+            
+            // in the end joining with Manufacture and action based questions 
+
 
 
             return null;                

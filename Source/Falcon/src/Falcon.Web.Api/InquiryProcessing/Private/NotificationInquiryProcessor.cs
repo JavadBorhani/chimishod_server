@@ -1,15 +1,11 @@
-﻿using Falcon.Web.Api.InquiryProcessing.Public;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using AutoMapper;
+using Falcon.Common;
+using Falcon.Common.Security;
+using Falcon.Data.QueryProcessors;
+using Falcon.EFCommonContext.DbModel;
+using Falcon.Web.Api.InquiryProcessing.Public;
 using Falcon.Web.Models.Api;
 using System.Threading.Tasks;
-using AutoMapper;
-using Falcon.Data.QueryProcessors;
-using Falcon.Common.Security;
-using Falcon.Common;
-using Falcon.EFCommonContext.DbModel;
 
 namespace Falcon.Web.Api.InquiryProcessing.Private
 {
