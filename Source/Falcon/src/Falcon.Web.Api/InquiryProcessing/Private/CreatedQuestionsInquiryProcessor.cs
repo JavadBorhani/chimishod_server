@@ -1,19 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Web;
+﻿using AutoMapper;
 using Falcon.Data;
-using Falcon.Web.Models;
-using Falcon.Web.Models.Api;
-using AutoMapper;
-using PagedQuestionDataInquiryResponse = Falcon.Web.Models.PagedDataInquiryResponse<Falcon.Web.Models.Api.SNewCreatedQuestions>;
 using Falcon.Data.QueryProcessors;
 using Falcon.Web.Api.InquiryProcessing.Public;
+using Falcon.Web.Models;
+using Falcon.Web.Models.Api;
+using System.Linq;
+using System.Threading.Tasks;
+using PagedQuestionDataInquiryResponse = Falcon.Web.Models.PagedDataInquiryResponse<Falcon.Web.Models.Api.SNewCreatedQuestions>;
 
 namespace Falcon.Web.Api.InquiryProcessing.Private
 {
-    
+
     public class CreatedQuestionsInquiryProcessor : ICreatedQuestionsInquiryProcessor
     {
         private readonly IMapper mMapper;
