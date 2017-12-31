@@ -12,15 +12,9 @@ namespace Falcon.EFCommonContext.DbModel
     using System;
     using System.Collections.Generic;
     
-    public partial class AchievedScore
+    public partial class ClientApplicationState
     {
         public int ID { get; set; }
-        public int UserID { get; set; }
-        public int TypeID { get; set; }
-        public int Score { get; set; }
-        public System.DateTime AchievedDate { get; set; }
-    
-        public virtual ScoreType ScoreType { get; set; }
-        public virtual User User { get; set; }
+        public int CreateQuestionPrize { get; set; }
     }
 }

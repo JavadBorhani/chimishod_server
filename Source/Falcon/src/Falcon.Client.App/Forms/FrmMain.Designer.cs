@@ -31,6 +31,7 @@
             this.btnCreateUser = new System.Windows.Forms.Button();
             this.RequestResultListBox = new System.Windows.Forms.ListBox();
             this.AnswerGroupBox = new System.Windows.Forms.GroupBox();
+            this.AnswerProgressbar = new System.Windows.Forms.ProgressBar();
             this.btnGenerate = new System.Windows.Forms.Button();
             this.txtNoPercent = new System.Windows.Forms.TextBox();
             this.txtYesPercent = new System.Windows.Forms.TextBox();
@@ -47,7 +48,6 @@
             this.ckbYes = new System.Windows.Forms.CheckBox();
             this.btnLoadUser = new System.Windows.Forms.Button();
             this.txtUserNumber = new System.Windows.Forms.TextBox();
-            this.AnswerProgressbar = new System.Windows.Forms.ProgressBar();
             this.AnswerGroupBox.SuspendLayout();
             this.AnswerStatus.SuspendLayout();
             this.SuspendLayout();
@@ -87,6 +87,13 @@
             this.AnswerGroupBox.TabIndex = 3;
             this.AnswerGroupBox.TabStop = false;
             this.AnswerGroupBox.Text = "Answer";
+            // 
+            // AnswerProgressbar
+            // 
+            this.AnswerProgressbar.Location = new System.Drawing.Point(23, 174);
+            this.AnswerProgressbar.Name = "AnswerProgressbar";
+            this.AnswerProgressbar.Size = new System.Drawing.Size(235, 23);
+            this.AnswerProgressbar.TabIndex = 8;
             // 
             // btnGenerate
             // 
@@ -225,6 +232,7 @@
             this.btnLoadUser.TabIndex = 4;
             this.btnLoadUser.Text = "LoadUser";
             this.btnLoadUser.UseVisualStyleBackColor = true;
+            this.btnLoadUser.Click += new System.EventHandler(this.btnLoadUser_Click);
             // 
             // txtUserNumber
             // 
@@ -235,13 +243,6 @@
             this.txtUserNumber.TabIndex = 8;
             this.txtUserNumber.Text = "Total Number of Users";
             this.txtUserNumber.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // AnswerProgressbar
-            // 
-            this.AnswerProgressbar.Location = new System.Drawing.Point(23, 174);
-            this.AnswerProgressbar.Name = "AnswerProgressbar";
-            this.AnswerProgressbar.Size = new System.Drawing.Size(235, 23);
-            this.AnswerProgressbar.TabIndex = 8;
             // 
             // FrmMain
             // 

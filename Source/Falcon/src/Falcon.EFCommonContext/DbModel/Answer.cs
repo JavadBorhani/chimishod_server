@@ -23,7 +23,6 @@ namespace Falcon.EFCommonContext.DbModel
         public bool YesNoState { get; set; }
         public System.DateTime CreatedDate { get; set; }
     
-        public virtual Category Category { get; set; }
         public virtual Question Question { get; set; }
         public virtual User User { get; set; }
     }

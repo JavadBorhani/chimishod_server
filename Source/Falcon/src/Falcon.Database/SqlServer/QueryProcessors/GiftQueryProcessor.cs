@@ -1,19 +1,11 @@
-﻿using Falcon.Data.QueryProcessors;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Falcon.EFCommonContext.DbModel;
+﻿using Falcon.Common;
 using Falcon.Common.Security;
+using Falcon.Data.QueryProcessors;
 using Falcon.EFCommonContext;
-using System.Data.Entity;
-using Falcon.Common;
-using Falcon.Web.Models.Api;
 
 namespace Falcon.Database.SqlServer.QueryProcessors
 {
-    public class GiftQueryProcessor : IGiftQueryProcessor
+    public class GiftQueryProcessor /*: IGiftQueryProcessor*/
     {
 
         private readonly IWebUserSession mUserSession;
@@ -32,6 +24,7 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             mNotificationQueryProcessor = NotificationQueryProcessor;
         }
 
+        /*
         public async Task<bool> AddAchievedGift(int ID)
         {
             mDb.Set<AchievedGift>().Add(new AchievedGift
@@ -169,5 +162,6 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             }
             return false;
         }
+        */
     }
 }

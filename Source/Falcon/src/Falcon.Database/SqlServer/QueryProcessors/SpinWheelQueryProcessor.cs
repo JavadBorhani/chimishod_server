@@ -1,18 +1,9 @@
-﻿using Falcon.Data.QueryProcessors;
+﻿using Falcon.Common.Security;
 using Falcon.EFCommonContext;
-using Falcon.EFCommonContext.DbModel;
-using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Falcon.Web.Models.Api;
-using Falcon.Common.Security;
 
 namespace Falcon.Database.SqlServer.QueryProcessors
 {
-    public class SpinWheelQueryProcessor : ISpinWheelQueryProcessor
+    public class SpinWheelQueryProcessor /*: ISpinWheelQueryProcessor*/
     {
         private readonly IDbContext mDb;
         private readonly IUserSession mUserSession;
@@ -21,6 +12,8 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             mDb = Database;
             mUserSession = UserSession;
         }
+
+        /*
 
         public async Task<bool> AchievedUnRepeatableSpinWheel(int ID)
         {
@@ -97,5 +90,6 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             var exists = await mDb.Set<SpinWheel>().AsNoTracking().CountAsync(sw => sw.ID == ID) > 0;
             return exists;
         }
+        */
     }
 }

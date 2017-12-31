@@ -1,19 +1,12 @@
 ﻿// Flapp Copyright 2017-2018
 
-using System.Data.Entity;
-using System.Threading.Tasks;
-using System.Web.Http;
-using System.Web.Http.Description;
 using Falcon.Common;
-using Falcon.EFCommonContext.DbModel;
-using Falcon.Web.Common;
-using Falcon.EFCommonContext;
-using Falcon.Web.Models;
-using Falcon.Web.Models.Api;
-using Falcon.Web.Api.InquiryProcessing.Public;
-using Falcon.Web.Api.Utilities.Base;
 using Falcon.Common.Security;
+using Falcon.EFCommonContext;
+using Falcon.Web.Api.InquiryProcessing.Public;
 using Falcon.Web.Api.MaintenanceProcessing.Public;
+using Falcon.Web.Api.Utilities.Base;
+using Falcon.Web.Common;
 
 namespace Falcon.Web.Api.Controllers.V1
 {
@@ -44,48 +37,48 @@ namespace Falcon.Web.Api.Controllers.V1
             mAppState = AppState;
         }
 
-        [Route("Comments/{QuestionID}/{PageNumber}")]
-        [HttpPost]
-        public async Task<PagedDataInquiryResponse<SComment>> GettingComments( int QuestionID , int PageNumber)
-        {
-            var page = mPagedDataRequestFactory.Create(PageNumber , mAppState.GetState().Paging_DefaultPageSize);
-            var comments = await mCommentInquiryProcessor.GetComments(page , QuestionID);
-            return comments;
-        }
+        //[Route("Comments/{QuestionID}/{PageNumber}")]
+        //[HttpPost]
+        //public async Task<PagedDataInquiryResponse<SComment>> GettingComments( int QuestionID , int PageNumber)
+        //{
+        //    var page = mPagedDataRequestFactory.Create(PageNumber , mAppState.GetState().Paging_DefaultPageSize);
+        //    var comments = await mCommentInquiryProcessor.GetComments(page , QuestionID);
+        //    return comments;
+        //}
 
-        [ResponseType(typeof(SComment))]
-        [Route("Comments/{QuestionID}")]
-        [HttpPost]
-        public async Task<IHttpActionResult> PostingComment(int QuestionID , [FromBody] SComment NewComment)
-        {
+        //[ResponseType(typeof(SComment))]
+        //[Route("Comments/{QuestionID}")]
+        //[HttpPost]
+        //public async Task<IHttpActionResult> PostingComment(int QuestionID , [FromBody] SComment NewComment)
+        //{
            
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return BadRequest(ModelState);
+        //    }
 
-            var question = await mDb.Set<Question>().FindAsync(QuestionID);
+        //    var question = await mDb.Set<Question>().FindAsync(QuestionID);
 
-            if(question != null)
-            {
-                var comment = new Comment
-                {
-                   UserID = mUserSession.ID,
-                   QuestionID = question.ID,
-                   CommentContent = NewComment.Content,
-                   Response = Constants.DefaultValues.CommentDefaultReponseMessage,
-                   IsVerified = mAppState.GetState().Comment_DefaultVerifyState,
-                   InsertDate = mDateTime.Now
-                };
+        //    if(question != null)
+        //    {
+        //        var comment = new Comment
+        //        {
+        //           UserID = mUserSession.ID,
+        //           QuestionID = question.ID,
+        //           CommentContent = NewComment.Content,
+        //           Response = Constants.DefaultValues.CommentDefaultReponseMessage,
+        //           IsVerified = mAppState.GetState().Comment_DefaultVerifyState,
+        //           InsertDate = mDateTime.Now
+        //        };
 
-                mDb.Set<Comment>().Add(comment);
-                await mDb.SaveChangesAsync();
-                return Ok();
-            }
-            else
-            {
-                return NotFound();
-            }
-        }
+        //        mDb.Set<Comment>().Add(comment);
+        //        await mDb.SaveChangesAsync();
+        //        return Ok();
+        //    }
+        //    else
+        //    {
+        //        return NotFound();
+        //    }
+        //}
     }
 }

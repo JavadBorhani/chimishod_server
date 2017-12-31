@@ -1,20 +1,16 @@
-﻿using Falcon.Common.Security;
-using Falcon.Data.QueryProcessors;
+﻿using Falcon.Common;
+using Falcon.Common.Security;
 using Falcon.EFCommonContext;
 using Falcon.EFCommonContext.DbModel;
+using Falcon.Web.Models.Api.Level;
 using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Threading.Tasks;
-using Falcon.Common;
-using System.Data.Entity.Infrastructure;
-using Falcon.Web.Common.Memmory;
-using Falcon.Web.Models.Api.User;
-using System;
-using Falcon.Web.Models.Api.Level;
 
 namespace Falcon.Database.SqlServer.QueryProcessors
 {
-    public class UserQueryProcessor : IUserQueryProcessor
+    public class UserQueryProcessor /*: IUserQueryProcessor*/
     {
 
         private readonly IDbContext mDb;
@@ -188,14 +184,14 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             return info;
         }
 
-        public async Task<SUserCount> GetUserCountInfo(int UserID)
-        {
-            var data = await mDb.Set<UserCount>()
-                            .AsNoTracking()
-                            .Where(u => u.UserID == UserID)
-                            .SingleOrDefaultAsync();
-            return null;    
-        }
+        //public async Task<SUserCount> GetUserCountInfo(int UserID)
+        //{
+        //    var data = await mDb.Set<UserCount>()
+        //                    .AsNoTracking()
+        //                    .Where(u => u.UserID == UserID)
+        //                    .SingleOrDefaultAsync();
+        //    return null;    
+        //}
 
 
     }

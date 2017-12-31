@@ -1,17 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Falcon.Web.Api.MaintenanceProcessing.Public;
-using Falcon.Web.Models.Api;
-using Falcon.Web.Api.InquiryProcessing.Public;
-using Falcon.Data.QueryProcessors;
+﻿using AutoMapper;
 using Falcon.Common.Security;
-using AutoMapper;
-using Falcon.Web.Models.Api.Achievement;
+using Falcon.Data.QueryProcessors;
+using Falcon.Web.Api.InquiryProcessing.Public;
+using Falcon.Web.Api.MaintenanceProcessing.Public;
 
 namespace Falcon.Web.Api.MaintenanceProcessing.Private
 {
-    public class AchievementMaintenanceProcessor : IAchievementMaintenanceProcessor
+    public class AchievementMaintenanceProcessor /*: IAchievementMaintenanceProcessor*/
     {
         private readonly IAchievementQueryProcessor mAchievementQuery;
         private readonly IUsersInquiryProcessor mUserInquiry;
@@ -40,6 +35,8 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
             mCategoriesQueryProcessor = CategoriesQueryProcessor;
             mMapper = Mapper;   
         }
+
+        /*
         public async Task<SAchievementDic> PrepareAchievementList()
         {
             var outputList = new SAchievementDic();
@@ -194,5 +191,6 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
 
             return -1; 
         }
+         */
     }
 }   

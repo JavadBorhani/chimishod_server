@@ -1,18 +1,10 @@
-﻿using Falcon.Web.Api.InquiryProcessing.Public;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using Falcon.Web.Models.Api;
-using System.Threading.Tasks;
-using Falcon.Data.QueryProcessors;
+﻿using AutoMapper;
 using Falcon.Common;
-using AutoMapper;
-using Falcon.EFCommonContext.DbModel;
+using Falcon.Data.QueryProcessors;
 
 namespace Falcon.Web.Api.InquiryProcessing.Private
 {
-    public class SpinWheelInquiryProcessor : ISpinWheelInquiryProcessor
+    public class SpinWheelInquiryProcessor /*: ISpinWheelInquiryProcessor*/
     {
 
         private readonly ISpinWheelQueryProcessor mSpinWheelQueryProcessor;
@@ -26,57 +18,57 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
             mSpinWheelQueryProcessor = SpinWheelQueryProcessor;
             mUserQueryProcessor = UserQueryProcessor;
         }
-        public async Task<List<SSpinWheel>> GetSpinWheelList()
-        {
-            var spinList = new List<SpinWheel>();
+        //public async Task<List<SSpinWheel>> GetSpinWheelList()
+        //{
+        //    var spinList = new List<SpinWheel>();
 
-            var totalList = await mSpinWheelQueryProcessor.GetAllSpinWheels();
+        //    var totalList = await mSpinWheelQueryProcessor.GetAllSpinWheels();
 
-            var unrepetables = await mSpinWheelQueryProcessor.GetAllAchievedUnrepeatableItemIds();
+        //    var unrepetables = await mSpinWheelQueryProcessor.GetAllAchievedUnrepeatableItemIds();
 
-            if(totalList.Count > 0 )
-            {
-                spinList.AddRange(totalList.Take(Constants.SpinWheel.NumberOfSlots).ToList());
+        //    if(totalList.Count > 0 )
+        //    {
+        //        spinList.AddRange(totalList.Take(Constants.SpinWheel.NumberOfSlots).ToList());
 
-                var tempItems = spinList.Where(s => s.SpinWheelAlternativeID != null).ToList();
+        //        var tempItems = spinList.Where(s => s.SpinWheelAlternativeID != null).ToList();
 
-                for (int i = 0; i < tempItems.Count; ++i)
-                {
-                    var firstLeaf = totalList.Where(t => t.ID == tempItems[i].SpinWheelAlternativeID).FirstOrDefault();                     
-                    firstLeaf.Priority = tempItems[i].Priority;
-                    firstLeaf.FirstChance = tempItems[i].FirstChance;
-                    firstLeaf.SecondChance = tempItems[i].SecondChance;
+        //        for (int i = 0; i < tempItems.Count; ++i)
+        //        {
+        //            var firstLeaf = totalList.Where(t => t.ID == tempItems[i].SpinWheelAlternativeID).FirstOrDefault();                     
+        //            firstLeaf.Priority = tempItems[i].Priority;
+        //            firstLeaf.FirstChance = tempItems[i].FirstChance;
+        //            firstLeaf.SecondChance = tempItems[i].SecondChance;
 
-                        spinList.Add(firstLeaf);
+        //                spinList.Add(firstLeaf);
 
-                    if (firstLeaf.SpinWheelAlternativeID != null)
-                    {
-                        var secondLeaf = totalList.Where(t => t.ID == firstLeaf.SpinWheelAlternativeID).FirstOrDefault();
-                        secondLeaf.Priority = tempItems[i].Priority;
-                        secondLeaf.FirstChance = tempItems[i].FirstChance;
-                        secondLeaf.SecondChance = tempItems[i].SecondChance;
+        //            if (firstLeaf.SpinWheelAlternativeID != null)
+        //            {
+        //                var secondLeaf = totalList.Where(t => t.ID == firstLeaf.SpinWheelAlternativeID).FirstOrDefault();
+        //                secondLeaf.Priority = tempItems[i].Priority;
+        //                secondLeaf.FirstChance = tempItems[i].FirstChance;
+        //                secondLeaf.SecondChance = tempItems[i].SecondChance;
 
-                        spinList.Add(secondLeaf);
-                    }
-                    if(unrepetables.Contains(tempItems[i].ID))
-                    {
-                        spinList[spinList.IndexOf(tempItems[i])] = firstLeaf;
-                    }
-                }
+        //                spinList.Add(secondLeaf);
+        //            }
+        //            if(unrepetables.Contains(tempItems[i].ID))
+        //            {
+        //                spinList[spinList.IndexOf(tempItems[i])] = firstLeaf;
+        //            }
+        //        }
 
-                if (spinList.Count < Constants.SpinWheel.NumberOfSlots)
-                {
-                    var blankItem = totalList.Where(t => t.SpinWheelType.Title == Enum.GetName(typeof(SSpinWheelType), SSpinWheelType.Blank)).FirstOrDefault();
-                    if(blankItem != null)
-                    {
-                        int remainedItems = Constants.SpinWheel.NumberOfSlots - spinList.Count;
-                        spinList.AddRange(Enumerable.Repeat(blankItem, remainedItems));
-                    }
-                }
+        //        if (spinList.Count < Constants.SpinWheel.NumberOfSlots)
+        //        {
+        //            var blankItem = totalList.Where(t => t.SpinWheelType.Title == Enum.GetName(typeof(SSpinWheelType), SSpinWheelType.Blank)).FirstOrDefault();
+        //            if(blankItem != null)
+        //            {
+        //                int remainedItems = Constants.SpinWheel.NumberOfSlots - spinList.Count;
+        //                spinList.AddRange(Enumerable.Repeat(blankItem, remainedItems));
+        //            }
+        //        }
 
-                return mMapper.Map<List<SSpinWheel>>(spinList);
-            }
-            return null;    
-        }
+        //        return mMapper.Map<List<SSpinWheel>>(spinList);
+        //    }
+        //    return null;    
+        //}
     }
 }

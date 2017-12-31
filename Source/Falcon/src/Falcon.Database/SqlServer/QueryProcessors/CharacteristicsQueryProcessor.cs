@@ -1,23 +1,20 @@
-﻿using Falcon.Data.QueryProcessors;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Falcon.EFCommonContext.DbModel;
-using Falcon.Common.Security;
+﻿using Falcon.Common.Security;
 using Falcon.EFCommonContext;
-using Falcon.Web.Models.Api;
-using System.Data.Entity;
-using Falcon.Data;
 
 namespace Falcon.Database.SqlServer.QueryProcessors
 {
-    public class CharacteristicsQueryProcessor : ICharacteristicsQueryProcessor
+    public class CharacteristicsQueryProcessor /*: ICharacteristicsQueryProcessor*/
     {
         private readonly IDbContext mDb;
         private readonly IUserSession mUserSession;
-        
+
+        public CharacteristicsQueryProcessor(IDbContext Database, IUserSession UserSession)
+        {
+            mDb = Database;
+            mUserSession = UserSession;
+        }
+
+        /*
         private class CharacteristicWithAlias
         {
             public int Id { get; set; }
@@ -28,11 +25,7 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             public List<CharacterAlia> Alias { get; set; }
         }
 
-        public CharacteristicsQueryProcessor(IDbContext Database , IUserSession UserSession)
-        {
-            mDb = Database;
-            mUserSession = UserSession;
-        }
+        
 
         public async Task<List<SCharacteristic>> FetchAllCharacteristicsWithAliases()
         {
@@ -316,5 +309,6 @@ namespace Falcon.Database.SqlServer.QueryProcessors
 
             return data;    
         }
+        */
     }
 }

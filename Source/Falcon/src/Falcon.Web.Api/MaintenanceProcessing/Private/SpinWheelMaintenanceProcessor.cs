@@ -1,13 +1,11 @@
-﻿using Falcon.Web.Api.MaintenanceProcessing.Public;
-using System;
-using Falcon.Web.Models.Api;
-using System.Threading.Tasks;
+﻿using Falcon.Common;
 using Falcon.Data.QueryProcessors;
-using Falcon.Common;
+using Falcon.Web.Api.MaintenanceProcessing.Public;
+using Falcon.Web.Models.Api;
 
 namespace Falcon.Web.Api.MaintenanceProcessing.Private
 {
-    public class SpinWheelMaintenanceProcessor : ISpinWheelMaintenanceProcessor
+    public class SpinWheelMaintenanceProcessor /*: ISpinWheelMaintenanceProcessor*/
     {
         private readonly ISpinWheelQueryProcessor mSpinWheelQueryProcessor;
         private readonly IUserQueryProcessor mUserQueryProcessor;
@@ -32,113 +30,113 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
             mAppState = ApplicationState.GetState();
         }
 
-        public async Task<SAchieveSpinWheelValidation> AchieveSpinWheel(int ID)
-        {
-            var spinItem = await mSpinWheelQueryProcessor.GetByID(ID);
-            SSpinWheelType type;
-            SAchieveSpinWheelValidation response = new SAchieveSpinWheelValidation();
-            response.RequestId = ID;    
+        //public async Task<SAchieveSpinWheelValidation> AchieveSpinWheel(int ID)
+        //{
+        //    var spinItem = await mSpinWheelQueryProcessor.GetByID(ID);
+        //    SSpinWheelType type;
+        //    SAchieveSpinWheelValidation response = new SAchieveSpinWheelValidation();
+        //    response.RequestId = ID;    
 
-            if(spinItem != null)
-            {
-                var fortuneCount = await mUserStatQueryProcessor.GetRemainedFortune();
-                if (fortuneCount <= 0)
-                {
-                    response.IsValid = false;
-                    response.TotalCoin = await mUserQueryProcessor.GetTotalCoin();
+        //    if(spinItem != null)
+        //    {
+        //        var fortuneCount = await mUserStatQueryProcessor.GetRemainedFortune();
+        //        if (fortuneCount <= 0)
+        //        {
+        //            response.IsValid = false;
+        //            response.TotalCoin = await mUserQueryProcessor.GetTotalCoin();
 
-                    if(response.TotalCoin >= mAppState.SpinWheelLoopPrice)
-                    {
-                        await mUserQueryProcessor.DecreaseCoin(mAppState.SpinWheelLoopPrice);
-                        await mUserStatQueryProcessor.AddFortune(Constants.DefaultUser.SpinWheelAnotherFortune);
-                    }
-                    else
-                    {
-                        return response;
-                    }
-                }
-                var isPossible = Enum.IsDefined(typeof(SSpinWheelType), spinItem.SpinWheelType.Title);
-                if (!isPossible)
-                {
-                    return null;
-                }
+        //            if(response.TotalCoin >= mAppState.SpinWheelLoopPrice)
+        //            {
+        //                await mUserQueryProcessor.DecreaseCoin(mAppState.SpinWheelLoopPrice);
+        //                await mUserStatQueryProcessor.AddFortune(Constants.DefaultUser.SpinWheelAnotherFortune);
+        //            }
+        //            else
+        //            {
+        //                return response;
+        //            }
+        //        }
+        //        var isPossible = Enum.IsDefined(typeof(SSpinWheelType), spinItem.SpinWheelType.Title);
+        //        if (!isPossible)
+        //        {
+        //            return null;
+        //        }
 
-                type = (SSpinWheelType)Enum.Parse(typeof(SSpinWheelType), spinItem.SpinWheelType.Title);
+        //        type = (SSpinWheelType)Enum.Parse(typeof(SSpinWheelType), spinItem.SpinWheelType.Title);
 
-                await mSpinWheelQueryProcessor.AddRepeatableAchievement(spinItem.ID);
+        //        await mSpinWheelQueryProcessor.AddRepeatableAchievement(spinItem.ID);
 
-                if (type == SSpinWheelType.Theme || type == SSpinWheelType.Category || type == SSpinWheelType.Avatar)
-                {
-                    var achieved = await mSpinWheelQueryProcessor.AchievedUnRepeatableSpinWheel(spinItem.ID);
-                    if (achieved)
-                    {
-                        response.IsValid = false;
-                        response.TotalCoin = await mUserQueryProcessor.GetTotalCoin();
-                        return response;
-                    }
-                }
+        //        if (type == SSpinWheelType.Theme || type == SSpinWheelType.Category || type == SSpinWheelType.Avatar)
+        //        {
+        //            var achieved = await mSpinWheelQueryProcessor.AchievedUnRepeatableSpinWheel(spinItem.ID);
+        //            if (achieved)
+        //            {
+        //                response.IsValid = false;
+        //                response.TotalCoin = await mUserQueryProcessor.GetTotalCoin();
+        //                return response;
+        //            }
+        //        }
 
-                bool added;
-                bool purchased;
-                switch (type)
-                {
-                    case SSpinWheelType.Avatar:
+        //        bool added;
+        //        bool purchased;
+        //        switch (type)
+        //        {
+        //            case SSpinWheelType.Avatar:
 
-                        added = await mSpinWheelQueryProcessor.AddUnRepeatableAchievement(spinItem.ID);
-                        purchased = await mItemPurchaseManager.PurchaseFreeAvatar(spinItem.Prize);
+        //                added = await mSpinWheelQueryProcessor.AddUnRepeatableAchievement(spinItem.ID);
+        //                purchased = await mItemPurchaseManager.PurchaseFreeAvatar(spinItem.Prize);
 
-                        response.IsValid = purchased;
-                        response.TotalCoin = await mUserQueryProcessor.GetTotalCoin();
+        //                response.IsValid = purchased;
+        //                response.TotalCoin = await mUserQueryProcessor.GetTotalCoin();
 
-                        break;
+        //                break;
 
-                    case SSpinWheelType.Blank:
+        //            case SSpinWheelType.Blank:
 
-                        response.IsValid = true;
-                        response.TotalCoin = await mUserQueryProcessor.GetTotalCoin();
+        //                response.IsValid = true;
+        //                response.TotalCoin = await mUserQueryProcessor.GetTotalCoin();
 
-                        break;
+        //                break;
 
-                    case SSpinWheelType.Category:
+        //            case SSpinWheelType.Category:
 
-                        added = await mSpinWheelQueryProcessor.AddUnRepeatableAchievement(spinItem.ID);
-                        purchased = await mItemPurchaseManager.PurchaseFreeCategory(spinItem.Prize);
+        //                added = await mSpinWheelQueryProcessor.AddUnRepeatableAchievement(spinItem.ID);
+        //                purchased = await mItemPurchaseManager.PurchaseFreeCategory(spinItem.Prize);
 
-                        response.IsValid = purchased;
-                        response.TotalCoin = await mUserQueryProcessor.GetTotalCoin();
+        //                response.IsValid = purchased;
+        //                response.TotalCoin = await mUserQueryProcessor.GetTotalCoin();
 
-                        break;
+        //                break;
 
-                    case SSpinWheelType.Coin:
+        //            case SSpinWheelType.Coin:
 
-                        response.IsValid = true;
-                        response.TotalCoin = await mUserQueryProcessor.IncreaseCoin(spinItem.Prize);
+        //                response.IsValid = true;
+        //                response.TotalCoin = await mUserQueryProcessor.IncreaseCoin(spinItem.Prize);
 
 
-                        break;
+        //                break;
 
-                    case SSpinWheelType.Fortune:
+        //            case SSpinWheelType.Fortune:
 
-                        await mUserStatQueryProcessor.AddFortune(spinItem.Prize);
+        //                await mUserStatQueryProcessor.AddFortune(spinItem.Prize);
 
-                        response.IsValid = true;
-                        response.TotalCoin = await mUserQueryProcessor.GetTotalCoin();
+        //                response.IsValid = true;
+        //                response.TotalCoin = await mUserQueryProcessor.GetTotalCoin();
 
-                        break;
+        //                break;
 
-                    case SSpinWheelType.Theme:
+        //            case SSpinWheelType.Theme:
 
-                        added = await mSpinWheelQueryProcessor.AddUnRepeatableAchievement(spinItem.ID);
-                        purchased = await mItemPurchaseManager.PurchaseFreeTheme(spinItem.Prize);
+        //                added = await mSpinWheelQueryProcessor.AddUnRepeatableAchievement(spinItem.ID);
+        //                purchased = await mItemPurchaseManager.PurchaseFreeTheme(spinItem.Prize);
 
-                        response.IsValid = purchased;
-                        response.TotalCoin = await mUserQueryProcessor.GetTotalCoin();
+        //                response.IsValid = purchased;
+        //                response.TotalCoin = await mUserQueryProcessor.GetTotalCoin();
 
-                        break;
-                }
-                return response;
-            }
-            return null;
-        }
+        //                break;
+        //        }
+        //        return response;
+        //    }
+        //    return null;
+        //}
     }
 }

@@ -30,9 +30,6 @@ namespace Falcon.EFCommonContext.DbModel
         public int Prize_LikeScoreAmount { get; set; }
         public int Prize_CreateNewQuestionXP { get; set; }
         public int Prize_NewQuestionAcceptedXP { get; set; }
-        public int Prize_CreateNewQuestionScore { get; set; }
-        public int Prize_NewQuestionAcceptedScore { get; set; }
-        public int Prize_AnswerScoreAmount { get; set; }
         public int Paging_DefaultPageSize { get; set; }
         public int Leader_TopNumberToShow { get; set; }
         public int Comment_DefaultNumberAmount { get; set; }
@@ -48,5 +45,8 @@ namespace Falcon.EFCommonContext.DbModel
         public int WatchAdCoin { get; set; }
         public int SpinWheelFortuneThreshold { get; set; }
         public int SpinWheelLoopPrice { get; set; }
+        public int Prize_CreateNewQuestionScore { get; set; }
+        public int Prize_NewQuestionAcceptedScore { get; set; }
+        public int Prize_AnswerScoreAmount { get; set; }
     }
 }

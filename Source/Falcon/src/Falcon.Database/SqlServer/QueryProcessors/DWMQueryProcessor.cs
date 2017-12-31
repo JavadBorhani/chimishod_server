@@ -1,19 +1,9 @@
-﻿using Falcon.Data.QueryProcessors;
-using Falcon.Database.SqlServer.QueryProcessors;
+﻿using Falcon.Common.Security;
 using Falcon.EFCommonContext;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Falcon.Web.Models.Api;
-using Falcon.EFCommonContext.DbModel;
-using System.Data.Entity;
-using Falcon.Common.Security;
 
 namespace Falcon.Database.SqlServer.QueryProcessors
 {
-    public class DWMQueryProcessor : IDWMQueryProcessor
+    public class DWMQueryProcessor /*: IDWMQueryProcessor*/
     {
 
         private readonly IDbContext mDb;
@@ -24,51 +14,51 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             mUserSession = UserSession;
         }
 
-        public async Task<bool> AddReward(SDailyRewardAchieved DailyRewardAchieved)
-        {
-            mDb.Set<DailyRewardsAchieved>().Add(new DailyRewardsAchieved
-            {
-                UserID = mUserSession.ID,
-                DailyRewardsID = DailyRewardAchieved.RewardID,
-                EarnedDate = DailyRewardAchieved.EarnedDate
-            });
-            await mDb.SaveChangesAsync();
-            return true;
-        }
+        //public async Task<bool> AddReward(SDailyRewardAchieved DailyRewardAchieved)
+        //{
+        //    mDb.Set<DailyRewardsAchieved>().Add(new DailyRewardsAchieved
+        //    {
+        //        UserID = mUserSession.ID,
+        //        DailyRewardsID = DailyRewardAchieved.RewardID,
+        //        EarnedDate = DailyRewardAchieved.EarnedDate
+        //    });
+        //    await mDb.SaveChangesAsync();
+        //    return true;
+        //}
 
-        public async Task<DailyReward[]> GetAllRewards()
-        {
-            var list = await mDb.Set<DailyReward>().AsNoTracking().OrderBy(s => s.Day).ToArrayAsync();
-            return list;
-        }
+        //public async Task<DailyReward[]> GetAllRewards()
+        //{
+        //    var list = await mDb.Set<DailyReward>().AsNoTracking().OrderBy(s => s.Day).ToArrayAsync();
+        //    return list;
+        //}
 
-        public async Task<List<int>> GetEarnedRewardIds(SDuration Duration)
-        {
-            var result = await mDb.Set<DailyRewardsAchieved>()
-                .AsNoTracking()
-                .Where(dra => (dra.EarnedDate >= Duration.From.Date && dra.EarnedDate <= Duration.To) && dra.UserID == mUserSession.ID)
-                .Select(dra => dra.DailyRewardsID)
-                .ToListAsync();
+        //public async Task<List<int>> GetEarnedRewardIds(SDuration Duration)
+        //{
+        //    var result = await mDb.Set<DailyRewardsAchieved>()
+        //        .AsNoTracking()
+        //        .Where(dra => (dra.EarnedDate >= Duration.From.Date && dra.EarnedDate <= Duration.To) && dra.UserID == mUserSession.ID)
+        //        .Select(dra => dra.DailyRewardsID)
+        //        .ToListAsync();
 
-            return result;  
-        }
+        //    return result;  
+        //}
 
-        public Task<DailyReward> GetRewardById(int ID)
-        {
-            var reward = mDb.Set<DailyReward>().AsNoTracking().Where(dr => dr.ID == ID).SingleOrDefaultAsync();
-            return reward;
-        }
+        //public Task<DailyReward> GetRewardById(int ID)
+        //{
+        //    var reward = mDb.Set<DailyReward>().AsNoTracking().Where(dr => dr.ID == ID).SingleOrDefaultAsync();
+        //    return reward;
+        //}
 
-        public async Task<bool> RewardIsCollected(int RewardID, SDuration Duration)
-        {
-            var collected = await mDb.Set<DailyRewardsAchieved>()
-                .AsNoTracking()
-                .CountAsync(
-                    dra => dra.UserID == mUserSession.ID &&
-                    (dra.EarnedDate >= Duration.From && dra.EarnedDate <= Duration.To) &&
-                    dra.DailyRewardsID == RewardID) > 0;
+        //public async Task<bool> RewardIsCollected(int RewardID, SDuration Duration)
+        //{
+        //    var collected = await mDb.Set<DailyRewardsAchieved>()
+        //        .AsNoTracking()
+        //        .CountAsync(
+        //            dra => dra.UserID == mUserSession.ID &&
+        //            (dra.EarnedDate >= Duration.From && dra.EarnedDate <= Duration.To) &&
+        //            dra.DailyRewardsID == RewardID) > 0;
 
-            return collected;
-        }
+        //    return collected;
+        //}
     }
 }

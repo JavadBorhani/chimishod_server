@@ -2,14 +2,12 @@
 using Falcon.Common;
 using Falcon.Common.Security;
 using Falcon.Data.QueryProcessors;
-using Falcon.EFCommonContext.DbModel;
-using Falcon.Web.Api.InquiryProcessing.Public;
 using Falcon.Web.Models.Api;
 using System.Threading.Tasks;
 
 namespace Falcon.Web.Api.InquiryProcessing.Private
 {
-    public class NotificationInquiryProcessor : INotificationInquiryProcessor
+    public class NotificationInquiryProcessor /*: INotificationInquiryProcessor*/
     {
         private readonly IMapper mMapper;
         private readonly IGiftQueryProcessor mGiftQueryProcessor;
@@ -60,42 +58,42 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
             }
             return null;
         }
-        public async Task<int> RegisterNotification(int NotificationID)
-        {
-            var gift = await mGiftQueryProcessor.GetByID(NotificationID);
-            var sGift = mMapper.Map<Gift, SGift>(gift);
+        //public async Task<int> RegisterNotification(int NotificationID)
+        //{
+        //    var gift = await mGiftQueryProcessor.GetByID(NotificationID);
+        //    var sGift = mMapper.Map<Gift, SGift>(gift);
 
-            if(sGift != null)
-            {
-                var achieved = await mGiftQueryProcessor.IsAchieved(NotificationID);
+        //    if(sGift != null)
+        //    {
+        //        var achieved = await mGiftQueryProcessor.IsAchieved(NotificationID);
 
-                if (!achieved || sGift.GiftType == GiftTypes.Daily)
-                {
-                    var isOk = await mGiftQueryProcessor.CheckGiftLogic(sGift, gift, mDateTime.Now);
+        //        if (!achieved || sGift.GiftType == GiftTypes.Daily)
+        //        {
+        //            var isOk = await mGiftQueryProcessor.CheckGiftLogic(sGift, gift, mDateTime.Now);
 
-                    if (isOk)
-                    {
-                        var result = await mGiftQueryProcessor.AddAchievedGift(NotificationID);
+        //            if (isOk)
+        //            {
+        //                var result = await mGiftQueryProcessor.AddAchievedGift(NotificationID);
 
-                        if (sGift.GiftType == GiftTypes.Daily)
-                        {
-                            await mUserQueryProcessor.UpdateLastSeenDateTimeToNow();
-                        }
+        //                if (sGift.GiftType == GiftTypes.Daily)
+        //                {
+        //                    await mUserQueryProcessor.UpdateLastSeenDateTimeToNow();
+        //                }
 
-                        if (sGift.GiftType != GiftTypes.Message)
-                        {
-                            var coin = await mUserQueryProcessor.IncreaseCoin(sGift.Prize);
-                            return coin;
-                        }
-                        else
-                        {
-                            var coin = await mUserQueryProcessor.GetTotalCoin();
-                            return coin;
-                        }
-                    }
-                }
-            }
-            return 0;   
-        }
+        //                if (sGift.GiftType != GiftTypes.Message)
+        //                {
+        //                    var coin = await mUserQueryProcessor.IncreaseCoin(sGift.Prize);
+        //                    return coin;
+        //                }
+        //                else
+        //                {
+        //                    var coin = await mUserQueryProcessor.GetTotalCoin();
+        //                    return coin;
+        //                }
+        //            }
+        //        }
+        //    }
+        //    return 0;   
+        //}
     }
 }

@@ -1,21 +1,11 @@
-﻿using Falcon.Data.QueryProcessors;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Falcon.EFCommonContext.DbModel;
-using Falcon.EFCommonContext;
-using System.Data.Entity;
+﻿using AutoMapper;
 using Falcon.Common;
-using Falcon.Web.Models.Api;
 using Falcon.Common.Security;
-using Falcon.Web.Models.Api.Achievement;
-using AutoMapper;
+using Falcon.EFCommonContext;
 
 namespace Falcon.Database.SqlServer.QueryProcessors
 {
-    public class AchievementQueryProcessor : IAchievementQueryProcessor
+    public class AchievementQueryProcessor /*: IAchievementQueryProcessor*/
     {
         private readonly IDbContext mDb;
         private readonly IUserSession mUserSession;
@@ -30,6 +20,8 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             mMapper = Mapper;
         }
 
+        /*
+        
         public async Task<bool> AddingAchievementPossetionItems(int UserID, List<int> Items, AchievementState AchievementState)
         {
             var data = new AchievedPosession[Items.Count];
@@ -160,5 +152,7 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             }
             return null;
         }
+        */
     }
+
 }

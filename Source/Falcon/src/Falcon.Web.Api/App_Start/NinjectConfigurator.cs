@@ -91,25 +91,25 @@ namespace Falcon.Web.Api
         private void AddQueryProcessors(IKernel container)
         {
 
-            container.Bind<ICommentsQueryProcessor>().To<CommentsQueryProcessor>().InRequestScope();
-            container.Bind<ICreatedQuestionsQueryProcessor>().To<CreatedQuestionsQueryProcessor>().InRequestScope();
-            container.Bind<IUserQueryProcessor>().To<UserQueryProcessor>().InRequestScope();
+            //container.Bind<ICommentsQueryProcessor>().To<CommentsQueryProcessor>().InRequestScope();
+            //container.Bind<ICreatedQuestionsQueryProcessor>().To<CreatedQuestionsQueryProcessor>().InRequestScope();
+            //container.Bind<IUserQueryProcessor>().To<UserQueryProcessor>().InRequestScope();
             container.Bind<ICodeGiftsQueryProcessor>().To<CodeGiftsQueryProcessor>().InRequestScope();
-            container.Bind<IGiftQueryProcessor>().To<GiftQueryProcessor>().InRequestScope();
+            //container.Bind<IGiftQueryProcessor>().To<GiftQueryProcessor>().InRequestScope();
             container.Bind<IStoresQueryProcessor>().To<StoresQueryProcessor>().InRequestScope();
             container.Bind<IMarketInfoQueryProcessor>().To<MarketInfoQueryProcessor>().InRequestScope();
-            container.Bind<INotificationsQueryProcessor>().To<NotificationsQueryProcessor>().InRequestScope();
-            container.Bind<IAppAdvertsQueryProcessor>().To<AppAdvertsQueryProcessor>().InRequestScope();
+            //container.Bind<INotificationsQueryProcessor>().To<NotificationsQueryProcessor>().InRequestScope();
+            //container.Bind<IAppAdvertsQueryProcessor>().To<AppAdvertsQueryProcessor>().InRequestScope();
             container.Bind<IWatchAdQueryProcessor>().To<WatchAdQueryProcessor>().InRequestScope();
-            container.Bind<IAchievementQueryProcessor>().To<AchievementQueryProcessor>().InRequestScope();
-            container.Bind<IDWMQueryProcessor>().To<DWMQueryProcessor>().InRequestScope();
-            container.Bind<ISpinWheelQueryProcessor>().To<SpinWheelQueryProcessor>().InRequestScope();
-            container.Bind<ICategoriesQueryProcessor>().To<CategoriesQueryProcessor>().InRequestScope();
-            container.Bind<IThemesQueryProcessor>().To<ThemesQueryProcessor>().InRequestScope();
-            container.Bind<IAvatarsQueryProcessor>().To<AvatarsQueryProcessor>().InRequestScope();
-            container.Bind<IUserStatQueryProcessor>().To<UserStatQueryProcessor>().InRequestScope();
-            container.Bind<ICharacteristicsQueryProcessor>().To<CharacteristicsQueryProcessor>().InRequestScope();
-            container.Bind<IScoringQueryProcessor>().To<ScoringQueryProcessor>().InRequestScope();
+            //container.Bind<IAchievementQueryProcessor>().To<AchievementQueryProcessor>().InRequestScope();
+            //container.Bind<IDWMQueryProcessor>().To<DWMQueryProcessor>().InRequestScope();
+            //container.Bind<ISpinWheelQueryProcessor>().To<SpinWheelQueryProcessor>().InRequestScope();
+            //container.Bind<ICategoriesQueryProcessor>().To<CategoriesQueryProcessor>().InRequestScope();
+            //container.Bind<IThemesQueryProcessor>().To<ThemesQueryProcessor>().InRequestScope();
+            //container.Bind<IAvatarsQueryProcessor>().To<AvatarsQueryProcessor>().InRequestScope();
+            //container.Bind<IUserStatQueryProcessor>().To<UserStatQueryProcessor>().InRequestScope();
+            //container.Bind<ICharacteristicsQueryProcessor>().To<CharacteristicsQueryProcessor>().InRequestScope();
+            //container.Bind<IScoringQueryProcessor>().To<ScoringQueryProcessor>().InRequestScope();
             container.Bind<IQuestionsQueryProcessor>().To<QuestionsQueryProcessor>().InRequestScope();
             container.Bind<IAnswerQueryProcessor>().To<AnswerQueryProcessor>().InRequestScope();
             container.Bind<IGameConfigQueryProcessor>().To<GameConfigQueryProcessor>().InRequestScope();
@@ -129,18 +129,18 @@ namespace Falcon.Web.Api
             container.Bind<IPagedDataRequestFactory>().To<PagedDataRequestFactory>().InSingletonScope();
             container.Bind<ICommentsInquiryProcessor>().To<CommentsInquiryProcessor>().InRequestScope();
             container.Bind<ICreatedQuestionsInquiryProcessor>().To<CreatedQuestionsInquiryProcessor>().InRequestScope();
-            container.Bind<INotificationInquiryProcessor>().To<NotificationInquiryProcessor>().InRequestScope();
+            //container.Bind<INotificationInquiryProcessor>().To<NotificationInquiryProcessor>().InRequestScope();
             container.Bind<IUsersInquiryProcessor>().To<UsersInquiryProcessor>().InRequestScope();
             container.Bind<IStoresInquiryProcessor>().To<StoresInquiryProcessor>().InRequestScope();
-            container.Bind<IAppAdvertsInquiryProcessor>().To<AppAdvertsInquiryProcessor>().InRequestScope();
-            container.Bind<IAchievementInquiryProcessor>().To<AchievementInquiryProcessor>().InRequestScope();
-            container.Bind<IDWMInquiryProcessor>().To<DWMInquiryProcessor>().InRequestScope();
-            container.Bind<ISpinWheelInquiryProcessor>().To<SpinWheelInquiryProcessor>().InRequestScope();
+            //container.Bind<IAppAdvertsInquiryProcessor>().To<AppAdvertsInquiryProcessor>().InRequestScope();
+            //container.Bind<IAchievementInquiryProcessor>().To<AchievementInquiryProcessor>().InRequestScope();
+            //container.Bind<IDWMInquiryProcessor>().To<DWMInquiryProcessor>().InRequestScope();
+            //container.Bind<ISpinWheelInquiryProcessor>().To<SpinWheelInquiryProcessor>().InRequestScope();
             container.Bind<IThemesInquiryProcessor>().To<ThemesInquiryProcessor>().InRequestScope();
             container.Bind<ICategoriesInquiryProcessor>().To<CategoriesInquiryProcessor>().InRequestScope();
             container.Bind<IAvatarsInquiryProcessor>().To<AvatarsInquiryProcessor>().InRequestScope();
             container.Bind<ICharacteristicsInquiryProcessor>().To<CharacteristicsInquiryProcessor>().InRequestScope();
-            container.Bind<IUserStatsInquiryProcessor>().To<UserStatsInquiryProcessor>().InRequestScope();
+            //container.Bind<IUserStatsInquiryProcessor>().To<UserStatsInquiryProcessor>().InRequestScope();
             container.Bind<IAnswerInquiryProcessor>().To<AnswerInquiryProcessor>().InRequestScope();
             container.Bind<IQuestionsInquiryProcessor>().To<QuestionsInquiryProcessor>().InRequestScope();
             container.Bind<IGameConfigInquiryProcessor>().To<GameConfigInqiuryProcessor>().InRequestScope();
@@ -153,17 +153,17 @@ namespace Falcon.Web.Api
             container.Bind<IStoresMaintenanceProcessor>().To<StoresMaintenanceProcessor>().InRequestScope();
             container.Bind<IWatchAdMaintenanceProcessor>().To<WatchAdMaintenanceProcessor>().InRequestScope();
             container.Bind<IAppAdvertsMaintenanceProcessor>().To<AppAdvertsMaintenanceProcessor>().InRequestScope();
-            container.Bind<IDWMMaintenanceProcessor>().To<DWMMaintenanceProcessor>().InRequestScope();
-            container.Bind<ISpinWheelMaintenanceProcessor>().To<SpinWheelMaintenanceProcessor>().InRequestScope();
+            //container.Bind<IDWMMaintenanceProcessor>().To<DWMMaintenanceProcessor>().InRequestScope();
+            //container.Bind<ISpinWheelMaintenanceProcessor>().To<SpinWheelMaintenanceProcessor>().InRequestScope();
             container.Bind<ICategoriesMaintenanceProcessor>().To<CategoriesMaintenanceProcessor>().InRequestScope();
             container.Bind<IThemesMaintenanceProcessor>().To<ThemesMaintenanceProcessor>().InRequestScope();
             container.Bind<IAvatarsMaintenanceProcessor>().To<AvatarsMaintenanceProcessor>().InRequestScope();
             container.Bind<ICharacteristicsMaintenanceProcessor>().To<CharacteristicsMaintenanceProcessor>().InRequestScope();
             container.Bind<IUserStatsMaintenanceProcessor>().To<UserStatsMaintenanceProcessor>().InRequestScope();
             container.Bind<IUsersMaintenanceProcessor>().To<UsersMaintenanceProcessor>().InRequestScope();
-            container.Bind<IAchievementMaintenanceProcessor>().To<AchievementMaintenanceProcessor>().InRequestScope();
+            //container.Bind<IAchievementMaintenanceProcessor>().To<AchievementMaintenanceProcessor>().InRequestScope();
             container.Bind<ICreatedQuestionsMaintenanceProcessor>().To<CreatedQuestionsMaintenanceProcessor>().InRequestScope();
-            container.Bind<IAnswerMaintenanceProcessor>().To<AnswerMaintenanceProcessor>().InRequestScope();
+            //container.Bind<IAnswerMaintenanceProcessor>().To<AnswerMaintenanceProcessor>().InRequestScope();
         }
 
         private void AddAdHoc(IKernel container)

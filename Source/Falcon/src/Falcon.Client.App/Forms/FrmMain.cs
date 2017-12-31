@@ -96,5 +96,10 @@ namespace Falcon.Client.App
                 }
             });
         }
+
+        private void btnLoadUser_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

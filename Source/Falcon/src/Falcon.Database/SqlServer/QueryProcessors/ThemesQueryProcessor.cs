@@ -1,18 +1,10 @@
 ﻿using Falcon.Common;
 using Falcon.Common.Security;
-using Falcon.Data.QueryProcessors;
 using Falcon.EFCommonContext;
-using Falcon.EFCommonContext.DbModel;
-using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Falcon.Database.SqlServer.QueryProcessors
 {
-    public class ThemesQueryProcessor : IThemesQueryProcessor
+    public class ThemesQueryProcessor /*: IThemesQueryProcessor*/
     {
         private readonly IDbContext mDb;
         private readonly IUserSession mUserSession;
@@ -24,35 +16,35 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             mUserSession = UserSession;
             mDateTime = DateTime;
         }
-        public async Task<bool> PurchaseItem(int ID)
-        {
-            if (ID == Constants.DefaultUser.AppThemeID)
-                return true;
+        //public async Task<bool> PurchaseItem(int ID)
+        //{
+        //    if (ID == Constants.DefaultUser.AppThemeID)
+        //        return true;
 
-            mDb.Set<PurchaseTheme>().Add(new PurchaseTheme
-            {
-                ThemeID = ID,
-                PurchaseDate = mDateTime.Now,
-                UserID = mUserSession.ID,
-            });
+        //    mDb.Set<PurchaseTheme>().Add(new PurchaseTheme
+        //    {
+        //        ThemeID = ID,
+        //        PurchaseDate = mDateTime.Now,
+        //        UserID = mUserSession.ID,
+        //    });
 
-            await mDb.SaveChangesAsync();
-            return true;
-        }
+        //    await mDb.SaveChangesAsync();
+        //    return true;
+        //}
 
-        public async Task<bool> IsPurchased(int ID)
-        {
-            if (ID == Constants.DefaultUser.AppThemeID)
-                return true;
+        //public async Task<bool> IsPurchased(int ID)
+        //{
+        //    if (ID == Constants.DefaultUser.AppThemeID)
+        //        return true;
 
-            var result = await mDb.Set<PurchaseTheme>().AsNoTracking().CountAsync(pt => pt.ThemeID == ID && pt.UserID == mUserSession.ID) > 0;
-            return result;            
-        }
+        //    var result = await mDb.Set<PurchaseTheme>().AsNoTracking().CountAsync(pt => pt.ThemeID == ID && pt.UserID == mUserSession.ID) > 0;
+        //    return result;            
+        //}
 
-        public async Task<bool> IsExists(int ID)
-        {
-            var exists = await mDb.Set<AppTheme>().AsNoTracking().CountAsync(at => at.ID == ID) > 0;
-            return exists;
-        }
+        //public async Task<bool> IsExists(int ID)
+        //{
+        //    var exists = await mDb.Set<AppTheme>().AsNoTracking().CountAsync(at => at.ID == ID) > 0;
+        //    return exists;
+        //}
     }
 }
