@@ -77,10 +77,10 @@
     <Compile Include="DbModel\CodeGift.cs">
       <DependentUpon>WhatIfDataModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="DbModel\Level.cs">
+    <Compile Include="DbModel\ContactU.cs">
       <DependentUpon>WhatIfDataModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="DbModel\Manufacture.cs">
+    <Compile Include="DbModel\HashTag.cs">
       <DependentUpon>WhatIfDataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="DbModel\MarketInfo.cs">
@@ -92,6 +92,9 @@
     <Compile Include="DbModel\PriceHistory.cs">
       <DependentUpon>WhatIfDataModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="DbModel\Quest.cs">
+      <DependentUpon>WhatIfDataModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="DbModel\Question.cs">
       <DependentUpon>WhatIfDataModel.tt</DependentUpon>
     </Compile>
@@ -101,10 +104,28 @@
     <Compile Include="DbModel\QuestionSelectorConfig.cs">
       <DependentUpon>WhatIfDataModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="DbModel\QuestQuestion.cs">
+      <DependentUpon>WhatIfDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DbModel\QuestScore.cs">
+      <DependentUpon>WhatIfDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DbModel\QuestType.cs">
+      <DependentUpon>WhatIfDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DbModel\Relationship.cs">
+      <DependentUpon>WhatIfDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DbModel\RelationshipStatu.cs">
+      <DependentUpon>WhatIfDataModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="DbModel\ReportedQuestion.cs">
       <DependentUpon>WhatIfDataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="DbModel\ReportType.cs">
+      <DependentUpon>WhatIfDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DbModel\Sent.cs">
       <DependentUpon>WhatIfDataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="DbModel\sp_helpdiagramdefinition_Result.cs">

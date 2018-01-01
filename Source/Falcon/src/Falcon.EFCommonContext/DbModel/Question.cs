@@ -18,8 +18,8 @@ namespace Falcon.EFCommonContext.DbModel
         public Question()
         {
             this.Answers = new HashSet<Answer>();
-            this.Manufactures = new HashSet<Manufacture>();
             this.ReportedQuestions = new HashSet<ReportedQuestion>();
+            this.Sents = new HashSet<Sent>();
             this.Tutorials = new HashSet<Tutorial>();
         }
     
@@ -39,14 +39,18 @@ namespace Falcon.EFCommonContext.DbModel
         public bool RemovedByCreator { get; set; }
         public System.DateTime CreatedDate { get; set; }
         public System.DateTime UpdateDate { get; set; }
+        public Nullable<int> UserID { get; set; }
+        public Nullable<int> HashTagID { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Answer> Answers { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Manufacture> Manufactures { get; set; }
+        public virtual HashTag HashTag { get; set; }
         public virtual QuestionAction QuestionAction { get; set; }
+        public virtual User User { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ReportedQuestion> ReportedQuestions { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Sent> Sents { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Tutorial> Tutorials { get; set; }
     }

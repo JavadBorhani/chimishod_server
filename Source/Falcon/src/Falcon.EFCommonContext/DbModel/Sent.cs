@@ -12,16 +12,12 @@ namespace Falcon.EFCommonContext.DbModel
     using System;
     using System.Collections.Generic;
     
-    public partial class Answer
+    public partial class Sent
     {
         public int ID { get; set; }
         public int UserID { get; set; }
         public int QuestionID { get; set; }
-        public Nullable<bool> Liked { get; set; }
-        public Nullable<bool> Dislike { get; set; }
-        public Nullable<bool> YesState { get; set; }
-        public Nullable<bool> NoState { get; set; }
-        public bool IsReported { get; set; }
+        public int GorupID { get; set; }
         public System.DateTime CreatedDate { get; set; }
     
         public virtual Question Question { get; set; }

@@ -2,7 +2,6 @@
 using Falcon.Common.Security;
 using Falcon.EFCommonContext;
 using Falcon.EFCommonContext.DbModel;
-using Falcon.Web.Models.Api.Level;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
@@ -110,79 +109,79 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             return user.TotalCoin;
         }
 
-        public async Task<bool> LevelExits(int LevelNumber)
-        {
-            var exists = await mDb.Set<Level>().AsNoTracking().CountAsync(l => l.LevelNumber == LevelNumber) > 0;
-            return exists;
-        }
+        //public async Task<bool> LevelExits(int LevelNumber)
+        //{
+        //    var exists = await mDb.Set<Level>().AsNoTracking().CountAsync(l => l.LevelNumber == LevelNumber) > 0;
+        //    return exists;
+        //}
 
-        public async Task<int> GetLevelPrize(int LevelNumber)
-        {
-            int prize = await mDb.Set<Level>().AsNoTracking().Where(l => l.LevelNumber == LevelNumber).Select(l => l.Star).SingleOrDefaultAsync();
-            return prize;
-        }
+        //public async Task<int> GetLevelPrize(int LevelNumber)
+        //{
+        //    int prize = await mDb.Set<Level>().AsNoTracking().Where(l => l.LevelNumber == LevelNumber).Select(l => l.Star).SingleOrDefaultAsync();
+        //    return prize;
+        //}
 
-        public async Task<SLevelUpInfo> UpdateLevel(int Prize)
-        {
-            var player = await mDb.Set<User>().FindAsync(mUserSession.ID);
-            SLevelUpInfo level;
-            bool SaveFailed = false;
+        //public async Task<SLevelUpInfo> UpdateLevel(int Prize)
+        //{
+        //    var player = await mDb.Set<User>().FindAsync(mUserSession.ID);
+        //    SLevelUpInfo level;
+        //    bool SaveFailed = false;
 
-            do
-            {
-                SaveFailed = false;
-                level = LevelUpChecking(ref player, player.Level.ScoreCeil, Prize, (player.CurrentLevelNumber ?? 0) + 1);
-                try
-                {
-                    await mDb.SaveChangesAsync();
+        //    do
+        //    {
+        //        SaveFailed = false;
+        //        level = LevelUpChecking(ref player, player.Level.ScoreCeil, Prize, (player.CurrentLevelNumber ?? 0) + 1);
+        //        try
+        //        {
+        //            await mDb.SaveChangesAsync();
 
-                    var need = CheckIfNeedAnotherLevelUp(ref player); 
+        //            var need = CheckIfNeedAnotherLevelUp(ref player); 
 
-                    if(need)
-                    {
-                        level.LevelUpMode = LevelUpMode.LeveledUpAndNeedAnother;
-                    }
+        //            if(need)
+        //            {
+        //                level.LevelUpMode = LevelUpMode.LeveledUpAndNeedAnother;
+        //            }
 
-                }
-                catch (DbUpdateConcurrencyException ex)
-                {
-                    SaveFailed = true;
-                    ex.Entries.Single().Reload();
-                }
+        //        }
+        //        catch (DbUpdateConcurrencyException ex)
+        //        {
+        //            SaveFailed = true;
+        //            ex.Entries.Single().Reload();
+        //        }
 
-            } while (SaveFailed);
+        //    } while (SaveFailed);
 
-            return level;
-        }
+        //    return level;
+        //}
 
-        private bool CheckIfNeedAnotherLevelUp(ref User User)
-        {
-            if (User.LevelProgress >= User.Level.ScoreCeil)
-                return true;
-            return false;   
-        }
-        private SLevelUpInfo LevelUpChecking(ref User User, int LevelCeil, int Prize, int NextLevelNumber)
-        {
-            SLevelUpInfo info = new SLevelUpInfo();
+        //private bool CheckIfNeedAnotherLevelUp(ref User User)
+        //{
+        //    if (User.LevelProgress >= User.Level.ScoreCeil)
+        //        return true;
+        //    return false;   
+        //}
+        //private SLevelUpInfo LevelUpChecking(ref User User, int LevelCeil, int Prize, int NextLevelNumber)
+        //{
+        //    SLevelUpInfo info = new SLevelUpInfo();
 
-            if (User.LevelProgress + Prize >= LevelCeil)
-            {
-                User.CurrentLevelNumber = NextLevelNumber;
-                int remained = (User.LevelProgress + Prize) - LevelCeil;
-                User.LevelProgress = remained;
+        //    if (User.LevelProgress + Prize >= LevelCeil)
+        //    {
+        //        User.CurrentLevelNumber = NextLevelNumber;
+        //        int remained = (User.LevelProgress + Prize) - LevelCeil;
+        //        User.LevelProgress = remained;
 
-                info.LevelUpMode = LevelUpMode.LeveledUp;
-                info.LevelUpNumber = NextLevelNumber;
-            }
-            else
-            {
-                User.LevelProgress += Prize;
+        //        info.LevelUpMode = LevelUpMode.LeveledUp;
+        //        info.LevelUpNumber = NextLevelNumber;
+        //    }
+        //    else
+        //    {
+        //        User.LevelProgress += Prize;
 
-                info.LevelUpMode = LevelUpMode.NotLeveledUp;
-                info.LevelUpNumber = Constants.DefaultValues.NoLevelUp;
-            }
-            return info;
-        }
+        //        info.LevelUpMode = LevelUpMode.NotLeveledUp;
+        //        info.LevelUpNumber = Constants.DefaultValues.NoLevelUp;
+        //    }
+        //    return info;
+        //}
 
         //public async Task<SUserCount> GetUserCountInfo(int UserID)
         //{

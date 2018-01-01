@@ -19,9 +19,15 @@ namespace Falcon.EFCommonContext.DbModel
         {
             this.AchievedCodeGifts = new HashSet<AchievedCodeGift>();
             this.Answers = new HashSet<Answer>();
-            this.Manufactures = new HashSet<Manufacture>();
+            this.ContactUs = new HashSet<ContactU>();
             this.Orders = new HashSet<Order>();
+            this.Questions = new HashSet<Question>();
+            this.QuestScores = new HashSet<QuestScore>();
+            this.Relationships = new HashSet<Relationship>();
+            this.Relationships1 = new HashSet<Relationship>();
+            this.Relationships2 = new HashSet<Relationship>();
             this.ReportedQuestions = new HashSet<ReportedQuestion>();
+            this.Sents = new HashSet<Sent>();
             this.UserInfoes = new HashSet<UserInfo>();
             this.WatchedAds = new HashSet<WatchedAd>();
         }
@@ -31,8 +37,7 @@ namespace Falcon.EFCommonContext.DbModel
         public string UserName { get; set; }
         public Nullable<int> UserTypeID { get; set; }
         public int TotalCoin { get; set; }
-        public int LevelProgress { get; set; }
-        public Nullable<int> CurrentLevelNumber { get; set; }
+        public Nullable<int> QuestProgress { get; set; }
         public bool IsAbleToWriteComment { get; set; }
         public System.DateTime LastSeenDateTime { get; set; }
         public System.DateTime PrevLastSeenDateTime { get; set; }
@@ -40,18 +45,31 @@ namespace Falcon.EFCommonContext.DbModel
         public int DWMCount { get; set; }
         public bool IsTutorial { get; set; }
         public byte[] RowVersion { get; set; }
+        public Nullable<int> QuestNumber { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<AchievedCodeGift> AchievedCodeGifts { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Answer> Answers { get; set; }
-        public virtual Level Level { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Manufacture> Manufactures { get; set; }
+        public virtual ICollection<ContactU> ContactUs { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Order> Orders { get; set; }
+        public virtual Quest Quest { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Question> Questions { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<QuestScore> QuestScores { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Relationship> Relationships { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Relationship> Relationships1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Relationship> Relationships2 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ReportedQuestion> ReportedQuestions { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Sent> Sents { get; set; }
         public virtual UserType UserType { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<UserInfo> UserInfoes { get; set; }

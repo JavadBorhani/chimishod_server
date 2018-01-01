@@ -12,19 +12,18 @@ namespace Falcon.EFCommonContext.DbModel
     using System;
     using System.Collections.Generic;
     
-    public partial class Answer
+    public partial class RelationshipStatu
     {
-        public int ID { get; set; }
-        public int UserID { get; set; }
-        public int QuestionID { get; set; }
-        public Nullable<bool> Liked { get; set; }
-        public Nullable<bool> Dislike { get; set; }
-        public Nullable<bool> YesState { get; set; }
-        public Nullable<bool> NoState { get; set; }
-        public bool IsReported { get; set; }
-        public System.DateTime CreatedDate { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public RelationshipStatu()
+        {
+            this.Relationships = new HashSet<Relationship>();
+        }
     
-        public virtual Question Question { get; set; }
-        public virtual User User { get; set; }
+        public int ID { get; set; }
+        public int Name { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Relationship> Relationships { get; set; }
     }
 }

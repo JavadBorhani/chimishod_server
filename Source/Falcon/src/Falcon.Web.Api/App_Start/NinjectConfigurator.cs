@@ -110,7 +110,7 @@ namespace Falcon.Web.Api
             //container.Bind<IUserStatQueryProcessor>().To<UserStatQueryProcessor>().InRequestScope();
             //container.Bind<ICharacteristicsQueryProcessor>().To<CharacteristicsQueryProcessor>().InRequestScope();
             //container.Bind<IScoringQueryProcessor>().To<ScoringQueryProcessor>().InRequestScope();
-            container.Bind<IQuestionsQueryProcessor>().To<QuestionsQueryProcessor>().InRequestScope();
+            //container.Bind<IQuestionsQueryProcessor>().To<QuestionsQueryProcessor>().InRequestScope();
             container.Bind<IAnswerQueryProcessor>().To<AnswerQueryProcessor>().InRequestScope();
             container.Bind<IGameConfigQueryProcessor>().To<GameConfigQueryProcessor>().InRequestScope();
             container.Bind<IQuestionSelectorQueryProcessor>().To<QuestionSelectorQueryProcessor>().InRequestScope();

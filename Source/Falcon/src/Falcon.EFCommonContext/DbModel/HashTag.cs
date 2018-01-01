@@ -12,21 +12,18 @@ namespace Falcon.EFCommonContext.DbModel
     using System;
     using System.Collections.Generic;
     
-    public partial class Level
+    public partial class HashTag
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Level()
+        public HashTag()
         {
-            this.Users = new HashSet<User>();
+            this.Questions = new HashSet<Question>();
         }
     
-        public int LevelNumber { get; set; }
-        public int Star { get; set; }
-        public int ScoreCeil { get; set; }
-        public System.DateTime CreatedDate { get; set; }
-        public System.DateTime UpdatedDate { get; set; }
+        public int ID { get; set; }
+        public string Title { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<User> Users { get; set; }
+        public virtual ICollection<Question> Questions { get; set; }
     }
 }

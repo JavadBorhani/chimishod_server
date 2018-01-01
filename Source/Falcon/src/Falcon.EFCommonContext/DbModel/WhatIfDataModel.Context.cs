@@ -23,9 +23,7 @@ namespace Falcon.EFCommonContext.DbModel
 
         public DbEntity(string NameOrConnectionString) : base(NameOrConnectionString)
         {
-
         }
-
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             throw new UnintentionalCodeFirstException();
@@ -34,17 +32,25 @@ namespace Falcon.EFCommonContext.DbModel
         public virtual DbSet<AchievedCodeGift> AchievedCodeGifts { get; set; }
         public virtual DbSet<Answer> Answers { get; set; }
         public virtual DbSet<ApplicationState> ApplicationStates { get; set; }
+        public virtual DbSet<ClientApplicationState> ClientApplicationStates { get; set; }
         public virtual DbSet<CodeGift> CodeGifts { get; set; }
-        public virtual DbSet<Level> Levels { get; set; }
-        public virtual DbSet<Manufacture> Manufactures { get; set; }
+        public virtual DbSet<ContactU> ContactUs { get; set; }
+        public virtual DbSet<HashTag> HashTags { get; set; }
         public virtual DbSet<MarketInfo> MarketInfoes { get; set; }
         public virtual DbSet<Order> Orders { get; set; }
         public virtual DbSet<PriceHistory> PriceHistories { get; set; }
+        public virtual DbSet<Quest> Quests { get; set; }
         public virtual DbSet<Question> Questions { get; set; }
         public virtual DbSet<QuestionAction> QuestionActions { get; set; }
         public virtual DbSet<QuestionSelectorConfig> QuestionSelectorConfigs { get; set; }
+        public virtual DbSet<QuestQuestion> QuestQuestions { get; set; }
+        public virtual DbSet<QuestScore> QuestScores { get; set; }
+        public virtual DbSet<QuestType> QuestTypes { get; set; }
+        public virtual DbSet<Relationship> Relationships { get; set; }
+        public virtual DbSet<RelationshipStatu> RelationshipStatus { get; set; }
         public virtual DbSet<ReportedQuestion> ReportedQuestions { get; set; }
         public virtual DbSet<ReportType> ReportTypes { get; set; }
+        public virtual DbSet<Sent> Sents { get; set; }
         public virtual DbSet<Store> Stores { get; set; }
         public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
         public virtual DbSet<Tutorial> Tutorials { get; set; }
@@ -53,7 +59,6 @@ namespace Falcon.EFCommonContext.DbModel
         public virtual DbSet<UserType> UserTypes { get; set; }
         public virtual DbSet<WatchAdProvider> WatchAdProviders { get; set; }
         public virtual DbSet<WatchedAd> WatchedAds { get; set; }
-        public virtual DbSet<ClientApplicationState> ClientApplicationStates { get; set; }
     
         public virtual int sp_alterdiagram(string diagramname, Nullable<int> owner_id, Nullable<int> version, byte[] definition)
         {

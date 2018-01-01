@@ -12,14 +12,18 @@ namespace Falcon.EFCommonContext.DbModel
     using System;
     using System.Collections.Generic;
     
-    public partial class Manufacture
+    public partial class QuestType
     {
-        public int ID { get; set; }
-        public int UserID { get; set; }
-        public int QuestionID { get; set; }
-        public System.DateTime InsertedDate { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public QuestType()
+        {
+            this.Quests = new HashSet<Quest>();
+        }
     
-        public virtual Question Question { get; set; }
-        public virtual User User { get; set; }
+        public int ID { get; set; }
+        public string Name { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Quest> Quests { get; set; }
     }
 }

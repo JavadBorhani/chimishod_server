@@ -20,11 +20,12 @@
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="UserID" Type="int" Nullable="false" />
-          <Property Name="CategoryID" Type="int" Nullable="false" />
           <Property Name="QuestionID" Type="int" Nullable="false" />
           <Property Name="Liked" Type="bit" />
           <Property Name="Dislike" Type="bit" />
-          <Property Name="YesNoState" Type="bit" Nullable="false" />
+          <Property Name="YesState" Type="bit" />
+          <Property Name="NoState" Type="bit" />
+          <Property Name="IsReported" Type="bit" Nullable="false" />
           <Property Name="CreatedDate" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="ApplicationState">
@@ -66,12 +67,9 @@
           <Property Name="Prize_NewQuestionAcceptedScore" Type="int" Nullable="false" />
           <Property Name="Prize_AnswerScoreAmount" Type="int" Nullable="false" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'SocialChimishod.dbo.ClientApplicationState' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="ClientApplicationState">
           <Key>
             <PropertyRef Name="ID" />
-            <PropertyRef Name="CreateQuestionPrize" />
           </Key>
           <Property Name="ID" Type="int" Nullable="false" />
           <Property Name="CreateQuestionPrize" Type="int" Nullable="false" />
@@ -91,24 +89,24 @@ warning 6002: The table/view 'SocialChimishod.dbo.ClientApplicationState' does n
           <Property Name="CreatedDate" Type="datetime" Nullable="false" />
           <Property Name="UpdatedDate" Type="datetime" Nullable="false" />
         </EntityType>
-        <EntityType Name="Level">
-          <Key>
-            <PropertyRef Name="LevelNumber" />
-          </Key>
-          <Property Name="LevelNumber" Type="int" Nullable="false" />
-          <Property Name="Star" Type="int" Nullable="false" />
-          <Property Name="ScoreCeil" Type="int" Nullable="false" />
-          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
-          <Property Name="UpdatedDate" Type="datetime" Nullable="false" />
-        </EntityType>
-        <EntityType Name="Manufacture">
+        <EntityType Name="ContactUs">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ID" Type="int" Nullable="false" />
           <Property Name="UserID" Type="int" Nullable="false" />
-          <Property Name="QuestionID" Type="int" Nullable="false" />
-          <Property Name="InsertedDate" Type="datetime" Nullable="false" />
+          <Property Name="Message" Type="nvarchar" MaxLength="400" Nullable="false" />
+          <Property Name="Type" Type="int" Nullable="false" />
+          <Property Name="AdminResponse" Type="int" Nullable="false" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+          <Property Name="UpdateDate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="HashTag">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="Title" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="MarketInfo">
           <Key>
@@ -157,6 +155,20 @@ warning 6002: The table/view 'SocialChimishod.dbo.ClientApplicationState' does n
           <Property Name="Price" Type="int" Nullable="false" />
           <Property Name="InsertDate" Type="datetime" Nullable="false" />
         </EntityType>
+        <EntityType Name="Quest">
+          <Key>
+            <PropertyRef Name="QuestNumber" />
+          </Key>
+          <Property Name="QuestNumber" Type="int" Nullable="false" />
+          <Property Name="QuestTypes" Type="int" Nullable="false" />
+          <Property Name="QuestTitle" Type="nvarchar" MaxLength="300" Nullable="false" />
+          <Property Name="QuestDescription" Type="nvarchar" MaxLength="300" Nullable="false" />
+          <Property Name="CoinPrize" Type="int" Nullable="false" />
+          <Property Name="CeilProgress" Type="int" Nullable="false" />
+          <Property Name="Mean_Score" Type="int" Nullable="false" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+          <Property Name="UpdateDate" Type="datetime" Nullable="false" />
+        </EntityType>
         <EntityType Name="Question">
           <Key>
             <PropertyRef Name="ID" />
@@ -177,6 +189,8 @@ warning 6002: The table/view 'SocialChimishod.dbo.ClientApplicationState' does n
           <Property Name="RemovedByCreator" Type="bit" Nullable="false" />
           <Property Name="CreatedDate" Type="datetime" Nullable="false" />
           <Property Name="UpdateDate" Type="datetime" Nullable="false" />
+          <Property Name="UserID" Type="int" />
+          <Property Name="HashTagID" Type="int" />
         </EntityType>
         <EntityType Name="QuestionAction">
           <Key>
@@ -203,6 +217,51 @@ warning 6002: The table/view 'SocialChimishod.dbo.ClientApplicationState' does n
           <Property Name="BoostedQuestionsPercent" Type="int" Nullable="false" />
           <Property Name="ActionBasedQuestionsPercent" Type="int" Nullable="false" />
         </EntityType>
+        <EntityType Name="QuestQuestions">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="QuestionID" Type="int" Nullable="false" />
+          <Property Name="YesQuestNumber" Type="int" Nullable="false" />
+          <Property Name="NoQuestNumber" Type="int" Nullable="false" />
+          <Property Name="YesScore" Type="int" Nullable="false" />
+          <Property Name="NoScore" Type="int" Nullable="false" />
+          <Property Name="QuestNumber" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="QuestScore">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="QuestNumber" Type="int" Nullable="false" />
+          <Property Name="Score" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="QuestTypes">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Relationship">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="UserOneID" Type="int" Nullable="false" />
+          <Property Name="UserTwoID" Type="int" Nullable="false" />
+          <Property Name="RelationStatus" Type="int" Nullable="false" />
+          <Property Name="OperatedByID" Type="int" Nullable="false" />
+          <Property Name="ID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="RelationshipStatus">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="Name" Type="int" Nullable="false" />
+        </EntityType>
         <EntityType Name="ReportedQuestions">
           <Key>
             <PropertyRef Name="ID" />
@@ -220,6 +279,16 @@ warning 6002: The table/view 'SocialChimishod.dbo.ClientApplicationState' does n
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="30" Nullable="false" />
           <Property Name="Description" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Sent">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="QuestionID" Type="int" Nullable="false" />
+          <Property Name="GorupID" Type="int" Nullable="false" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="Store">
           <Key>
@@ -266,8 +335,7 @@ warning 6002: The table/view 'SocialChimishod.dbo.ClientApplicationState' does n
           <Property Name="UserName" Type="nvarchar" MaxLength="40" Nullable="false" />
           <Property Name="UserTypeID" Type="int" />
           <Property Name="TotalCoin" Type="int" Nullable="false" />
-          <Property Name="LevelProgress" Type="int" Nullable="false" />
-          <Property Name="CurrentLevelNumber" Type="int" />
+          <Property Name="QuestProgress" Type="int" />
           <Property Name="IsAbleToWriteComment" Type="bit" Nullable="false" />
           <Property Name="LastSeenDateTime" Type="datetime" Nullable="false" />
           <Property Name="PrevLastSeenDateTime" Type="datetime" Nullable="false" />
@@ -275,6 +343,7 @@ warning 6002: The table/view 'SocialChimishod.dbo.ClientApplicationState' does n
           <Property Name="DWMCount" Type="int" Nullable="false" />
           <Property Name="IsTutorial" Type="bit" Nullable="false" />
           <Property Name="RowVersion" Type="timestamp" StoreGeneratedPattern="Computed" />
+          <Property Name="QuestNumber" Type="int" />
         </EntityType>
         <EntityType Name="UserInfo">
           <Key>
@@ -375,30 +444,16 @@ warning 6002: The table/view 'SocialChimishod.dbo.ClientApplicationState' does n
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Manufacture_Question">
-          <End Role="Question" Type="Self.Question" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="Manufacture" Type="Self.Manufacture" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Question">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="Manufacture">
-              <PropertyRef Name="QuestionID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Manufacture_User">
+        <Association Name="FK_ContactUs_User">
           <End Role="User" Type="Self.User" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="Manufacture" Type="Self.Manufacture" Multiplicity="*" />
+          <End Role="ContactUs" Type="Self.ContactUs" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="User">
               <PropertyRef Name="ID" />
             </Principal>
-            <Dependent Role="Manufacture">
+            <Dependent Role="ContactUs">
               <PropertyRef Name="UserID" />
             </Dependent>
           </ReferentialConstraint>
@@ -445,6 +500,30 @@ warning 6002: The table/view 'SocialChimishod.dbo.ClientApplicationState' does n
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Quest_QuestTypes">
+          <End Role="QuestTypes" Type="Self.QuestTypes" Multiplicity="1" />
+          <End Role="Quest" Type="Self.Quest" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="QuestTypes">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Quest">
+              <PropertyRef Name="QuestTypes" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Question_HashTag">
+          <End Role="HashTag" Type="Self.HashTag" Multiplicity="0..1" />
+          <End Role="Question" Type="Self.Question" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="HashTag">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Question">
+              <PropertyRef Name="HashTagID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Question_QuestionAction">
           <End Role="QuestionAction" Type="Self.QuestionAction" Multiplicity="0..1" />
           <End Role="Question" Type="Self.Question" Multiplicity="*" />
@@ -454,6 +533,110 @@ warning 6002: The table/view 'SocialChimishod.dbo.ClientApplicationState' does n
             </Principal>
             <Dependent Role="Question">
               <PropertyRef Name="ActionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Question_User">
+          <End Role="User" Type="Self.User" Multiplicity="0..1" />
+          <End Role="Question" Type="Self.Question" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Question">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_QuestQuestions_Quest">
+          <End Role="Quest" Type="Self.Quest" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="QuestQuestions" Type="Self.QuestQuestions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Quest">
+              <PropertyRef Name="QuestNumber" />
+            </Principal>
+            <Dependent Role="QuestQuestions">
+              <PropertyRef Name="QuestNumber" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_QuestScore_Quest">
+          <End Role="Quest" Type="Self.Quest" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="QuestScore" Type="Self.QuestScore" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Quest">
+              <PropertyRef Name="QuestNumber" />
+            </Principal>
+            <Dependent Role="QuestScore">
+              <PropertyRef Name="QuestNumber" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_QuestScore_User">
+          <End Role="User" Type="Self.User" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="QuestScore" Type="Self.QuestScore" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="QuestScore">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Relationship_RelationshipStatus">
+          <End Role="RelationshipStatus" Type="Self.RelationshipStatus" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Relationship" Type="Self.Relationship" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RelationshipStatus">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Relationship">
+              <PropertyRef Name="RelationStatus" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Relationship_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="Relationship" Type="Self.Relationship" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Relationship">
+              <PropertyRef Name="OperatedByID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Relationship_User_Two">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="Relationship" Type="Self.Relationship" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Relationship">
+              <PropertyRef Name="UserTwoID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RelationshipUserOne">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="Relationship" Type="Self.Relationship" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Relationship">
+              <PropertyRef Name="UserOneID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -497,6 +680,32 @@ warning 6002: The table/view 'SocialChimishod.dbo.ClientApplicationState' does n
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Sent_Question">
+          <End Role="Question" Type="Self.Question" Multiplicity="1" />
+          <End Role="Sent" Type="Self.Sent" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Question">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Sent">
+              <PropertyRef Name="QuestionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Sent_User">
+          <End Role="User" Type="Self.User" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Sent" Type="Self.Sent" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Sent">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Store_MarketInfo">
           <End Role="MarketInfo" Type="Self.MarketInfo" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -525,15 +734,15 @@ warning 6002: The table/view 'SocialChimishod.dbo.ClientApplicationState' does n
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_User_Level">
-          <End Role="Level" Type="Self.Level" Multiplicity="0..1" />
+        <Association Name="FK_User_Quest">
+          <End Role="Quest" Type="Self.Quest" Multiplicity="0..1" />
           <End Role="User" Type="Self.User" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Level">
-              <PropertyRef Name="LevelNumber" />
+            <Principal Role="Quest">
+              <PropertyRef Name="QuestNumber" />
             </Principal>
             <Dependent Role="User">
-              <PropertyRef Name="CurrentLevelNumber" />
+              <PropertyRef Name="QuestNumber" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -620,23 +829,29 @@ warning 6002: The table/view 'SocialChimishod.dbo.ClientApplicationState' does n
           <Parameter Name="new_diagramname" Type="nvarchar" Mode="In" />
         </Function>
         <Function Name="sp_upgraddiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
-        <Function Name="UpdateCharacterRank" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
-        <Function Name="UpdateUserGlobalRank" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <EntityContainer Name="FalconDbModelStoreContainer">
           <EntitySet Name="AchievedCodeGift" EntityType="Self.AchievedCodeGift" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Answer" EntityType="Self.Answer" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ApplicationState" EntityType="Self.ApplicationState" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ClientApplicationState" EntityType="Self.ClientApplicationState" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CodeGift" EntityType="Self.CodeGift" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Level" EntityType="Self.Level" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Manufacture" EntityType="Self.Manufacture" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ContactUs" EntityType="Self.ContactUs" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="HashTag" EntityType="Self.HashTag" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MarketInfo" EntityType="Self.MarketInfo" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Order" EntityType="Self.Order" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PriceHistory" EntityType="Self.PriceHistory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Quest" EntityType="Self.Quest" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Question" EntityType="Self.Question" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="QuestionAction" EntityType="Self.QuestionAction" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="QuestionSelectorConfig" EntityType="Self.QuestionSelectorConfig" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="QuestQuestions" EntityType="Self.QuestQuestions" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="QuestScore" EntityType="Self.QuestScore" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="QuestTypes" EntityType="Self.QuestTypes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Relationship" EntityType="Self.Relationship" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RelationshipStatus" EntityType="Self.RelationshipStatus" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ReportedQuestions" EntityType="Self.ReportedQuestions" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ReportType" EntityType="Self.ReportType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Sent" EntityType="Self.Sent" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Store" EntityType="Self.Store" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Tutorial" EntityType="Self.Tutorial" Schema="dbo" store:Type="Tables" />
@@ -645,12 +860,6 @@ warning 6002: The table/view 'SocialChimishod.dbo.ClientApplicationState' does n
           <EntitySet Name="UserType" EntityType="Self.UserType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="WatchAdProvider" EntityType="Self.WatchAdProvider" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="WatchedAd" EntityType="Self.WatchedAd" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="ClientApplicationState" EntityType="Self.ClientApplicationState" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [ClientApplicationState].[ID] AS [ID], 
-    [ClientApplicationState].[CreateQuestionPrize] AS [CreateQuestionPrize]
-    FROM [dbo].[ClientApplicationState] AS [ClientApplicationState]</DefiningQuery>
-          </EntitySet>
           <AssociationSet Name="FK_AchievedCodeGift_CodeGift" Association="Self.FK_AchievedCodeGift_CodeGift">
             <End Role="CodeGift" EntitySet="CodeGift" />
             <End Role="AchievedCodeGift" EntitySet="AchievedCodeGift" />
@@ -667,13 +876,9 @@ warning 6002: The table/view 'SocialChimishod.dbo.ClientApplicationState' does n
             <End Role="User" EntitySet="User" />
             <End Role="Answer" EntitySet="Answer" />
           </AssociationSet>
-          <AssociationSet Name="FK_Manufacture_Question" Association="Self.FK_Manufacture_Question">
-            <End Role="Question" EntitySet="Question" />
-            <End Role="Manufacture" EntitySet="Manufacture" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Manufacture_User" Association="Self.FK_Manufacture_User">
+          <AssociationSet Name="FK_ContactUs_User" Association="Self.FK_ContactUs_User">
             <End Role="User" EntitySet="User" />
-            <End Role="Manufacture" EntitySet="Manufacture" />
+            <End Role="ContactUs" EntitySet="ContactUs" />
           </AssociationSet>
           <AssociationSet Name="FK_Order_Store" Association="Self.FK_Order_Store">
             <End Role="Store" EntitySet="Store" />
@@ -687,9 +892,49 @@ warning 6002: The table/view 'SocialChimishod.dbo.ClientApplicationState' does n
             <End Role="Store" EntitySet="Store" />
             <End Role="PriceHistory" EntitySet="PriceHistory" />
           </AssociationSet>
+          <AssociationSet Name="FK_Quest_QuestTypes" Association="Self.FK_Quest_QuestTypes">
+            <End Role="QuestTypes" EntitySet="QuestTypes" />
+            <End Role="Quest" EntitySet="Quest" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Question_HashTag" Association="Self.FK_Question_HashTag">
+            <End Role="HashTag" EntitySet="HashTag" />
+            <End Role="Question" EntitySet="Question" />
+          </AssociationSet>
           <AssociationSet Name="FK_Question_QuestionAction" Association="Self.FK_Question_QuestionAction">
             <End Role="QuestionAction" EntitySet="QuestionAction" />
             <End Role="Question" EntitySet="Question" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Question_User" Association="Self.FK_Question_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="Question" EntitySet="Question" />
+          </AssociationSet>
+          <AssociationSet Name="FK_QuestQuestions_Quest" Association="Self.FK_QuestQuestions_Quest">
+            <End Role="Quest" EntitySet="Quest" />
+            <End Role="QuestQuestions" EntitySet="QuestQuestions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_QuestScore_Quest" Association="Self.FK_QuestScore_Quest">
+            <End Role="Quest" EntitySet="Quest" />
+            <End Role="QuestScore" EntitySet="QuestScore" />
+          </AssociationSet>
+          <AssociationSet Name="FK_QuestScore_User" Association="Self.FK_QuestScore_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="QuestScore" EntitySet="QuestScore" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Relationship_RelationshipStatus" Association="Self.FK_Relationship_RelationshipStatus">
+            <End Role="RelationshipStatus" EntitySet="RelationshipStatus" />
+            <End Role="Relationship" EntitySet="Relationship" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Relationship_User" Association="Self.FK_Relationship_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="Relationship" EntitySet="Relationship" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Relationship_User_Two" Association="Self.FK_Relationship_User_Two">
+            <End Role="User" EntitySet="User" />
+            <End Role="Relationship" EntitySet="Relationship" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RelationshipUserOne" Association="Self.FK_RelationshipUserOne">
+            <End Role="User" EntitySet="User" />
+            <End Role="Relationship" EntitySet="Relationship" />
           </AssociationSet>
           <AssociationSet Name="FK_ReportedQuestions_Question" Association="Self.FK_ReportedQuestions_Question">
             <End Role="Question" EntitySet="Question" />
@@ -703,6 +948,14 @@ warning 6002: The table/view 'SocialChimishod.dbo.ClientApplicationState' does n
             <End Role="User" EntitySet="User" />
             <End Role="ReportedQuestions" EntitySet="ReportedQuestions" />
           </AssociationSet>
+          <AssociationSet Name="FK_Sent_Question" Association="Self.FK_Sent_Question">
+            <End Role="Question" EntitySet="Question" />
+            <End Role="Sent" EntitySet="Sent" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Sent_User" Association="Self.FK_Sent_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="Sent" EntitySet="Sent" />
+          </AssociationSet>
           <AssociationSet Name="FK_Store_MarketInfo" Association="Self.FK_Store_MarketInfo">
             <End Role="MarketInfo" EntitySet="MarketInfo" />
             <End Role="Store" EntitySet="Store" />
@@ -711,8 +964,8 @@ warning 6002: The table/view 'SocialChimishod.dbo.ClientApplicationState' does n
             <End Role="Question" EntitySet="Question" />
             <End Role="Tutorial" EntitySet="Tutorial" />
           </AssociationSet>
-          <AssociationSet Name="FK_User_Level" Association="Self.FK_User_Level">
-            <End Role="Level" EntitySet="Level" />
+          <AssociationSet Name="FK_User_Quest" Association="Self.FK_User_Quest">
+            <End Role="Quest" EntitySet="Quest" />
             <End Role="User" EntitySet="User" />
           </AssociationSet>
           <AssociationSet Name="FK_User_UserType" Association="Self.FK_User_UserType">
@@ -773,17 +1026,25 @@ warning 6002: The table/view 'SocialChimishod.dbo.ClientApplicationState' does n
           <EntitySet Name="AchievedCodeGifts" EntityType="Falcon.DbModel.AchievedCodeGift" />
           <EntitySet Name="Answers" EntityType="Falcon.DbModel.Answer" />
           <EntitySet Name="ApplicationStates" EntityType="Falcon.DbModel.ApplicationState" />
+          <EntitySet Name="ClientApplicationStates" EntityType="Falcon.DbModel.ClientApplicationState" />
           <EntitySet Name="CodeGifts" EntityType="Falcon.DbModel.CodeGift" />
-          <EntitySet Name="Levels" EntityType="Falcon.DbModel.Level" />
-          <EntitySet Name="Manufactures" EntityType="Falcon.DbModel.Manufacture" />
+          <EntitySet Name="ContactUs" EntityType="Falcon.DbModel.ContactU" />
+          <EntitySet Name="HashTags" EntityType="Falcon.DbModel.HashTag" />
           <EntitySet Name="MarketInfoes" EntityType="Falcon.DbModel.MarketInfo" />
           <EntitySet Name="Orders" EntityType="Falcon.DbModel.Order" />
           <EntitySet Name="PriceHistories" EntityType="Falcon.DbModel.PriceHistory" />
+          <EntitySet Name="Quests" EntityType="Falcon.DbModel.Quest" />
           <EntitySet Name="Questions" EntityType="Falcon.DbModel.Question" />
           <EntitySet Name="QuestionActions" EntityType="Falcon.DbModel.QuestionAction" />
           <EntitySet Name="QuestionSelectorConfigs" EntityType="Falcon.DbModel.QuestionSelectorConfig" />
+          <EntitySet Name="QuestQuestions" EntityType="Falcon.DbModel.QuestQuestion" />
+          <EntitySet Name="QuestScores" EntityType="Falcon.DbModel.QuestScore" />
+          <EntitySet Name="QuestTypes" EntityType="Falcon.DbModel.QuestType" />
+          <EntitySet Name="Relationships" EntityType="Falcon.DbModel.Relationship" />
+          <EntitySet Name="RelationshipStatus" EntityType="Falcon.DbModel.RelationshipStatu" />
           <EntitySet Name="ReportedQuestions" EntityType="Falcon.DbModel.ReportedQuestion" />
           <EntitySet Name="ReportTypes" EntityType="Falcon.DbModel.ReportType" />
+          <EntitySet Name="Sents" EntityType="Falcon.DbModel.Sent" />
           <EntitySet Name="Stores" EntityType="Falcon.DbModel.Store" />
           <EntitySet Name="sysdiagrams" EntityType="Falcon.DbModel.sysdiagram" />
           <EntitySet Name="Tutorials" EntityType="Falcon.DbModel.Tutorial" />
@@ -792,7 +1053,6 @@ warning 6002: The table/view 'SocialChimishod.dbo.ClientApplicationState' does n
           <EntitySet Name="UserTypes" EntityType="Falcon.DbModel.UserType" />
           <EntitySet Name="WatchAdProviders" EntityType="Falcon.DbModel.WatchAdProvider" />
           <EntitySet Name="WatchedAds" EntityType="Falcon.DbModel.WatchedAd" />
-          <EntitySet Name="ClientApplicationStates" EntityType="Falcon.DbModel.ClientApplicationState" />
           <AssociationSet Name="FK_AchievedCodeGift_CodeGift" Association="Falcon.DbModel.FK_AchievedCodeGift_CodeGift">
             <End Role="CodeGift" EntitySet="CodeGifts" />
             <End Role="AchievedCodeGift" EntitySet="AchievedCodeGifts" />
@@ -809,17 +1069,13 @@ warning 6002: The table/view 'SocialChimishod.dbo.ClientApplicationState' does n
             <End Role="User" EntitySet="Users" />
             <End Role="Answer" EntitySet="Answers" />
           </AssociationSet>
-          <AssociationSet Name="FK_User_Level" Association="Falcon.DbModel.FK_User_Level">
-            <End Role="Level" EntitySet="Levels" />
+          <AssociationSet Name="FK_ContactUs_User" Association="Falcon.DbModel.FK_ContactUs_User">
             <End Role="User" EntitySet="Users" />
+            <End Role="ContactU" EntitySet="ContactUs" />
           </AssociationSet>
-          <AssociationSet Name="FK_Manufacture_Question" Association="Falcon.DbModel.FK_Manufacture_Question">
+          <AssociationSet Name="FK_Question_HashTag" Association="Falcon.DbModel.FK_Question_HashTag">
+            <End Role="HashTag" EntitySet="HashTags" />
             <End Role="Question" EntitySet="Questions" />
-            <End Role="Manufacture" EntitySet="Manufactures" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Manufacture_User" Association="Falcon.DbModel.FK_Manufacture_User">
-            <End Role="User" EntitySet="Users" />
-            <End Role="Manufacture" EntitySet="Manufactures" />
           </AssociationSet>
           <AssociationSet Name="FK_Store_MarketInfo" Association="Falcon.DbModel.FK_Store_MarketInfo">
             <End Role="MarketInfo" EntitySet="MarketInfoes" />
@@ -837,17 +1093,61 @@ warning 6002: The table/view 'SocialChimishod.dbo.ClientApplicationState' does n
             <End Role="Store" EntitySet="Stores" />
             <End Role="PriceHistory" EntitySet="PriceHistories" />
           </AssociationSet>
+          <AssociationSet Name="FK_Quest_QuestTypes" Association="Falcon.DbModel.FK_Quest_QuestTypes">
+            <End Role="QuestType" EntitySet="QuestTypes" />
+            <End Role="Quest" EntitySet="Quests" />
+          </AssociationSet>
+          <AssociationSet Name="FK_QuestQuestions_Quest" Association="Falcon.DbModel.FK_QuestQuestions_Quest">
+            <End Role="Quest" EntitySet="Quests" />
+            <End Role="QuestQuestion" EntitySet="QuestQuestions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_QuestScore_Quest" Association="Falcon.DbModel.FK_QuestScore_Quest">
+            <End Role="Quest" EntitySet="Quests" />
+            <End Role="QuestScore" EntitySet="QuestScores" />
+          </AssociationSet>
+          <AssociationSet Name="FK_User_Quest" Association="Falcon.DbModel.FK_User_Quest">
+            <End Role="Quest" EntitySet="Quests" />
+            <End Role="User" EntitySet="Users" />
+          </AssociationSet>
           <AssociationSet Name="FK_Question_QuestionAction" Association="Falcon.DbModel.FK_Question_QuestionAction">
             <End Role="QuestionAction" EntitySet="QuestionActions" />
+            <End Role="Question" EntitySet="Questions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Question_User" Association="Falcon.DbModel.FK_Question_User">
+            <End Role="User" EntitySet="Users" />
             <End Role="Question" EntitySet="Questions" />
           </AssociationSet>
           <AssociationSet Name="FK_ReportedQuestions_Question" Association="Falcon.DbModel.FK_ReportedQuestions_Question">
             <End Role="Question" EntitySet="Questions" />
             <End Role="ReportedQuestion" EntitySet="ReportedQuestions" />
           </AssociationSet>
+          <AssociationSet Name="FK_Sent_Question" Association="Falcon.DbModel.FK_Sent_Question">
+            <End Role="Question" EntitySet="Questions" />
+            <End Role="Sent" EntitySet="Sents" />
+          </AssociationSet>
           <AssociationSet Name="FK_Tutorial_Question" Association="Falcon.DbModel.FK_Tutorial_Question">
             <End Role="Question" EntitySet="Questions" />
             <End Role="Tutorial" EntitySet="Tutorials" />
+          </AssociationSet>
+          <AssociationSet Name="FK_QuestScore_User" Association="Falcon.DbModel.FK_QuestScore_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="QuestScore" EntitySet="QuestScores" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Relationship_RelationshipStatus" Association="Falcon.DbModel.FK_Relationship_RelationshipStatus">
+            <End Role="RelationshipStatu" EntitySet="RelationshipStatus" />
+            <End Role="Relationship" EntitySet="Relationships" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Relationship_User" Association="Falcon.DbModel.FK_Relationship_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Relationship" EntitySet="Relationships" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Relationship_User_Two" Association="Falcon.DbModel.FK_Relationship_User_Two">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Relationship" EntitySet="Relationships" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RelationshipUserOne" Association="Falcon.DbModel.FK_RelationshipUserOne">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Relationship" EntitySet="Relationships" />
           </AssociationSet>
           <AssociationSet Name="FK_ReportedQuestions_ReportType" Association="Falcon.DbModel.FK_ReportedQuestions_ReportType">
             <End Role="ReportType" EntitySet="ReportTypes" />
@@ -856,6 +1156,10 @@ warning 6002: The table/view 'SocialChimishod.dbo.ClientApplicationState' does n
           <AssociationSet Name="FK_ReportedQuestions_User" Association="Falcon.DbModel.FK_ReportedQuestions_User">
             <End Role="User" EntitySet="Users" />
             <End Role="ReportedQuestion" EntitySet="ReportedQuestions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Sent_User" Association="Falcon.DbModel.FK_Sent_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Sent" EntitySet="Sents" />
           </AssociationSet>
           <AssociationSet Name="FK_User_UserType" Association="Falcon.DbModel.FK_User_UserType">
             <End Role="UserType" EntitySet="UserTypes" />
@@ -902,11 +1206,12 @@ warning 6002: The table/view 'SocialChimishod.dbo.ClientApplicationState' does n
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="UserID" Type="Int32" Nullable="false" />
-          <Property Name="CategoryID" Type="Int32" Nullable="false" />
           <Property Name="QuestionID" Type="Int32" Nullable="false" />
           <Property Name="Liked" Type="Boolean" />
           <Property Name="Dislike" Type="Boolean" />
-          <Property Name="YesNoState" Type="Boolean" Nullable="false" />
+          <Property Name="YesState" Type="Boolean" />
+          <Property Name="NoState" Type="Boolean" />
+          <Property Name="IsReported" Type="Boolean" Nullable="false" />
           <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="Question" Relationship="Falcon.DbModel.FK_Answer_Question" FromRole="Answer" ToRole="Question" />
           <NavigationProperty Name="User" Relationship="Falcon.DbModel.FK_Answer_User" FromRole="Answer" ToRole="User" />
@@ -950,6 +1255,13 @@ warning 6002: The table/view 'SocialChimishod.dbo.ClientApplicationState' does n
           <Property Name="Prize_NewQuestionAcceptedScore" Type="Int32" Nullable="false" />
           <Property Name="Prize_AnswerScoreAmount" Type="Int32" Nullable="false" />
         </EntityType>
+        <EntityType Name="ClientApplicationState">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="CreateQuestionPrize" Type="Int32" Nullable="false" />
+        </EntityType>
         <EntityType Name="CodeGift">
           <Key>
             <PropertyRef Name="ID" />
@@ -966,27 +1278,26 @@ warning 6002: The table/view 'SocialChimishod.dbo.ClientApplicationState' does n
           <Property Name="UpdatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="AchievedCodeGifts" Relationship="Falcon.DbModel.FK_AchievedCodeGift_CodeGift" FromRole="CodeGift" ToRole="AchievedCodeGift" />
         </EntityType>
-        <EntityType Name="Level">
-          <Key>
-            <PropertyRef Name="LevelNumber" />
-          </Key>
-          <Property Name="LevelNumber" Type="Int32" Nullable="false" />
-          <Property Name="Star" Type="Int32" Nullable="false" />
-          <Property Name="ScoreCeil" Type="Int32" Nullable="false" />
-          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="UpdatedDate" Type="DateTime" Nullable="false" Precision="3" />
-          <NavigationProperty Name="Users" Relationship="Falcon.DbModel.FK_User_Level" FromRole="Level" ToRole="User" />
-        </EntityType>
-        <EntityType Name="Manufacture">
+        <EntityType Name="ContactU">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ID" Type="Int32" Nullable="false" />
           <Property Name="UserID" Type="Int32" Nullable="false" />
-          <Property Name="QuestionID" Type="Int32" Nullable="false" />
-          <Property Name="InsertedDate" Type="DateTime" Nullable="false" Precision="3" />
-          <NavigationProperty Name="Question" Relationship="Falcon.DbModel.FK_Manufacture_Question" FromRole="Manufacture" ToRole="Question" />
-          <NavigationProperty Name="User" Relationship="Falcon.DbModel.FK_Manufacture_User" FromRole="Manufacture" ToRole="User" />
+          <Property Name="Message" Type="String" Nullable="false" MaxLength="400" FixedLength="false" Unicode="true" />
+          <Property Name="Type" Type="Int32" Nullable="false" />
+          <Property Name="AdminResponse" Type="Int32" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UpdateDate" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="User" Relationship="Falcon.DbModel.FK_ContactUs_User" FromRole="ContactU" ToRole="User" />
+        </EntityType>
+        <EntityType Name="HashTag">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="Title" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Questions" Relationship="Falcon.DbModel.FK_Question_HashTag" FromRole="HashTag" ToRole="Question" />
         </EntityType>
         <EntityType Name="MarketInfo">
           <Key>
@@ -1039,6 +1350,24 @@ warning 6002: The table/view 'SocialChimishod.dbo.ClientApplicationState' does n
           <Property Name="InsertDate" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="Store" Relationship="Falcon.DbModel.FK_PriceList_Store" FromRole="PriceHistory" ToRole="Store" />
         </EntityType>
+        <EntityType Name="Quest">
+          <Key>
+            <PropertyRef Name="QuestNumber" />
+          </Key>
+          <Property Name="QuestNumber" Type="Int32" Nullable="false" />
+          <Property Name="QuestTypes" Type="Int32" Nullable="false" />
+          <Property Name="QuestTitle" Type="String" Nullable="false" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Name="QuestDescription" Type="String" Nullable="false" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Name="CoinPrize" Type="Int32" Nullable="false" />
+          <Property Name="CeilProgress" Type="Int32" Nullable="false" />
+          <Property Name="Mean_Score" Type="Int32" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UpdateDate" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="QuestType" Relationship="Falcon.DbModel.FK_Quest_QuestTypes" FromRole="Quest" ToRole="QuestType" />
+          <NavigationProperty Name="QuestQuestions" Relationship="Falcon.DbModel.FK_QuestQuestions_Quest" FromRole="Quest" ToRole="QuestQuestion" />
+          <NavigationProperty Name="QuestScores" Relationship="Falcon.DbModel.FK_QuestScore_Quest" FromRole="Quest" ToRole="QuestScore" />
+          <NavigationProperty Name="Users" Relationship="Falcon.DbModel.FK_User_Quest" FromRole="Quest" ToRole="User" />
+        </EntityType>
         <EntityType Name="Question">
           <Key>
             <PropertyRef Name="ID" />
@@ -1059,10 +1388,14 @@ warning 6002: The table/view 'SocialChimishod.dbo.ClientApplicationState' does n
           <Property Name="RemovedByCreator" Type="Boolean" Nullable="false" />
           <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="UpdateDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UserID" Type="Int32" />
+          <Property Name="HashTagID" Type="Int32" />
           <NavigationProperty Name="Answers" Relationship="Falcon.DbModel.FK_Answer_Question" FromRole="Question" ToRole="Answer" />
-          <NavigationProperty Name="Manufactures" Relationship="Falcon.DbModel.FK_Manufacture_Question" FromRole="Question" ToRole="Manufacture" />
+          <NavigationProperty Name="HashTag" Relationship="Falcon.DbModel.FK_Question_HashTag" FromRole="Question" ToRole="HashTag" />
           <NavigationProperty Name="QuestionAction" Relationship="Falcon.DbModel.FK_Question_QuestionAction" FromRole="Question" ToRole="QuestionAction" />
+          <NavigationProperty Name="User" Relationship="Falcon.DbModel.FK_Question_User" FromRole="Question" ToRole="User" />
           <NavigationProperty Name="ReportedQuestions" Relationship="Falcon.DbModel.FK_ReportedQuestions_Question" FromRole="Question" ToRole="ReportedQuestion" />
+          <NavigationProperty Name="Sents" Relationship="Falcon.DbModel.FK_Sent_Question" FromRole="Question" ToRole="Sent" />
           <NavigationProperty Name="Tutorials" Relationship="Falcon.DbModel.FK_Tutorial_Question" FromRole="Question" ToRole="Tutorial" />
         </EntityType>
         <EntityType Name="QuestionAction">
@@ -1091,6 +1424,60 @@ warning 6002: The table/view 'SocialChimishod.dbo.ClientApplicationState' does n
           <Property Name="BoostedQuestionsPercent" Type="Int32" Nullable="false" />
           <Property Name="ActionBasedQuestionsPercent" Type="Int32" Nullable="false" />
         </EntityType>
+        <EntityType Name="QuestQuestion">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="QuestionID" Type="Int32" Nullable="false" />
+          <Property Name="YesQuestNumber" Type="Int32" Nullable="false" />
+          <Property Name="NoQuestNumber" Type="Int32" Nullable="false" />
+          <Property Name="YesScore" Type="Int32" Nullable="false" />
+          <Property Name="NoScore" Type="Int32" Nullable="false" />
+          <Property Name="QuestNumber" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Quest" Relationship="Falcon.DbModel.FK_QuestQuestions_Quest" FromRole="QuestQuestion" ToRole="Quest" />
+        </EntityType>
+        <EntityType Name="QuestScore">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="QuestNumber" Type="Int32" Nullable="false" />
+          <Property Name="Score" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Quest" Relationship="Falcon.DbModel.FK_QuestScore_Quest" FromRole="QuestScore" ToRole="Quest" />
+          <NavigationProperty Name="User" Relationship="Falcon.DbModel.FK_QuestScore_User" FromRole="QuestScore" ToRole="User" />
+        </EntityType>
+        <EntityType Name="QuestType">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Quests" Relationship="Falcon.DbModel.FK_Quest_QuestTypes" FromRole="QuestType" ToRole="Quest" />
+        </EntityType>
+        <EntityType Name="Relationship">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="UserOneID" Type="Int32" Nullable="false" />
+          <Property Name="UserTwoID" Type="Int32" Nullable="false" />
+          <Property Name="RelationStatus" Type="Int32" Nullable="false" />
+          <Property Name="OperatedByID" Type="Int32" Nullable="false" />
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="RelationshipStatu" Relationship="Falcon.DbModel.FK_Relationship_RelationshipStatus" FromRole="Relationship" ToRole="RelationshipStatu" />
+          <NavigationProperty Name="User" Relationship="Falcon.DbModel.FK_Relationship_User" FromRole="Relationship" ToRole="User" />
+          <NavigationProperty Name="User1" Relationship="Falcon.DbModel.FK_Relationship_User_Two" FromRole="Relationship" ToRole="User" />
+          <NavigationProperty Name="User2" Relationship="Falcon.DbModel.FK_RelationshipUserOne" FromRole="Relationship" ToRole="User" />
+        </EntityType>
+        <EntityType Name="RelationshipStatu">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Relationships" Relationship="Falcon.DbModel.FK_Relationship_RelationshipStatus" FromRole="RelationshipStatu" ToRole="Relationship" />
+        </EntityType>
         <EntityType Name="ReportedQuestion">
           <Key>
             <PropertyRef Name="ID" />
@@ -1112,6 +1499,18 @@ warning 6002: The table/view 'SocialChimishod.dbo.ClientApplicationState' does n
           <Property Name="Name" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="true" />
           <Property Name="Description" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="ReportedQuestions" Relationship="Falcon.DbModel.FK_ReportedQuestions_ReportType" FromRole="ReportType" ToRole="ReportedQuestion" />
+        </EntityType>
+        <EntityType Name="Sent">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="QuestionID" Type="Int32" Nullable="false" />
+          <Property Name="GorupID" Type="Int32" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Question" Relationship="Falcon.DbModel.FK_Sent_Question" FromRole="Sent" ToRole="Question" />
+          <NavigationProperty Name="User" Relationship="Falcon.DbModel.FK_Sent_User" FromRole="Sent" ToRole="User" />
         </EntityType>
         <EntityType Name="Store">
           <Key>
@@ -1162,8 +1561,7 @@ warning 6002: The table/view 'SocialChimishod.dbo.ClientApplicationState' does n
           <Property Name="UserName" Type="String" Nullable="false" MaxLength="40" FixedLength="false" Unicode="true" />
           <Property Name="UserTypeID" Type="Int32" />
           <Property Name="TotalCoin" Type="Int32" Nullable="false" />
-          <Property Name="LevelProgress" Type="Int32" Nullable="false" />
-          <Property Name="CurrentLevelNumber" Type="Int32" />
+          <Property Name="QuestProgress" Type="Int32" />
           <Property Name="IsAbleToWriteComment" Type="Boolean" Nullable="false" />
           <Property Name="LastSeenDateTime" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="PrevLastSeenDateTime" Type="DateTime" Nullable="false" Precision="3" />
@@ -1171,12 +1569,19 @@ warning 6002: The table/view 'SocialChimishod.dbo.ClientApplicationState' does n
           <Property Name="DWMCount" Type="Int32" Nullable="false" />
           <Property Name="IsTutorial" Type="Boolean" Nullable="false" />
           <Property Name="RowVersion" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" ConcurrencyMode="Fixed" />
+          <Property Name="QuestNumber" Type="Int32" />
           <NavigationProperty Name="AchievedCodeGifts" Relationship="Falcon.DbModel.FK_AchievedCodeGift_User" FromRole="User" ToRole="AchievedCodeGift" />
           <NavigationProperty Name="Answers" Relationship="Falcon.DbModel.FK_Answer_User" FromRole="User" ToRole="Answer" />
-          <NavigationProperty Name="Level" Relationship="Falcon.DbModel.FK_User_Level" FromRole="User" ToRole="Level" />
-          <NavigationProperty Name="Manufactures" Relationship="Falcon.DbModel.FK_Manufacture_User" FromRole="User" ToRole="Manufacture" />
+          <NavigationProperty Name="ContactUs" Relationship="Falcon.DbModel.FK_ContactUs_User" FromRole="User" ToRole="ContactU" />
           <NavigationProperty Name="Orders" Relationship="Falcon.DbModel.FK_Order_User" FromRole="User" ToRole="Order" />
+          <NavigationProperty Name="Quest" Relationship="Falcon.DbModel.FK_User_Quest" FromRole="User" ToRole="Quest" />
+          <NavigationProperty Name="Questions" Relationship="Falcon.DbModel.FK_Question_User" FromRole="User" ToRole="Question" />
+          <NavigationProperty Name="QuestScores" Relationship="Falcon.DbModel.FK_QuestScore_User" FromRole="User" ToRole="QuestScore" />
+          <NavigationProperty Name="Relationships" Relationship="Falcon.DbModel.FK_Relationship_User" FromRole="User" ToRole="Relationship" />
+          <NavigationProperty Name="Relationships1" Relationship="Falcon.DbModel.FK_Relationship_User_Two" FromRole="User" ToRole="Relationship" />
+          <NavigationProperty Name="Relationships2" Relationship="Falcon.DbModel.FK_RelationshipUserOne" FromRole="User" ToRole="Relationship" />
           <NavigationProperty Name="ReportedQuestions" Relationship="Falcon.DbModel.FK_ReportedQuestions_User" FromRole="User" ToRole="ReportedQuestion" />
+          <NavigationProperty Name="Sents" Relationship="Falcon.DbModel.FK_Sent_User" FromRole="User" ToRole="Sent" />
           <NavigationProperty Name="UserType" Relationship="Falcon.DbModel.FK_User_UserType" FromRole="User" ToRole="UserType" />
           <NavigationProperty Name="UserInfoes" Relationship="Falcon.DbModel.FK_UserInfo_User" FromRole="User" ToRole="UserInfo" />
           <NavigationProperty Name="WatchedAds" Relationship="Falcon.DbModel.FK_WatchedAd_User" FromRole="User" ToRole="WatchedAd" />
@@ -1228,14 +1633,6 @@ warning 6002: The table/view 'SocialChimishod.dbo.ClientApplicationState' does n
           <Property Name="InsertDate" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="User" Relationship="Falcon.DbModel.FK_WatchedAd_User" FromRole="WatchedAd" ToRole="User" />
           <NavigationProperty Name="WatchAdProvider" Relationship="Falcon.DbModel.FK_WatchedAd_WatchAdProvider" FromRole="WatchedAd" ToRole="WatchAdProvider" />
-        </EntityType>
-        <EntityType Name="ClientApplicationState">
-          <Key>
-            <PropertyRef Name="ID" />
-            <PropertyRef Name="CreateQuestionPrize" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" />
-          <Property Name="CreateQuestionPrize" Type="Int32" Nullable="false" />
         </EntityType>
         <Association Name="FK_AchievedCodeGift_CodeGift">
           <End Type="Falcon.DbModel.CodeGift" Role="CodeGift" Multiplicity="1">
@@ -1293,43 +1690,29 @@ warning 6002: The table/view 'SocialChimishod.dbo.ClientApplicationState' does n
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_User_Level">
-          <End Type="Falcon.DbModel.Level" Role="Level" Multiplicity="0..1" />
-          <End Type="Falcon.DbModel.User" Role="User" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Level">
-              <PropertyRef Name="LevelNumber" />
-            </Principal>
-            <Dependent Role="User">
-              <PropertyRef Name="CurrentLevelNumber" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Manufacture_Question">
-          <End Type="Falcon.DbModel.Question" Role="Question" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="Falcon.DbModel.Manufacture" Role="Manufacture" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Question">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="Manufacture">
-              <PropertyRef Name="QuestionID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Manufacture_User">
+        <Association Name="FK_ContactUs_User">
           <End Type="Falcon.DbModel.User" Role="User" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Type="Falcon.DbModel.Manufacture" Role="Manufacture" Multiplicity="*" />
+          <End Type="Falcon.DbModel.ContactU" Role="ContactU" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="User">
               <PropertyRef Name="ID" />
             </Principal>
-            <Dependent Role="Manufacture">
+            <Dependent Role="ContactU">
               <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Question_HashTag">
+          <End Type="Falcon.DbModel.HashTag" Role="HashTag" Multiplicity="0..1" />
+          <End Type="Falcon.DbModel.Question" Role="Question" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="HashTag">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Question">
+              <PropertyRef Name="HashTagID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1389,6 +1772,58 @@ warning 6002: The table/view 'SocialChimishod.dbo.ClientApplicationState' does n
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Quest_QuestTypes">
+          <End Type="Falcon.DbModel.QuestType" Role="QuestType" Multiplicity="1" />
+          <End Type="Falcon.DbModel.Quest" Role="Quest" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="QuestType">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Quest">
+              <PropertyRef Name="QuestTypes" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_QuestQuestions_Quest">
+          <End Type="Falcon.DbModel.Quest" Role="Quest" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="Falcon.DbModel.QuestQuestion" Role="QuestQuestion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Quest">
+              <PropertyRef Name="QuestNumber" />
+            </Principal>
+            <Dependent Role="QuestQuestion">
+              <PropertyRef Name="QuestNumber" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_QuestScore_Quest">
+          <End Type="Falcon.DbModel.Quest" Role="Quest" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="Falcon.DbModel.QuestScore" Role="QuestScore" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Quest">
+              <PropertyRef Name="QuestNumber" />
+            </Principal>
+            <Dependent Role="QuestScore">
+              <PropertyRef Name="QuestNumber" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_User_Quest">
+          <End Type="Falcon.DbModel.Quest" Role="Quest" Multiplicity="0..1" />
+          <End Type="Falcon.DbModel.User" Role="User" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Quest">
+              <PropertyRef Name="QuestNumber" />
+            </Principal>
+            <Dependent Role="User">
+              <PropertyRef Name="QuestNumber" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Question_QuestionAction">
           <End Type="Falcon.DbModel.QuestionAction" Role="QuestionAction" Multiplicity="0..1" />
           <End Type="Falcon.DbModel.Question" Role="Question" Multiplicity="*" />
@@ -1398,6 +1833,18 @@ warning 6002: The table/view 'SocialChimishod.dbo.ClientApplicationState' does n
             </Principal>
             <Dependent Role="Question">
               <PropertyRef Name="ActionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Question_User">
+          <End Type="Falcon.DbModel.User" Role="User" Multiplicity="0..1" />
+          <End Type="Falcon.DbModel.Question" Role="Question" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Question">
+              <PropertyRef Name="UserID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1415,6 +1862,18 @@ warning 6002: The table/view 'SocialChimishod.dbo.ClientApplicationState' does n
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Sent_Question">
+          <End Type="Falcon.DbModel.Question" Role="Question" Multiplicity="1" />
+          <End Type="Falcon.DbModel.Sent" Role="Sent" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Question">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Sent">
+              <PropertyRef Name="QuestionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Tutorial_Question">
           <End Type="Falcon.DbModel.Question" Role="Question" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -1426,6 +1885,70 @@ warning 6002: The table/view 'SocialChimishod.dbo.ClientApplicationState' does n
             </Principal>
             <Dependent Role="Tutorial">
               <PropertyRef Name="QuestionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_QuestScore_User">
+          <End Type="Falcon.DbModel.User" Role="User" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="Falcon.DbModel.QuestScore" Role="QuestScore" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="QuestScore">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Relationship_RelationshipStatus">
+          <End Type="Falcon.DbModel.RelationshipStatu" Role="RelationshipStatu" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="Falcon.DbModel.Relationship" Role="Relationship" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RelationshipStatu">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Relationship">
+              <PropertyRef Name="RelationStatus" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Relationship_User">
+          <End Type="Falcon.DbModel.User" Role="User" Multiplicity="1" />
+          <End Type="Falcon.DbModel.Relationship" Role="Relationship" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Relationship">
+              <PropertyRef Name="OperatedByID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Relationship_User_Two">
+          <End Type="Falcon.DbModel.User" Role="User" Multiplicity="1" />
+          <End Type="Falcon.DbModel.Relationship" Role="Relationship" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Relationship">
+              <PropertyRef Name="UserTwoID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RelationshipUserOne">
+          <End Type="Falcon.DbModel.User" Role="User" Multiplicity="1" />
+          <End Type="Falcon.DbModel.Relationship" Role="Relationship" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Relationship">
+              <PropertyRef Name="UserOneID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1451,6 +1974,20 @@ warning 6002: The table/view 'SocialChimishod.dbo.ClientApplicationState' does n
               <PropertyRef Name="ID" />
             </Principal>
             <Dependent Role="ReportedQuestion">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Sent_User">
+          <End Type="Falcon.DbModel.User" Role="User" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="Falcon.DbModel.Sent" Role="Sent" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Sent">
               <PropertyRef Name="UserID" />
             </Dependent>
           </ReferentialConstraint>
@@ -1537,8 +2074,6 @@ warning 6002: The table/view 'SocialChimishod.dbo.ClientApplicationState' does n
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="sp_renamediagram" FunctionName="Falcon.DbModel.Store.sp_renamediagram" />
           <FunctionImportMapping FunctionImportName="sp_upgraddiagrams" FunctionName="Falcon.DbModel.Store.sp_upgraddiagrams" />
-          <FunctionImportMapping FunctionImportName="UpdateCharacterRank" FunctionName="Falcon.DbModel.Store.UpdateCharacterRank" />
-          <FunctionImportMapping FunctionImportName="UpdateUserGlobalRank" FunctionName="Falcon.DbModel.Store.UpdateUserGlobalRank" />
           <EntitySetMapping Name="AchievedCodeGifts">
             <EntityTypeMapping TypeName="Falcon.DbModel.AchievedCodeGift">
               <MappingFragment StoreEntitySet="AchievedCodeGift">
@@ -1553,11 +2088,12 @@ warning 6002: The table/view 'SocialChimishod.dbo.ClientApplicationState' does n
             <EntityTypeMapping TypeName="Falcon.DbModel.Answer">
               <MappingFragment StoreEntitySet="Answer">
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-                <ScalarProperty Name="YesNoState" ColumnName="YesNoState" />
+                <ScalarProperty Name="IsReported" ColumnName="IsReported" />
+                <ScalarProperty Name="NoState" ColumnName="NoState" />
+                <ScalarProperty Name="YesState" ColumnName="YesState" />
                 <ScalarProperty Name="Dislike" ColumnName="Dislike" />
                 <ScalarProperty Name="Liked" ColumnName="Liked" />
                 <ScalarProperty Name="QuestionID" ColumnName="QuestionID" />
-                <ScalarProperty Name="CategoryID" ColumnName="CategoryID" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
@@ -1603,6 +2139,14 @@ warning 6002: The table/view 'SocialChimishod.dbo.ClientApplicationState' does n
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="ClientApplicationStates">
+            <EntityTypeMapping TypeName="Falcon.DbModel.ClientApplicationState">
+              <MappingFragment StoreEntitySet="ClientApplicationState">
+                <ScalarProperty Name="CreateQuestionPrize" ColumnName="CreateQuestionPrize" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="CodeGifts">
             <EntityTypeMapping TypeName="Falcon.DbModel.CodeGift">
               <MappingFragment StoreEntitySet="CodeGift">
@@ -1619,23 +2163,23 @@ warning 6002: The table/view 'SocialChimishod.dbo.ClientApplicationState' does n
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Levels">
-            <EntityTypeMapping TypeName="Falcon.DbModel.Level">
-              <MappingFragment StoreEntitySet="Level">
-                <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
+          <EntitySetMapping Name="ContactUs">
+            <EntityTypeMapping TypeName="Falcon.DbModel.ContactU">
+              <MappingFragment StoreEntitySet="ContactUs">
+                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-                <ScalarProperty Name="ScoreCeil" ColumnName="ScoreCeil" />
-                <ScalarProperty Name="Star" ColumnName="Star" />
-                <ScalarProperty Name="LevelNumber" ColumnName="LevelNumber" />
+                <ScalarProperty Name="AdminResponse" ColumnName="AdminResponse" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="Message" ColumnName="Message" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Manufactures">
-            <EntityTypeMapping TypeName="Falcon.DbModel.Manufacture">
-              <MappingFragment StoreEntitySet="Manufacture">
-                <ScalarProperty Name="InsertedDate" ColumnName="InsertedDate" />
-                <ScalarProperty Name="QuestionID" ColumnName="QuestionID" />
-                <ScalarProperty Name="UserID" ColumnName="UserID" />
+          <EntitySetMapping Name="HashTags">
+            <EntityTypeMapping TypeName="Falcon.DbModel.HashTag">
+              <MappingFragment StoreEntitySet="HashTag">
+                <ScalarProperty Name="Title" ColumnName="Title" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -1690,9 +2234,26 @@ warning 6002: The table/view 'SocialChimishod.dbo.ClientApplicationState' does n
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="Quests">
+            <EntityTypeMapping TypeName="Falcon.DbModel.Quest">
+              <MappingFragment StoreEntitySet="Quest">
+                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="Mean_Score" ColumnName="Mean_Score" />
+                <ScalarProperty Name="CeilProgress" ColumnName="CeilProgress" />
+                <ScalarProperty Name="CoinPrize" ColumnName="CoinPrize" />
+                <ScalarProperty Name="QuestDescription" ColumnName="QuestDescription" />
+                <ScalarProperty Name="QuestTitle" ColumnName="QuestTitle" />
+                <ScalarProperty Name="QuestTypes" ColumnName="QuestTypes" />
+                <ScalarProperty Name="QuestNumber" ColumnName="QuestNumber" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Questions">
             <EntityTypeMapping TypeName="Falcon.DbModel.Question">
               <MappingFragment StoreEntitySet="Question">
+                <ScalarProperty Name="HashTagID" ColumnName="HashTagID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
                 <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
                 <ScalarProperty Name="RemovedByCreator" ColumnName="RemovedByCreator" />
@@ -1739,6 +2300,56 @@ warning 6002: The table/view 'SocialChimishod.dbo.ClientApplicationState' does n
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="QuestQuestions">
+            <EntityTypeMapping TypeName="Falcon.DbModel.QuestQuestion">
+              <MappingFragment StoreEntitySet="QuestQuestions">
+                <ScalarProperty Name="QuestNumber" ColumnName="QuestNumber" />
+                <ScalarProperty Name="NoScore" ColumnName="NoScore" />
+                <ScalarProperty Name="YesScore" ColumnName="YesScore" />
+                <ScalarProperty Name="NoQuestNumber" ColumnName="NoQuestNumber" />
+                <ScalarProperty Name="YesQuestNumber" ColumnName="YesQuestNumber" />
+                <ScalarProperty Name="QuestionID" ColumnName="QuestionID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="QuestScores">
+            <EntityTypeMapping TypeName="Falcon.DbModel.QuestScore">
+              <MappingFragment StoreEntitySet="QuestScore">
+                <ScalarProperty Name="Score" ColumnName="Score" />
+                <ScalarProperty Name="QuestNumber" ColumnName="QuestNumber" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="QuestTypes">
+            <EntityTypeMapping TypeName="Falcon.DbModel.QuestType">
+              <MappingFragment StoreEntitySet="QuestTypes">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Relationships">
+            <EntityTypeMapping TypeName="Falcon.DbModel.Relationship">
+              <MappingFragment StoreEntitySet="Relationship">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="OperatedByID" ColumnName="OperatedByID" />
+                <ScalarProperty Name="RelationStatus" ColumnName="RelationStatus" />
+                <ScalarProperty Name="UserTwoID" ColumnName="UserTwoID" />
+                <ScalarProperty Name="UserOneID" ColumnName="UserOneID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RelationshipStatus">
+            <EntityTypeMapping TypeName="Falcon.DbModel.RelationshipStatu">
+              <MappingFragment StoreEntitySet="RelationshipStatus">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="ReportedQuestions">
             <EntityTypeMapping TypeName="Falcon.DbModel.ReportedQuestion">
               <MappingFragment StoreEntitySet="ReportedQuestions">
@@ -1755,6 +2366,17 @@ warning 6002: The table/view 'SocialChimishod.dbo.ClientApplicationState' does n
               <MappingFragment StoreEntitySet="ReportType">
                 <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Sents">
+            <EntityTypeMapping TypeName="Falcon.DbModel.Sent">
+              <MappingFragment StoreEntitySet="Sent">
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="GorupID" ColumnName="GorupID" />
+                <ScalarProperty Name="QuestionID" ColumnName="QuestionID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -1801,6 +2423,7 @@ warning 6002: The table/view 'SocialChimishod.dbo.ClientApplicationState' does n
           <EntitySetMapping Name="Users">
             <EntityTypeMapping TypeName="Falcon.DbModel.User">
               <MappingFragment StoreEntitySet="User">
+                <ScalarProperty Name="QuestNumber" ColumnName="QuestNumber" />
                 <ScalarProperty Name="RowVersion" ColumnName="RowVersion" />
                 <ScalarProperty Name="IsTutorial" ColumnName="IsTutorial" />
                 <ScalarProperty Name="DWMCount" ColumnName="DWMCount" />
@@ -1808,8 +2431,7 @@ warning 6002: The table/view 'SocialChimishod.dbo.ClientApplicationState' does n
                 <ScalarProperty Name="PrevLastSeenDateTime" ColumnName="PrevLastSeenDateTime" />
                 <ScalarProperty Name="LastSeenDateTime" ColumnName="LastSeenDateTime" />
                 <ScalarProperty Name="IsAbleToWriteComment" ColumnName="IsAbleToWriteComment" />
-                <ScalarProperty Name="CurrentLevelNumber" ColumnName="CurrentLevelNumber" />
-                <ScalarProperty Name="LevelProgress" ColumnName="LevelProgress" />
+                <ScalarProperty Name="QuestProgress" ColumnName="QuestProgress" />
                 <ScalarProperty Name="TotalCoin" ColumnName="TotalCoin" />
                 <ScalarProperty Name="UserTypeID" ColumnName="UserTypeID" />
                 <ScalarProperty Name="UserName" ColumnName="UserName" />
@@ -1861,14 +2483,6 @@ warning 6002: The table/view 'SocialChimishod.dbo.ClientApplicationState' does n
                 <ScalarProperty Name="WatchAdId" ColumnName="WatchAdId" />
                 <ScalarProperty Name="WatchAdProviderId" ColumnName="WatchAdProviderId" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ClientApplicationStates">
-            <EntityTypeMapping TypeName="Falcon.DbModel.ClientApplicationState">
-              <MappingFragment StoreEntitySet="ClientApplicationState">
-                <ScalarProperty Name="CreateQuestionPrize" ColumnName="CreateQuestionPrize" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
