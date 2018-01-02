@@ -2,13 +2,13 @@
 using Falcon.EFCommonContext.DbModel;
 using Falcon.Web.Models.Api;
 
-namespace Falcon.Web.Api.AutoMappingConfiguration.ApplicationStateMap
+namespace Falcon.Web.Api.AutoMappingConfiguration.ServerAppStateMap
 {
-    public class ApplicationStateToSApplicationStateAutoTypeConfiguration : Profile
+    public class SApplicationStateToAplicationStateAutoTypeConfiguration : Profile
     {
-        public ApplicationStateToSApplicationStateAutoTypeConfiguration()
+        public SApplicationStateToAplicationStateAutoTypeConfiguration()
         {
-            CreateMap<ApplicationState, SApplicationState>()
+            CreateMap<SApplicationState, ApplicationState>()
 
                 //Favorite
                 .ForMember(s => s.Favorite_FavoritePrice, ca => ca.MapFrom(y => y.Favorite_FavoritePrice))
@@ -46,11 +46,11 @@ namespace Falcon.Web.Api.AutoMappingConfiguration.ApplicationStateMap
                 .ForMember(s => s.Comment_DefaultVerifyState, ca => ca.MapFrom(y => y.Comment_DefaultVerifyState))
 
                 //Watch Ad 
-                .ForMember(s => s.WatchAdCoin, ca => ca.MapFrom( y => y.WatchAdCoin))
+                .ForMember(s => s.WatchAdCoin, ca => ca.MapFrom(y => y.WatchAdCoin))
 
                 //SpinWheel
                 .ForMember(s => s.SpinWheelFortuneThreshold, ca => ca.MapFrom(y => y.SpinWheelFortuneThreshold))
-                .ForMember(s => s.SpinWheelLoopPrice, ca => ca.MapFrom(y => y.SpinWheelLoopPrice))
+                .ForMember(s => s.SpinWheelLoopPrice ,  ca => ca.MapFrom(y => y.SpinWheelLoopPrice))
 
                 //Host
                 .ForMember(s => s.Host_WebSiteNoReplyMail, ca => ca.MapFrom(y => y.Host_WebSiteNoReplyMail))
@@ -58,9 +58,10 @@ namespace Falcon.Web.Api.AutoMappingConfiguration.ApplicationStateMap
                 .ForMember(s => s.Host_SupportMail, ca => ca.MapFrom(y => y.Host_SupportMail))
                 .ForMember(s => s.Host_SupportMailPassword, ca => ca.MapFrom(y => y.Host_SupportMailPassword))
                 .ForMember(s => s.Host_SmtpServer, ca => ca.MapFrom(y => y.Host_SmtpServer))
-                .ForMember(s => s.HostCredentialUserName, ca => ca.MapFrom(y => y.HostCredentialUserName))
-                .ForMember(s => s.HostCredentialPassword, ca => ca.MapFrom(y => y.HostCredentialPassword));
+                .ForMember(s => s.HostCredentialUserName , ca => ca.MapFrom(y => y.HostCredentialUserName))
+                .ForMember(s => s.HostCredentialPassword , ca => ca.MapFrom(y => y.HostCredentialPassword))
 
+                .ForMember(s => s.ID , ca => ca.Ignore());
         }
     }
 }

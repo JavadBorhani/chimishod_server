@@ -180,6 +180,8 @@ namespace Falcon.Web.Api
 
             //Global Application State
             container.Bind<IGlobalApplicationState>().To<GlobalApplicationState>().InSingletonScope();
+            container.Bind<IClientApplicationState>().To<ClientApplicationState>().InSingletonScope();
+
 
 
             container.Bind<IItemPurchaseManager>().To<ItemPurchaseManager>().InRequestScope();

@@ -1,12 +1,7 @@
-﻿using Falcon.Web.Api.InquiryProcessing.Public;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Threading.Tasks;
+﻿using AutoMapper;
 using Falcon.Data.QueryProcessors;
-using Falcon.Web.Models.Api.User;
-using AutoMapper;
+using Falcon.Web.Api.InquiryProcessing.Public;
+using System.Threading.Tasks;
 
 namespace Falcon.Web.Api.InquiryProcessing.Private
 {
@@ -26,14 +21,14 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
             return totalCoin;
         }
 
-        public async Task<SUserCount> GetUserCountInfo(int UserID)
-        {
-            var data = await mUserQueryProcessor.GetUserCountInfo(UserID);
-            var result = mMapper.Map<SUserCount>(data);
+        //public async Task<SUserCount> GetUserCountInfo(int UserID)
+        //{
+        //    var data = await mUserQueryProcessor.GetUserCountInfo(UserID);
+        //    var result = mMapper.Map<SUserCount>(data);
 
-            return data;    
+        //    return data;    
 
-        }
+        //}
 
         public async Task<bool> LevelExist(int LevelNumber)
         {

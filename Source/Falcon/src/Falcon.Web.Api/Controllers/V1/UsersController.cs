@@ -1,13 +1,13 @@
 ﻿// Flapp Copyright 2017-2018
 
 using Falcon.Common;
-using Falcon.Web.Common;
+using Falcon.Common.Security;
 using Falcon.EFCommonContext;
 using Falcon.EFCommonContext.DbModel;
+using Falcon.Web.Api.Utilities.Base;
+using Falcon.Web.Common;
 using System.Data.Entity;
 using System.Threading.Tasks;
-using Falcon.Web.Api.Utilities.Base;
-using Falcon.Common.Security;
 
 namespace Falcon.Web.Api.Controllers.V1
 {
@@ -23,6 +23,8 @@ namespace Falcon.Web.Api.Controllers.V1
             mDb = Database;
             mUserSession = UserSession;
         }
+
+
 
         private async Task<bool> UserExists(int id)
         {

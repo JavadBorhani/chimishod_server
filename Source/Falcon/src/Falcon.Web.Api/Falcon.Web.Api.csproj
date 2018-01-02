@@ -160,10 +160,12 @@
     <Compile Include="AutoMappingConfiguration\AchievementMap\AchievementStatisticToSAchievementStatistic.cs" />
     <Compile Include="AutoMappingConfiguration\AchievementMap\UserAchievementRecordToSAchievementAutoTypeConfiguration.cs" />
     <Compile Include="AutoMappingConfiguration\AppAdvertisementsMap\AppAdvertisementsToSAppAdvertAutoTypeConfiguration.cs" />
-    <Compile Include="AutoMappingConfiguration\ApplicationStateMap\ApplicationStateToClientAppStateAutoTypeConfiguration.cs" />
-    <Compile Include="AutoMappingConfiguration\ApplicationStateMap\ApplicationStateToSApplicationStateAutoTypeConfiguration.cs" />
-    <Compile Include="AutoMappingConfiguration\ApplicationStateMap\SApplicationStateToAplicationStateAutoTypeConfiguration.cs" />
-    <Compile Include="AutoMappingConfiguration\ApplicationStateMap\SApplicationStateToClientAppStateAutoTypeConfiguration.cs" />
+    <Compile Include="AutoMappingConfiguration\ClientAppStateMap\ClientApplicationStateToSClientAppStateAutoTypeConfiguration.cs" />
+    <Compile Include="AutoMappingConfiguration\ClientAppStateMap\SClientAppStateToClientVersionInfoAutoTypeConfiguration.cs" />
+    <Compile Include="AutoMappingConfiguration\ServerAppStateMap\ApplicationStateToClientAppStateAutoTypeConfiguration.cs" />
+    <Compile Include="AutoMappingConfiguration\ServerAppStateMap\ApplicationStateToSApplicationStateAutoTypeConfiguration.cs" />
+    <Compile Include="AutoMappingConfiguration\ServerAppStateMap\SApplicationStateToAplicationStateAutoTypeConfiguration.cs" />
+    <Compile Include="AutoMappingConfiguration\ServerAppStateMap\SApplicationStateToClientAppStateAutoTypeConfiguration.cs" />
     <Compile Include="AutoMappingConfiguration\CategoryMap\CategoryToSCategoryAutoTypeConfiguration.cs" />
     <Compile Include="AutoMappingConfiguration\CommentsMap\CommentToSCommentAutoTypeConfiguration.cs" />
     <Compile Include="AutoMappingConfiguration\DailyRewardMap\DailyRewardToSDailyInactiveRewardAutoTypeConfiguration.cs" />
@@ -192,6 +194,8 @@
     <Compile Include="Controllers\V1\AppAdvertisementsController.cs" />
     <Compile Include="Controllers\V1\SpinWheelController.cs" />
     <Compile Include="Controllers\V1\WatchAdController.cs" />
+    <Compile Include="Controllers\V2\ApplicationStatesController.cs" />
+    <Compile Include="Controllers\V2\UsersController.cs" />
     <Compile Include="InquiryProcessing\Private\AchievementInquiryProcessor.cs" />
     <Compile Include="InquiryProcessing\Private\AnswerInquiryProcessor.cs" />
     <Compile Include="InquiryProcessing\Private\AppAdvertsInquiryProcessor.cs" />
@@ -244,6 +248,7 @@
     <Compile Include="MaintenanceProcessing\Private\AvatarsMaintenanceProcessor.cs" />
     <Compile Include="MaintenanceProcessing\Private\CategoriesMaintenanceProcessor.cs" />
     <Compile Include="MaintenanceProcessing\Private\CharacteristicsMaintenanceProcessor.cs" />
+    <Compile Include="MaintenanceProcessing\Private\ClientApplicationState.cs" />
     <Compile Include="MaintenanceProcessing\Private\CodeGiftsMaintenanceProcessor.cs" />
     <Compile Include="MaintenanceProcessing\Private\CreatedQuestionsMaintenanceProcessor.cs" />
     <Compile Include="MaintenanceProcessing\Private\DWMMaintenanceProcessor.cs" />
@@ -261,6 +266,7 @@
     <Compile Include="MaintenanceProcessing\Public\IAvatarsMaintenanceProcessor.cs" />
     <Compile Include="MaintenanceProcessing\Public\ICategoriesMaintenanceProcessor.cs" />
     <Compile Include="MaintenanceProcessing\Public\ICharacteristicsMaintenanceProcessor.cs" />
+    <Compile Include="MaintenanceProcessing\Public\IClientApplicationState.cs" />
     <Compile Include="MaintenanceProcessing\Public\ICodeGiftsMaintenanceProcessor.cs" />
     <Compile Include="MaintenanceProcessing\Public\ICreatedQuestionsMaintenanceProcessor.cs" />
     <Compile Include="MaintenanceProcessing\Public\IDWMMaintenanceProcessor.cs" />
@@ -340,7 +346,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Controllers\V2\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Falcon.Common\Falcon.Common.csproj">
