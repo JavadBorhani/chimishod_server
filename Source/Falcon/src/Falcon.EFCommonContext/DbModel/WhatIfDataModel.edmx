@@ -72,7 +72,8 @@
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="int" Nullable="false" />
-          <Property Name="CreateQuestionPrize" Type="int" Nullable="false" />
+          <Property Name="VersionInfo" Type="int" Nullable="false" />
+          <Property Name="IsMajorVersion" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="CodeGift">
           <Key>
@@ -1260,7 +1261,8 @@
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" />
-          <Property Name="CreateQuestionPrize" Type="Int32" Nullable="false" />
+          <Property Name="VersionInfo" Type="Int32" Nullable="false" />
+          <Property Name="IsMajorVersion" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="CodeGift">
           <Key>
@@ -2142,7 +2144,8 @@
           <EntitySetMapping Name="ClientApplicationStates">
             <EntityTypeMapping TypeName="Falcon.DbModel.ClientApplicationState">
               <MappingFragment StoreEntitySet="ClientApplicationState">
-                <ScalarProperty Name="CreateQuestionPrize" ColumnName="CreateQuestionPrize" />
+                <ScalarProperty Name="IsMajorVersion" ColumnName="IsMajorVersion" />
+                <ScalarProperty Name="VersionInfo" ColumnName="VersionInfo" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>

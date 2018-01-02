@@ -124,10 +124,11 @@ namespace Falcon.Web.Api.Security.Private
         private bool IsGranted(HttpRequestMessage request)
         {
             //TODO : Implement a better approach 
-            var controllerBaseRoute = request.RequestUri.AbsolutePath.Split('/')[1];
+            var controllerBaseRoute = request.RequestUri.AbsolutePath.Split('/')[2];
 
             if (controllerBaseRoute == Constants.RoutesToIgnoreAuthentication.UserAuthenticator ||
-                controllerBaseRoute == Constants.RoutesToIgnoreAuthentication.UserInfo)
+                controllerBaseRoute == Constants.RoutesToIgnoreAuthentication.UserInfo || 
+                controllerBaseRoute == Constants.RoutesToIgnoreAuthentication.AppStates)
                 return true;
 
             return false;   

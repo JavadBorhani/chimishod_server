@@ -23,14 +23,14 @@ namespace Falcon.Web.Api.Controllers.V2
         }
 
         [ResponseType(typeof(SUser))]
-        [Route("/User")]
+        [Route("User")]
         public async Task<SUser> CreateUser()
         {
             var user = await mUsersMaintenance.CreateNewUser();
             return user;
         }
 
-   
+
 
     }
 }

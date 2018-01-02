@@ -9,7 +9,8 @@ namespace Falcon.Web.Api.AutoMappingConfiguration.ClientAppStateMap
         public ClientApplicationStateToSClientAppStateAutoTypeConfiguration()
         {
             CreateMap<ClientApplicationState, SClientAppState>()
-                .ForMember(s => s.ClientVersion, m => m.MapFrom(c => c.CreateQuestionPrize));
+                .ForMember(s => s.ClientVersion, m => m.MapFrom(c => c.VersionInfo))
+                .ForMember(s => s.IsMajorChange , m => m.MapFrom(c => c.IsMajorVersion));
         }
     }
 }

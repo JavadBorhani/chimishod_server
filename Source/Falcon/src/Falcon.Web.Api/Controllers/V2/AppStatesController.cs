@@ -2,6 +2,7 @@
 using Falcon.EFCommonContext;
 using Falcon.Web.Api.MaintenanceProcessing.Public;
 using Falcon.Web.Api.Utilities.Base;
+using Falcon.Web.Common;
 using Falcon.Web.Models.Api;
 using Falcon.Web.Models.Api.Config;
 using System.Web.Http;
@@ -9,14 +10,15 @@ using System.Web.Http.Description;
 
 namespace Falcon.Web.Api.Controllers.V2
 {
-    public class ApplicationStatesController : FalconApiController
+    [UnitOfWorkActionFilter]
+    public class AppStatesController : FalconApiController
     {
         private readonly IMapper mMapper;
         private readonly IDbContext mDb;
         private readonly IGlobalApplicationState mAppState;
         private readonly IClientApplicationState mClientState;
 
-        public ApplicationStatesController(IMapper Mapper, IDbContext Database, IGlobalApplicationState AppState , IClientApplicationState ClientState)
+        public AppStatesController(IMapper Mapper, IDbContext Database, IGlobalApplicationState AppState , IClientApplicationState ClientState)
         {
             mMapper = Mapper;
             mDb = Database;
@@ -60,15 +62,13 @@ namespace Falcon.Web.Api.Controllers.V2
 
 
         [ResponseType(typeof(SClientAppState))]
-        [Route("v2/ApplicationStates/Version/")]
+        [Route("v2/AppStates/Version/")]
         [HttpGet]
         public SClientVersionInfo GetClientVersionInfo()
         {
             var clientConfig = mClientState.State();
             return mMapper.Map<SClientVersionInfo>(clientConfig);
-            
         }
-
 
     }
 }

@@ -1,20 +1,18 @@
 ﻿// Flapp Copyright 2017-2018
 
-using System.Linq;
-using System.Web.Http;
+using AutoMapper;
+using Falcon.Common.Security;
+using Falcon.EFCommonContext;
 using Falcon.EFCommonContext.DbModel;
-using System.Threading.Tasks;
-using System.Web.Http.Description;
+using Falcon.Web.Api.Utilities.Base;
+using Falcon.Web.Common;
+using Falcon.Web.Models.Api;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Net;
-using Falcon.Web.Models.Api;
-using AutoMapper;
-using System.Collections.Generic;
-using Falcon.Web.Common;
-using Falcon.EFCommonContext;
-using Falcon.Web.Api.Utilities.Base;
-using Falcon.Common.Security;
-using Falcon.Web.Api.MaintenanceProcessing.Public;
+using System.Threading.Tasks;
+using System.Web.Http;
+using System.Web.Http.Description;
 
 namespace Falcon.Web.Api.Controllers.V1
 {
@@ -33,7 +31,7 @@ namespace Falcon.Web.Api.Controllers.V1
         }
 
         [ResponseType(typeof(SReportType))]
-        [Route("ReportTypes/")]
+        [Route("v2/ReportTypes/")]
         [HttpPost]
         public async Task<IHttpActionResult> GetReportTypes()
         {
