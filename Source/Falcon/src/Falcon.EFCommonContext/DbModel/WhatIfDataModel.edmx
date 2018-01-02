@@ -73,7 +73,7 @@
           </Key>
           <Property Name="ID" Type="int" Nullable="false" />
           <Property Name="VersionInfo" Type="int" Nullable="false" />
-          <Property Name="IsMajorVersion" Type="int" Nullable="false" />
+          <Property Name="IsMajorVersion" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="CodeGift">
           <Key>
@@ -361,6 +361,7 @@
           <Property Name="IsEditable" Type="int" Nullable="false" />
           <Property Name="RegisterDateTime" Type="datetime" Nullable="false" />
           <Property Name="ChangeInfoDate" Type="datetime" />
+          <Property Name="IsEnable" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="UserType">
           <Key>
@@ -1262,7 +1263,7 @@
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" />
           <Property Name="VersionInfo" Type="Int32" Nullable="false" />
-          <Property Name="IsMajorVersion" Type="Int32" Nullable="false" />
+          <Property Name="IsMajorVersion" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="CodeGift">
           <Key>
@@ -1603,6 +1604,7 @@
           <Property Name="IsEditable" Type="Int32" Nullable="false" />
           <Property Name="RegisterDateTime" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="ChangeInfoDate" Type="DateTime" Precision="3" />
+          <Property Name="IsEnable" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="User" Relationship="Falcon.DbModel.FK_UserInfo_User" FromRole="UserInfo" ToRole="User" />
         </EntityType>
         <EntityType Name="UserType">
@@ -2446,6 +2448,7 @@
           <EntitySetMapping Name="UserInfoes">
             <EntityTypeMapping TypeName="Falcon.DbModel.UserInfo">
               <MappingFragment StoreEntitySet="UserInfo">
+                <ScalarProperty Name="IsEnable" ColumnName="IsEnable" />
                 <ScalarProperty Name="ChangeInfoDate" ColumnName="ChangeInfoDate" />
                 <ScalarProperty Name="RegisterDateTime" ColumnName="RegisterDateTime" />
                 <ScalarProperty Name="IsEditable" ColumnName="IsEditable" />

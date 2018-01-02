@@ -25,6 +25,7 @@ namespace Falcon.EFCommonContext.DbModel
         public int IsEditable { get; set; }
         public System.DateTime RegisterDateTime { get; set; }
         public Nullable<System.DateTime> ChangeInfoDate { get; set; }
+        public bool IsEnable { get; set; }
     
         public virtual User User { get; set; }
     }
