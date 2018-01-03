@@ -21,7 +21,7 @@ namespace Falcon.EFCommonContext.DbModel
         {
         }
 
-        public DbEntity(string NameOrConnectionString) : base(NameOrConnectionString)
+        public DbEntity(string NameOrConnectionString) : base (NameOrConnectionString)
         {
         }
 

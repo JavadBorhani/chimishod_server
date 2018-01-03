@@ -3,7 +3,6 @@ using Falcon.Web.Common;
 using Falcon.Web.Common.ErrorHandling;
 using System.Web.Http;
 using System.Web.Http.ExceptionHandling;
-using System.Web.Http.Tracing;
 
 namespace Falcon.Web.Api
 {
@@ -31,7 +30,7 @@ namespace Falcon.Web.Api
             //);
 
             //Summary : A Key to see exactly what's going on behind the scene step by step
-            config.Services.Replace(typeof(ITraceWriter), new SimpleTraceWriter(WebContainerManager.Get<ILogManager>()));
+            //config.Services.Replace(typeof(ITraceWriter), new SimpleTraceWriter(WebContainerManager.Get<ILogManager>()));
 
 
             //TODO : Adding Namespace routing to controller , Also remember to remove the above route codes, no more default controller based routing

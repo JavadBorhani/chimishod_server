@@ -3,6 +3,6 @@
     public class SClientVersionInfo
     {
         public int VersionNumber { get; set; }
-        public int IsMajorVersion { get; set; }
+        public bool IsMajorVersion { get; set; }
     }
 }

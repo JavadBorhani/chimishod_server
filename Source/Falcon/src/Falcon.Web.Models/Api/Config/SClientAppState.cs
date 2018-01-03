@@ -3,6 +3,6 @@
     public class SClientAppState
     {
         public int ClientVersion { get; set;}
-        public int IsMajorChange { get; set;}
+        public bool IsMajorChange { get; set;}
     }
 }

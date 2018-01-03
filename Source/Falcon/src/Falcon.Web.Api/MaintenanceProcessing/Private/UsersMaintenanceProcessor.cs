@@ -3,6 +3,7 @@ using Falcon.Data.QueryProcessors;
 using Falcon.Web.Api.MaintenanceProcessing.Public;
 using Falcon.Web.Models.Api;
 using Falcon.Web.Models.Api.Level;
+using Falcon.Web.Models.Api.User;
 using System;
 using System.Threading.Tasks;
 
@@ -45,12 +46,12 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
             return totalCoin;
         }
 
-        public async Task<SUser> CreateNewUser()
+        public async Task<SUser> LoadUser(int UserID)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<SUser> LoadUser(int UserID)
+        public async Task<SUser> CreateNewUser(SUserRegistrationForm RegistrationForm)
         {
             throw new NotImplementedException();
         }
