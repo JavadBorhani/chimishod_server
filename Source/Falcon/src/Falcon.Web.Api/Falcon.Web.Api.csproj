@@ -195,6 +195,7 @@
     <Compile Include="Controllers\V1\SpinWheelController.cs" />
     <Compile Include="Controllers\V1\WatchAdController.cs" />
     <Compile Include="Controllers\V2\AppStatesController.cs" />
+    <Compile Include="Controllers\V2\QuestsController.cs" />
     <Compile Include="Controllers\V2\UserInfoController.cs" />
     <Compile Include="Controllers\V2\UsersController.cs" />
     <Compile Include="InquiryProcessing\Private\AchievementInquiryProcessor.cs" />

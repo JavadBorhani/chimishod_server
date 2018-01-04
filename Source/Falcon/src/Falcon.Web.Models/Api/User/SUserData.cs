@@ -1,4 +1,5 @@
 ﻿using Falcon.Web.Models.Api.Config;
+using Falcon.Web.Models.Api.Quest;
 
 namespace Falcon.Web.Models.Api.User
 {
@@ -6,6 +7,7 @@ namespace Falcon.Web.Models.Api.User
     {
         public SClientAppState ClientAppState { get; set; }
         public SUser User { get; set; }
+        public SQuest[] Quest { get; set; }
 
     }
 }

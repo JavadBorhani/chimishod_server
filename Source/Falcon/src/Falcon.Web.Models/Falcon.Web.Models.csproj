@@ -52,6 +52,7 @@
     <Compile Include="Api\Input\Questions\EditInfo.cs" />
     <Compile Include="Api\Input\Questions\RemoveInfo.cs" />
     <Compile Include="Api\Level\SLevelUpInfo.cs" />
+    <Compile Include="Api\Quest\SQuest.cs" />
     <Compile Include="Api\SCharacteristic.cs" />
     <Compile Include="Api\SCharcteristicLeaderBoard.cs" />
     <Compile Include="Api\SGlobalRankLeaderBoard.cs" />
