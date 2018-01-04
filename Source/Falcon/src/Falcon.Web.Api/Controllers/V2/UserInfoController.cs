@@ -25,7 +25,6 @@ namespace Falcon.Web.Api.Controllers.V2
     {
         private readonly IUserInfoMaintenanceProcessor mUserInfoMaintenance;
         private readonly IUserInfoInquiryProcessor mUserInfoInquiry;
-
         private readonly IDateTime mDateTime;
         private readonly IWebUserSession mUserSession;
         private readonly IGlobalApplicationState mAppState;

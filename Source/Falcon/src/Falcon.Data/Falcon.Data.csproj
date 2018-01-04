@@ -62,6 +62,7 @@
     <Compile Include="QueryProcessors\IAppAdvertsQueryProcessor.cs" />
     <Compile Include="QueryProcessors\IQuestionSelectorQueryProcessor.cs" />
     <Compile Include="QueryProcessors\IQuestionsQueryProcessor.cs" />
+    <Compile Include="QueryProcessors\IQuestsQueryProcessor.cs" />
     <Compile Include="QueryProcessors\IScoringQueryProcessor.cs" />
     <Compile Include="QueryProcessors\ISpinWheelQueryProcessor.cs" />
     <Compile Include="QueryProcessors\IStoresQueryProcessor.cs" />

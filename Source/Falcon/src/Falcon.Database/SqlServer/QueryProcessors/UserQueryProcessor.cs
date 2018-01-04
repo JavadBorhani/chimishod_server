@@ -149,6 +149,7 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             //    return true;
             return false;
         }
+
         private SLevelUpInfo LevelUpChecking(ref User User, int LevelCeil, int Prize, int NextLevelNumber)
         {
             SLevelUpInfo info = new SLevelUpInfo();

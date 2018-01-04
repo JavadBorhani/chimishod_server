@@ -4,5 +4,8 @@
     {
         public int ClientVersion { get; set;}
         public bool IsMajorChange { get; set;}
+        public int CreateQuestionPrice { get; set; }
+        public int WatchAdCoin { get; set; }
+
     }
 }

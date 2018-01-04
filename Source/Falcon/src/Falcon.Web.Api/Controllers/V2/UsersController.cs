@@ -27,19 +27,24 @@ namespace Falcon.Web.Api.Controllers.V2
         }
 
         [ResponseType(typeof(SUser))]
-        [Route("User")]
+        [Route("v2/User")]
         public async Task<SUser> SignInUser([FromBody] SUserRegistrationForm Info)
         {
             var user = await mUsersMaintenance.CreateNewUser(Info);
             return user;
+            //this will return uuid for user
         }
 
-        [ResponseType(typeof(string))]
-        [Route("User")]
-        public async Task<string> LoginUser()
+        [ResponseType(typeof(SUserData))]
+        [Route("v2/User/")]
+        [HttpPost]
+        public async Task<SUserData> LoadingUserData(int QuestVersion)
         {
+            //actual user data info -> will return user current state in quest and quest information 
             return null;
         }
+
+
 
 
     }

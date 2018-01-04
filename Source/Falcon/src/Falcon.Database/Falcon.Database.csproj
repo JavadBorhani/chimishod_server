@@ -72,6 +72,7 @@
     <Compile Include="SqlServer\QueryProcessors\AppAdvertsQueryProcessor.cs" />
     <Compile Include="SqlServer\QueryProcessors\QuestionSelectorQueryProcessor.cs" />
     <Compile Include="SqlServer\QueryProcessors\QuestionsQueryProcessor.cs" />
+    <Compile Include="SqlServer\QueryProcessors\QuestsQueryProcessor.cs" />
     <Compile Include="SqlServer\QueryProcessors\ScoringQueryProcessor.cs" />
     <Compile Include="SqlServer\QueryProcessors\SpinWheelQueryProcessor.cs" />
     <Compile Include="SqlServer\QueryProcessors\StoresQueryProcessor.cs" />
