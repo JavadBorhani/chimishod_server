@@ -69,6 +69,7 @@
     <Compile Include="QueryProcessors\IUserQueryProcessor.cs" />
     <Compile Include="QueryProcessors\IWatchAdQueryProcessor.cs" />
     <Compile Include="QueryProcessors\IUserStatQueryProcessor.cs" />
+    <Compile Include="QueryProcessors\UserInfoQueryProcessor.cs" />
     <Compile Include="QueryResult.cs" />
     <Compile Include="ResultPagingUtility.cs" />
   </ItemGroup>

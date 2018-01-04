@@ -195,6 +195,7 @@
     <Compile Include="Controllers\V1\SpinWheelController.cs" />
     <Compile Include="Controllers\V1\WatchAdController.cs" />
     <Compile Include="Controllers\V2\AppStatesController.cs" />
+    <Compile Include="Controllers\V2\UserInfoController.cs" />
     <Compile Include="Controllers\V2\UsersController.cs" />
     <Compile Include="InquiryProcessing\Private\AchievementInquiryProcessor.cs" />
     <Compile Include="InquiryProcessing\Private\AnswerInquiryProcessor.cs" />
@@ -211,6 +212,7 @@
     <Compile Include="InquiryProcessing\Private\SpinWheelInquiryProcessor.cs" />
     <Compile Include="InquiryProcessing\Private\StoresInquiryProcessor.cs" />
     <Compile Include="InquiryProcessing\Private\ThemesInquiryProcessor.cs" />
+    <Compile Include="InquiryProcessing\Private\UserInfoInquiryProcessor.cs" />
     <Compile Include="InquiryProcessing\Private\UsersInquiryProcessor.cs" />
     <Compile Include="InquiryProcessing\Private\NotificationInquiryProcessor.cs" />
     <Compile Include="InquiryProcessing\Private\UserStatsInquiryProcessor.cs" />
@@ -232,6 +234,7 @@
     <Compile Include="InquiryProcessing\Public\ISpinWheelInquiryProcessor.cs" />
     <Compile Include="InquiryProcessing\Public\IStoresInquiryProcessor.cs" />
     <Compile Include="InquiryProcessing\Public\IThemesInquiryProcessor.cs" />
+    <Compile Include="InquiryProcessing\Public\IUserInfoInquiryProcessor.cs" />
     <Compile Include="InquiryProcessing\Public\IUsersInquiryProcessor.cs" />
     <Compile Include="InquiryProcessing\Public\IUserStatsInquiryProcessor.cs" />
     <Compile Include="JobSystem\Private\JobManager.cs" />
@@ -257,6 +260,7 @@
     <Compile Include="MaintenanceProcessing\Private\SpinWheelMaintenanceProcessor.cs" />
     <Compile Include="MaintenanceProcessing\Private\StoresMaintenanceProcessor.cs" />
     <Compile Include="MaintenanceProcessing\Private\ThemesMaintenanceProcessor.cs" />
+    <Compile Include="MaintenanceProcessing\Private\UserInfoMaintenanceProcessor.cs" />
     <Compile Include="MaintenanceProcessing\Private\UsersMaintenanceProcessor.cs" />
     <Compile Include="MaintenanceProcessing\Private\UserStatsMaintenanceProcessor.cs" />
     <Compile Include="MaintenanceProcessing\Private\WatchAdMaintenanceProcessor.cs" />
@@ -275,6 +279,7 @@
     <Compile Include="MaintenanceProcessing\Public\ISpinWheelMaintenanceProcessor.cs" />
     <Compile Include="MaintenanceProcessing\Public\IStoresMaintenanceProcessor.cs" />
     <Compile Include="MaintenanceProcessing\Public\IThemesMaintenanceProcessor.cs" />
+    <Compile Include="MaintenanceProcessing\Public\IUserInfoMaintenanceProcessor.cs" />
     <Compile Include="MaintenanceProcessing\Public\IUsersMaintenanceProcessor.cs" />
     <Compile Include="MaintenanceProcessing\Public\IUserStatsMaintenanceProcessor.cs" />
     <Compile Include="MaintenanceProcessing\Public\IWatchAdMaintenanceProcessor.cs" />

@@ -28,18 +28,19 @@ namespace Falcon.Web.Api.Controllers.V2
 
         [ResponseType(typeof(SUser))]
         [Route("User")]
-        public async Task<SUser> CreateUser([FromBody] SUserRegistrationForm Info)
+        public async Task<SUser> SignInUser([FromBody] SUserRegistrationForm Info)
         {
             var user = await mUsersMaintenance.CreateNewUser(Info);
             return user;
         }
 
-        [ResponseType(typeof(SUser))]
+        [ResponseType(typeof(string))]
         [Route("User")]
-        public async Task<SUser> LoginUser(string Data)
+        public async Task<string> LoginUser()
         {
-            return null; 
+            return null;
         }
+
 
     }
 }
