@@ -65,11 +65,13 @@
     <Compile Include="SqlServer\QueryProcessors\CommentsQueryProcessor.cs" />
     <Compile Include="SqlServer\QueryProcessors\CreatedQuestionsQueryProcessor.cs" />
     <Compile Include="SqlServer\QueryProcessors\DWMQueryProcessor.cs" />
+    <Compile Include="SqlServer\QueryProcessors\FriendsQueryProcessor.cs" />
     <Compile Include="SqlServer\QueryProcessors\GameConfigQueryProcessor.cs" />
     <Compile Include="SqlServer\QueryProcessors\GiftQueryProcessor.cs" />
     <Compile Include="SqlServer\QueryProcessors\MarketInfoQueryProcessor.cs" />
     <Compile Include="SqlServer\QueryProcessors\NotificationsQueryProcessor.cs" />
     <Compile Include="SqlServer\QueryProcessors\AppAdvertsQueryProcessor.cs" />
+    <Compile Include="SqlServer\QueryProcessors\QuestionReportQueryProcessor.cs" />
     <Compile Include="SqlServer\QueryProcessors\QuestionSelectorQueryProcessor.cs" />
     <Compile Include="SqlServer\QueryProcessors\QuestionsQueryProcessor.cs" />
     <Compile Include="SqlServer\QueryProcessors\QuestsQueryProcessor.cs" />
