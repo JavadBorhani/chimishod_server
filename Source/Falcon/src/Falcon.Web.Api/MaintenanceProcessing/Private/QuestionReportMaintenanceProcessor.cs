@@ -15,7 +15,9 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
         public async Task<bool> ReportQuestion(SReportedQuestion Reported)
         {
             var reportCount = await mQuestionReportQuery.GetReportCountByQuestionID(Reported.QuestionID);
-
+            //OK - 
+            
+            //if(reportCount)
             return false;
             //todo: Write logic of reported question here 
 

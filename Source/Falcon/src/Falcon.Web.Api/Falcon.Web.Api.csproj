@@ -306,8 +306,10 @@
     <Compile Include="Security\Private\SpinItem.cs" />
     <Compile Include="Security\Public\IEncryptor.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="Utilities\INetworkUtils.cs" />
     <Compile Include="Utilities\Mail\IMailManager.cs" />
     <Compile Include="Utilities\Mail\MailManager.cs" />
+    <Compile Include="Utilities\NetworkUtils.cs" />
     <Compile Include="WatchAd\Private\ErrorToken.cs" />
     <Compile Include="WatchAd\Private\RequestToken.cs" />
     <Compile Include="WatchAd\Private\ResponseToken.cs" />

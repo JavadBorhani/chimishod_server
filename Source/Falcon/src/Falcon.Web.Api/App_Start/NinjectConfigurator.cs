@@ -19,6 +19,7 @@ using Falcon.Web.Api.PurchaseAuthorizer.Private;
 using Falcon.Web.Api.PurchaseAuthorizer.Public;
 using Falcon.Web.Api.Security.Private;
 using Falcon.Web.Api.Security.Public;
+using Falcon.Web.Api.Utilities;
 using Falcon.Web.Api.Utilities.Mail;
 using Falcon.Web.Api.WatchAd.Private;
 using Falcon.Web.Api.WatchAd.Public;
@@ -210,6 +211,10 @@ namespace Falcon.Web.Api
 
             //Temp Memory
             container.Bind<IMemoryStore>().To<MemeoryStore>().InSingletonScope();
+
+            //NetworkUtils
+            container.Bind<INetworkUtils>().To<NetworkUtils>().InRequestScope();
+
         }
 
         private void ConfigureAutoMapper(IKernel container)
