@@ -12,19 +12,9 @@ namespace Falcon.EFCommonContext.DbModel
     using System;
     using System.Collections.Generic;
     
-    public partial class UserInfo
+    public partial class PlatformType
     {
         public int ID { get; set; }
-        public int UserID { get; set; }
-        public string Email { get; set; }
-        public string Password { get; set; }
-        public bool IsVerified { get; set; }
-        public bool IsBanned { get; set; }
-        public int IsEditable { get; set; }
-        public bool IsInfoEnable { get; set; }
-        public System.DateTime RegisterDateTime { get; set; }
-        public Nullable<System.DateTime> ChangeInfoDate { get; set; }
-    
-        public virtual User User { get; set; }
+        public string Title { get; set; }
     }
 }

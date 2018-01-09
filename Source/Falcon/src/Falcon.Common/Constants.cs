@@ -129,7 +129,7 @@ namespace Falcon.Common
 
         public static class RoutesToIgnoreAuthentication
         {
-            public const string UserAuthenticator = "UserAuthenticator";
+            public const string UserAuthenticator = "User";
             public const string UserInfo = "UserInfo";
             public const string AppStates = "AppStates";
         }

@@ -36,11 +36,12 @@ namespace Falcon.EFCommonContext.DbModel
         public Nullable<int> QuestionBoostID { get; set; }
         public Nullable<int> ActionID { get; set; }
         public int CommentCount { get; set; }
+        public int ReportCount { get; set; }
         public bool RemovedByCreator { get; set; }
-        public System.DateTime CreatedDate { get; set; }
-        public System.DateTime UpdateDate { get; set; }
         public Nullable<int> UserID { get; set; }
         public Nullable<int> HashTagID { get; set; }
+        public System.DateTime CreatedDate { get; set; }
+        public System.DateTime UpdateDate { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Answer> Answers { get; set; }

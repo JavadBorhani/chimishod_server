@@ -94,7 +94,7 @@ namespace Falcon.Web.Api
 
             //container.Bind<ICommentsQueryProcessor>().To<CommentsQueryProcessor>().InRequestScope();
             //container.Bind<ICreatedQuestionsQueryProcessor>().To<CreatedQuestionsQueryProcessor>().InRequestScope();
-            //container.Bind<IUserQueryProcessor>().To<UserQueryProcessor>().InRequestScope();
+            container.Bind<IUserQueryProcessor>().To<UserQueryProcessor>().InRequestScope();
             container.Bind<ICodeGiftsQueryProcessor>().To<CodeGiftsQueryProcessor>().InRequestScope();
             //container.Bind<IGiftQueryProcessor>().To<GiftQueryProcessor>().InRequestScope();
             container.Bind<IStoresQueryProcessor>().To<StoresQueryProcessor>().InRequestScope();
@@ -213,7 +213,10 @@ namespace Falcon.Web.Api
             container.Bind<IMemoryStore>().To<MemeoryStore>().InSingletonScope();
 
             //NetworkUtils
-            container.Bind<INetworkUtils>().To<NetworkUtils>().InRequestScope();
+            container.Bind<INetworkUtils>().To<NetworkUtils>().InSingletonScope();
+
+            //UUIDGenerator
+            container.Bind<IUUIDGenerator>().To<UUIDGenerator>().InSingletonScope();
 
         }
 

@@ -3,7 +3,6 @@ using Falcon.Common.Security;
 using Falcon.Web.Api.MaintenanceProcessing.Public;
 using Falcon.Web.Api.Utilities.Base;
 using Falcon.Web.Common;
-using Falcon.Web.Models.Api;
 using Falcon.Web.Models.Api.User;
 using System.Threading.Tasks;
 using System.Web.Http;
@@ -26,13 +25,18 @@ namespace Falcon.Web.Api.Controllers.V2
             mUserSession = User;
         }
 
-        [ResponseType(typeof(SUser))]
+        [ResponseType(typeof(string))]
         [Route("v2/User")]
-        public async Task<SUser> SignInUser([FromBody] SUserRegistrationForm Info)
+        [HttpPost]
+        public async Task<string> SignInUser([FromBody] SUserRegistrationForm Info)
         {
+            if(!ModelState.IsValid)
+            {
+                return null;
+            }
+
             var user = await mUsersMaintenance.CreateNewUser(Info);
             return user;
-            //this will return uuid for user
         }
 
         [ResponseType(typeof(SUserData))]
@@ -41,6 +45,7 @@ namespace Falcon.Web.Api.Controllers.V2
         public async Task<SUserData> LoadingUserData(int QuestVersion)
         {
             //actual user data info -> will return user current state in quest and quest information 
+
             return null;    
         }
 

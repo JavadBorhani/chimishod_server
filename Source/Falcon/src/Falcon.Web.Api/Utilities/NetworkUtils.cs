@@ -1,12 +1,14 @@
-﻿using System;
+﻿using System.Web;
 
 namespace Falcon.Web.Api.Utilities
 {
     public class NetworkUtils : INetworkUtils
     {
+        private const string HTTP_CLIENT_IP = "HTTP_CLIENT_IP";
         public string GetRequestNetworkIP()
         {
-            throw new NotImplementedException();
+            var ip = HttpContext.Current.Request.Params[HTTP_CLIENT_IP] ?? HttpContext.Current.Request.UserHostAddress;
+            return ip;
         }
     }
 }

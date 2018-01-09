@@ -33,19 +33,20 @@ namespace Falcon.EFCommonContext.DbModel
         }
     
         public int ID { get; set; }
-        public string UUID { get; set; }
         public string UserName { get; set; }
         public Nullable<int> UserTypeID { get; set; }
-        public int TotalCoin { get; set; }
         public Nullable<int> QuestProgress { get; set; }
-        public bool IsAbleToWriteComment { get; set; }
-        public System.DateTime LastSeenDateTime { get; set; }
-        public System.DateTime PrevLastSeenDateTime { get; set; }
-        public System.DateTime PreviousDaySeen { get; set; }
-        public int DWMCount { get; set; }
-        public bool IsTutorial { get; set; }
-        public byte[] RowVersion { get; set; }
         public Nullable<int> QuestNumber { get; set; }
+        public int TotalCoin { get; set; }
+        public bool IsMale { get; set; }
+        public string UUID { get; set; }
+        public string NotificationID { get; set; }
+        public int Platform { get; set; }
+        public string APILevel { get; set; }
+        public string Device { get; set; }
+        public string Model { get; set; }
+        public string IPAddress { get; set; }
+        public byte[] RowVersion { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<AchievedCodeGift> AchievedCodeGifts { get; set; }

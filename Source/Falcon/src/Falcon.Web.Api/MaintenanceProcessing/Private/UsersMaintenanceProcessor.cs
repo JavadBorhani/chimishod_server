@@ -1,6 +1,7 @@
 ﻿using Falcon.Common;
 using Falcon.Data.QueryProcessors;
 using Falcon.Web.Api.MaintenanceProcessing.Public;
+using Falcon.Web.Api.Utilities;
 using Falcon.Web.Models.Api;
 using Falcon.Web.Models.Api.Level;
 using Falcon.Web.Models.Api.User;
@@ -12,12 +13,22 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
     public class UsersMaintenanceProcessor : IUsersMaintenanceProcessor
     {
         private readonly IUserQueryProcessor mUserQuery;
-        private readonly IScoringQueryProcessor mScoringQuery;
+        private readonly IUserInfoQueryProcessor mUserInfoQuery;
+        private readonly INetworkUtils mNetworkUtils;
+        private readonly IUUIDGenerator mUUID;
 
-        public UsersMaintenanceProcessor(IUserQueryProcessor UserQueryProcessor , IScoringQueryProcessor ScoringQueryProcessor)
+        public UsersMaintenanceProcessor
+            (
+            IUserQueryProcessor UserQueryProcessor ,
+            IUserInfoQueryProcessor UserInfoQuery , 
+            INetworkUtils NetworkUtils , 
+            IUUIDGenerator Generator)
         {
             mUserQuery = UserQueryProcessor;
-            mScoringQuery = ScoringQueryProcessor;
+            mUserInfoQuery = UserInfoQuery;
+            mNetworkUtils = NetworkUtils;
+            mUUID = Generator;
+            
         }
 
         public async Task<int> LevelUp(int Prize)
@@ -51,9 +62,25 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
             throw new NotImplementedException();
         }
 
-        public async Task<SUser> CreateNewUser(SUserRegistrationForm RegistrationForm)
+        
+
+        public async Task<string> CreateNewUser(SUserRegistrationForm RegistrationForm)
         {
-            throw new NotImplementedException();
+            RegistrationForm.IPAddress = mNetworkUtils.GetRequestNetworkIP();
+            RegistrationForm.UUID = mUUID.GetNewUUID();
+
+            var user = await mUserQuery.CreateNewUser(RegistrationForm);
+            var created = await mUserInfoQuery.CreateEmptyUserInfo(user.ID);
+
+            if (created)
+            {
+                return RegistrationForm.UUID;
+            }
+            else
+            {
+                return null;
+            }
+                
         }
     }
 }

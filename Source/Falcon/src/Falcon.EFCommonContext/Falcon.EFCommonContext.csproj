@@ -89,6 +89,9 @@
     <Compile Include="DbModel\Order.cs">
       <DependentUpon>WhatIfDataModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="DbModel\PlatformType.cs">
+      <DependentUpon>WhatIfDataModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="DbModel\PriceHistory.cs">
       <DependentUpon>WhatIfDataModel.tt</DependentUpon>
     </Compile>

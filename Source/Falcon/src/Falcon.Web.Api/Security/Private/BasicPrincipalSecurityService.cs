@@ -7,9 +7,8 @@ using Falcon.Web.Api.Security.Public;
 using Falcon.Web.Common;
 using log4net;
 using System.Linq;
-using System.Security.Principal;
 using System.Security.Claims;
-using System;
+using System.Security.Principal;
 using System.Threading;
 using System.Web;
 
@@ -45,10 +44,10 @@ namespace Falcon.Web.Api.Security.Private
             identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, user.ID.ToString()));
             identity.AddClaim(new Claim(ClaimTypes.Name , user.UserName));
             identity.AddClaim(new Claim(ClaimTypes.Sid, user.UUID));
-            identity.AddClaim(new Claim(ClaimTypes.DateOfBirth, user.LastSeenDateTime.ToString()));
-            identity.AddClaim(new Claim(ClaimTypes.UserData, user.PrevLastSeenDateTime.ToString()));
+            //identity.AddClaim(new Claim(ClaimTypes.DateOfBirth, user.LastSeenDateTime.ToString()));
+            //identity.AddClaim(new Claim(ClaimTypes.UserData, user.PrevLastSeenDateTime.ToString()));
 
-            identity.AddClaim(new Claim(ClaimTypes.IsPersistent, user.IsTutorial.ToString()));
+            //identity.AddClaim(new Claim(ClaimTypes.IsPersistent, user.IsTutorial.ToString()));
 
             return new ClaimsPrincipal(identity);
         }

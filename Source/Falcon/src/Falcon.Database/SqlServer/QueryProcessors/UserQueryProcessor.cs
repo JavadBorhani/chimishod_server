@@ -20,7 +20,7 @@ namespace Falcon.Database.SqlServer.QueryProcessors
         private readonly IWebUserSession mUserSession;
         private readonly IDateTime mDateTime;
 
-        public UserQueryProcessor(IDbContext Database , IWebUserSession UserSession , IDateTime DateTime)
+        public UserQueryProcessor(IDbContext Database, IWebUserSession UserSession , IDateTime DateTime)
         {
             mDb = Database;
             mUserSession = UserSession;
@@ -181,34 +181,56 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             //                .SingleOrDefaultAsync();
             return null;
         }
-        public async Task<bool> UpdateLastSeenDateTime()
+        //public async Task<bool> UpdateLastSeenDateTime()
+        //{
+        //    var user = await mDb.Set<User>().Where(u => u.ID == mUserSession.ID).SingleOrDefaultAsync();
+        //    user.PrevLastSeenDateTime = user.LastSeenDateTime;
+        //    user.LastSeenDateTime = mDateTime.Now;
+        //    await mDb.SaveChangesAsync();
+        //    return true;
+        //}
+
+        //public async Task<bool> UpdateLastSeenDateTimeToNow()
+        //{
+        //    var user = await mDb.Set<User>().Where(u => u.ID == mUserSession.ID).SingleOrDefaultAsync();
+        //    user.PrevLastSeenDateTime = mDateTime.Now;
+        //    user.LastSeenDateTime = mDateTime.Now;
+        //    await mDb.SaveChangesAsync();
+        //    return true;
+        //}
+
+        //public async Task<int> GetDWMCount()
+        //{
+        //    var count = await mDb.Set<User>()
+        //        .AsNoTracking()
+        //        .Where(u => u.ID == mUserSession.ID)
+        //        .Select(u => u.DWMCount)
+        //        .SingleOrDefaultAsync();
+        //    return count;
+        //}
+
+        public async Task<User> CreateNewUser(SUserRegistrationForm UserRegisterationData)
         {
-            var user = await mDb.Set<User>().Where(u => u.ID == mUserSession.ID).SingleOrDefaultAsync();
-            user.PrevLastSeenDateTime = user.LastSeenDateTime;
-            user.LastSeenDateTime = mDateTime.Now;
+            //todo => change default datas to something valid 
+            var user = mDb.Set<User>().Add(new User
+            {
+                IPAddress = UserRegisterationData.IPAddress,
+                UUID = UserRegisterationData.UUID,
+                UserName = UserRegisterationData.UserName,
+                IsMale = Convert.ToBoolean(UserRegisterationData.Gender),
+                NotificationID = UserRegisterationData.NotificationID.ToString(),
+                Platform = (int)UserRegisterationData.Platform,
+                QuestNumber = 1,
+                QuestProgress = 0 ,
+                TotalCoin = 10 ,
+                APILevel = UserRegisterationData.APILevel,
+                Device = UserRegisterationData.Device,
+                Model = UserRegisterationData.Model,
+            });
+
             await mDb.SaveChangesAsync();
-            return true;
+            return user;
         }
-
-        public async Task<bool> UpdateLastSeenDateTimeToNow()
-        {
-            var user = await mDb.Set<User>().Where(u => u.ID == mUserSession.ID).SingleOrDefaultAsync();
-            user.PrevLastSeenDateTime = mDateTime.Now;
-            user.LastSeenDateTime = mDateTime.Now;
-            await mDb.SaveChangesAsync();
-            return true;
-        }
-
-        public async Task<int> GetDWMCount()
-        {
-            var count = await mDb.Set<User>()
-                .AsNoTracking()
-                .Where(u => u.ID == mUserSession.ID)
-                .Select(u => u.DWMCount)
-                .SingleOrDefaultAsync();
-            return count;
-        }
-
 
     }
 }   

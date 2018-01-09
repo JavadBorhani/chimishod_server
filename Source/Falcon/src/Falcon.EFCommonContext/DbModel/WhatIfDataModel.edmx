@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="Falcon.DbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="Falcon.DbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="AchievedCodeGift">
           <Key>
             <PropertyRef Name="ID" />
@@ -147,6 +147,13 @@
           <Property Name="ErrorCode" Type="varchar" MaxLength="50" />
           <Property Name="ErrorDescription" Type="varchar" MaxLength="100" />
         </EntityType>
+        <EntityType Name="PlatformTypes">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="Title" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
         <EntityType Name="PriceHistory">
           <Key>
             <PropertyRef Name="ID" />
@@ -187,11 +194,12 @@
           <Property Name="QuestionBoostID" Type="int" />
           <Property Name="ActionID" Type="int" />
           <Property Name="CommentCount" Type="int" Nullable="false" />
+          <Property Name="ReportCount" Type="int" Nullable="false" />
           <Property Name="RemovedByCreator" Type="bit" Nullable="false" />
-          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
-          <Property Name="UpdateDate" Type="datetime" Nullable="false" />
           <Property Name="UserID" Type="int" />
           <Property Name="HashTagID" Type="int" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+          <Property Name="UpdateDate" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="QuestionAction">
           <Key>
@@ -332,19 +340,20 @@
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="UUID" Type="varchar" MaxLength="36" Nullable="false" />
           <Property Name="UserName" Type="nvarchar" MaxLength="40" Nullable="false" />
           <Property Name="UserTypeID" Type="int" />
-          <Property Name="TotalCoin" Type="int" Nullable="false" />
           <Property Name="QuestProgress" Type="int" />
-          <Property Name="IsAbleToWriteComment" Type="bit" Nullable="false" />
-          <Property Name="LastSeenDateTime" Type="datetime" Nullable="false" />
-          <Property Name="PrevLastSeenDateTime" Type="datetime" Nullable="false" />
-          <Property Name="PreviousDaySeen" Type="datetime" Nullable="false" />
-          <Property Name="DWMCount" Type="int" Nullable="false" />
-          <Property Name="IsTutorial" Type="bit" Nullable="false" />
-          <Property Name="RowVersion" Type="timestamp" StoreGeneratedPattern="Computed" />
           <Property Name="QuestNumber" Type="int" />
+          <Property Name="TotalCoin" Type="int" Nullable="false" />
+          <Property Name="IsMale" Type="bit" Nullable="false" />
+          <Property Name="UUID" Type="varchar" MaxLength="36" Nullable="false" />
+          <Property Name="NotificationID" Type="varchar" MaxLength="36" />
+          <Property Name="Platform" Type="int" Nullable="false" />
+          <Property Name="APILevel" Type="varchar" MaxLength="50" />
+          <Property Name="Device" Type="varchar" MaxLength="50" />
+          <Property Name="Model" Type="varchar" MaxLength="50" />
+          <Property Name="IPAddress" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="RowVersion" Type="timestamp" StoreGeneratedPattern="Computed" />
         </EntityType>
         <EntityType Name="UserInfo">
           <Key>
@@ -354,14 +363,12 @@
           <Property Name="UserID" Type="int" Nullable="false" />
           <Property Name="Email" Type="nvarchar" MaxLength="50" />
           <Property Name="Password" Type="nvarchar" MaxLength="50" />
-          <Property Name="PhoneNumber" Type="varchar" MaxLength="20" />
-          <Property Name="GoogleID" Type="varchar" MaxLength="40" />
           <Property Name="IsVerified" Type="bit" Nullable="false" />
           <Property Name="IsBanned" Type="bit" Nullable="false" />
           <Property Name="IsEditable" Type="int" Nullable="false" />
+          <Property Name="IsInfoEnable" Type="bit" Nullable="false" />
           <Property Name="RegisterDateTime" Type="datetime" Nullable="false" />
           <Property Name="ChangeInfoDate" Type="datetime" />
-          <Property Name="IsEnable" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="UserType">
           <Key>
@@ -841,6 +848,7 @@
           <EntitySet Name="HashTag" EntityType="Self.HashTag" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MarketInfo" EntityType="Self.MarketInfo" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Order" EntityType="Self.Order" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PlatformTypes" EntityType="Self.PlatformTypes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PriceHistory" EntityType="Self.PriceHistory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Quest" EntityType="Self.Quest" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Question" EntityType="Self.Question" Schema="dbo" store:Type="Tables" />
@@ -987,8 +995,7 @@
             <End Role="WatchedAd" EntitySet="WatchedAd" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="Falcon.DbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -1034,6 +1041,7 @@
           <EntitySet Name="HashTags" EntityType="Falcon.DbModel.HashTag" />
           <EntitySet Name="MarketInfoes" EntityType="Falcon.DbModel.MarketInfo" />
           <EntitySet Name="Orders" EntityType="Falcon.DbModel.Order" />
+          <EntitySet Name="PlatformTypes" EntityType="Falcon.DbModel.PlatformType" />
           <EntitySet Name="PriceHistories" EntityType="Falcon.DbModel.PriceHistory" />
           <EntitySet Name="Quests" EntityType="Falcon.DbModel.Quest" />
           <EntitySet Name="Questions" EntityType="Falcon.DbModel.Question" />
@@ -1179,7 +1187,7 @@
             <End Role="WatchAdProvider" EntitySet="WatchAdProviders" />
             <End Role="WatchedAd" EntitySet="WatchedAds" />
           </AssociationSet>
-        </EntityContainer>
+          </EntityContainer>
         <ComplexType Name="sp_helpdiagramdefinition_Result">
           <Property Type="Int32" Name="version" Nullable="true" />
           <Property Type="Binary" Name="definition" Nullable="true" />
@@ -1343,6 +1351,13 @@
           <NavigationProperty Name="Store" Relationship="Falcon.DbModel.FK_Order_Store" FromRole="Order" ToRole="Store" />
           <NavigationProperty Name="User" Relationship="Falcon.DbModel.FK_Order_User" FromRole="Order" ToRole="User" />
         </EntityType>
+        <EntityType Name="PlatformType">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="Title" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
         <EntityType Name="PriceHistory">
           <Key>
             <PropertyRef Name="ID" />
@@ -1388,11 +1403,12 @@
           <Property Name="QuestionBoostID" Type="Int32" />
           <Property Name="ActionID" Type="Int32" />
           <Property Name="CommentCount" Type="Int32" Nullable="false" />
+          <Property Name="ReportCount" Type="Int32" Nullable="false" />
           <Property Name="RemovedByCreator" Type="Boolean" Nullable="false" />
-          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="UpdateDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="UserID" Type="Int32" />
           <Property Name="HashTagID" Type="Int32" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UpdateDate" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="Answers" Relationship="Falcon.DbModel.FK_Answer_Question" FromRole="Question" ToRole="Answer" />
           <NavigationProperty Name="HashTag" Relationship="Falcon.DbModel.FK_Question_HashTag" FromRole="Question" ToRole="HashTag" />
           <NavigationProperty Name="QuestionAction" Relationship="Falcon.DbModel.FK_Question_QuestionAction" FromRole="Question" ToRole="QuestionAction" />
@@ -1560,19 +1576,20 @@
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="UUID" Type="String" Nullable="false" MaxLength="36" FixedLength="false" Unicode="false" />
           <Property Name="UserName" Type="String" Nullable="false" MaxLength="40" FixedLength="false" Unicode="true" />
           <Property Name="UserTypeID" Type="Int32" />
-          <Property Name="TotalCoin" Type="Int32" Nullable="false" />
           <Property Name="QuestProgress" Type="Int32" />
-          <Property Name="IsAbleToWriteComment" Type="Boolean" Nullable="false" />
-          <Property Name="LastSeenDateTime" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="PrevLastSeenDateTime" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="PreviousDaySeen" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="DWMCount" Type="Int32" Nullable="false" />
-          <Property Name="IsTutorial" Type="Boolean" Nullable="false" />
-          <Property Name="RowVersion" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" ConcurrencyMode="Fixed" />
           <Property Name="QuestNumber" Type="Int32" />
+          <Property Name="TotalCoin" Type="Int32" Nullable="false" />
+          <Property Name="IsMale" Type="Boolean" Nullable="false" />
+          <Property Name="UUID" Type="String" Nullable="false" MaxLength="36" FixedLength="false" Unicode="false" />
+          <Property Name="NotificationID" Type="String" MaxLength="36" FixedLength="false" Unicode="false" />
+          <Property Name="Platform" Type="Int32" Nullable="false" />
+          <Property Name="APILevel" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Device" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Model" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="IPAddress" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="RowVersion" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
           <NavigationProperty Name="AchievedCodeGifts" Relationship="Falcon.DbModel.FK_AchievedCodeGift_User" FromRole="User" ToRole="AchievedCodeGift" />
           <NavigationProperty Name="Answers" Relationship="Falcon.DbModel.FK_Answer_User" FromRole="User" ToRole="Answer" />
           <NavigationProperty Name="ContactUs" Relationship="Falcon.DbModel.FK_ContactUs_User" FromRole="User" ToRole="ContactU" />
@@ -1597,14 +1614,12 @@
           <Property Name="UserID" Type="Int32" Nullable="false" />
           <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="PhoneNumber" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="GoogleID" Type="String" MaxLength="40" FixedLength="false" Unicode="false" />
           <Property Name="IsVerified" Type="Boolean" Nullable="false" />
           <Property Name="IsBanned" Type="Boolean" Nullable="false" />
           <Property Name="IsEditable" Type="Int32" Nullable="false" />
+          <Property Name="IsInfoEnable" Type="Boolean" Nullable="false" />
           <Property Name="RegisterDateTime" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="ChangeInfoDate" Type="DateTime" Precision="3" />
-          <Property Name="IsEnable" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="User" Relationship="Falcon.DbModel.FK_UserInfo_User" FromRole="UserInfo" ToRole="User" />
         </EntityType>
         <EntityType Name="UserType">
@@ -2048,7 +2063,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-      </Schema>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -2229,6 +2244,14 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="PlatformTypes">
+            <EntityTypeMapping TypeName="Falcon.DbModel.PlatformType">
+              <MappingFragment StoreEntitySet="PlatformTypes">
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="PriceHistories">
             <EntityTypeMapping TypeName="Falcon.DbModel.PriceHistory">
               <MappingFragment StoreEntitySet="PriceHistory">
@@ -2257,11 +2280,12 @@
           <EntitySetMapping Name="Questions">
             <EntityTypeMapping TypeName="Falcon.DbModel.Question">
               <MappingFragment StoreEntitySet="Question">
-                <ScalarProperty Name="HashTagID" ColumnName="HashTagID" />
-                <ScalarProperty Name="UserID" ColumnName="UserID" />
                 <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="HashTagID" ColumnName="HashTagID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
                 <ScalarProperty Name="RemovedByCreator" ColumnName="RemovedByCreator" />
+                <ScalarProperty Name="ReportCount" ColumnName="ReportCount" />
                 <ScalarProperty Name="CommentCount" ColumnName="CommentCount" />
                 <ScalarProperty Name="ActionID" ColumnName="ActionID" />
                 <ScalarProperty Name="QuestionBoostID" ColumnName="QuestionBoostID" />
@@ -2428,19 +2452,20 @@
           <EntitySetMapping Name="Users">
             <EntityTypeMapping TypeName="Falcon.DbModel.User">
               <MappingFragment StoreEntitySet="User">
-                <ScalarProperty Name="QuestNumber" ColumnName="QuestNumber" />
                 <ScalarProperty Name="RowVersion" ColumnName="RowVersion" />
-                <ScalarProperty Name="IsTutorial" ColumnName="IsTutorial" />
-                <ScalarProperty Name="DWMCount" ColumnName="DWMCount" />
-                <ScalarProperty Name="PreviousDaySeen" ColumnName="PreviousDaySeen" />
-                <ScalarProperty Name="PrevLastSeenDateTime" ColumnName="PrevLastSeenDateTime" />
-                <ScalarProperty Name="LastSeenDateTime" ColumnName="LastSeenDateTime" />
-                <ScalarProperty Name="IsAbleToWriteComment" ColumnName="IsAbleToWriteComment" />
-                <ScalarProperty Name="QuestProgress" ColumnName="QuestProgress" />
+                <ScalarProperty Name="IPAddress" ColumnName="IPAddress" />
+                <ScalarProperty Name="Model" ColumnName="Model" />
+                <ScalarProperty Name="Device" ColumnName="Device" />
+                <ScalarProperty Name="APILevel" ColumnName="APILevel" />
+                <ScalarProperty Name="Platform" ColumnName="Platform" />
+                <ScalarProperty Name="NotificationID" ColumnName="NotificationID" />
+                <ScalarProperty Name="UUID" ColumnName="UUID" />
+                <ScalarProperty Name="IsMale" ColumnName="IsMale" />
                 <ScalarProperty Name="TotalCoin" ColumnName="TotalCoin" />
+                <ScalarProperty Name="QuestNumber" ColumnName="QuestNumber" />
+                <ScalarProperty Name="QuestProgress" ColumnName="QuestProgress" />
                 <ScalarProperty Name="UserTypeID" ColumnName="UserTypeID" />
                 <ScalarProperty Name="UserName" ColumnName="UserName" />
-                <ScalarProperty Name="UUID" ColumnName="UUID" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -2448,14 +2473,12 @@
           <EntitySetMapping Name="UserInfoes">
             <EntityTypeMapping TypeName="Falcon.DbModel.UserInfo">
               <MappingFragment StoreEntitySet="UserInfo">
-                <ScalarProperty Name="IsEnable" ColumnName="IsEnable" />
                 <ScalarProperty Name="ChangeInfoDate" ColumnName="ChangeInfoDate" />
                 <ScalarProperty Name="RegisterDateTime" ColumnName="RegisterDateTime" />
+                <ScalarProperty Name="IsInfoEnable" ColumnName="IsInfoEnable" />
                 <ScalarProperty Name="IsEditable" ColumnName="IsEditable" />
                 <ScalarProperty Name="IsBanned" ColumnName="IsBanned" />
                 <ScalarProperty Name="IsVerified" ColumnName="IsVerified" />
-                <ScalarProperty Name="GoogleID" ColumnName="GoogleID" />
-                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
                 <ScalarProperty Name="Password" ColumnName="Password" />
                 <ScalarProperty Name="Email" ColumnName="Email" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
@@ -2493,7 +2516,7 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-        </EntityContainerMapping>
+          </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
   </edmx:Runtime>

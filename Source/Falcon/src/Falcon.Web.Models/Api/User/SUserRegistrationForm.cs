@@ -16,7 +16,7 @@ namespace Falcon.Web.Models.Api.User
 
     public class SUserRegistrationForm
     {
-
+        public string UUID { get; set;}
         [Required]
         public string UserName { get; set; }
 
@@ -40,34 +40,4 @@ namespace Falcon.Web.Models.Api.User
         public string IPAddress { get; set; }
     }
 
-
-        //@SerializedName("Gender")
-
-        //@Expose
-        //private Boolean mIsMale;
-
-
-
-        //@SerializedName("APILevel")
-
-        //@Expose
-        //private String mAPILevel;
-
-
-        //@SerializedName("Device")
-
-        //@Expose
-        //private String mDevice;
-
-
-        //@SerializedName("Model")
-
-        //@Expose
-        //private String mModel;
-
-
-        //@SerializedName("Platform")
-
-        //@Expose
-        //private Integer mPlatform;
 }

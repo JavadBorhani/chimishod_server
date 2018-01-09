@@ -30,7 +30,7 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
 
         public void ReadStateFromDatabase()
         {
-            var data = mDB.Set<Falcon.EFCommonContext.DbModel.ClientApplicationState>().AsNoTracking().SingleOrDefault();
+            var data = mDB.Set<ClientApplicationState>().AsNoTracking().SingleOrDefault();
             mClientAppState = mMapper.Map<SClientAppState>(data);
         }
 
