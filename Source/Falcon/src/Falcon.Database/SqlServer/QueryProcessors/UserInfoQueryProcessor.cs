@@ -22,6 +22,7 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             {
                 UserID = UserID,
                 RegisterDateTime = mDateTime.Now,
+                IsInfoEnable = false,
             });
 
             await mDB.SaveChangesAsync();
