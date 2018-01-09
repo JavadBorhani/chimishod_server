@@ -109,6 +109,17 @@
           <Property Name="ID" Type="int" Nullable="false" />
           <Property Name="Title" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
+        <EntityType Name="Level">
+          <Key>
+            <PropertyRef Name="LevelNumber" />
+          </Key>
+          <Property Name="LevelNumber" Type="int" Nullable="false" />
+          <Property Name="CoinPrize" Type="int" Nullable="false" />
+          <Property Name="QuestID" Type="int" />
+          <Property Name="ScoreCeil" Type="int" Nullable="false" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+          <Property Name="UpdatedDate" Type="datetime" Nullable="false" />
+        </EntityType>
         <EntityType Name="MarketInfo">
           <Key>
             <PropertyRef Name="ID" />
@@ -171,8 +182,6 @@
           <Property Name="QuestTypes" Type="int" Nullable="false" />
           <Property Name="QuestTitle" Type="nvarchar" MaxLength="300" Nullable="false" />
           <Property Name="QuestDescription" Type="nvarchar" MaxLength="300" Nullable="false" />
-          <Property Name="CoinPrize" Type="int" Nullable="false" />
-          <Property Name="CeilProgress" Type="int" Nullable="false" />
           <Property Name="Mean_Score" Type="int" Nullable="false" />
           <Property Name="CreatedDate" Type="datetime" Nullable="false" />
           <Property Name="UpdateDate" Type="datetime" Nullable="false" />
@@ -194,12 +203,12 @@
           <Property Name="QuestionBoostID" Type="int" />
           <Property Name="ActionID" Type="int" />
           <Property Name="CommentCount" Type="int" Nullable="false" />
-          <Property Name="ReportCount" Type="int" Nullable="false" />
           <Property Name="RemovedByCreator" Type="bit" Nullable="false" />
-          <Property Name="UserID" Type="int" />
-          <Property Name="HashTagID" Type="int" />
           <Property Name="CreatedDate" Type="datetime" Nullable="false" />
           <Property Name="UpdateDate" Type="datetime" Nullable="false" />
+          <Property Name="UserID" Type="int" />
+          <Property Name="HashTagID" Type="int" />
+          <Property Name="ReportCount" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="QuestionAction">
           <Key>
@@ -342,8 +351,8 @@
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="UserName" Type="nvarchar" MaxLength="40" Nullable="false" />
           <Property Name="UserTypeID" Type="int" />
-          <Property Name="QuestProgress" Type="int" />
-          <Property Name="QuestNumber" Type="int" />
+          <Property Name="LevelProgress" Type="int" />
+          <Property Name="LevelNumber" Type="int" />
           <Property Name="TotalCoin" Type="int" Nullable="false" />
           <Property Name="IsMale" Type="bit" Nullable="false" />
           <Property Name="UUID" Type="varchar" MaxLength="36" Nullable="false" />
@@ -352,8 +361,8 @@
           <Property Name="APILevel" Type="varchar" MaxLength="50" />
           <Property Name="Device" Type="varchar" MaxLength="50" />
           <Property Name="Model" Type="varchar" MaxLength="50" />
-          <Property Name="IPAddress" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="RowVersion" Type="timestamp" StoreGeneratedPattern="Computed" />
+          <Property Name="IPAddress" Type="varchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="UserInfo">
           <Key>
@@ -467,6 +476,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Level_Quest">
+          <End Role="Quest" Type="Self.Quest" Multiplicity="0..1" />
+          <End Role="Level" Type="Self.Level" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Quest">
+              <PropertyRef Name="QuestNumber" />
+            </Principal>
+            <Dependent Role="Level">
+              <PropertyRef Name="QuestID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Order_Store">
           <End Role="Store" Type="Self.Store" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -568,6 +589,18 @@
             </Principal>
             <Dependent Role="QuestQuestions">
               <PropertyRef Name="QuestNumber" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_QuestQuestions_Question">
+          <End Role="Question" Type="Self.Question" Multiplicity="1" />
+          <End Role="QuestQuestions" Type="Self.QuestQuestions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Question">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="QuestQuestions">
+              <PropertyRef Name="QuestionID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -743,15 +776,27 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_User_Quest">
-          <End Role="Quest" Type="Self.Quest" Multiplicity="0..1" />
+        <Association Name="FK_User_Level">
+          <End Role="Level" Type="Self.Level" Multiplicity="0..1" />
           <End Role="User" Type="Self.User" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Quest">
-              <PropertyRef Name="QuestNumber" />
+            <Principal Role="Level">
+              <PropertyRef Name="LevelNumber" />
             </Principal>
             <Dependent Role="User">
-              <PropertyRef Name="QuestNumber" />
+              <PropertyRef Name="LevelNumber" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_User_PlatformTypes">
+          <End Role="PlatformTypes" Type="Self.PlatformTypes" Multiplicity="1" />
+          <End Role="User" Type="Self.User" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PlatformTypes">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="User">
+              <PropertyRef Name="Platform" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -846,6 +891,7 @@
           <EntitySet Name="CodeGift" EntityType="Self.CodeGift" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ContactUs" EntityType="Self.ContactUs" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="HashTag" EntityType="Self.HashTag" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Level" EntityType="Self.Level" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MarketInfo" EntityType="Self.MarketInfo" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Order" EntityType="Self.Order" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PlatformTypes" EntityType="Self.PlatformTypes" Schema="dbo" store:Type="Tables" />
@@ -890,6 +936,10 @@
             <End Role="User" EntitySet="User" />
             <End Role="ContactUs" EntitySet="ContactUs" />
           </AssociationSet>
+          <AssociationSet Name="FK_Level_Quest" Association="Self.FK_Level_Quest">
+            <End Role="Quest" EntitySet="Quest" />
+            <End Role="Level" EntitySet="Level" />
+          </AssociationSet>
           <AssociationSet Name="FK_Order_Store" Association="Self.FK_Order_Store">
             <End Role="Store" EntitySet="Store" />
             <End Role="Order" EntitySet="Order" />
@@ -920,6 +970,10 @@
           </AssociationSet>
           <AssociationSet Name="FK_QuestQuestions_Quest" Association="Self.FK_QuestQuestions_Quest">
             <End Role="Quest" EntitySet="Quest" />
+            <End Role="QuestQuestions" EntitySet="QuestQuestions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_QuestQuestions_Question" Association="Self.FK_QuestQuestions_Question">
+            <End Role="Question" EntitySet="Question" />
             <End Role="QuestQuestions" EntitySet="QuestQuestions" />
           </AssociationSet>
           <AssociationSet Name="FK_QuestScore_Quest" Association="Self.FK_QuestScore_Quest">
@@ -974,8 +1028,12 @@
             <End Role="Question" EntitySet="Question" />
             <End Role="Tutorial" EntitySet="Tutorial" />
           </AssociationSet>
-          <AssociationSet Name="FK_User_Quest" Association="Self.FK_User_Quest">
-            <End Role="Quest" EntitySet="Quest" />
+          <AssociationSet Name="FK_User_Level" Association="Self.FK_User_Level">
+            <End Role="Level" EntitySet="Level" />
+            <End Role="User" EntitySet="User" />
+          </AssociationSet>
+          <AssociationSet Name="FK_User_PlatformTypes" Association="Self.FK_User_PlatformTypes">
+            <End Role="PlatformTypes" EntitySet="PlatformTypes" />
             <End Role="User" EntitySet="User" />
           </AssociationSet>
           <AssociationSet Name="FK_User_UserType" Association="Self.FK_User_UserType">
@@ -1039,6 +1097,7 @@
           <EntitySet Name="CodeGifts" EntityType="Falcon.DbModel.CodeGift" />
           <EntitySet Name="ContactUs" EntityType="Falcon.DbModel.ContactU" />
           <EntitySet Name="HashTags" EntityType="Falcon.DbModel.HashTag" />
+          <EntitySet Name="Levels" EntityType="Falcon.DbModel.Level" />
           <EntitySet Name="MarketInfoes" EntityType="Falcon.DbModel.MarketInfo" />
           <EntitySet Name="Orders" EntityType="Falcon.DbModel.Order" />
           <EntitySet Name="PlatformTypes" EntityType="Falcon.DbModel.PlatformType" />
@@ -1087,6 +1146,14 @@
             <End Role="HashTag" EntitySet="HashTags" />
             <End Role="Question" EntitySet="Questions" />
           </AssociationSet>
+          <AssociationSet Name="FK_Level_Quest" Association="Falcon.DbModel.FK_Level_Quest">
+            <End Role="Quest" EntitySet="Quests" />
+            <End Role="Level" EntitySet="Levels" />
+          </AssociationSet>
+          <AssociationSet Name="FK_User_Level" Association="Falcon.DbModel.FK_User_Level">
+            <End Role="Level" EntitySet="Levels" />
+            <End Role="User" EntitySet="Users" />
+          </AssociationSet>
           <AssociationSet Name="FK_Store_MarketInfo" Association="Falcon.DbModel.FK_Store_MarketInfo">
             <End Role="MarketInfo" EntitySet="MarketInfoes" />
             <End Role="Store" EntitySet="Stores" />
@@ -1098,6 +1165,10 @@
           <AssociationSet Name="FK_Order_User" Association="Falcon.DbModel.FK_Order_User">
             <End Role="User" EntitySet="Users" />
             <End Role="Order" EntitySet="Orders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_User_PlatformTypes" Association="Falcon.DbModel.FK_User_PlatformTypes">
+            <End Role="PlatformType" EntitySet="PlatformTypes" />
+            <End Role="User" EntitySet="Users" />
           </AssociationSet>
           <AssociationSet Name="FK_PriceList_Store" Association="Falcon.DbModel.FK_PriceList_Store">
             <End Role="Store" EntitySet="Stores" />
@@ -1115,10 +1186,6 @@
             <End Role="Quest" EntitySet="Quests" />
             <End Role="QuestScore" EntitySet="QuestScores" />
           </AssociationSet>
-          <AssociationSet Name="FK_User_Quest" Association="Falcon.DbModel.FK_User_Quest">
-            <End Role="Quest" EntitySet="Quests" />
-            <End Role="User" EntitySet="Users" />
-          </AssociationSet>
           <AssociationSet Name="FK_Question_QuestionAction" Association="Falcon.DbModel.FK_Question_QuestionAction">
             <End Role="QuestionAction" EntitySet="QuestionActions" />
             <End Role="Question" EntitySet="Questions" />
@@ -1126,6 +1193,10 @@
           <AssociationSet Name="FK_Question_User" Association="Falcon.DbModel.FK_Question_User">
             <End Role="User" EntitySet="Users" />
             <End Role="Question" EntitySet="Questions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_QuestQuestions_Question" Association="Falcon.DbModel.FK_QuestQuestions_Question">
+            <End Role="Question" EntitySet="Questions" />
+            <End Role="QuestQuestion" EntitySet="QuestQuestions" />
           </AssociationSet>
           <AssociationSet Name="FK_ReportedQuestions_Question" Association="Falcon.DbModel.FK_ReportedQuestions_Question">
             <End Role="Question" EntitySet="Questions" />
@@ -1310,6 +1381,19 @@
           <Property Name="Title" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Questions" Relationship="Falcon.DbModel.FK_Question_HashTag" FromRole="HashTag" ToRole="Question" />
         </EntityType>
+        <EntityType Name="Level">
+          <Key>
+            <PropertyRef Name="LevelNumber" />
+          </Key>
+          <Property Name="LevelNumber" Type="Int32" Nullable="false" />
+          <Property Name="CoinPrize" Type="Int32" Nullable="false" />
+          <Property Name="QuestID" Type="Int32" />
+          <Property Name="ScoreCeil" Type="Int32" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UpdatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Quest" Relationship="Falcon.DbModel.FK_Level_Quest" FromRole="Level" ToRole="Quest" />
+          <NavigationProperty Name="Users" Relationship="Falcon.DbModel.FK_User_Level" FromRole="Level" ToRole="User" />
+        </EntityType>
         <EntityType Name="MarketInfo">
           <Key>
             <PropertyRef Name="ID" />
@@ -1357,6 +1441,7 @@
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" />
           <Property Name="Title" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Users" Relationship="Falcon.DbModel.FK_User_PlatformTypes" FromRole="PlatformType" ToRole="User" />
         </EntityType>
         <EntityType Name="PriceHistory">
           <Key>
@@ -1376,15 +1461,13 @@
           <Property Name="QuestTypes" Type="Int32" Nullable="false" />
           <Property Name="QuestTitle" Type="String" Nullable="false" MaxLength="300" FixedLength="false" Unicode="true" />
           <Property Name="QuestDescription" Type="String" Nullable="false" MaxLength="300" FixedLength="false" Unicode="true" />
-          <Property Name="CoinPrize" Type="Int32" Nullable="false" />
-          <Property Name="CeilProgress" Type="Int32" Nullable="false" />
           <Property Name="Mean_Score" Type="Int32" Nullable="false" />
           <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="UpdateDate" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Levels" Relationship="Falcon.DbModel.FK_Level_Quest" FromRole="Quest" ToRole="Level" />
           <NavigationProperty Name="QuestType" Relationship="Falcon.DbModel.FK_Quest_QuestTypes" FromRole="Quest" ToRole="QuestType" />
           <NavigationProperty Name="QuestQuestions" Relationship="Falcon.DbModel.FK_QuestQuestions_Quest" FromRole="Quest" ToRole="QuestQuestion" />
           <NavigationProperty Name="QuestScores" Relationship="Falcon.DbModel.FK_QuestScore_Quest" FromRole="Quest" ToRole="QuestScore" />
-          <NavigationProperty Name="Users" Relationship="Falcon.DbModel.FK_User_Quest" FromRole="Quest" ToRole="User" />
         </EntityType>
         <EntityType Name="Question">
           <Key>
@@ -1403,16 +1486,17 @@
           <Property Name="QuestionBoostID" Type="Int32" />
           <Property Name="ActionID" Type="Int32" />
           <Property Name="CommentCount" Type="Int32" Nullable="false" />
-          <Property Name="ReportCount" Type="Int32" Nullable="false" />
           <Property Name="RemovedByCreator" Type="Boolean" Nullable="false" />
-          <Property Name="UserID" Type="Int32" />
-          <Property Name="HashTagID" Type="Int32" />
           <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="UpdateDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UserID" Type="Int32" />
+          <Property Name="HashTagID" Type="Int32" />
+          <Property Name="ReportCount" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Answers" Relationship="Falcon.DbModel.FK_Answer_Question" FromRole="Question" ToRole="Answer" />
           <NavigationProperty Name="HashTag" Relationship="Falcon.DbModel.FK_Question_HashTag" FromRole="Question" ToRole="HashTag" />
           <NavigationProperty Name="QuestionAction" Relationship="Falcon.DbModel.FK_Question_QuestionAction" FromRole="Question" ToRole="QuestionAction" />
           <NavigationProperty Name="User" Relationship="Falcon.DbModel.FK_Question_User" FromRole="Question" ToRole="User" />
+          <NavigationProperty Name="QuestQuestions" Relationship="Falcon.DbModel.FK_QuestQuestions_Question" FromRole="Question" ToRole="QuestQuestion" />
           <NavigationProperty Name="ReportedQuestions" Relationship="Falcon.DbModel.FK_ReportedQuestions_Question" FromRole="Question" ToRole="ReportedQuestion" />
           <NavigationProperty Name="Sents" Relationship="Falcon.DbModel.FK_Sent_Question" FromRole="Question" ToRole="Sent" />
           <NavigationProperty Name="Tutorials" Relationship="Falcon.DbModel.FK_Tutorial_Question" FromRole="Question" ToRole="Tutorial" />
@@ -1455,6 +1539,7 @@
           <Property Name="NoScore" Type="Int32" Nullable="false" />
           <Property Name="QuestNumber" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Quest" Relationship="Falcon.DbModel.FK_QuestQuestions_Quest" FromRole="QuestQuestion" ToRole="Quest" />
+          <NavigationProperty Name="Question" Relationship="Falcon.DbModel.FK_QuestQuestions_Question" FromRole="QuestQuestion" ToRole="Question" />
         </EntityType>
         <EntityType Name="QuestScore">
           <Key>
@@ -1578,8 +1663,8 @@
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="UserName" Type="String" Nullable="false" MaxLength="40" FixedLength="false" Unicode="true" />
           <Property Name="UserTypeID" Type="Int32" />
-          <Property Name="QuestProgress" Type="Int32" />
-          <Property Name="QuestNumber" Type="Int32" />
+          <Property Name="LevelProgress" Type="Int32" />
+          <Property Name="LevelNumber" Type="Int32" />
           <Property Name="TotalCoin" Type="Int32" Nullable="false" />
           <Property Name="IsMale" Type="Boolean" Nullable="false" />
           <Property Name="UUID" Type="String" Nullable="false" MaxLength="36" FixedLength="false" Unicode="false" />
@@ -1588,13 +1673,14 @@
           <Property Name="APILevel" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Device" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Model" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="IPAddress" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="RowVersion" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="IPAddress" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="AchievedCodeGifts" Relationship="Falcon.DbModel.FK_AchievedCodeGift_User" FromRole="User" ToRole="AchievedCodeGift" />
           <NavigationProperty Name="Answers" Relationship="Falcon.DbModel.FK_Answer_User" FromRole="User" ToRole="Answer" />
           <NavigationProperty Name="ContactUs" Relationship="Falcon.DbModel.FK_ContactUs_User" FromRole="User" ToRole="ContactU" />
+          <NavigationProperty Name="Level" Relationship="Falcon.DbModel.FK_User_Level" FromRole="User" ToRole="Level" />
           <NavigationProperty Name="Orders" Relationship="Falcon.DbModel.FK_Order_User" FromRole="User" ToRole="Order" />
-          <NavigationProperty Name="Quest" Relationship="Falcon.DbModel.FK_User_Quest" FromRole="User" ToRole="Quest" />
+          <NavigationProperty Name="PlatformType" Relationship="Falcon.DbModel.FK_User_PlatformTypes" FromRole="User" ToRole="PlatformType" />
           <NavigationProperty Name="Questions" Relationship="Falcon.DbModel.FK_Question_User" FromRole="User" ToRole="Question" />
           <NavigationProperty Name="QuestScores" Relationship="Falcon.DbModel.FK_QuestScore_User" FromRole="User" ToRole="QuestScore" />
           <NavigationProperty Name="Relationships" Relationship="Falcon.DbModel.FK_Relationship_User" FromRole="User" ToRole="Relationship" />
@@ -1735,6 +1821,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Level_Quest">
+          <End Type="Falcon.DbModel.Quest" Role="Quest" Multiplicity="0..1" />
+          <End Type="Falcon.DbModel.Level" Role="Level" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Quest">
+              <PropertyRef Name="QuestNumber" />
+            </Principal>
+            <Dependent Role="Level">
+              <PropertyRef Name="QuestID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_User_Level">
+          <End Type="Falcon.DbModel.Level" Role="Level" Multiplicity="0..1" />
+          <End Type="Falcon.DbModel.User" Role="User" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Level">
+              <PropertyRef Name="LevelNumber" />
+            </Principal>
+            <Dependent Role="User">
+              <PropertyRef Name="LevelNumber" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Store_MarketInfo">
           <End Type="Falcon.DbModel.MarketInfo" Role="MarketInfo" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -1774,6 +1884,18 @@
             </Principal>
             <Dependent Role="Order">
               <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_User_PlatformTypes">
+          <End Type="Falcon.DbModel.PlatformType" Role="PlatformType" Multiplicity="1" />
+          <End Type="Falcon.DbModel.User" Role="User" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PlatformType">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="User">
+              <PropertyRef Name="Platform" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1831,18 +1953,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_User_Quest">
-          <End Type="Falcon.DbModel.Quest" Role="Quest" Multiplicity="0..1" />
-          <End Type="Falcon.DbModel.User" Role="User" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Quest">
-              <PropertyRef Name="QuestNumber" />
-            </Principal>
-            <Dependent Role="User">
-              <PropertyRef Name="QuestNumber" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Question_QuestionAction">
           <End Type="Falcon.DbModel.QuestionAction" Role="QuestionAction" Multiplicity="0..1" />
           <End Type="Falcon.DbModel.Question" Role="Question" Multiplicity="*" />
@@ -1864,6 +1974,18 @@
             </Principal>
             <Dependent Role="Question">
               <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_QuestQuestions_Question">
+          <End Type="Falcon.DbModel.Question" Role="Question" Multiplicity="1" />
+          <End Type="Falcon.DbModel.QuestQuestion" Role="QuestQuestion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Question">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="QuestQuestion">
+              <PropertyRef Name="QuestionID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2204,6 +2326,18 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="Levels">
+            <EntityTypeMapping TypeName="Falcon.DbModel.Level">
+              <MappingFragment StoreEntitySet="Level">
+                <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="ScoreCeil" ColumnName="ScoreCeil" />
+                <ScalarProperty Name="QuestID" ColumnName="QuestID" />
+                <ScalarProperty Name="CoinPrize" ColumnName="CoinPrize" />
+                <ScalarProperty Name="LevelNumber" ColumnName="LevelNumber" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="MarketInfoes">
             <EntityTypeMapping TypeName="Falcon.DbModel.MarketInfo">
               <MappingFragment StoreEntitySet="MarketInfo">
@@ -2268,8 +2402,6 @@
                 <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
                 <ScalarProperty Name="Mean_Score" ColumnName="Mean_Score" />
-                <ScalarProperty Name="CeilProgress" ColumnName="CeilProgress" />
-                <ScalarProperty Name="CoinPrize" ColumnName="CoinPrize" />
                 <ScalarProperty Name="QuestDescription" ColumnName="QuestDescription" />
                 <ScalarProperty Name="QuestTitle" ColumnName="QuestTitle" />
                 <ScalarProperty Name="QuestTypes" ColumnName="QuestTypes" />
@@ -2280,12 +2412,12 @@
           <EntitySetMapping Name="Questions">
             <EntityTypeMapping TypeName="Falcon.DbModel.Question">
               <MappingFragment StoreEntitySet="Question">
-                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
-                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="ReportCount" ColumnName="ReportCount" />
                 <ScalarProperty Name="HashTagID" ColumnName="HashTagID" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
                 <ScalarProperty Name="RemovedByCreator" ColumnName="RemovedByCreator" />
-                <ScalarProperty Name="ReportCount" ColumnName="ReportCount" />
                 <ScalarProperty Name="CommentCount" ColumnName="CommentCount" />
                 <ScalarProperty Name="ActionID" ColumnName="ActionID" />
                 <ScalarProperty Name="QuestionBoostID" ColumnName="QuestionBoostID" />
@@ -2452,8 +2584,8 @@
           <EntitySetMapping Name="Users">
             <EntityTypeMapping TypeName="Falcon.DbModel.User">
               <MappingFragment StoreEntitySet="User">
-                <ScalarProperty Name="RowVersion" ColumnName="RowVersion" />
                 <ScalarProperty Name="IPAddress" ColumnName="IPAddress" />
+                <ScalarProperty Name="RowVersion" ColumnName="RowVersion" />
                 <ScalarProperty Name="Model" ColumnName="Model" />
                 <ScalarProperty Name="Device" ColumnName="Device" />
                 <ScalarProperty Name="APILevel" ColumnName="APILevel" />
@@ -2462,8 +2594,8 @@
                 <ScalarProperty Name="UUID" ColumnName="UUID" />
                 <ScalarProperty Name="IsMale" ColumnName="IsMale" />
                 <ScalarProperty Name="TotalCoin" ColumnName="TotalCoin" />
-                <ScalarProperty Name="QuestNumber" ColumnName="QuestNumber" />
-                <ScalarProperty Name="QuestProgress" ColumnName="QuestProgress" />
+                <ScalarProperty Name="LevelNumber" ColumnName="LevelNumber" />
+                <ScalarProperty Name="LevelProgress" ColumnName="LevelProgress" />
                 <ScalarProperty Name="UserTypeID" ColumnName="UserTypeID" />
                 <ScalarProperty Name="UserName" ColumnName="UserName" />
                 <ScalarProperty Name="ID" ColumnName="ID" />

@@ -17,27 +17,25 @@ namespace Falcon.EFCommonContext.DbModel
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Quest()
         {
+            this.Levels = new HashSet<Level>();
             this.QuestQuestions = new HashSet<QuestQuestion>();
             this.QuestScores = new HashSet<QuestScore>();
-            this.Users = new HashSet<User>();
         }
     
         public int QuestNumber { get; set; }
         public int QuestTypes { get; set; }
         public string QuestTitle { get; set; }
         public string QuestDescription { get; set; }
-        public int CoinPrize { get; set; }
-        public int CeilProgress { get; set; }
         public int Mean_Score { get; set; }
         public System.DateTime CreatedDate { get; set; }
         public System.DateTime UpdateDate { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Level> Levels { get; set; }
         public virtual QuestType QuestType { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<QuestQuestion> QuestQuestions { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<QuestScore> QuestScores { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<User> Users { get; set; }
     }
 }

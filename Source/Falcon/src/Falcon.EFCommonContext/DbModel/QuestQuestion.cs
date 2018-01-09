@@ -23,5 +23,6 @@ namespace Falcon.EFCommonContext.DbModel
         public int QuestNumber { get; set; }
     
         public virtual Quest Quest { get; set; }
+        public virtual Question Question { get; set; }
     }
 }

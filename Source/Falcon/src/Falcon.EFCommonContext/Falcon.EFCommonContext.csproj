@@ -83,6 +83,9 @@
     <Compile Include="DbModel\HashTag.cs">
       <DependentUpon>WhatIfDataModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="DbModel\Level.cs">
+      <DependentUpon>WhatIfDataModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="DbModel\MarketInfo.cs">
       <DependentUpon>WhatIfDataModel.tt</DependentUpon>
     </Compile>

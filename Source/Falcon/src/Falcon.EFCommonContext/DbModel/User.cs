@@ -35,8 +35,8 @@ namespace Falcon.EFCommonContext.DbModel
         public int ID { get; set; }
         public string UserName { get; set; }
         public Nullable<int> UserTypeID { get; set; }
-        public Nullable<int> QuestProgress { get; set; }
-        public Nullable<int> QuestNumber { get; set; }
+        public Nullable<int> LevelProgress { get; set; }
+        public Nullable<int> LevelNumber { get; set; }
         public int TotalCoin { get; set; }
         public bool IsMale { get; set; }
         public string UUID { get; set; }
@@ -45,8 +45,8 @@ namespace Falcon.EFCommonContext.DbModel
         public string APILevel { get; set; }
         public string Device { get; set; }
         public string Model { get; set; }
-        public string IPAddress { get; set; }
         public byte[] RowVersion { get; set; }
+        public string IPAddress { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<AchievedCodeGift> AchievedCodeGifts { get; set; }
@@ -54,9 +54,10 @@ namespace Falcon.EFCommonContext.DbModel
         public virtual ICollection<Answer> Answers { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ContactU> ContactUs { get; set; }
+        public virtual Level Level { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Order> Orders { get; set; }
-        public virtual Quest Quest { get; set; }
+        public virtual PlatformType PlatformType { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Question> Questions { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
