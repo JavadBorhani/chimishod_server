@@ -61,7 +61,7 @@ namespace Falcon.Web.Api.Controllers.V2
         }
 
 
-        [ResponseType(typeof(SClientAppState))]
+        [ResponseType(typeof(SClientVersionInfo))]
         [Route("v2/AppStates/Version/")]
         [HttpGet]
         public SClientVersionInfo GetClientVersionInfo()
