@@ -1,12 +1,6 @@
 ﻿// Flapp Copyright 2017-2018
 using Falcon.EFCommonContext;
 using Falcon.Web.Common.Memmory;
-using System;
-using System.Collections.Generic;
-using System.Data.Entity.Infrastructure;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web.Http.Filters;
 
 namespace Falcon.Web.Common
@@ -14,12 +8,11 @@ namespace Falcon.Web.Common
     public class ActionTransactionHelper : IActionTransactionHelper
     {
         private readonly IWebContextFactory mContextFactory;
-        private readonly IMemoryStore mStore;
 
         public ActionTransactionHelper(IWebContextFactory ContextFactory , IMemoryStore Store)
         {
             mContextFactory = ContextFactory;
-            mStore = Store;
+
         }
 
         public bool TransactionHandled

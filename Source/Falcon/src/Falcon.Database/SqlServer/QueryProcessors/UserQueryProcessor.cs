@@ -3,6 +3,7 @@ using Falcon.Common.Security;
 using Falcon.Data.QueryProcessors;
 using Falcon.EFCommonContext;
 using Falcon.EFCommonContext.DbModel;
+using Falcon.Web.Models.Api;
 using Falcon.Web.Models.Api.Level;
 using Falcon.Web.Models.Api.User;
 using System;
@@ -231,5 +232,29 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             return user;
         }
 
+        public async Task<string> ReteriveUserUUID(SUserInfo userInfo)
+        {
+            var uuid = await mDb.Set<UserInfo>().AsNoTracking()
+                .Include(u => u.User)
+                .Where(u => u.User.UserName == userInfo.UserName && u.Password == userInfo.Password && u.IsInfoEnable == true)
+                .Select(u => u.User.UUID)
+                .SingleOrDefaultAsync();
+
+            return uuid;
+        }
+
+        public async Task<bool> UpdateUserNotificationID(string UUID)
+        {
+            var item = await mDb.Set<User>().Where(u => u.UUID == UUID).SingleOrDefaultAsync();
+
+            if(item != null)
+            {
+                item.NotificationID = UUID;
+                await mDb.SaveChangesAsync();
+                return true;
+            }
+            return false;
+
+        }
     }
 }   

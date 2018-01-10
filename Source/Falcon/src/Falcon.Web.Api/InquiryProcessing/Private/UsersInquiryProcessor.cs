@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Falcon.Data.QueryProcessors;
 using Falcon.Web.Api.InquiryProcessing.Public;
+using Falcon.Web.Models.Api;
 using System.Threading.Tasks;
 
 namespace Falcon.Web.Api.InquiryProcessing.Private
@@ -34,6 +35,21 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
         {
             bool exists = await mUserQueryProcessor.LevelExits(LevelNumber);
             return exists;   
-        }   
+        }
+
+        public async Task<string> RecoverUser(SUserInfo UserInfo)
+        {
+            var uuid = await mUserQueryProcessor.ReteriveUserUUID(UserInfo);
+
+            if(uuid != null)
+            {
+                var result = await mUserQueryProcessor.UpdateUserNotificationID(UserInfo.NotificationID.ToString());
+                return uuid;
+            }
+            else
+            {
+                return null;
+            }
+        }
     }
 }

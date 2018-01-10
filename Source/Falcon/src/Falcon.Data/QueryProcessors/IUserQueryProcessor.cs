@@ -1,4 +1,5 @@
 ﻿using Falcon.EFCommonContext.DbModel;
+using Falcon.Web.Models.Api;
 using Falcon.Web.Models.Api.Level;
 using Falcon.Web.Models.Api.User;
 using System.Threading.Tasks;
@@ -24,6 +25,9 @@ namespace Falcon.Data.QueryProcessors
 
         //v2 Create User
         Task<User> CreateNewUser(SUserRegistrationForm UserRegisterationData);
+
+        Task<string> ReteriveUserUUID(SUserInfo userInfo);
+        Task<bool> UpdateUserNotificationID(string UUID);
 
 
     }

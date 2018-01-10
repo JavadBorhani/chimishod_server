@@ -3,17 +3,14 @@ using Falcon.Common.Security;
 using Falcon.EFCommonContext;
 using Falcon.EFCommonContext.DbModel;
 using Falcon.Web.Api.InquiryProcessing.Public;
-using Falcon.Web.Api.JobSystem.Public;
 using Falcon.Web.Api.MaintenanceProcessing.Public;
 using Falcon.Web.Api.Utilities.Base;
-using Falcon.Web.Api.Utilities.Mail;
 using Falcon.Web.Common;
 using Falcon.Web.Models.Api;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
@@ -28,16 +25,12 @@ namespace Falcon.Web.Api.Controllers.V2
         private readonly IDateTime mDateTime;
         private readonly IWebUserSession mUserSession;
         private readonly IGlobalApplicationState mAppState;
-        private readonly IMailManager mMailManager;
-        private readonly IJobManager mJobManager;
         private readonly IDbContext mDb;
 
         public UserInfoController(IUserInfoMaintenanceProcessor UserInfoMaintenance, IUserInfoInquiryProcessor UserInfoInquiry, IDateTime DateTime,
             IDbContext Database,
             IWebUserSession UserSession,
-            IGlobalApplicationState AppState,
-            IMailManager MailManager,
-            IJobManager JobManager)
+            IGlobalApplicationState AppState)
         {
             mUserInfoMaintenance = UserInfoMaintenance;
             mUserInfoInquiry = UserInfoInquiry;
@@ -45,8 +38,6 @@ namespace Falcon.Web.Api.Controllers.V2
             mDb = Database;
             mUserSession = UserSession;
             mAppState = AppState;
-            mMailManager = MailManager;
-            mJobManager = JobManager;
         }
 
         [ResponseType(typeof(SUserInfo))]
@@ -130,76 +121,18 @@ namespace Falcon.Web.Api.Controllers.V2
             }
         }
 
-        [Route("v2/UserInfo/Recover/")]
-        [HttpPost]
-        public async Task<IHttpActionResult> RecoverUser([FromBody] SUserInfo UserInfo)
-        {
 
-            UserInfo.Email = "one@one.com";
-            if (ModelState.IsValid)
-            {
-                var UUID = await mDb.Set<UserInfo>().AsNoTracking()
-                    .Include(u => u.User)
-                    .Where(u => u.User.UserName == UserInfo.UserName && u.Password == UserInfo.Password)
-                    .Select(u => u.User.UUID)
-                    .SingleOrDefaultAsync();
-
-                if (!string.IsNullOrEmpty(UUID))
-                {
-                    return Ok(UUID);
-                }
-                else
-                {
-                    return Response(HttpStatusCode.Unauthorized);
-                }
-            }
-            else
-            {
-                return Response(HttpStatusCode.BadRequest);
-            }
-
-        }
         [ResponseType(typeof(bool))]
         [Route("v2/UserInfo/Forgot/")]
         [HttpPost]
-        public async Task<IHttpActionResult> ForgotPassword([FromBody] SGoogleAuthentication Info)
+        public async Task<bool> ForgotPassword([FromBody] SGoogleAuthentication Info)
         {
-            if (Info != null)
-            {
-                if (IsValidMail(Info.Email))
-                {
-                    var userInfo = await mDb.Set<UserInfo>().AsNoTracking()
-                                                        .Where(u => u.Email == Info.Email)
-                                                        .Select(u => new { u.User.UserName, u.Password })
-                                                        .SingleOrDefaultAsync();
-                    if (userInfo != null)
-                    {
+            if (!ModelState.IsValid)
+                return false;
 
-                        mJobManager.Enqueue(() =>
-                        mMailManager.SendRecoverySupportMail(Info.Email, "بازیابی پسورد", Info.Email, userInfo.UserName, userInfo.Password));
+            var forgotPassword = await mUserInfoInquiry.ForgotPassword(Info);
+            return forgotPassword;
 
-                        return Ok(true);
-                    }
-                    else
-                    {
-                        return Response(HttpStatusCode.OK, false);
-                    }
-                }
-                else
-                {
-                    return Response(HttpStatusCode.Unauthorized, false);
-                }
-            }
-            else
-            {
-                return Response(HttpStatusCode.BadRequest, false);
-            }
-
-        }
-
-        private bool IsValidMail(string Mail)
-        {
-            return Regex.IsMatch(Mail, @"\A(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)\Z", RegexOptions.IgnoreCase);
         }
 
         private async Task<bool> IsAbleToEditProfile(int userID)

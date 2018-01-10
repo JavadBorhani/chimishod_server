@@ -1,10 +1,10 @@
 ﻿// Flapp Copyright 2017-2018
 
+using Falcon.Common;
+using Falcon.Data.Exceptions;
 using System.Net;
 using System.Web;
 using System.Web.Http.ExceptionHandling;
-using Falcon.Data.Exceptions;
-using Falcon.Common;
 
 namespace Falcon.Web.Common.ErrorHandling
 {
@@ -13,7 +13,6 @@ namespace Falcon.Web.Common.ErrorHandling
         public override void Handle(ExceptionHandlerContext context)
         {
             var exception = context.Exception;
-
             var httpException = exception as HttpException;
             if (httpException != null)
             {

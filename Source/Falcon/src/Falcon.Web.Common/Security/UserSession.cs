@@ -37,6 +37,7 @@ namespace Falcon.Web.Common.Security
         {
             get
             {
+                
                 return ((ClaimsPrincipal)HttpContext.Current.User).FindFirst(ClaimTypes.Name).Value;
             }
         }
@@ -49,28 +50,28 @@ namespace Falcon.Web.Common.Security
             }
         }
 
-        public DateTime LastSeenDateTime
-        {
-            get
-            {
-                return Convert.ToDateTime(((ClaimsPrincipal)HttpContext.Current.User).FindFirst(ClaimTypes.DateOfBirth).Value);
-            }
-        }
+        //public DateTime LastSeenDateTime
+        //{
+        //    get
+        //    {
+        //        return Convert.ToDateTime(((ClaimsPrincipal)HttpContext.Current.User).FindFirst(ClaimTypes.DateOfBirth).Value);
+        //    }
+        //}
 
-        public DateTime PrevLastSeenDateTime
-        {
-            get
-            {
-                return Convert.ToDateTime(((ClaimsPrincipal)HttpContext.Current.User).FindFirst(ClaimTypes.UserData).Value);
-            }
-        }        
+        //public DateTime PrevLastSeenDateTime
+        //{
+        //    get
+        //    {
+        //        return Convert.ToDateTime(((ClaimsPrincipal)HttpContext.Current.User).FindFirst(ClaimTypes.UserData).Value);
+        //    }
+        //}        
 
-        public bool IsTutorial
-        {
-            get
-            {
-                return Convert.ToBoolean(((ClaimsPrincipal)HttpContext.Current.User).FindFirst(ClaimTypes.IsPersistent).Value);
-            }
-        }
+        //public bool IsTutorial
+        //{
+        //    get
+        //    {
+        //        return Convert.ToBoolean(((ClaimsPrincipal)HttpContext.Current.User).FindFirst(ClaimTypes.IsPersistent).Value);
+        //    }
+        //}
     }
 }

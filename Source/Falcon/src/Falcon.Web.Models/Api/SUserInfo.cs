@@ -1,11 +1,5 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Falcon.Web.Models.Api
 {
@@ -15,13 +9,16 @@ namespace Falcon.Web.Models.Api
         [EmailAddress(ErrorMessage = "email is not valid")]
         public string Email { get; set; }
 
-        [Required(AllowEmptyStrings = false)]
+        [Required (AllowEmptyStrings = false)]
         public string UserName { get; set; }
 
         public bool IsEditable { get; set; }
 
-        [Required(AllowEmptyStrings = false)]
+        [Required (AllowEmptyStrings = false)]
         public string Password { get; set; }
+
+        [Required]
+        public Guid NotificationID { get; set; }
 
         public bool HasRegistered { get; set; }
     }

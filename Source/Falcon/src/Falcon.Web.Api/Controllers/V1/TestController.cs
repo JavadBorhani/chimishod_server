@@ -1,7 +1,4 @@
-﻿using Falcon.Common;
-using Falcon.EFCommonContext;
-using Falcon.EFCommonContext.DbModel;
-using Falcon.Web.Api.MaintenanceProcessing.Public;
+﻿using Falcon.Web.Api.Utilities;
 using Falcon.Web.Api.Utilities.Base;
 using Falcon.Web.Common;
 using System.Threading.Tasks;
@@ -13,17 +10,21 @@ namespace Falcon.Web.Api.Controllers.V1
     public class TestController : FalconApiController
     {
 
-        private readonly IDbContext mContext;
-        private readonly IAchievementMaintenanceProcessor mAchievementProcessor;
-        private readonly IDateTime mDateTime;
+        private readonly INetworkUtils mNetworkUtils;
 
-        public TestController(IAchievementMaintenanceProcessor AchievementController , IDbContext Context , IDateTime DateTime)
+
+        public TestController(INetworkUtils NetworkUtils)
         {
-            mAchievementProcessor = AchievementController;
-            mContext = Context;
-            mDateTime = DateTime;
+            mNetworkUtils = NetworkUtils;
         }
 
+        [Route("v2/TestController/")]
+        [HttpGet]
+        public async Task<string> GetInfo()
+        {
+            mNetworkUtils.Response = System.Net.HttpStatusCode.Forbidden;
+            return "hello";
+        }
         //[Route("TestController/")]
         //[HttpPost]
         //public async Task<IHttpActionResult> CreateJob()

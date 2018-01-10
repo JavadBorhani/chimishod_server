@@ -132,6 +132,7 @@ namespace Falcon.Common
             public const string UserAuthenticator = "User";
             public const string UserInfo = "UserInfo";
             public const string AppStates = "AppStates";
+            public const string TestController = "TestController";
         }
 
         //TODO : If second advert added needs to move to database
