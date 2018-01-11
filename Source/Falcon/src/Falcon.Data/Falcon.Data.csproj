@@ -58,6 +58,7 @@
     <Compile Include="QueryProcessors\IFriendsQueryProcessor.cs" />
     <Compile Include="QueryProcessors\IGameConfigQueryProcessor.cs" />
     <Compile Include="QueryProcessors\IGiftQueryProcessor.cs" />
+    <Compile Include="QueryProcessors\ILevelQueryProcessor.cs" />
     <Compile Include="QueryProcessors\IMarketInfoQueryProcessor.cs" />
     <Compile Include="QueryProcessors\INotificationsQueryProcessor.cs" />
     <Compile Include="QueryProcessors\IAppAdvertsQueryProcessor.cs" />

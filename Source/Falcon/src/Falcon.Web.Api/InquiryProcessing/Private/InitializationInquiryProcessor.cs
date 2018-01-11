@@ -9,19 +9,19 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
     public class InitializationInquiryProcessor : IInitializationInquiryProcessor
     {
         private readonly IUsersInquiryProcessor mUsersQuery;
-        private readonly ILevelInquiryProcessor mLevelQuery;
+        private readonly ILevelInquiryProcessor mLevelInquiry;
         private readonly IClientApplicationState mClientAppState;
         private readonly IMapper mMapper;
         public InitializationInquiryProcessor
             ( 
-            IUsersInquiryProcessor UsersQuery , 
-            ILevelInquiryProcessor LevelQuery , 
+            IUsersInquiryProcessor UsersQuery ,
+            ILevelInquiryProcessor LevelInquiry , 
             IClientApplicationState ClientAppState,
             IMapper Mapper
             )
         {
             mUsersQuery = UsersQuery;
-            mLevelQuery = LevelQuery;
+            mLevelInquiry = LevelInquiry;
             mClientAppState = ClientAppState;
             mMapper = Mapper;   
         }
@@ -33,7 +33,14 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
 
             initializationInfo.ClientAppState = mClientAppState.State();
 
-            return null;
+            var levels = await mLevelInquiry.GetLevelList();
+
+            initializationInfo.Levels = levels;
+
+            var user = await mUsersQuery.GetUserInfo();
+
+
+            return initializationInfo;    
         }
 
     }

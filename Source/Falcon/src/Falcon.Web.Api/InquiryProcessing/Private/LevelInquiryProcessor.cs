@@ -1,42 +1,25 @@
 ﻿using AutoMapper;
-using Falcon.EFCommonContext;
+using Falcon.Data.QueryProcessors;
 using Falcon.Web.Api.InquiryProcessing.Public;
-using Falcon.Web.Common;
-using Falcon.Web.Models.Api.Cache;
-using System;
+using Falcon.Web.Models.Api.Level;
 using System.Threading.Tasks;
 
 namespace Falcon.Web.Api.InquiryProcessing.Private
 {
     public class LevelInquiryProcessor : ILevelInquiryProcessor
     {
-
-        //private SLevelCache[] mLevels;
-
-        public virtual IDbContext mDB
+        private readonly ILevelQueryProcessor mLevelQuery;
+        private readonly IMapper mMapper;
+        public LevelInquiryProcessor(ILevelQueryProcessor LevelQuery , IMapper Mapper)
         {
-            get
-            {
-                return WebContainerManager.Get<IDbContext>();
-            }
+            mLevelQuery = LevelQuery;
+            mMapper = Mapper;
         }
 
-        public virtual IMapper mMapper
+        public async Task<SLevel[]> GetLevelList()
         {
-            get
-            {
-                return WebContainerManager.Get<IMapper>();
-            }
-        }
-
-        public Task<SLevelCache[]> GetLevelInfos()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<bool> ReadStateFromDB()
-        {
-            throw new NotImplementedException();
+            var levels = await mLevelQuery.GetAll();
+            return mMapper.Map<SLevel[]>(levels);
         }
     }
 }

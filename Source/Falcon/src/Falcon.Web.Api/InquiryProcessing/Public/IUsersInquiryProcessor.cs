@@ -11,5 +11,6 @@ namespace Falcon.Web.Api.InquiryProcessing.Public
         //Task<SUserCount> GetUserCountInfo(int UserID);
 
         Task<string> RecoverUser(SUserInfo UserInfo);
+        Task<SUser> GetUserInfo();
     }
 }
