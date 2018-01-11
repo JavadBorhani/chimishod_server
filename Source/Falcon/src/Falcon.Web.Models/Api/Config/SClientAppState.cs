@@ -6,6 +6,6 @@
         public bool IsMajorChange { get; set;}
         public int CreateQuestionPrice { get; set; }
         public int WatchAdCoin { get; set; }
-
+        public int LevelVersionCode { get; set; }
     }
 }

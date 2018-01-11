@@ -41,14 +41,7 @@ namespace Falcon.Web.Api.Controllers.V2
             return user;
         }
 
-        [ResponseType(typeof(SUserData))]
-        [Route("v2/User/")]
-        [HttpPost]
-        public async Task<SUserData> LoadingUserData(int QuestVersion)
-        {
-            //actual user data info -> will return user current state in quest and quest information 
-            return null;    
-        }
+
 
         [ResponseType(typeof(string))]
         [Route("v2/User/Recover/")] // should ignore authentication

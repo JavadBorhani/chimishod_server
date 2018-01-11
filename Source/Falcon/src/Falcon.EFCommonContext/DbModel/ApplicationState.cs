@@ -15,8 +15,6 @@ namespace Falcon.EFCommonContext.DbModel
     public partial class ApplicationState
     {
         public int ID { get; set; }
-        public int Favorite_FavoritePrice { get; set; }
-        public int Favorite_FreeNumberToFavorite { get; set; }
         public string User_DefaultUserName { get; set; }
         public int User_DefaultUserCoin { get; set; }
         public int Question_CreateQuestionPrice { get; set; }
@@ -42,11 +40,11 @@ namespace Falcon.EFCommonContext.DbModel
         public string HostCredentialUserName { get; set; }
         public string HostCredentialPassword { get; set; }
         public int Store_DefaultReturnAmount { get; set; }
-        public int WatchAdCoin { get; set; }
         public int SpinWheelFortuneThreshold { get; set; }
         public int SpinWheelLoopPrice { get; set; }
         public int Prize_CreateNewQuestionScore { get; set; }
         public int Prize_NewQuestionAcceptedScore { get; set; }
         public int Prize_AnswerScoreAmount { get; set; }
+        public int DatabaseLevelVersionCode { get; set; }
     }
 }

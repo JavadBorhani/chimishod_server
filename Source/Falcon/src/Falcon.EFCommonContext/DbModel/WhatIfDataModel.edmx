@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="Falcon.DbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="Falcon.DbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="AchievedCodeGift">
           <Key>
             <PropertyRef Name="ID" />
@@ -33,8 +33,6 @@
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Favorite_FavoritePrice" Type="int" Nullable="false" />
-          <Property Name="Favorite_FreeNumberToFavorite" Type="int" Nullable="false" />
           <Property Name="User_DefaultUserName" Type="varchar" MaxLength="20" Nullable="false" />
           <Property Name="User_DefaultUserCoin" Type="int" Nullable="false" />
           <Property Name="Question_CreateQuestionPrice" Type="int" Nullable="false" />
@@ -60,20 +58,23 @@
           <Property Name="HostCredentialUserName" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="HostCredentialPassword" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="Store_DefaultReturnAmount" Type="int" Nullable="false" />
-          <Property Name="WatchAdCoin" Type="int" Nullable="false" />
           <Property Name="SpinWheelFortuneThreshold" Type="int" Nullable="false" />
           <Property Name="SpinWheelLoopPrice" Type="int" Nullable="false" />
           <Property Name="Prize_CreateNewQuestionScore" Type="int" Nullable="false" />
           <Property Name="Prize_NewQuestionAcceptedScore" Type="int" Nullable="false" />
           <Property Name="Prize_AnswerScoreAmount" Type="int" Nullable="false" />
+          <Property Name="DatabaseLevelVersionCode" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="ClientApplicationState">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="int" Nullable="false" />
-          <Property Name="VersionInfo" Type="int" Nullable="false" />
+          <Property Name="ClientVersionInfo" Type="int" Nullable="false" />
           <Property Name="IsMajorVersion" Type="bit" Nullable="false" />
+          <Property Name="CreateQuestionPrice" Type="int" Nullable="false" />
+          <Property Name="WatchAdCoin" Type="int" Nullable="false" />
+          <Property Name="LevelVersionCode" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="CodeGift">
           <Key>
@@ -115,8 +116,10 @@
           </Key>
           <Property Name="LevelNumber" Type="int" Nullable="false" />
           <Property Name="CoinPrize" Type="int" Nullable="false" />
-          <Property Name="QuestID" Type="int" />
           <Property Name="ScoreCeil" Type="int" Nullable="false" />
+          <Property Name="QuestID" Type="int" />
+          <Property Name="QuestType" Type="int" Nullable="false" />
+          <Property Name="QuestTitle" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="CreatedDate" Type="datetime" Nullable="false" />
           <Property Name="UpdatedDate" Type="datetime" Nullable="false" />
         </EntityType>
@@ -363,6 +366,7 @@
           <Property Name="Model" Type="varchar" MaxLength="50" />
           <Property Name="RowVersion" Type="timestamp" StoreGeneratedPattern="Computed" />
           <Property Name="IPAddress" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="AvatarImagePath" Type="nvarchar" MaxLength="100" />
         </EntityType>
         <EntityType Name="UserInfo">
           <Key>
@@ -1053,7 +1057,8 @@
             <End Role="WatchedAd" EntitySet="WatchedAd" />
           </AssociationSet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="Falcon.DbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -1258,7 +1263,7 @@
             <End Role="WatchAdProvider" EntitySet="WatchAdProviders" />
             <End Role="WatchedAd" EntitySet="WatchedAds" />
           </AssociationSet>
-          </EntityContainer>
+        </EntityContainer>
         <ComplexType Name="sp_helpdiagramdefinition_Result">
           <Property Type="Int32" Name="version" Nullable="true" />
           <Property Type="Binary" Name="definition" Nullable="true" />
@@ -1302,8 +1307,6 @@
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Favorite_FavoritePrice" Type="Int32" Nullable="false" />
-          <Property Name="Favorite_FreeNumberToFavorite" Type="Int32" Nullable="false" />
           <Property Name="User_DefaultUserName" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="User_DefaultUserCoin" Type="Int32" Nullable="false" />
           <Property Name="Question_CreateQuestionPrice" Type="Int32" Nullable="false" />
@@ -1329,20 +1332,23 @@
           <Property Name="HostCredentialUserName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="HostCredentialPassword" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Store_DefaultReturnAmount" Type="Int32" Nullable="false" />
-          <Property Name="WatchAdCoin" Type="Int32" Nullable="false" />
           <Property Name="SpinWheelFortuneThreshold" Type="Int32" Nullable="false" />
           <Property Name="SpinWheelLoopPrice" Type="Int32" Nullable="false" />
           <Property Name="Prize_CreateNewQuestionScore" Type="Int32" Nullable="false" />
           <Property Name="Prize_NewQuestionAcceptedScore" Type="Int32" Nullable="false" />
           <Property Name="Prize_AnswerScoreAmount" Type="Int32" Nullable="false" />
+          <Property Name="DatabaseLevelVersionCode" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="ClientApplicationState">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" />
-          <Property Name="VersionInfo" Type="Int32" Nullable="false" />
+          <Property Name="ClientVersionInfo" Type="Int32" Nullable="false" />
           <Property Name="IsMajorVersion" Type="Boolean" Nullable="false" />
+          <Property Name="CreateQuestionPrice" Type="Int32" Nullable="false" />
+          <Property Name="WatchAdCoin" Type="Int32" Nullable="false" />
+          <Property Name="LevelVersionCode" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="CodeGift">
           <Key>
@@ -1387,8 +1393,10 @@
           </Key>
           <Property Name="LevelNumber" Type="Int32" Nullable="false" />
           <Property Name="CoinPrize" Type="Int32" Nullable="false" />
-          <Property Name="QuestID" Type="Int32" />
           <Property Name="ScoreCeil" Type="Int32" Nullable="false" />
+          <Property Name="QuestID" Type="Int32" />
+          <Property Name="QuestType" Type="Int32" Nullable="false" />
+          <Property Name="QuestTitle" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="UpdatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="Quest" Relationship="Falcon.DbModel.FK_Level_Quest" FromRole="Level" ToRole="Quest" />
@@ -1673,8 +1681,9 @@
           <Property Name="APILevel" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Device" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Model" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="RowVersion" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="RowVersion" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" ConcurrencyMode="Fixed" />
           <Property Name="IPAddress" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="AvatarImagePath" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="AchievedCodeGifts" Relationship="Falcon.DbModel.FK_AchievedCodeGift_User" FromRole="User" ToRole="AchievedCodeGift" />
           <NavigationProperty Name="Answers" Relationship="Falcon.DbModel.FK_Answer_User" FromRole="User" ToRole="Answer" />
           <NavigationProperty Name="ContactUs" Relationship="Falcon.DbModel.FK_ContactUs_User" FromRole="User" ToRole="ContactU" />
@@ -2185,7 +2194,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        </Schema>
+      </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -2243,12 +2252,12 @@
           <EntitySetMapping Name="ApplicationStates">
             <EntityTypeMapping TypeName="Falcon.DbModel.ApplicationState">
               <MappingFragment StoreEntitySet="ApplicationState">
+                <ScalarProperty Name="DatabaseLevelVersionCode" ColumnName="DatabaseLevelVersionCode" />
                 <ScalarProperty Name="Prize_AnswerScoreAmount" ColumnName="Prize_AnswerScoreAmount" />
                 <ScalarProperty Name="Prize_NewQuestionAcceptedScore" ColumnName="Prize_NewQuestionAcceptedScore" />
                 <ScalarProperty Name="Prize_CreateNewQuestionScore" ColumnName="Prize_CreateNewQuestionScore" />
                 <ScalarProperty Name="SpinWheelLoopPrice" ColumnName="SpinWheelLoopPrice" />
                 <ScalarProperty Name="SpinWheelFortuneThreshold" ColumnName="SpinWheelFortuneThreshold" />
-                <ScalarProperty Name="WatchAdCoin" ColumnName="WatchAdCoin" />
                 <ScalarProperty Name="Store_DefaultReturnAmount" ColumnName="Store_DefaultReturnAmount" />
                 <ScalarProperty Name="HostCredentialPassword" ColumnName="HostCredentialPassword" />
                 <ScalarProperty Name="HostCredentialUserName" ColumnName="HostCredentialUserName" />
@@ -2274,8 +2283,6 @@
                 <ScalarProperty Name="Question_CreateQuestionPrice" ColumnName="Question_CreateQuestionPrice" />
                 <ScalarProperty Name="User_DefaultUserCoin" ColumnName="User_DefaultUserCoin" />
                 <ScalarProperty Name="User_DefaultUserName" ColumnName="User_DefaultUserName" />
-                <ScalarProperty Name="Favorite_FreeNumberToFavorite" ColumnName="Favorite_FreeNumberToFavorite" />
-                <ScalarProperty Name="Favorite_FavoritePrice" ColumnName="Favorite_FavoritePrice" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -2283,8 +2290,11 @@
           <EntitySetMapping Name="ClientApplicationStates">
             <EntityTypeMapping TypeName="Falcon.DbModel.ClientApplicationState">
               <MappingFragment StoreEntitySet="ClientApplicationState">
+                <ScalarProperty Name="LevelVersionCode" ColumnName="LevelVersionCode" />
+                <ScalarProperty Name="WatchAdCoin" ColumnName="WatchAdCoin" />
+                <ScalarProperty Name="CreateQuestionPrice" ColumnName="CreateQuestionPrice" />
                 <ScalarProperty Name="IsMajorVersion" ColumnName="IsMajorVersion" />
-                <ScalarProperty Name="VersionInfo" ColumnName="VersionInfo" />
+                <ScalarProperty Name="ClientVersionInfo" ColumnName="ClientVersionInfo" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -2331,8 +2341,10 @@
               <MappingFragment StoreEntitySet="Level">
                 <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-                <ScalarProperty Name="ScoreCeil" ColumnName="ScoreCeil" />
+                <ScalarProperty Name="QuestTitle" ColumnName="QuestTitle" />
+                <ScalarProperty Name="QuestType" ColumnName="QuestType" />
                 <ScalarProperty Name="QuestID" ColumnName="QuestID" />
+                <ScalarProperty Name="ScoreCeil" ColumnName="ScoreCeil" />
                 <ScalarProperty Name="CoinPrize" ColumnName="CoinPrize" />
                 <ScalarProperty Name="LevelNumber" ColumnName="LevelNumber" />
               </MappingFragment>
@@ -2584,6 +2596,7 @@
           <EntitySetMapping Name="Users">
             <EntityTypeMapping TypeName="Falcon.DbModel.User">
               <MappingFragment StoreEntitySet="User">
+                <ScalarProperty Name="AvatarImagePath" ColumnName="AvatarImagePath" />
                 <ScalarProperty Name="IPAddress" ColumnName="IPAddress" />
                 <ScalarProperty Name="RowVersion" ColumnName="RowVersion" />
                 <ScalarProperty Name="Model" ColumnName="Model" />
@@ -2648,7 +2661,7 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          </EntityContainerMapping>
+        </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
   </edmx:Runtime>

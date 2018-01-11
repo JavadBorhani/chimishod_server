@@ -7,11 +7,11 @@ namespace Falcon.Web.Models.Api
     public class SApplicationState
     {        
         public int ID { get; set; }
-        [Required]
-        public int Favorite_FavoritePrice { get; set; }
+        //[Required]
+        //public int Favorite_FavoritePrice { get; set; }
 
-        [Required]
-        public int Favorite_FreeNumberToFavorite { get; set; }
+        //[Required]
+        //public int Favorite_FreeNumberToFavorite { get; set; }
 
         [Required(AllowEmptyStrings = false)]
         public string User_DefaultUserName { get; set; }
@@ -98,8 +98,8 @@ namespace Falcon.Web.Models.Api
 
         [Required]
         public int Store_DefaultReturnAmount { get; set; }
-        [Required]
-        public int WatchAdCoin { get; set; }
+        //[Required]
+        //public int WatchAdCoin { get; set; }
 
         [Required]
         public int SpinWheelFortuneThreshold { get; set; }

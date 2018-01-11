@@ -9,11 +9,16 @@
 
 namespace Falcon.EFCommonContext.DbModel
 {
-
+    using System;
+    using System.Collections.Generic;
+    
     public partial class ClientApplicationState
     {
         public int ID { get; set; }
-        public int VersionInfo { get; set; }
+        public int ClientVersionInfo { get; set; }
         public bool IsMajorVersion { get; set; }
+        public int CreateQuestionPrice { get; set; }
+        public int WatchAdCoin { get; set; }
+        public int LevelVersionCode { get; set; }
     }
 }

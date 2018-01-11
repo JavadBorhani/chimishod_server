@@ -61,8 +61,8 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
         private bool ModelIsValid(SApplicationState model)
         {
             return (model.Comment_DefaultNumberAmount > 0 &&
-                model.Favorite_FavoritePrice > 0 &&
-                model.Favorite_FreeNumberToFavorite > 0 &&
+                //model.Favorite_FavoritePrice > 0 &&
+                //model.Favorite_FreeNumberToFavorite > 0 &&
                 !string.IsNullOrEmpty(model.Host_SmtpServer) &&
                 !string.IsNullOrEmpty(model.Host_SupportMail) &&
                 !string.IsNullOrEmpty(model.Host_SupportMailPassword) &&
@@ -88,7 +88,7 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
                 model.Question_ServerBurntReturnAmount >= 0 &&
                 model.Store_DefaultReturnAmount >= 0 &&
                 model.User_DefaultUserCoin >= 0 &&
-                model.WatchAdCoin >= 0 &&
+                //model.WatchAdCoin >= 0 &&
                 !string.IsNullOrEmpty(model.User_DefaultUserName)
                 );
         }

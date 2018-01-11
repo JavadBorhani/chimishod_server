@@ -1,11 +1,11 @@
 ﻿// Flapp Copyright 2017-2018
-using Falcon.Web.Api.MaintenanceProcessing.Public;
-using Falcon.Web.Models.Api;
-using System.Threading.Tasks;
-using Falcon.Data.QueryProcessors;
-using Falcon.Web.Api.WatchAd.Public;
 using Falcon.Common;
 using Falcon.Common.Security;
+using Falcon.Data.QueryProcessors;
+using Falcon.Web.Api.MaintenanceProcessing.Public;
+using Falcon.Web.Api.WatchAd.Public;
+using Falcon.Web.Models.Api;
+using System.Threading.Tasks;
 
 namespace Falcon.Web.Api.MaintenanceProcessing.Private
 {
@@ -16,7 +16,7 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
         private readonly IWatchAdValidator mWatchAdValidator;
         private readonly IWebUserSession mUserSession;
         private readonly IDateTime mDateTime;
-        private readonly IGlobalApplicationState mAppState;
+        private readonly IClientApplicationState mAppState;
          
         public WatchAdMaintenanceProcessor
             (
@@ -24,8 +24,8 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
             IUserQueryProcessor UserQueryProcessor , 
             IWatchAdValidator WatchAdValidator,
             IWebUserSession UserSession , 
-            IDateTime DateTime , 
-            IGlobalApplicationState AppState
+            IDateTime DateTime ,
+            IClientApplicationState AppState
             )
         {
             mWatchAdQueryProcessor = WatchAdQueryProcessor;
@@ -58,7 +58,7 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
                             InsertDate = mDateTime.Now
                         });
 
-                        var totalCoin = await mUserQueryProcessor.IncreaseCoin(mAppState.GetState().WatchAdCoin);
+                        var totalCoin = await mUserQueryProcessor.IncreaseCoin(mAppState.State().WatchAdCoin);
 
                         return totalCoin;
                     }

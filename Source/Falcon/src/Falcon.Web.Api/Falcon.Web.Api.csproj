@@ -196,6 +196,7 @@
     <Compile Include="Controllers\V1\WatchAdController.cs" />
     <Compile Include="Controllers\V2\AppStatesController.cs" />
     <Compile Include="Controllers\V2\FriendsController.cs" />
+    <Compile Include="Controllers\V2\InitializationController.cs" />
     <Compile Include="Controllers\V2\QuestionReportController.cs" />
     <Compile Include="Controllers\V2\QuestionsController.cs" />
     <Compile Include="Controllers\V2\QuestsController.cs" />
@@ -212,6 +213,7 @@
     <Compile Include="InquiryProcessing\Private\DWMInquiryProcessor.cs" />
     <Compile Include="InquiryProcessing\Private\FriendsInquiryProcessor.cs" />
     <Compile Include="InquiryProcessing\Private\GameConfigInqiuryProcessor.cs" />
+    <Compile Include="InquiryProcessing\Private\InitializationInquiryProcessor.cs" />
     <Compile Include="InquiryProcessing\Private\LevelInquiryProcessor.cs" />
     <Compile Include="InquiryProcessing\Private\QuestionReportInquiryProcessor.cs" />
     <Compile Include="InquiryProcessing\Private\QuestionsInquiryProcessor.cs" />
@@ -234,6 +236,7 @@
     <Compile Include="InquiryProcessing\Public\IDWMInquiryProcessor.cs" />
     <Compile Include="InquiryProcessing\Public\IFriendsInquiryProcessor.cs" />
     <Compile Include="InquiryProcessing\Public\IGameConfigInquiryProcessor.cs" />
+    <Compile Include="InquiryProcessing\Public\IInitializationInquiryProcessor.cs" />
     <Compile Include="InquiryProcessing\Public\ILevelInquiryProcessor.cs" />
     <Compile Include="InquiryProcessing\Public\IPagedDataRequestFactory.cs" />
     <Compile Include="InquiryProcessing\Private\PagedDataRequestFactory.cs" />

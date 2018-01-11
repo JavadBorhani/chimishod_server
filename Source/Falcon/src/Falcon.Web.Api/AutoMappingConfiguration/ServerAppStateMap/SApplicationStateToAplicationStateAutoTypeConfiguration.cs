@@ -11,8 +11,8 @@ namespace Falcon.Web.Api.AutoMappingConfiguration.ServerAppStateMap
             CreateMap<SApplicationState, ApplicationState>()
 
                 //Favorite
-                .ForMember(s => s.Favorite_FavoritePrice, ca => ca.MapFrom(y => y.Favorite_FavoritePrice))
-                .ForMember(s => s.Favorite_FreeNumberToFavorite, ca => ca.MapFrom(y => y.Favorite_FreeNumberToFavorite))
+                //.ForMember(s => s.Favorite_FavoritePrice, ca => ca.MapFrom(y => y.Favorite_FavoritePrice))
+                //.ForMember(s => s.Favorite_FreeNumberToFavorite, ca => ca.MapFrom(y => y.Favorite_FreeNumberToFavorite))
 
                 //User
                 .ForMember(s => s.User_DefaultUserName, ca => ca.MapFrom(y => y.User_DefaultUserName))
@@ -46,7 +46,7 @@ namespace Falcon.Web.Api.AutoMappingConfiguration.ServerAppStateMap
                 .ForMember(s => s.Comment_DefaultVerifyState, ca => ca.MapFrom(y => y.Comment_DefaultVerifyState))
 
                 //Watch Ad 
-                .ForMember(s => s.WatchAdCoin, ca => ca.MapFrom(y => y.WatchAdCoin))
+                //.ForMember(s => s.WatchAdCoin, ca => ca.MapFrom(y => y.WatchAdCoin))
 
                 //SpinWheel
                 .ForMember(s => s.SpinWheelFortuneThreshold, ca => ca.MapFrom(y => y.SpinWheelFortuneThreshold))
