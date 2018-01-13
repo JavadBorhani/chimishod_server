@@ -8,10 +8,13 @@ namespace Falcon.Web.Api.AutoMappingConfiguration.LevelMap
     {
         public LevelToSLevelAutoTypeConfiguration()
         {
-            //CreateMap<Level, SLevel>()
-            //    .ForMember(s => s.Coin, m => m.MapFrom(l => l.Star))
-            //    .ForMember(s => s.Ceil , m => m.MapFrom(l => l.ScoreCeil))
-            //    .ForMember(s => s.LevelNumber, m => m.MapFrom(l => l.LevelNumber));
+            CreateMap<Level, SLevel>()
+                .ForMember(s => s.LevelNumber, m => m.MapFrom(l => l.LevelNumber))
+                .ForMember(s => s.CoinPrize, m => m.MapFrom(l => l.CoinPrize))
+                .ForMember(s => s.ScoreCeil, m => m.MapFrom(l => l.ScoreCeil))
+                .ForMember(s => s.QuestID, m => m.MapFrom(l => l.QuestID))
+                .ForMember(s => s.QuestType, m => m.MapFrom(l => l.QuestType))
+                .ForMember(s => s.QuestTitle, m => m.MapFrom(l => l.QuestTitle));
         }
     }
 }

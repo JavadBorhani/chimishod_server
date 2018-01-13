@@ -2,7 +2,7 @@
 using Falcon.EFCommonContext.DbModel;
 using Falcon.Web.Models.Api;
 
-namespace Falcon.Web.Api.AutoMappingConfiguration.UserInfoMap
+namespace Falcon.Web.Api.AutoMappingConfiguration.UserMap.UserInfoMap
 {
     public class UserInfoToSUserInfoAutoTypeConfiguration : Profile
     {

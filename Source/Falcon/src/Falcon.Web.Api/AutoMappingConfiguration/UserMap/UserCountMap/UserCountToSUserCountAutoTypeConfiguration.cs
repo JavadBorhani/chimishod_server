@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 
-namespace Falcon.Web.Api.AutoMappingConfiguration.UserCountMap
+namespace Falcon.Web.Api.AutoMappingConfiguration.UserMap.UserCountMap
 {
     public class UserCountToSUserCountAutoTypeConfiguration : Profile
     { 

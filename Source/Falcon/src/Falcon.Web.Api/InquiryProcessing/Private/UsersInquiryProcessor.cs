@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Falcon.Common.Security;
 using Falcon.Data.QueryProcessors;
 using Falcon.Web.Api.InquiryProcessing.Public;
 using Falcon.Web.Models.Api;
@@ -10,9 +11,11 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
     {
         private readonly IUserQueryProcessor mUserQueryProcessor;
         private readonly IMapper mMapper;
+        private readonly IWebUserSession mUserSession;
 
-        public UsersInquiryProcessor(IUserQueryProcessor UserQueryProcessor , IMapper Mapper)
+        public UsersInquiryProcessor(IUserQueryProcessor UserQueryProcessor , IMapper Mapper ,  IWebUserSession UserSession)
         {
+            mUserSession = UserSession;
             mUserQueryProcessor = UserQueryProcessor;
             mMapper = Mapper;
         }
@@ -50,6 +53,15 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
             {
                 return null;
             }
+        }
+
+        public async Task<SUser> GetUserInfo()
+        {
+            var userdata = await mUserQueryProcessor.LoadUser(mUserSession.ID);
+
+            var user = mMapper.Map<SUser>(userdata);
+
+            return user;    
         }
     }
 }

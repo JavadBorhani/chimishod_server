@@ -13,7 +13,8 @@ namespace Falcon.Web.Api.AutoMappingConfiguration.ClientAppStateMap
                 .ForMember(s => s.IsMajorChange , m => m.MapFrom(c => c.IsMajorVersion))
                 .ForMember(s => s.CreateQuestionPrice , m => m.MapFrom( c => c.CreateQuestionPrice))
                 .ForMember(s => s.WatchAdCoin , m => m.MapFrom(c => c.WatchAdCoin))
-                .ForMember(s => s.LevelVersionCode , m => m.MapFrom(c => c.LevelVersionCode));
+                .ForMember(s => s.LevelVersionCode , m => m.MapFrom(c => c.LevelVersionCode))
+                .ForMember(s => s.XPLevelFactor, m => m.MapFrom(c => c.LevelVersionCode));
         }
     }
 }

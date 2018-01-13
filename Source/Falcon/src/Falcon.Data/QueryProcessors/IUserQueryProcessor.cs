@@ -13,7 +13,7 @@ namespace Falcon.Data.QueryProcessors
         Task<int> GetTotalCoin();
 
         Task<SUserCount> CreateUser();
-        Task<SUserCount> LoadUser();
+        Task<User> LoadUser(int UserID);
        
         //Task<int> GetDWMCount();
         //Task<bool> UpdateLastSeenDateTime();

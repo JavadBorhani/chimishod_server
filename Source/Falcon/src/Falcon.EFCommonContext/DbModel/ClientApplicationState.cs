@@ -20,5 +20,6 @@ namespace Falcon.EFCommonContext.DbModel
         public int CreateQuestionPrice { get; set; }
         public int WatchAdCoin { get; set; }
         public int LevelVersionCode { get; set; }
+        public int XPLevelFactor { get; set; }
     }
 }

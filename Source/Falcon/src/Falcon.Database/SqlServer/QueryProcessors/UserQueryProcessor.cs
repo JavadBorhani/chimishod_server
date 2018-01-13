@@ -91,9 +91,15 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             throw new NotImplementedException();
         }
 
-        public async Task<SUserCount> LoadUser()
+        public async Task<User> LoadUser(int UserID)
         {
-            throw new NotImplementedException();
+            var user = await mDb.Set<User>()
+                .AsNoTracking()
+                .Include( u => u.Level)
+                .Where(u => u.ID == UserID)
+                .SingleOrDefaultAsync();
+
+            return user;
         }
 
         public async Task<bool> LevelExits(int LevelNumber)

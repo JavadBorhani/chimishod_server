@@ -181,9 +181,10 @@
     <Compile Include="AutoMappingConfiguration\ReportTypeMap\ReportTypeToSReportTypeAutoTypeConfiguration.cs" />
     <Compile Include="AutoMappingConfiguration\SpinWheelMap\SpinWheelToSSpinWheelAutoTypeConfiguration.cs" />
     <Compile Include="AutoMappingConfiguration\StoreMap\StoreToSStoreAutoTypeConfiguration.cs" />
-    <Compile Include="AutoMappingConfiguration\UserCountMap\UserCountToSUserCountAutoTypeConfiguration.cs" />
-    <Compile Include="AutoMappingConfiguration\UserInfoMap\UserInfoToSUserInfoAutoTypeConfiguration.cs" />
-    <Compile Include="AutoMappingConfiguration\UserStatMap\UserStatToSUserStatAutoTypeConfiguration.cs" />
+    <Compile Include="AutoMappingConfiguration\UserMap\UserCountMap\UserCountToSUserCountAutoTypeConfiguration.cs" />
+    <Compile Include="AutoMappingConfiguration\UserMap\UserInfoMap\UserInfoToSUserInfoAutoTypeConfiguration.cs" />
+    <Compile Include="AutoMappingConfiguration\UserMap\UserStatMap\UserStatToSUserStatAutoTypeConfiguration.cs" />
+    <Compile Include="AutoMappingConfiguration\UserMap\UserToSUserAutoTypeConfiguration.cs" />
     <Compile Include="Controllers\V1\CharacteristicsController.cs" />
     <Compile Include="Controllers\V1\CodeGiftsController.cs" />
     <Compile Include="Controllers\V1\DWMController.cs" />

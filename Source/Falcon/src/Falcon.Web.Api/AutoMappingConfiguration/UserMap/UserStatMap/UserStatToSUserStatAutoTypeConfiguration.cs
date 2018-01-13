@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 
-namespace Falcon.Web.Api.AutoMappingConfiguration.UserStatMap
+namespace Falcon.Web.Api.AutoMappingConfiguration.UserMap.UserStatMap
 {
     public class UserStatToSUserStatAutoTypeConfiguration : Profile
     {

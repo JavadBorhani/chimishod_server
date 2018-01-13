@@ -152,7 +152,9 @@ namespace Falcon.Web.Api
             container.Bind<IUserInfoInquiryProcessor>().To<UserInfoInquiryProcessor>().InRequestScope();
             container.Bind<IQuestsInquiryProcessor>().To<QuestsInquiryProcessor>().InRequestScope();
             container.Bind<IFriendsInquiryProcessor>().To<FriendsInquiryProcessor>().InRequestScope();
+            container.Bind<IInitializationInquiryProcessor>().To<InitializationInquiryProcessor>().InRequestScope();
             container.Bind<ILevelInquiryProcessor>().To<LevelInquiryProcessor>().InRequestScope();
+            
 
         }
         private void  AddMaintenanceProcessors(IKernel container)

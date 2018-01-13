@@ -20,14 +20,16 @@ namespace Falcon.EFCommonContext.DbModel
             : base("name=DbEntity")
         {
         }
-        public DbEntity(string NameOrConnectionString) : base(NameOrConnectionString)
-        {
-        }
+    
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             throw new UnintentionalCodeFirstException();
         }
-    
+
+        public DbEntity(string NameOrConnectionString) : base(NameOrConnectionString)
+        {
+        }
+
         public virtual DbSet<AchievedCodeGift> AchievedCodeGifts { get; set; }
         public virtual DbSet<Answer> Answers { get; set; }
         public virtual DbSet<ApplicationState> ApplicationStates { get; set; }

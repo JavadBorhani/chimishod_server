@@ -63,7 +63,6 @@
           <Property Name="Prize_CreateNewQuestionScore" Type="int" Nullable="false" />
           <Property Name="Prize_NewQuestionAcceptedScore" Type="int" Nullable="false" />
           <Property Name="Prize_AnswerScoreAmount" Type="int" Nullable="false" />
-          <Property Name="DatabaseLevelVersionCode" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="ClientApplicationState">
           <Key>
@@ -75,6 +74,7 @@
           <Property Name="CreateQuestionPrice" Type="int" Nullable="false" />
           <Property Name="WatchAdCoin" Type="int" Nullable="false" />
           <Property Name="LevelVersionCode" Type="int" Nullable="false" />
+          <Property Name="XPLevelFactor" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="CodeGift">
           <Key>
@@ -1337,7 +1337,6 @@
           <Property Name="Prize_CreateNewQuestionScore" Type="Int32" Nullable="false" />
           <Property Name="Prize_NewQuestionAcceptedScore" Type="Int32" Nullable="false" />
           <Property Name="Prize_AnswerScoreAmount" Type="Int32" Nullable="false" />
-          <Property Name="DatabaseLevelVersionCode" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="ClientApplicationState">
           <Key>
@@ -1349,6 +1348,7 @@
           <Property Name="CreateQuestionPrice" Type="Int32" Nullable="false" />
           <Property Name="WatchAdCoin" Type="Int32" Nullable="false" />
           <Property Name="LevelVersionCode" Type="Int32" Nullable="false" />
+          <Property Name="XPLevelFactor" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="CodeGift">
           <Key>
@@ -2252,7 +2252,6 @@
           <EntitySetMapping Name="ApplicationStates">
             <EntityTypeMapping TypeName="Falcon.DbModel.ApplicationState">
               <MappingFragment StoreEntitySet="ApplicationState">
-                <ScalarProperty Name="DatabaseLevelVersionCode" ColumnName="DatabaseLevelVersionCode" />
                 <ScalarProperty Name="Prize_AnswerScoreAmount" ColumnName="Prize_AnswerScoreAmount" />
                 <ScalarProperty Name="Prize_NewQuestionAcceptedScore" ColumnName="Prize_NewQuestionAcceptedScore" />
                 <ScalarProperty Name="Prize_CreateNewQuestionScore" ColumnName="Prize_CreateNewQuestionScore" />
@@ -2290,6 +2289,7 @@
           <EntitySetMapping Name="ClientApplicationStates">
             <EntityTypeMapping TypeName="Falcon.DbModel.ClientApplicationState">
               <MappingFragment StoreEntitySet="ClientApplicationState">
+                <ScalarProperty Name="XPLevelFactor" ColumnName="XPLevelFactor" />
                 <ScalarProperty Name="LevelVersionCode" ColumnName="LevelVersionCode" />
                 <ScalarProperty Name="WatchAdCoin" ColumnName="WatchAdCoin" />
                 <ScalarProperty Name="CreateQuestionPrice" ColumnName="CreateQuestionPrice" />
