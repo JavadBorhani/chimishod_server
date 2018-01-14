@@ -10,14 +10,14 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
     public class QuestionsInquiryProcessor : IQuestionsInquiryProcessor
     {
         private readonly IQuestionsQueryProcessor mQuestionQuery;
-        private readonly IGameConfigInquiryProcessor mGameConfig;
+        private readonly IGameConfig mGameConfig;
         private readonly IQuestionSelectorQueryProcessor mQuestionSelector;
         private readonly IAnswerInquiryProcessor mAnswerInquiry;
         private readonly IUserSession mUserSession;
         
         public QuestionsInquiryProcessor(
             IQuestionsQueryProcessor QuestionQueryProcessor ,
-            IGameConfigInquiryProcessor GameConfig , 
+            IGameConfig GameConfig , 
             IAnswerInquiryProcessor AnswerInquiry, 
             IQuestionSelectorQueryProcessor QuestionSelector,
             IUserSession UserSession
@@ -31,9 +31,9 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
         }
 
 
-        public async Task<SQuestion[]> PrepareQuestionList(int CategoryID)
+        public async Task<SQuestion[]> PrepareQuestionList()
         {
-            var config = (await mGameConfig.GetQuestionSelectorConfig()).Clone() as SQuestionSelectorConfig; // refactor to read from cache 
+            var config = mGameConfig.GetQuestionSelectorConfig(); // refactor to read from cache 
 
             CalculateConfigAmounts(ref config);
 
@@ -44,16 +44,15 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
             
             // in the end joining with Manufacture and action based questions 
 
+            
 
 
             return null;                
         }
-        private void CalculateConfigAmounts(ref SQuestionSelectorConfig Config)
+        private void CalculateConfigAmounts(ref SGameConfig Config)
         {
-            Config.CreatedQuestionsPercent = (int)(((float)Config.CreatedQuestionsPercent / 100) * Config.TotalNumberOfQuestions);
-            Config.VerifiedQuestionsPercent = (int)(((float)Config.VerifiedQuestionsPercent / 100) * Config.TotalNumberOfQuestions);
-            Config.BoostedQuestionsPercent = (int)(((float)Config.BoostedQuestionsPercent / 100) * Config.TotalNumberOfQuestions);
-            Config.ActionBasedQuestionsPercent = (int)(((float)Config.ActionBasedQuestionsPercent / 100) * Config.TotalNumberOfQuestions);
+            Config.PeopleQuestionsPercent = (int)(((float)Config.PeopleQuestionsPercent / 100) * Config.TotalNumberOfQuestions);
+            Config.FunQuestionsPercent= (int)(((float)Config.FunQuestionsPercent / 100) * Config.TotalNumberOfQuestions);
         }
 
 

@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Falcon.EFCommonContext.DbModel;
 using Falcon.Web.Models.Api.Config;
 
 namespace Falcon.Web.Api.AutoMappingConfiguration.GameConfig
@@ -8,13 +7,12 @@ namespace Falcon.Web.Api.AutoMappingConfiguration.GameConfig
     {
         public QSConfigToSQuestionSelectorAutoTypeConfiguration()
         {
-            CreateMap<QuestionSelectorConfig, SQuestionSelectorConfig>()
+            CreateMap<EFCommonContext.DbModel.GameConfig, SGameConfig>()
                 .ForMember(sqs => sqs.ID , m => m.MapFrom(qs => qs.ID))
                 .ForMember(sqs => sqs.TotalNumberOfQuestions, m => m.MapFrom(qs => qs.TotalNumberOfQuestions))
-                .ForMember(sqs => sqs.CreatedQuestionsPercent, m => m.MapFrom(qs => qs.CreatedQuestionsPercent))
-                .ForMember(sqs => sqs.VerifiedQuestionsPercent, m => m.MapFrom(qs => qs.VerifiedQuestionsPercent))
-                .ForMember(sqs => sqs.BoostedQuestionsPercent, m => m.MapFrom(qs => qs.BoostedQuestionsPercent))
-                .ForMember(sqs => sqs.ActionBasedQuestionsPercent, m => m.MapFrom(qs => qs.ActionBasedQuestionsPercent));
+                .ForMember(sqs => sqs.PeopleQuestionsPercent, m => m.MapFrom(qs => qs.PeopleQuestionsPercent))
+                .ForMember(sqs => sqs.FunQuestionsPercent, m => m.MapFrom(qs => qs.FunQuestionsPercent))
+                .ReverseMap();
         }
     }
 }

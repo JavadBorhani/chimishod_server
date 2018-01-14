@@ -148,7 +148,7 @@ namespace Falcon.Web.Api
             //container.Bind<IUserStatsInquiryProcessor>().To<UserStatsInquiryProcessor>().InRequestScope();
             container.Bind<IAnswerInquiryProcessor>().To<AnswerInquiryProcessor>().InRequestScope();
             container.Bind<IQuestionsInquiryProcessor>().To<QuestionsInquiryProcessor>().InRequestScope();
-            container.Bind<IGameConfigInquiryProcessor>().To<GameConfigInqiuryProcessor>().InRequestScope();
+            
             container.Bind<IUserInfoInquiryProcessor>().To<UserInfoInquiryProcessor>().InRequestScope();
             container.Bind<IQuestsInquiryProcessor>().To<QuestsInquiryProcessor>().InRequestScope();
             container.Bind<IFriendsInquiryProcessor>().To<FriendsInquiryProcessor>().InRequestScope();
@@ -196,7 +196,8 @@ namespace Falcon.Web.Api
             //Global Application State
             container.Bind<IGlobalApplicationState>().To<GlobalApplicationState>().InSingletonScope();
             container.Bind<IClientApplicationState>().To<ClientApplicationState>().InSingletonScope();
-
+            //Game Configuration 
+            container.Bind<IGameConfig>().To<GameConfig>().InRequestScope();
 
 
             container.Bind<IItemPurchaseManager>().To<ItemPurchaseManager>().InRequestScope();
@@ -221,6 +222,7 @@ namespace Falcon.Web.Api
 
             //UUIDGenerator
             container.Bind<IUUIDGenerator>().To<UUIDGenerator>().InSingletonScope();
+            
 
         }
 

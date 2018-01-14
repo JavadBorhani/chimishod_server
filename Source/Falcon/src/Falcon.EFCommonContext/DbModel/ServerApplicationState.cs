@@ -12,7 +12,7 @@ namespace Falcon.EFCommonContext.DbModel
     using System;
     using System.Collections.Generic;
     
-    public partial class ApplicationState
+    public partial class ServerApplicationState
     {
         public int ID { get; set; }
         public string User_DefaultUserName { get; set; }

@@ -213,7 +213,7 @@
     <Compile Include="InquiryProcessing\Private\CreatedQuestionsInquiryProcessor.cs" />
     <Compile Include="InquiryProcessing\Private\DWMInquiryProcessor.cs" />
     <Compile Include="InquiryProcessing\Private\FriendsInquiryProcessor.cs" />
-    <Compile Include="InquiryProcessing\Private\GameConfigInqiuryProcessor.cs" />
+    <Compile Include="InquiryProcessing\Private\GameConfig.cs" />
     <Compile Include="InquiryProcessing\Private\InitializationInquiryProcessor.cs" />
     <Compile Include="InquiryProcessing\Private\LevelInMemoryProcessor.cs" />
     <Compile Include="InquiryProcessing\Private\LevelInquiryProcessor.cs" />
@@ -237,7 +237,7 @@
     <Compile Include="InquiryProcessing\Public\ICreatedQuestionsInquiryProcessor.cs" />
     <Compile Include="InquiryProcessing\Public\IDWMInquiryProcessor.cs" />
     <Compile Include="InquiryProcessing\Public\IFriendsInquiryProcessor.cs" />
-    <Compile Include="InquiryProcessing\Public\IGameConfigInquiryProcessor.cs" />
+    <Compile Include="InquiryProcessing\Public\IGameConfig.cs" />
     <Compile Include="InquiryProcessing\Public\IInitializationInquiryProcessor.cs" />
     <Compile Include="InquiryProcessing\Public\ILevelInMemoryProcessor.cs" />
     <Compile Include="InquiryProcessing\Public\ILevelInquiryProcessor.cs" />
@@ -312,6 +312,7 @@
     <Compile Include="Security\Private\SpinItem.cs" />
     <Compile Include="Security\Public\IEncryptor.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="Utilities\IInMemory.cs" />
     <Compile Include="Utilities\INetworkUtils.cs" />
     <Compile Include="Utilities\Mail\IMailManager.cs" />
     <Compile Include="Utilities\Mail\MailManager.cs" />

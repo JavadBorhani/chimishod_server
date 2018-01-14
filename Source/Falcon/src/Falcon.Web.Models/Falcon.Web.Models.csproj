@@ -47,7 +47,7 @@
     <Compile Include="Api\Achievement\SAchievementStatistic.cs" />
     <Compile Include="Api\Cache\SLevelCache.cs" />
     <Compile Include="Api\Config\SClientAppState.cs" />
-    <Compile Include="Api\Config\SQuestionSelectorConfig.cs" />
+    <Compile Include="Api\Config\SGameConfig.cs" />
     <Compile Include="Api\Config\SClientVersionInfo.cs" />
     <Compile Include="Api\Input\Questions\EditInfo.cs" />
     <Compile Include="Api\Input\Questions\RemoveInfo.cs" />

@@ -12,13 +12,11 @@ namespace Falcon.EFCommonContext.DbModel
     using System;
     using System.Collections.Generic;
     
-    public partial class QuestionSelectorConfig
+    public partial class GameConfig
     {
         public int ID { get; set; }
         public int TotalNumberOfQuestions { get; set; }
-        public int CreatedQuestionsPercent { get; set; }
-        public int VerifiedQuestionsPercent { get; set; }
-        public int BoostedQuestionsPercent { get; set; }
-        public int ActionBasedQuestionsPercent { get; set; }
+        public int PeopleQuestionsPercent { get; set; }
+        public int FunQuestionsPercent { get; set; }
     }
 }

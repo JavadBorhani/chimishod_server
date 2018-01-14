@@ -2,7 +2,12 @@
 
 namespace Falcon.Web.Models.Api
 {
-
+    public enum HashTagID : byte
+    {
+        Quest,
+        Fun,
+        People,
+    }
     public class SActionQuestion
     {
         public int? ActionCoin { get; set; }
@@ -15,17 +20,16 @@ namespace Falcon.Web.Models.Api
     public class SQuestion
     {
         public int ID { get; set; }
-        public string UserName { get; set; }
+        public int AuthorID { get; set; }
+        public string AuthorUserName { get; set; }
         public string What_if { get; set; }
         public string But { get; set; }
-        public int Catgory_ID { get; set; }
         public int Yes_Count { get; set; }
         public int No_Count { get; set; }
         public int Like_Count { get; set; }
         public int Dislike_Count { get; set; }
-        public double Weight { get; set; }
-        public bool Banned { get; set; }
+        public HashTagID HashtagID { get; set; }
+        public string HashtagTitle { get; set; }
         public SActionQuestion ActionInfo { get; set; }
-        public int CommentCount { get; set; }
     }
 }

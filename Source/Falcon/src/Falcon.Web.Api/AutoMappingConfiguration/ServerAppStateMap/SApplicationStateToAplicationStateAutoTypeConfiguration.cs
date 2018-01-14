@@ -8,7 +8,7 @@ namespace Falcon.Web.Api.AutoMappingConfiguration.ServerAppStateMap
     {
         public SApplicationStateToAplicationStateAutoTypeConfiguration()
         {
-            CreateMap<SApplicationState, ApplicationState>()
+            CreateMap<SApplicationState, ServerApplicationState>()
 
                 //Favorite
                 //.ForMember(s => s.Favorite_FavoritePrice, ca => ca.MapFrom(y => y.Favorite_FavoritePrice))

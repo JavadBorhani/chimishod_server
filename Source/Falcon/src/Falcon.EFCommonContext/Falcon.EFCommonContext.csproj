@@ -68,9 +68,6 @@
     <Compile Include="DbModel\Answer.cs">
       <DependentUpon>WhatIfDataModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="DbModel\ApplicationState.cs">
-      <DependentUpon>WhatIfDataModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="DbModel\ClientApplicationState.cs">
       <DependentUpon>WhatIfDataModel.tt</DependentUpon>
     </Compile>
@@ -78,6 +75,9 @@
       <DependentUpon>WhatIfDataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="DbModel\ContactU.cs">
+      <DependentUpon>WhatIfDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DbModel\GameConfig.cs">
       <DependentUpon>WhatIfDataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="DbModel\HashTag.cs">
@@ -107,9 +107,6 @@
     <Compile Include="DbModel\QuestionAction.cs">
       <DependentUpon>WhatIfDataModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="DbModel\QuestionSelectorConfig.cs">
-      <DependentUpon>WhatIfDataModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="DbModel\QuestQuestion.cs">
       <DependentUpon>WhatIfDataModel.tt</DependentUpon>
     </Compile>
@@ -132,6 +129,9 @@
       <DependentUpon>WhatIfDataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="DbModel\Sent.cs">
+      <DependentUpon>WhatIfDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DbModel\ServerApplicationState.cs">
       <DependentUpon>WhatIfDataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="DbModel\sp_helpdiagramdefinition_Result.cs">
