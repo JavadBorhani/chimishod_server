@@ -21,18 +21,20 @@ namespace Falcon.Web.Api.Controllers.V2
         }
 
         [Route("v2/Questions/Normal")]
-        [ResponseType(typeof(SUser))]
+        [ResponseType(typeof(SQuestion[]))]
         [HttpPost]
-        public async Task<SUser> GetNormalQuestionList()
+        public async Task<SQuestion[]> GetNormalQuestionList()
         {
-            return null;
+            var questions = await mQuestionInquiry.PrepareQuestionList();
+
+            return questions;
         }
 
 
         [Route("v2/Questions/Level/{LevelNumber}")]
-        [ResponseType(typeof(SUser))]
+        [ResponseType(typeof(SQuestion))]
         [HttpPost]
-        public async Task<SUser> GetLevelQuestions(int LevelNumber)
+        public async Task<SQuestion> GetLevelQuestions(int LevelNumber)
         {
             return null;
         }

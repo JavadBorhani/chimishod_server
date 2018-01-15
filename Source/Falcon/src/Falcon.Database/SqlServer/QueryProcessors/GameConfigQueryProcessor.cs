@@ -18,12 +18,12 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             mDb = Database;
         }
 
-        public async Task<GameConfig> GetGameConfiguration()
+        public GameConfig GetGameConfiguration()
         {
-            var data = await mDb.Set<GameConfig>()
+            var data = mDb.Set<GameConfig>()
                        .AsNoTracking()
                        .Where(qs => qs.ID == Constants.DefaultValues.QuestionSelectorConfigID)
-                       .SingleOrDefaultAsync();
+                       .SingleOrDefault();
             return data;
         }
 

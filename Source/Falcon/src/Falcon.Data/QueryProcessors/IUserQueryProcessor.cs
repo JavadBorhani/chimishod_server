@@ -1,5 +1,6 @@
 ﻿using Falcon.EFCommonContext.DbModel;
 using Falcon.Web.Models.Api;
+using Falcon.Web.Models.Api.Config;
 using Falcon.Web.Models.Api.Level;
 using Falcon.Web.Models.Api.User;
 using System.Threading.Tasks;
@@ -12,7 +13,7 @@ namespace Falcon.Data.QueryProcessors
         Task<int> DecreaseCoin(int Coin);
         Task<int> GetTotalCoin();
 
-        Task<SUserCount> CreateUser();
+        //Task<SUserCount> CreateUser();
         Task<User> LoadUser(int UserID);
        
         //Task<int> GetDWMCount();
@@ -24,10 +25,11 @@ namespace Falcon.Data.QueryProcessors
         //Task<SUserCount> GetUserCountInfo(int UserID);
 
         //v2 Create User
-        Task<User> CreateNewUser(SUserRegistrationForm UserRegisterationData);
+        Task<User> CreateNewUser(SUserRegistrationForm UserRegisterationData , SGameConfig GameConfig);
 
         Task<string> ReteriveUserUUID(SUserInfo userInfo);
         Task<bool> UpdateUserNotificationID(string UUID);
+        Task<bool> Exists(string UserName);
 
 
     }

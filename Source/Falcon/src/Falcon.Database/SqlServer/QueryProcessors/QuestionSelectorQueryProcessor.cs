@@ -1,8 +1,8 @@
-﻿using Falcon.Common;
+﻿using AutoMapper;
+using Falcon.Common;
 using Falcon.Data.QueryProcessors;
 using Falcon.EFCommonContext;
 using Falcon.Web.Models.Api;
-using System;
 using System.Threading.Tasks;
 
 namespace Falcon.Database.SqlServer.QueryProcessors
@@ -11,32 +11,28 @@ namespace Falcon.Database.SqlServer.QueryProcessors
     {
 
         private readonly IDateTime mDateTime;
-        private readonly IDbContext mDb;
+        private readonly IQuestionsQueryProcessor mQuestionQuery;
+        private readonly IMapper mMapper;
 
-        public QuestionSelectorQueryProcessor(IDateTime DateTime , IDbContext Database)
+        public QuestionSelectorQueryProcessor(IDateTime DateTime , IDbContext Database , IQuestionsQueryProcessor QuestionQuery , IMapper Mapper)
         {
             mDateTime = DateTime;
-            mDb = Database;
-        }
-        public async Task<SQuestion> GetActionBaseQuestions(int Amount)
-        {
-            throw new NotImplementedException();
+            mQuestionQuery = QuestionQuery;
+            mMapper = Mapper;
         }
 
-        public async Task<SQuestion> GetBoostedQuestions(int Amount)
+        public async Task<SQuestion[]> GetFunQuestions(int Amount, int[] answered)
         {
-                        
-            throw new NotImplementedException();
+            var questions = await mQuestionQuery.GetQuestionList(true , (int)HashTagID.Fun , answered);
+
+            return mMapper.Map<SQuestion[]>(questions);
         }
 
-        public async Task<SQuestion> GetCreatedQuestions(int Amount)
+        public async Task<SQuestion[]> GetPeopleQuestions(int Amount, int[] answerd)
         {
-            throw new NotImplementedException();
-        }
+            var questions = await mQuestionQuery.GetQuestionList(true , (int)HashTagID.People , answerd);
 
-        public async Task<SQuestion> GetVerifiedQuestions(int Amount)
-        {
-            throw new NotImplementedException();
+            return mMapper.Map<SQuestion[]>(questions);
         }
     }
 }

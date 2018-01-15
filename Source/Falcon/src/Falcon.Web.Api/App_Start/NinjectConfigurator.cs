@@ -111,7 +111,7 @@ namespace Falcon.Web.Api
             //container.Bind<IUserStatQueryProcessor>().To<UserStatQueryProcessor>().InRequestScope();
             //container.Bind<ICharacteristicsQueryProcessor>().To<CharacteristicsQueryProcessor>().InRequestScope();
             //container.Bind<IScoringQueryProcessor>().To<ScoringQueryProcessor>().InRequestScope();
-            //container.Bind<IQuestionsQueryProcessor>().To<QuestionsQueryProcessor>().InRequestScope();
+            container.Bind<IQuestionsQueryProcessor>().To<QuestionsQueryProcessor>().InRequestScope();
             container.Bind<IAnswerQueryProcessor>().To<AnswerQueryProcessor>().InRequestScope();
             container.Bind<IGameConfigQueryProcessor>().To<GameConfigQueryProcessor>().InRequestScope();
             container.Bind<IQuestionSelectorQueryProcessor>().To<QuestionSelectorQueryProcessor>().InRequestScope();
@@ -178,6 +178,7 @@ namespace Falcon.Web.Api
             container.Bind<IUserInfoMaintenanceProcessor>().To<UserInfoMaintenanceProcessor>().InRequestScope();
             container.Bind<IQuestsMaintenanceProcessor>().To<QuestsMaintenanceProcessor>().InRequestScope();
             container.Bind<IFriendsMaintenanceProcessor>().To<FriendsMaintenanceProcessor>().InRequestScope();
+            container.Bind<IQuestionsMaintenanceProcessor>().To<QuestionsMaintenanceProcessor>().InRequestScope();
 
         }
 
@@ -197,7 +198,7 @@ namespace Falcon.Web.Api
             container.Bind<IGlobalApplicationState>().To<GlobalApplicationState>().InSingletonScope();
             container.Bind<IClientApplicationState>().To<ClientApplicationState>().InSingletonScope();
             //Game Configuration 
-            container.Bind<IGameConfig>().To<GameConfig>().InRequestScope();
+            container.Bind<IGameConfig>().To<GameConfig>().InSingletonScope();
 
 
             container.Bind<IItemPurchaseManager>().To<ItemPurchaseManager>().InRequestScope();

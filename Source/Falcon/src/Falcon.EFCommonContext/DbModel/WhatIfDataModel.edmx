@@ -75,6 +75,9 @@
           <Property Name="TotalNumberOfQuestions" Type="int" Nullable="false" />
           <Property Name="PeopleQuestionsPercent" Type="int" Nullable="false" />
           <Property Name="FunQuestionsPercent" Type="int" Nullable="false" />
+          <Property Name="DefaultUserCoinAmount" Type="int" Nullable="false" />
+          <Property Name="DefaultUserLevelNumber" Type="int" Nullable="false" />
+          <Property Name="DefaultUserLevelProgress" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="HashTag">
           <Key>
@@ -181,7 +184,8 @@
           <Property Name="ReportCount" Type="int" Nullable="false" />
           <Property Name="Banned" Type="bit" Nullable="false" />
           <Property Name="RemovedByCreator" Type="bit" Nullable="false" />
-          <Property Name="IsPublic" Type="int" Nullable="false" />
+          <Property Name="IsPublic" Type="bit" Nullable="false" />
+          <Property Name="IsOurAuthor" Type="bit" Nullable="false" />
           <Property Name="CreatedDate" Type="datetime" Nullable="false" />
           <Property Name="UpdateDate" Type="datetime" Nullable="false" />
         </EntityType>
@@ -1348,6 +1352,9 @@
           <Property Name="TotalNumberOfQuestions" Type="Int32" Nullable="false" />
           <Property Name="PeopleQuestionsPercent" Type="Int32" Nullable="false" />
           <Property Name="FunQuestionsPercent" Type="Int32" Nullable="false" />
+          <Property Name="DefaultUserCoinAmount" Type="Int32" Nullable="false" />
+          <Property Name="DefaultUserLevelNumber" Type="Int32" Nullable="false" />
+          <Property Name="DefaultUserLevelProgress" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="HashTag">
           <Key>
@@ -1466,7 +1473,8 @@
           <Property Name="ReportCount" Type="Int32" Nullable="false" />
           <Property Name="Banned" Type="Boolean" Nullable="false" />
           <Property Name="RemovedByCreator" Type="Boolean" Nullable="false" />
-          <Property Name="IsPublic" Type="Int32" Nullable="false" />
+          <Property Name="IsPublic" Type="Boolean" Nullable="false" />
+          <Property Name="IsOurAuthor" Type="Boolean" Nullable="false" />
           <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="UpdateDate" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="Answers" Relationship="Falcon.DbModel.FK_Answer_Question" FromRole="Question" ToRole="Answer" />
@@ -2288,6 +2296,9 @@
           <EntitySetMapping Name="GameConfigs">
             <EntityTypeMapping TypeName="Falcon.DbModel.GameConfig">
               <MappingFragment StoreEntitySet="GameConfig">
+                <ScalarProperty Name="DefaultUserLevelProgress" ColumnName="DefaultUserLevelProgress" />
+                <ScalarProperty Name="DefaultUserLevelNumber" ColumnName="DefaultUserLevelNumber" />
+                <ScalarProperty Name="DefaultUserCoinAmount" ColumnName="DefaultUserCoinAmount" />
                 <ScalarProperty Name="FunQuestionsPercent" ColumnName="FunQuestionsPercent" />
                 <ScalarProperty Name="PeopleQuestionsPercent" ColumnName="PeopleQuestionsPercent" />
                 <ScalarProperty Name="TotalNumberOfQuestions" ColumnName="TotalNumberOfQuestions" />
@@ -2393,6 +2404,7 @@
               <MappingFragment StoreEntitySet="Question">
                 <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="IsOurAuthor" ColumnName="IsOurAuthor" />
                 <ScalarProperty Name="IsPublic" ColumnName="IsPublic" />
                 <ScalarProperty Name="RemovedByCreator" ColumnName="RemovedByCreator" />
                 <ScalarProperty Name="Banned" ColumnName="Banned" />

@@ -18,5 +18,8 @@ namespace Falcon.EFCommonContext.DbModel
         public int TotalNumberOfQuestions { get; set; }
         public int PeopleQuestionsPercent { get; set; }
         public int FunQuestionsPercent { get; set; }
+        public int DefaultUserCoinAmount { get; set; }
+        public int DefaultUserLevelNumber { get; set; }
+        public int DefaultUserLevelProgress { get; set; }
     }
 }

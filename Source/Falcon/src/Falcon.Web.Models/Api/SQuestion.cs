@@ -2,11 +2,11 @@
 
 namespace Falcon.Web.Models.Api
 {
-    public enum HashTagID : byte
+    public enum HashTagID : int
     {
-        Quest,
-        Fun,
-        People,
+        Quest = 1 ,
+        Fun = 2 ,
+        People = 3 ,
     }
     public class SActionQuestion
     {
@@ -28,8 +28,8 @@ namespace Falcon.Web.Models.Api
         public int No_Count { get; set; }
         public int Like_Count { get; set; }
         public int Dislike_Count { get; set; }
-        public HashTagID HashtagID { get; set; }
         public string HashtagTitle { get; set; }
+        public HashTagID HashtagID { get; set; }
         public SActionQuestion ActionInfo { get; set; }
     }
 }

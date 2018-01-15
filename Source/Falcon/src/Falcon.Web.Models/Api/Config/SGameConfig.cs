@@ -11,19 +11,9 @@
 
         public int FunQuestionsPercent { get; set; }
 
+        public int DefaultUserCoinAmount { get; set; }    
+        public int DefaultUserLevelNumber { get; set; }
+        public int DefaultUserLevelProgress { get; set; }
 
-        public SGameConfig()
-        {
-
-        }
-
-        public SGameConfig(int id , int tnq , int pqc , int fqp )
-        {
-            ID = id;
-            TotalNumberOfQuestions = tnq;
-            PeopleQuestionsPercent = pqc;
-            FunQuestionsPercent = fqp; 
-        }
-    
     }
 }

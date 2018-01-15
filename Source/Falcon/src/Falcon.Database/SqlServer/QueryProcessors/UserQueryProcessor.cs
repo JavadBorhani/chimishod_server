@@ -4,6 +4,7 @@ using Falcon.Data.QueryProcessors;
 using Falcon.EFCommonContext;
 using Falcon.EFCommonContext.DbModel;
 using Falcon.Web.Models.Api;
+using Falcon.Web.Models.Api.Config;
 using Falcon.Web.Models.Api.Level;
 using Falcon.Web.Models.Api.User;
 using System;
@@ -86,7 +87,7 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             return user.TotalCoin;
         }
 
-        public async Task<SUserCount> CreateUser()
+        public async Task<SUserCount> CreateUser(SGameConfig GameConfig)
         {
             throw new NotImplementedException();
         }
@@ -216,7 +217,7 @@ namespace Falcon.Database.SqlServer.QueryProcessors
         //    return count;
         //}
 
-        public async Task<User> CreateNewUser(SUserRegistrationForm UserRegisterationData)
+        public async Task<User> CreateNewUser(SUserRegistrationForm UserRegisterationData , SGameConfig GameConfig)
         {
             //todo => change default datas to something valid 
             var user = mDb.Set<User>().Add(new User
@@ -227,8 +228,9 @@ namespace Falcon.Database.SqlServer.QueryProcessors
                 IsMale = Convert.ToBoolean(UserRegisterationData.Gender),
                 NotificationID = UserRegisterationData.NotificationID.ToString(),
                 Platform = (int)UserRegisterationData.Platform,
-                LevelProgress = 0 ,
-                TotalCoin = 10 ,
+                LevelNumber = GameConfig.DefaultUserLevelNumber,
+                LevelProgress = GameConfig.DefaultUserLevelProgress ,
+                TotalCoin = GameConfig.DefaultUserCoinAmount,
                 APILevel = UserRegisterationData.APILevel,
                 Device = UserRegisterationData.Device,
                 Model = UserRegisterationData.Model,
@@ -261,6 +263,16 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             }
             return false;
 
+        }
+
+        public async Task<bool> Exists(string UserName)
+        {
+            var item = await mDb.Set<User>()
+                .AsNoTracking()
+                .Where(u => u.UserName == UserName)
+                .CountAsync() > 0;
+
+            return item;
         }
     }
 }   

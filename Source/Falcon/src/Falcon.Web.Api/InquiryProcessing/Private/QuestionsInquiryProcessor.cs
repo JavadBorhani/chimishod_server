@@ -1,8 +1,10 @@
-﻿using Falcon.Common.Security;
+﻿using AutoMapper;
+using Falcon.Common.Security;
 using Falcon.Data.QueryProcessors;
 using Falcon.Web.Api.InquiryProcessing.Public;
 using Falcon.Web.Models.Api;
 using Falcon.Web.Models.Api.Config;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Falcon.Web.Api.InquiryProcessing.Private
@@ -33,20 +35,16 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
 
         public async Task<SQuestion[]> PrepareQuestionList()
         {
-            var config = mGameConfig.GetQuestionSelectorConfig(); // refactor to read from cache 
+            var config = mGameConfig.GetQuestionSelectorConfig(); 
 
             CalculateConfigAmounts(ref config);
 
             var userAnsweredIds = await mAnswerInquiry.GetUserAnswerQuestions(mUserSession.ID);
 
-            // 1- get user created questions
-            // 2- get usual questions based on weeks 
-            
-            // in the end joining with Manufacture and action based questions 
+            var funQuestions = await mQuestionSelector.GetFunQuestions(config.FunQuestionsPercent , userAnsweredIds);
+            var peopleQuestions = await mQuestionSelector.GetPeopleQuestions(config.PeopleQuestionsPercent , userAnsweredIds);
 
-            
-
-
+            var items = funQuestions.Concat(peopleQuestions);
             return null;                
         }
         private void CalculateConfigAmounts(ref SGameConfig Config)

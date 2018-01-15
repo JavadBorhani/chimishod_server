@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using Falcon.EFCommonContext.DbModel;
 using System.Threading.Tasks;
 
 namespace Falcon.Data.QueryProcessors
@@ -10,5 +7,6 @@ namespace Falcon.Data.QueryProcessors
     {
         Task<bool> LogicallyRemoveByCreator(int QuestionID);
         Task<bool> IsDeletable(int QuestionID);
+        Task<Question[]> GetQuestionList(bool IsPublic , int HashtagID,  int[] Excepts = null);
     }
 }

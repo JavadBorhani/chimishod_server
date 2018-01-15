@@ -6,7 +6,7 @@ namespace Falcon.Data.QueryProcessors
 {
     public interface IGameConfigQueryProcessor
     {
-        Task<GameConfig> GetGameConfiguration();
+        GameConfig GetGameConfiguration();
         Task<bool> SetGameConfiguration(SGameConfig Config);
     }
 }

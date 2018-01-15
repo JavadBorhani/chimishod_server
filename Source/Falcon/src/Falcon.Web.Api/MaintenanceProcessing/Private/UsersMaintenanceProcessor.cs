@@ -1,5 +1,6 @@
 ﻿using Falcon.Common;
 using Falcon.Data.QueryProcessors;
+using Falcon.Web.Api.InquiryProcessing.Public;
 using Falcon.Web.Api.MaintenanceProcessing.Public;
 using Falcon.Web.Api.Utilities;
 using Falcon.Web.Models.Api;
@@ -16,19 +17,21 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
         private readonly IUserInfoQueryProcessor mUserInfoQuery;
         private readonly INetworkUtils mNetworkUtils;
         private readonly IUUIDGenerator mUUID;
+        private readonly IGameConfig mGameConfig;
 
         public UsersMaintenanceProcessor
             (
             IUserQueryProcessor UserQueryProcessor ,
             IUserInfoQueryProcessor UserInfoQuery , 
             INetworkUtils NetworkUtils , 
-            IUUIDGenerator Generator)
+            IUUIDGenerator Generator , 
+            IGameConfig GameConfig)
         {
             mUserQuery = UserQueryProcessor;
             mUserInfoQuery = UserInfoQuery;
             mNetworkUtils = NetworkUtils;
             mUUID = Generator;
-            
+            mGameConfig = GameConfig;
         }
 
         public async Task<int> LevelUp(int Prize)
@@ -66,10 +69,14 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
 
         public async Task<string> CreateNewUser(SUserRegistrationForm RegistrationForm)
         {
+            var exists = await mUserQuery.Exists(RegistrationForm.UserName);
+            if (exists)
+                return null;
+
             RegistrationForm.IPAddress = mNetworkUtils.GetRequestNetworkIP();
             RegistrationForm.UUID = mUUID.GetNewUUID();
 
-            var user = await mUserQuery.CreateNewUser(RegistrationForm);
+            var user = await mUserQuery.CreateNewUser(RegistrationForm , mGameConfig.GetState());
             var created = await mUserInfoQuery.CreateEmptyUserInfo(user.ID);
 
             if (created)

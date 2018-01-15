@@ -39,7 +39,8 @@ namespace Falcon.EFCommonContext.DbModel
         public int ReportCount { get; set; }
         public bool Banned { get; set; }
         public bool RemovedByCreator { get; set; }
-        public int IsPublic { get; set; }
+        public bool IsPublic { get; set; }
+        public bool IsOurAuthor { get; set; }
         public System.DateTime CreatedDate { get; set; }
         public System.DateTime UpdateDate { get; set; }
     
