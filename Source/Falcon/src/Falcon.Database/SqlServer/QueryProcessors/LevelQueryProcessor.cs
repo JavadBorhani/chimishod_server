@@ -2,6 +2,7 @@
 using Falcon.EFCommonContext;
 using Falcon.EFCommonContext.DbModel;
 using System.Data.Entity;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Falcon.Database.SqlServer.QueryProcessors
@@ -18,6 +19,16 @@ namespace Falcon.Database.SqlServer.QueryProcessors
         {
             var data = await mDb.Set<Level>().AsNoTracking().ToArrayAsync();
             return data;    
+        }
+
+        public async Task<int> GetLevelQuest(int LevelID)
+        {
+            var levelQuestID = await mDb.Set<Level>()
+                .AsNoTracking()
+                .Where(l => l.LevelNumber == LevelID)
+                .Select(l => l.Quest.QuestNumber).SingleOrDefaultAsync();
+
+            return levelQuestID;
         }
     }
 }

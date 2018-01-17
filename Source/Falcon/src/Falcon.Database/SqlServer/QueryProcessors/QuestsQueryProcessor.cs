@@ -3,6 +3,7 @@ using Falcon.Data.QueryProcessors;
 using Falcon.EFCommonContext;
 using Falcon.EFCommonContext.DbModel;
 using System.Data.Entity;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Falcon.Database.SqlServer.QueryProcessors
@@ -26,6 +27,18 @@ namespace Falcon.Database.SqlServer.QueryProcessors
         {
             var data = await mDb.Set<Quest>().AsNoTracking().SingleOrDefaultAsync(q => q.QuestNumber == ID);
             return data;
+        }
+
+        public async Task<Question[]> GetQuestQuestions(int QuestNumber)
+        {
+            var questions = await mDb.Set<QuestQuestion>()
+                .AsNoTracking()
+                .Where(q => q.QuestNumber == QuestNumber)
+                .Select(q => q.QuestionID)
+                .Join(mDb.Set<Question>(), QuestionID => QuestionID, Question => Question.ID, (QuestionID, Question) => Question)
+                .ToArrayAsync();
+
+            return questions;
         }
     }
 }

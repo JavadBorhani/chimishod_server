@@ -6,5 +6,6 @@ namespace Falcon.Web.Api.InquiryProcessing.Public
     public interface ILevelInquiryProcessor
     {
         Task<SLevel[]> GetLevelList();
+        Task<int> GetLevelQuestNumber(int LevelNumber);
     }
 }

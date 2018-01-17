@@ -3,10 +3,8 @@ using Falcon.Data.QueryProcessors;
 using Falcon.Web.Api.InquiryProcessing.Public;
 using Falcon.Web.Api.MaintenanceProcessing.Public;
 using Falcon.Web.Api.Utilities;
-using Falcon.Web.Models.Api;
 using Falcon.Web.Models.Api.Level;
 using Falcon.Web.Models.Api.User;
-using System;
 using System.Threading.Tasks;
 
 namespace Falcon.Web.Api.MaintenanceProcessing.Private
@@ -58,12 +56,7 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
             } while (info.LevelUpMode == LevelUpMode.LeveledUpAndNeedAnother);
 
             return totalCoin;
-        }
-
-        public async Task<SUser> LoadUser(int UserID)
-        {
-            throw new NotImplementedException();
-        }
+        }        
 
         
 

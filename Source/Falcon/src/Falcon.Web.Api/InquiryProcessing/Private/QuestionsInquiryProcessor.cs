@@ -16,6 +16,8 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
         private readonly IQuestionSelectorQueryProcessor mQuestionSelector;
         private readonly IAnswerInquiryProcessor mAnswerInquiry;
         private readonly IUserSession mUserSession;
+        private readonly ILevelInquiryProcessor mLevelInquiry;
+        private readonly IQuestsInquiryProcessor mQuestInquiry;
         private SGameConfig mGameConfig;
         
         public QuestionsInquiryProcessor(
@@ -23,7 +25,9 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
             IGameConfig GameConfig , 
             IAnswerInquiryProcessor AnswerInquiry, 
             IQuestionSelectorQueryProcessor QuestionSelector,
-            IUserSession UserSession
+            IUserSession UserSession,
+            ILevelInquiryProcessor LevelInquiry,
+            IQuestsInquiryProcessor QuestInquiry
             )
         {
             mQuestionQuery = QuestionQueryProcessor;
@@ -31,6 +35,8 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
             mAnswerInquiry = AnswerInquiry;
             mQuestionSelector = QuestionSelector;
             mUserSession = UserSession;
+            mLevelInquiry = LevelInquiry;
+            mQuestInquiry = QuestInquiry;
         }
 
 
@@ -61,8 +67,19 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
             return config;
         }
 
+        public async Task<SQuestion[]> FetchLevelQuestions(int LevelNumber)
+        {
+            var questNumber = await mLevelInquiry.GetLevelQuestNumber(LevelNumber);
+            if(questNumber != 0 )
+            {
+                //has quest
+                var questions =  await mQuestInquiry.GetQuestQuestions(questNumber);
+                return questions;
 
-        
+            }
 
+            return null;
+
+        }        
     }
 }

@@ -204,7 +204,6 @@
     <Compile Include="Controllers\V1\DWMController.cs" />
     <Compile Include="Controllers\V1\TestController.cs" />
     <Compile Include="Controllers\V1\LeaderBoardController.cs" />
-    <Compile Include="Controllers\V1\LevelsController.cs" />
     <Compile Include="Controllers\V1\NotificationController.cs" />
     <Compile Include="Controllers\V1\AppAdvertisementsController.cs" />
     <Compile Include="Controllers\V1\SpinWheelController.cs" />
@@ -212,6 +211,7 @@
     <Compile Include="Controllers\V2\AppStatesController.cs" />
     <Compile Include="Controllers\V2\FriendsController.cs" />
     <Compile Include="Controllers\V2\InitializationController.cs" />
+    <Compile Include="Controllers\V2\LevelController.cs" />
     <Compile Include="Controllers\V2\QuestionsController.cs" />
     <Compile Include="Controllers\V2\QuestsController.cs" />
     <Compile Include="Controllers\V2\ReportController.cs" />

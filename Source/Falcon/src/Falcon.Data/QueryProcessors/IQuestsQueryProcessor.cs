@@ -6,7 +6,7 @@ namespace Falcon.Data.QueryProcessors
     public interface IQuestsQueryProcessor
     {
         Task<Quest[]> GetAllQuests();
-        Task<Quest> GetQuestByID(int QuestNumber); 
-
+        Task<Quest> GetQuestByID(int QuestNumber);
+        Task<Question[]> GetQuestQuestions(int QuestNumber);
     }
 }

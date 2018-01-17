@@ -37,7 +37,7 @@ namespace Falcon.Web.Api.Controllers.V2
         [HttpPost]
         public async Task<SQuestion> GetLevelQuestions(int LevelNumber)
         {
-
+            var questions = await mQuestionInquiry.FetchLevelQuestions(LevelNumber);
             return null;
         }
     }
