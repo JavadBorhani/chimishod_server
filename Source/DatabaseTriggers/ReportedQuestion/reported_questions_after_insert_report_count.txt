@@ -1,0 +1,43 @@
+USE [SocialChimishod]
+GO
+/****** Object:  Trigger [dbo].[reported_questions_after_insert_report_count]    Script Date: 1/17/2018 1:45:40 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		<Author,,Name>
+-- Create date: <Create Date,,>
+-- Description:	<Description,,>
+-- =============================================
+ALTER TRIGGER [dbo].[reported_questions_after_insert_report_count]
+   ON  [dbo].[ReportedQuestions]
+   after Delete , insert
+AS 
+BEGIN
+  
+	Update 
+	[dbo].[Question]
+	Set 
+		ReportCount = ReportCount + 
+		(
+		Select COUNT(*)
+		From inserted I 
+		Where I.QuestionID = [dbo].[Question].ID
+		)
+	Where 
+		ID IN (Select QuestionID from inserted)
+
+
+	Update 
+	[dbo].[Question]
+	Set 
+		ReportCount = ReportCount - 
+		(
+		Select COUNT(*)
+		From deleted I 
+		Where I.QuestionID = [dbo].[Question].ID
+		)
+	Where 
+		ID IN (Select QuestionID from deleted)
+END
