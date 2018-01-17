@@ -2,6 +2,7 @@
 using Falcon.Web.Api.MaintenanceProcessing.Public;
 using Falcon.Web.Api.Utilities.Base;
 using Falcon.Web.Models.Api;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
@@ -20,10 +21,10 @@ namespace Falcon.Web.Api.Controllers.V2
             mQuestionMaintenance = QuestionMaintenance;
         }
 
-        [Route("v2/Questions/Normal")]
-        [ResponseType(typeof(SQuestion[]))]
+        [Route("v2/Questions")]
+        [ResponseType(typeof(List<SQuestion>))]
         [HttpPost]
-        public async Task<SQuestion[]> GetNormalQuestionList()
+        public async Task<List<SQuestion>> GetNormalQuestionList()
         {
             var questions = await mQuestionInquiry.PrepareQuestionList();
 
@@ -36,6 +37,7 @@ namespace Falcon.Web.Api.Controllers.V2
         [HttpPost]
         public async Task<SQuestion> GetLevelQuestions(int LevelNumber)
         {
+
             return null;
         }
     }

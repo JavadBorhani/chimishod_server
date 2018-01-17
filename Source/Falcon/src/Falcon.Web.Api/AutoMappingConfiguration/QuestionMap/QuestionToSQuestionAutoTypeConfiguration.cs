@@ -10,16 +10,20 @@ namespace Falcon.Web.Api.AutoMappingConfiguration.QuestionMap
         {
             CreateMap<Question, SQuestion>()
                 .ForMember(q => q.ID, m => m.MapFrom(s => s.ID))
-                .ForMember(q => q.What_if, m => m.MapFrom(s => s.ID))
-                .ForMember(q => q.But, m => m.MapFrom(s => s.ID))
-                .ForMember(q => q.Yes_Count, m => m.MapFrom(s => s.HashTagID))
-                .ForMember(q => q.No_Count, m => m.MapFrom(s => s.ID))
-                .ForMember(q => q.Like_Count, m => m.MapFrom(s => s.ID))
-                .ForMember(q => q.Dislike_Count, m => m.MapFrom(s => s.ID))
-                .ForMember(q => q.ID, m => m.MapFrom(s => s.ID))
-                .ForMember(q => q.ID, m => m.MapFrom(s => s.ID))
-                ;
+                .ForMember(q => q.AuthorID, m => m.MapFrom(s => s.UserID))
+                .ForMember(q => q.What_if, m => m.MapFrom(s => s.What_if))
+                .ForMember(q => q.But, m => m.MapFrom(s => s.But))
+                .ForMember(q => q.Yes_Count, m => m.MapFrom(s => s.Yes_Count))
+                .ForMember(q => q.No_Count, m => m.MapFrom(s => s.No_Count))
+                .ForMember(q => q.Like_Count, m => m.MapFrom(s => s.Like_Count))
+                .ForMember(q => q.Dislike_Count, m => m.MapFrom(s => s.Dislike_Count))
+                .ForMember(q => q.AuthorUserName, m => m.MapFrom(s => s.User.UserName))
+                .ForMember(q => q.ActionInfo , m => m.MapFrom(s => s.QuestionAction));
         }
+
+        //AuthorID
+        //AuthorUserName
+        //ActionInfo
 
         //public int ID { get; set; }
         //public string What_if { get; set; }

@@ -35,6 +35,7 @@ namespace Falcon.EFCommonContext.DbModel
         public int Dislike_Count { get; set; }
         public Nullable<int> ActionID { get; set; }
         public double Weight { get; set; }
+        public int AnswerCount { get; set; }
         public int CommentCount { get; set; }
         public int ReportCount { get; set; }
         public bool Banned { get; set; }

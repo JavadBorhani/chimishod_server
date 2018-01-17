@@ -1,5 +1,6 @@
 ﻿using Falcon.Web.Api.InquiryProcessing.Public;
 using Falcon.Web.Api.MaintenanceProcessing.Public;
+using Falcon.Web.Api.Utilities.Base;
 using Falcon.Web.Models.Api;
 using Falcon.Web.Models.Api.Report;
 using System.Threading.Tasks;
@@ -8,18 +9,20 @@ using System.Web.Http.Description;
 
 namespace Falcon.Web.Api.Controllers.V2
 {
-    public class QuestionReportController
+
+    public class ReportController : FalconApiController
     {
         private readonly IQuestionReportInquiryProcessor mReportInquiry;
         private readonly IQuestionReportMaintenanceProcessor mReportMaintenance;
-        public QuestionReportController(IQuestionReportInquiryProcessor ReportInquiry , IQuestionReportMaintenanceProcessor ReportMaintenance)
+
+        public ReportController(IQuestionReportInquiryProcessor ReportInquiry, IQuestionReportMaintenanceProcessor ReportMaintenance)
         {
             mReportInquiry = ReportInquiry;
             mReportMaintenance = ReportMaintenance;
         }
 
-        [ResponseType(typeof(SReportType))]
-        [Route("v2/ReportTypes/")]
+        [ResponseType(typeof(SReportType[]))]
+        [Route("v2/Report/List")]
         [HttpPost]
         public async Task<SReportType[]> GetReportTypes()
         {
@@ -27,7 +30,8 @@ namespace Falcon.Web.Api.Controllers.V2
             return result;
         }
 
-        [Route("v2/ReportedQuestion/")] //TODO Refactor this to packet
+        [ResponseType(typeof(bool))]
+        [Route("v2/Report/Question")] //TODO Refactor this to packet
         [HttpPost]
         public async Task<bool> ReportQuestion(SReportedQuestion Question)
         {
@@ -35,7 +39,5 @@ namespace Falcon.Web.Api.Controllers.V2
             return result;
 
         }
-
-
     }
 }

@@ -1,11 +1,10 @@
 ﻿using Falcon.Common.Logging;
-using Falcon.Web.Api.JobSystem.Private.Jobs;
 using Falcon.Web.Api.JobSystem.Public;
 using Falcon.Web.Api.Security.Private;
 using Falcon.Web.Api.Security.Public;
 using Falcon.Web.Common;
-using System;
-using System.Linq;
+using Microsoft.AspNet.WebApi.Extensions.Compression.Server;
+using System.Net.Http.Extensions.Compression.Core.Compressors;
 using System.Web.Http;
 
 
@@ -30,7 +29,11 @@ namespace Falcon.Web.Api
 
             //TODO: Add Token builder here 
 
-            
+            //Adding Compressing System
+            GlobalConfiguration.Configuration.MessageHandlers.Insert(0, new ServerCompressionHandler
+                (new GZipCompressor(), new DeflateCompressor()));
+
+
         }
         private void RegisterJobs()
         {

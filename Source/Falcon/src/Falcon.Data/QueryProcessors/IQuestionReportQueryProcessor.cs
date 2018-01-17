@@ -1,4 +1,5 @@
 ﻿using Falcon.EFCommonContext.DbModel;
+using Falcon.Web.Models.Api.Report;
 using System.Threading.Tasks;
 
 namespace Falcon.Data.QueryProcessors
@@ -6,6 +7,6 @@ namespace Falcon.Data.QueryProcessors
     public interface IQuestionReportQueryProcessor
     {
         Task<ReportType[]> GetReportTypeList();
-        Task<int> GetReportCountByQuestionID(int QuestionID);
+        Task<bool> ReportQuestion(SReportedQuestion ReportedQuestion);
     }
 }

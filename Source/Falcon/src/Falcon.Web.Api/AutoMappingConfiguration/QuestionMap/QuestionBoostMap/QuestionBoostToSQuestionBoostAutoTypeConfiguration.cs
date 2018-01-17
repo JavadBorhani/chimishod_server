@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 
 
-namespace Falcon.Web.Api.AutoMappingConfiguration.QuestionBoostMap
+namespace Falcon.Web.Api.AutoMappingConfiguration.QuestionMap.QuestionBoostMap
 {
     public class QuestionBoostToSQuestionBoostAutoTypeConfiguration : Profile
     {

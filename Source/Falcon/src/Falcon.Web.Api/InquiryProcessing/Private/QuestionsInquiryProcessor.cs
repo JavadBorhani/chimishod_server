@@ -4,6 +4,7 @@ using Falcon.Data.QueryProcessors;
 using Falcon.Web.Api.InquiryProcessing.Public;
 using Falcon.Web.Models.Api;
 using Falcon.Web.Models.Api.Config;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -12,10 +13,10 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
     public class QuestionsInquiryProcessor : IQuestionsInquiryProcessor
     {
         private readonly IQuestionsQueryProcessor mQuestionQuery;
-        private readonly IGameConfig mGameConfig;
         private readonly IQuestionSelectorQueryProcessor mQuestionSelector;
         private readonly IAnswerInquiryProcessor mAnswerInquiry;
         private readonly IUserSession mUserSession;
+        private SGameConfig mGameConfig;
         
         public QuestionsInquiryProcessor(
             IQuestionsQueryProcessor QuestionQueryProcessor ,
@@ -26,31 +27,38 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
             )
         {
             mQuestionQuery = QuestionQueryProcessor;
-            mGameConfig = GameConfig;
+            mGameConfig = GameConfig.GetQuestionSelectorConfig();
             mAnswerInquiry = AnswerInquiry;
             mQuestionSelector = QuestionSelector;
             mUserSession = UserSession;
         }
 
 
-        public async Task<SQuestion[]> PrepareQuestionList()
+        public async Task<List<SQuestion>> PrepareQuestionList()
         {
-            var config = mGameConfig.GetQuestionSelectorConfig(); 
 
-            CalculateConfigAmounts(ref config);
+            var config = CalculateConfigAmounts(mGameConfig);
+
 
             var userAnsweredIds = await mAnswerInquiry.GetUserAnswerQuestions(mUserSession.ID);
 
             var funQuestions = await mQuestionSelector.GetFunQuestions(config.FunQuestionsPercent , userAnsweredIds);
+
             var peopleQuestions = await mQuestionSelector.GetPeopleQuestions(config.PeopleQuestionsPercent , userAnsweredIds);
 
             var items = funQuestions.Concat(peopleQuestions);
-            return null;                
+
+            return items.ToList();                
         }
-        private void CalculateConfigAmounts(ref SGameConfig Config)
+
+        private SGameConfig CalculateConfigAmounts(SGameConfig Config)
         {
-            Config.PeopleQuestionsPercent = (int)(((float)Config.PeopleQuestionsPercent / 100) * Config.TotalNumberOfQuestions);
-            Config.FunQuestionsPercent= (int)(((float)Config.FunQuestionsPercent / 100) * Config.TotalNumberOfQuestions);
+            SGameConfig config = new SGameConfig();
+
+            config.PeopleQuestionsPercent = (int)(((float)Config.PeopleQuestionsPercent / 100) * Config.TotalNumberOfQuestions);
+            config.FunQuestionsPercent= (int)(((float)Config.FunQuestionsPercent / 100) * Config.TotalNumberOfQuestions);
+
+            return config;
         }
 
 

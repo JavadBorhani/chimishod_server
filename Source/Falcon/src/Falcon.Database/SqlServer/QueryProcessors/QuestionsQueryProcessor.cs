@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace Falcon.Database.SqlServer.QueryProcessors
 {
+
     public class QuestionsQueryProcessor : IQuestionsQueryProcessor
     {
         private IDbContext mDb;
@@ -56,20 +57,61 @@ namespace Falcon.Database.SqlServer.QueryProcessors
 
         public async Task<Question[]> GetQuestionList()
         {
-
             throw new NotImplementedException();
         }
 
-        public async Task<Question[]> GetQuestionList(bool IsPublic, int HashtagID, int[] Excepts = null)
+        public async Task<Question[]> GetQuestionList(bool IsPublic, int HashtagID, int Amount ,OrderBy OrderBy = OrderBy.None, int[] Excepts = null)
         {
-            var query = mDb.Set<Question>()
-                .AsNoTracking()
-                .Where(q => q.IsPublic == true && q.HashTagID == HashtagID && !Excepts.Contains(q.ID))
-                .ToArrayAsync();
+            IQueryable<Question> query = null;
 
-            var data = await query;
+            switch(OrderBy)
+            {
+                case OrderBy.CountDateTimeAscending:
 
+                    query = mDb.Set<Question>()
+                   .AsNoTracking()
+                   .Include(q => q.QuestionAction)
+                   .Include(q => q.User)
+                   .Where(q => q.IsPublic == true && q.HashTagID == HashtagID && !Excepts.Contains(q.ID))
+                   .OrderBy(q => q.CreatedDate)
+                   .ThenBy(q => q.AnswerCount)
+                   .Take(Amount);
+
+                    break;
+                case OrderBy.CountDateTimeWeight:
+                    break;  
+            }
+
+
+            var data = await query?.ToArrayAsync();
             return data;    
+        }
+
+        public async Task<int> GetQuestionReportCount(int QuestionID)
+        {
+            var reportCount = await mDb.Set<Question>()
+                .AsNoTracking()
+                .Where(q => q.ID == QuestionID)
+                .Select(q => q.ReportCount)
+                .SingleOrDefaultAsync();
+
+            return reportCount;
+        }
+
+        public async Task<bool> BanQuestion(int QuestionID)
+        {
+            var question = await mDb.Set<Question>().FindAsync(QuestionID);
+
+            if(question != null)
+            {
+                question.Banned = true;
+
+                await mDb.SaveChangesAsync();
+
+                return true;
+            }
+
+            return false;
         }
     }
 }

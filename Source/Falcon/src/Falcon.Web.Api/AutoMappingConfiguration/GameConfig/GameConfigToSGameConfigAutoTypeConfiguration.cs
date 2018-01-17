@@ -15,11 +15,8 @@ namespace Falcon.Web.Api.AutoMappingConfiguration.GameConfig
                 .ForMember(sqs => sqs.DefaultUserCoinAmount, m => m.MapFrom(qs => qs.DefaultUserCoinAmount))
                 .ForMember(sqs => sqs.DefaultUserLevelNumber, m => m.MapFrom(qs => qs.DefaultUserLevelNumber))
                 .ForMember(sqs => sqs.DefaultUserLevelProgress, m => m.MapFrom(qs => qs.DefaultUserLevelProgress))
+                .ForMember(sqs => sqs.MaxReportCount, m => m.MapFrom(qs => qs.MaxReportCount))
                 .ReverseMap();
         }
-
-        //public int DefaultUserCoinAmount { get; set; }
-        //public int DefaultUserLevelNumber { get; set; }
-        //public int DefaultUserLevelProgress { get; set; }
     }
 }

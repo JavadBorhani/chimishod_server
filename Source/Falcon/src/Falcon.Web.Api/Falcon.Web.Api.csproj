@@ -71,11 +71,19 @@
       <HintPath>..\..\lib\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Microsoft.AspNet.WebApi.Extensions.Compression.Server, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\lib\Microsoft.AspNet.WebApi.Extensions.Compression.Server.2.0.6\lib\net45\Microsoft.AspNet.WebApi.Extensions.Compression.Server.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.6.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\lib\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.6\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.IO.RecyclableMemoryStream, Version=1.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\lib\Microsoft.IO.RecyclableMemoryStream.1.1.0.0\lib\net45\Microsoft.IO.RecyclableMemoryStream.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.Owin, Version=3.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\lib\Microsoft.Owin.3.1.0\lib\net45\Microsoft.Owin.dll</HintPath>
       <Private>True</Private>
@@ -105,6 +113,10 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Net.Http" />
+    <Reference Include="System.Net.Http.Extensions.Compression.Core, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\lib\Microsoft.AspNet.WebApi.Extensions.Compression.Server.2.0.6\lib\net45\System.Net.Http.Extensions.Compression.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Web.Cors, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\lib\Microsoft.AspNet.Cors.5.2.3\lib\net45\System.Web.Cors.dll</HintPath>
       <Private>True</Private>
@@ -162,6 +174,7 @@
     <Compile Include="AutoMappingConfiguration\AppAdvertisementsMap\AppAdvertisementsToSAppAdvertAutoTypeConfiguration.cs" />
     <Compile Include="AutoMappingConfiguration\ClientAppStateMap\ClientApplicationStateToSClientAppStateAutoTypeConfiguration.cs" />
     <Compile Include="AutoMappingConfiguration\ClientAppStateMap\SClientAppStateToClientVersionInfoAutoTypeConfiguration.cs" />
+    <Compile Include="AutoMappingConfiguration\QuestionMap\ActionQuestion\QuestionActionToSQuestionActionAuthoTypeConfiguration.cs" />
     <Compile Include="AutoMappingConfiguration\QuestionMap\QuestionToSQuestionAutoTypeConfiguration.cs" />
     <Compile Include="AutoMappingConfiguration\ServerAppStateMap\ApplicationStateToClientAppStateAutoTypeConfiguration.cs" />
     <Compile Include="AutoMappingConfiguration\ServerAppStateMap\ApplicationStateToSApplicationStateAutoTypeConfiguration.cs" />
@@ -176,9 +189,9 @@
     <Compile Include="AutoMappingConfiguration\LeaderBoard\UserToSLeaderBoardAutoTypeConfiguration.cs" />
     <Compile Include="AutoMappingConfiguration\LevelMap\LevelToSLevelAutoTypeConfiguration.cs" />
     <Compile Include="AutoMappingConfiguration\MarketMap\MarketToSMarketAutoTypeConfiguration.cs" />
-    <Compile Include="AutoMappingConfiguration\NewCreatedQuestionsMap\CreatedQuestionToSNewCreatedQuestionsAutoTypeConfiguration.cs" />
-    <Compile Include="AutoMappingConfiguration\NewCreatedQuestionsMap\QuestionToSNewCreatedQuestionsAutoTypeConfiguration.cs" />
-    <Compile Include="AutoMappingConfiguration\QuestionBoostMap\QuestionBoostToSQuestionBoostAutoTypeConfiguration.cs" />
+    <Compile Include="AutoMappingConfiguration\QuestionMap\NewCreatedQuestionsMap\CreatedQuestionToSNewCreatedQuestionsAutoTypeConfiguration.cs" />
+    <Compile Include="AutoMappingConfiguration\QuestionMap\NewCreatedQuestionsMap\QuestionToSNewCreatedQuestionsAutoTypeConfiguration.cs" />
+    <Compile Include="AutoMappingConfiguration\QuestionMap\QuestionBoostMap\QuestionBoostToSQuestionBoostAutoTypeConfiguration.cs" />
     <Compile Include="AutoMappingConfiguration\ReportTypeMap\ReportTypeToSReportTypeAutoTypeConfiguration.cs" />
     <Compile Include="AutoMappingConfiguration\SpinWheelMap\SpinWheelToSSpinWheelAutoTypeConfiguration.cs" />
     <Compile Include="AutoMappingConfiguration\StoreMap\StoreToSStoreAutoTypeConfiguration.cs" />
@@ -199,9 +212,9 @@
     <Compile Include="Controllers\V2\AppStatesController.cs" />
     <Compile Include="Controllers\V2\FriendsController.cs" />
     <Compile Include="Controllers\V2\InitializationController.cs" />
-    <Compile Include="Controllers\V2\QuestionReportController.cs" />
     <Compile Include="Controllers\V2\QuestionsController.cs" />
     <Compile Include="Controllers\V2\QuestsController.cs" />
+    <Compile Include="Controllers\V2\ReportController.cs" />
     <Compile Include="Controllers\V2\UserInfoController.cs" />
     <Compile Include="Controllers\V2\UsersController.cs" />
     <Compile Include="InquiryProcessing\Private\AchievementInquiryProcessor.cs" />
@@ -351,9 +364,6 @@
     <Compile Include="Controllers\V1\CategoriesController.cs" />
     <Compile Include="Controllers\V1\CommentsController.cs" />
     <Compile Include="Controllers\V1\FavoritesController.cs" />
-    <Compile Include="Controllers\V1\QuestionBoostsController.cs" />
-    <Compile Include="Controllers\V1\ReportedQuestionsController.cs" />
-    <Compile Include="Controllers\V1\ReportTypesController.cs" />
     <Compile Include="Controllers\V1\StoresController.cs" />
     <Compile Include="Controllers\V1\UserAuthenticatorController.cs" />
     <Compile Include="Controllers\V1\UserAvatarsController.cs" />

@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 
 
-namespace Falcon.Web.Api.AutoMappingConfiguration.NewCreatedQuestions
+namespace Falcon.Web.Api.AutoMappingConfiguration.QuestionMap.NewCreatedQuestions
 {
     public class QuestionToSNewCreatedQuestionsAutoTypeConfiguration : Profile
     {

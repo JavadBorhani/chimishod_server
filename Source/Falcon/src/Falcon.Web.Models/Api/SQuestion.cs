@@ -32,4 +32,13 @@ namespace Falcon.Web.Models.Api
         public HashTagID HashtagID { get; set; }
         public SActionQuestion ActionInfo { get; set; }
     }
+    //public int ID { get; set; }
+    //public string Name { get; set; }
+    //public int ActionNumber { get; set; }
+    //public int Coin { get; set; }
+    //public int Priority { get; set; }
+    //public Nullable<int> ActionNavigationNumber { get; set; }
+    //public string MarketPackageName { get; set; }
+    //public string MarketIntentString { get; set; }
+    //public string AppStoreUri { get; set; }
 }
