@@ -364,7 +364,7 @@
     <Compile Include="Controllers\V1\CategoriesController.cs" />
     <Compile Include="Controllers\V1\CommentsController.cs" />
     <Compile Include="Controllers\V1\FavoritesController.cs" />
-    <Compile Include="Controllers\V1\StoresController.cs" />
+    <Compile Include="Controllers\V2\StoresController.cs" />
     <Compile Include="Controllers\V1\UserAuthenticatorController.cs" />
     <Compile Include="Controllers\V1\UserAvatarsController.cs" />
     <Compile Include="Controllers\V1\UserInfoesController.cs" />

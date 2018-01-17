@@ -1,24 +1,22 @@
 ﻿// Flapp Copyright 2017-2018
 
+using AutoMapper;
+using Falcon.Common;
+using Falcon.Web.Api.InquiryProcessing.Public;
+using Falcon.Web.Api.MaintenanceProcessing.Public;
+using Falcon.Web.Api.Utilities.Base;
+using Falcon.Web.Common;
+using Falcon.Web.Models.Api;
 using System.Net;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
-using Falcon.Common;
-using AutoMapper;
-using Falcon.Web.Models.Api;
-using Falcon.Web.Common;
-using Falcon.EFCommonContext;
-using Falcon.Web.Api.Utilities.Base;
-using Falcon.Web.Api.MaintenanceProcessing.Public;
-using Falcon.Web.Api.InquiryProcessing.Public;
 
-namespace Falcon.Web.Api.Controllers.V1
+namespace Falcon.Web.Api.Controllers.V2
 {
     [UnitOfWorkActionFilter]
     public class StoresController : FalconApiController
     {
-        private readonly IDbContext mDb;
         private readonly IMapper mMapper;
         private readonly IDateTime mDateTime;
         private readonly IGlobalApplicationState mAppState;
@@ -27,21 +25,20 @@ namespace Falcon.Web.Api.Controllers.V1
 
         public StoresController(IMapper Mapper , 
             IDateTime DateTime, 
-            IDbContext Database , 
+            
             IGlobalApplicationState AppState, 
             IStoresMaintenanceProcessor StoresMaintenanceProcessor , 
             IStoresInquiryProcessor StoresInquiryProcessor)
         {
             mMapper = Mapper;
             mDateTime = DateTime;
-            mDb = Database;
             mAppState = AppState;
             mStoreMaintenanceProcessor = StoresMaintenanceProcessor;
             mStoreInquiryProcessor = StoresInquiryProcessor; 
         }
 
         [ResponseType(typeof(SStore))]
-        [Route("Stores/{StoreKey}")]
+        [Route("v2/Stores/{StoreKey}")]
         [HttpPost]
         public async Task<IHttpActionResult> GetStoreList(int StoreKey)
         {
@@ -58,7 +55,7 @@ namespace Falcon.Web.Api.Controllers.V1
         
         [ResponseType(typeof(SHardCurrencyPurchasedVerification))]
         [HttpPost]
-        [Route("Stores/ValidatePurchase")]
+        [Route("v2/Stores/ValidatePurchase")]
         public async Task<SHardCurrencyPurchasedVerification> PurchaseHardCurrency(SHardCurrency HardCurrency)
         {
 

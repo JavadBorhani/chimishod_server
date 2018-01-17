@@ -1,12 +1,8 @@
-﻿using Falcon.Web.Api.InquiryProcessing.Public;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using AutoMapper;
+using Falcon.Data.QueryProcessors;
+using Falcon.Web.Api.InquiryProcessing.Public;
 using Falcon.Web.Models.Api;
 using System.Threading.Tasks;
-using Falcon.Data.QueryProcessors;
-using AutoMapper;
 
 namespace Falcon.Web.Api.InquiryProcessing.Private
 {
@@ -22,16 +18,16 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
             mMarketQueryProcessor = MarketQueryProcessor;
             mMapper = Mapper;
         }
-        public async Task<List<SStore>> GetStoreList(int StoreKey)
+        public async Task<SStore[]> GetStoreList(int StoreKey)
         {
             int id = await mMarketQueryProcessor.GetMarketIdByMarketKey(StoreKey);
             if(id > 0)
             {
                 var result = await mStoreQueryProcessor.GetStoreListByMarketId(id);
 
-                if(result.Count > 0)
+                if(result.Length > 0)
                 {
-                    var response = mMapper.Map<List<SStore>>(result);
+                    var response = mMapper.Map<SStore[]>(result);
                     return response;
                 }
             }

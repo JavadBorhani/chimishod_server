@@ -3,9 +3,6 @@
 using Ninject;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web.Http.Dependencies;
 
 namespace Falcon.Web.Common
@@ -36,7 +33,8 @@ namespace Falcon.Web.Common
 
         public object GetService(Type serviceType)
         {
-            return mContainer.TryGet(serviceType); 
+            var item = mContainer.TryGet(serviceType);
+            return item;
         }
 
         public IEnumerable<object> GetServices(Type serviceType)

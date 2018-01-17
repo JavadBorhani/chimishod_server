@@ -1,51 +1,57 @@
 ﻿using Falcon.Common;
 using Falcon.Common.Security;
-using Falcon.Data.QueryProcessors;
 using Falcon.EFCommonContext;
-using Falcon.Web.Api.InquiryProcessing.Public;
+using Falcon.EFCommonContext.DbModel;
 using Falcon.Web.Api.MaintenanceProcessing.Public;
 using Falcon.Web.Models.Api;
+using System;
+using System.Threading.Tasks;
 
 namespace Falcon.Web.Api.MaintenanceProcessing.Private
 {
-    public class AnswerMaintenanceProcessor /*: IAnswerMaintenanceProcessor*/
+    public class AnswerMaintenanceProcessor : IAnswerMaintenanceProcessor
     {
         private readonly IDbContext mDb;
         private readonly IDateTime mDateTime;
-        private readonly SApplicationState mAppState;
-        private readonly ICharacteristicsMaintenanceProcessor mCharacteristicsMaintenanceProcessor;
-        private readonly ICharacteristicsInquiryProcessor mCharacteristicsInquiryProcessor;
-        private readonly IScoringQueryProcessor mScoringQueryProcessor;
-        private readonly IUsersMaintenanceProcessor mUsersMaintenance;
         private readonly IUserSession mUserSession;
-        private readonly IUserQueryProcessor mUserQuery;
 
         public AnswerMaintenanceProcessor
             (
             IDbContext Database , 
-            IDateTime DateTime , 
-            IGlobalApplicationState AppState,
-            ICharacteristicsMaintenanceProcessor CharacteristicsMaintenanceProcessor,
-            ICharacteristicsInquiryProcessor CharacteristicsInquiryProcessor ,
-            IScoringQueryProcessor ScoringQueryProcessor,
-            IUsersMaintenanceProcessor UsersMaintenance,
-            IUserSession UserSession,
-            IUserQueryProcessor UserQuery
+            IDateTime DateTime ,
+            IUserSession UserSession
             )
         {
             mDb = Database;
             mDateTime = DateTime;
-            mAppState = AppState.GetState();
-            mCharacteristicsMaintenanceProcessor = CharacteristicsMaintenanceProcessor; 
-            mCharacteristicsInquiryProcessor = CharacteristicsInquiryProcessor;
-            mScoringQueryProcessor = ScoringQueryProcessor;
-            mUsersMaintenance = UsersMaintenance;
             mUserSession = UserSession;
-            mUserQuery = UserQuery;
+        }
+
+        public async Task<bool> Answer(SAnswer Answer)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<bool> SaveAnswer(int QuestionID)
+        {
+
+            var answer = new Answer
+            {
+                IsReported = true,
+                QuestionID = QuestionID,
+                UserID = mUserSession.ID,
+                CreatedDate = mDateTime.Now,
+            };
+
+            mDb.Set<Answer>().Add(answer);
+
+            await mDb.SaveChangesAsync();
+
+            return true;
         }
         //public async Task<bool> Answer(SAnswer Answer) // refactor this to queries
         //{
-           
+
         //    var questionToUpdate = await mDb.Set<Question>().Where(q => q.ID == Answer.QuestionID).Include(q => q.Category).SingleOrDefaultAsync();
 
         //    var newAnswer = new Answer

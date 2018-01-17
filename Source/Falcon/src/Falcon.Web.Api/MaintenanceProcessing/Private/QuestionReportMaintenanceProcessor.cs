@@ -11,13 +11,19 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
     {
         private readonly IQuestionReportQueryProcessor mQuestionReportQuery;
         private readonly IQuestionsQueryProcessor mQuestionsQuery;
+        private readonly IAnswerMaintenanceProcessor mAnswerMaintenanceProcessor;
         private readonly SGameConfig mGameConfig;
 
-        public QuestionReportMaintenanceProcessor(IQuestionReportQueryProcessor QuestionReportQuery , IQuestionsQueryProcessor QuestionQuery, IGameConfig GameConfig)
+        public QuestionReportMaintenanceProcessor(
+            IQuestionReportQueryProcessor QuestionReportQuery , 
+            IGameConfig GameConfig , 
+            IQuestionsQueryProcessor QuestionQuery,
+            IAnswerMaintenanceProcessor AnswerMaintenance)
         {
             mQuestionReportQuery = QuestionReportQuery;
             mGameConfig = GameConfig.GetState();
             mQuestionsQuery = QuestionQuery;
+            mAnswerMaintenanceProcessor = AnswerMaintenance;
         }
         public async Task<bool> ReportQuestion(SReportedQuestion Reported)
         {
@@ -29,6 +35,7 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
             }
 
             var result  = await mQuestionReportQuery.ReportQuestion(Reported);
+            var answer = await mAnswerMaintenanceProcessor.SaveAnswer(Reported.QuestionID);
 
             return result;
         }

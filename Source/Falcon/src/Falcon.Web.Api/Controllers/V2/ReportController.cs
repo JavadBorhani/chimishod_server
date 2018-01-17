@@ -9,7 +9,7 @@ using System.Web.Http.Description;
 
 namespace Falcon.Web.Api.Controllers.V2
 {
-
+    [RoutePrefix("v2/Report")]
     public class ReportController : FalconApiController
     {
         private readonly IQuestionReportInquiryProcessor mReportInquiry;
@@ -22,19 +22,23 @@ namespace Falcon.Web.Api.Controllers.V2
         }
 
         [ResponseType(typeof(SReportType[]))]
-        [Route("v2/Report/List")]
+        [Route("List")]
         [HttpPost]
         public async Task<SReportType[]> GetReportTypes()
         {
             var result = await mReportInquiry.GetReportList();
             return result;
+            
         }
 
         [ResponseType(typeof(bool))]
-        [Route("v2/Report/Question")] //TODO Refactor this to packet
+        [Route("Question")] //TODO Refactor this to packet
         [HttpPost]
         public async Task<bool> ReportQuestion(SReportedQuestion Question)
         {
+            if (!ModelState.IsValid)
+                return false;
+                
             var result = await mReportMaintenance.ReportQuestion(Question);
             return result;
 

@@ -1,13 +1,10 @@
-﻿using Falcon.Data.QueryProcessors;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Falcon.EFCommonContext.DbModel;
+﻿using Falcon.Common.Security;
+using Falcon.Data.QueryProcessors;
 using Falcon.EFCommonContext;
-using Falcon.Common.Security;
+using Falcon.EFCommonContext.DbModel;
 using System.Data.Entity;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Falcon.Database.SqlServer.QueryProcessors
 {
@@ -30,9 +27,9 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             return await mDb.Set<Store>().AsNoTracking().Where(s => s.ID == Id).SingleOrDefaultAsync();
         }
 
-        public async Task<List<Store>> GetStoreListByMarketId(int Id)
+        public async Task<Store[]> GetStoreListByMarketId(int Id)
         {
-            return await mDb.Set<Store>().AsNoTracking().Where(s => s.MarketID == Id).ToListAsync();
+            return await mDb.Set<Store>().AsNoTracking().Where(s => s.MarketID == Id).ToArrayAsync();
         }
 
         public async Task<bool> IsPurchased(int StoreItemId, string Token)
