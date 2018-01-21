@@ -21,14 +21,17 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             return data;    
         }
 
-        public async Task<int> GetLevelQuest(int LevelID)
+        public async Task<int> GetLevelQuest(int LevelNumber)
         {
-            var levelQuestID = await mDb.Set<Level>()
+            var questNumber = await mDb.Set<Level>()
                 .AsNoTracking()
-                .Where(l => l.LevelNumber == LevelID)
-                .Select(l => l.Quest.QuestNumber).SingleOrDefaultAsync();
+                .Where(l => l.LevelNumber == LevelNumber)
+                .Include(l => l.Quest)
+                .Select(l => l.Quest.QuestNumber)
+                .SingleOrDefaultAsync();
 
-            return levelQuestID;
+
+            return questNumber;
         }
     }
 }

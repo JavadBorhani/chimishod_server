@@ -2,6 +2,10 @@
 using Falcon.Web.Api.MaintenanceProcessing.Public;
 using Falcon.Web.Api.Utilities.Base;
 using Falcon.Web.Common;
+using Falcon.Web.Models.Api;
+using System.Threading.Tasks;
+using System.Web.Http;
+using System.Web.Http.Description;
 
 namespace Falcon.Web.Api.Controllers.V2
 {
@@ -18,8 +22,12 @@ namespace Falcon.Web.Api.Controllers.V2
             mFriendsInquiry = FriendsInquiry;
         }
 
-
-
+        [ResponseType(typeof(SUser[]))]
+        [Route("v2/Friend/")]
+        public async Task<SUser[]> GetFriendList(int PageNumber)
+        {
+            return null;
+        }
 
     }
 }

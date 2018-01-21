@@ -9,11 +9,15 @@ namespace Falcon.Web.Api.Controllers.V2
     [UnitOfWorkActionFilter]
     public class LevelController : FalconApiController
     {
-        private readonly ILevelInquiryProcessor mLevelInquiryProcessor;        
-        public LevelController()
+        private readonly ILevelInquiryProcessor mLevelInquiry;
+        public LevelController(ILevelInquiryProcessor LevelInquiry)
         {
-
+            mLevelInquiry = LevelInquiry;
         }
+
+
+
+        
 
     }
 }

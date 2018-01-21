@@ -23,7 +23,7 @@ namespace Falcon.EFCommonContext.DbModel
         public int LevelNumber { get; set; }
         public int CoinPrize { get; set; }
         public int ScoreCeil { get; set; }
-        public Nullable<int> QuestID { get; set; }
+        public int QuestID { get; set; }
         public int QuestType { get; set; }
         public string QuestTitle { get; set; }
         public System.DateTime CreatedDate { get; set; }

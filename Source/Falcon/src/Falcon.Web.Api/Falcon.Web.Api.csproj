@@ -176,6 +176,7 @@
     <Compile Include="AutoMappingConfiguration\ClientAppStateMap\SClientAppStateToClientVersionInfoAutoTypeConfiguration.cs" />
     <Compile Include="AutoMappingConfiguration\QuestionMap\ActionQuestion\QuestionActionToSQuestionActionAuthoTypeConfiguration.cs" />
     <Compile Include="AutoMappingConfiguration\QuestionMap\QuestionToSQuestionAutoTypeConfiguration.cs" />
+    <Compile Include="AutoMappingConfiguration\Relation\RelationshipToSFriendAutoTypeConfiguration.cs" />
     <Compile Include="AutoMappingConfiguration\ServerAppStateMap\ApplicationStateToClientAppStateAutoTypeConfiguration.cs" />
     <Compile Include="AutoMappingConfiguration\ServerAppStateMap\ApplicationStateToSApplicationStateAutoTypeConfiguration.cs" />
     <Compile Include="AutoMappingConfiguration\ServerAppStateMap\SApplicationStateToAplicationStateAutoTypeConfiguration.cs" />

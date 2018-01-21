@@ -70,6 +70,7 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
         public async Task<SQuestion[]> FetchLevelQuestions(int LevelNumber)
         {
             var questNumber = await mLevelInquiry.GetLevelQuestNumber(LevelNumber);
+
             if(questNumber != 0 )
             {
                 //has quest

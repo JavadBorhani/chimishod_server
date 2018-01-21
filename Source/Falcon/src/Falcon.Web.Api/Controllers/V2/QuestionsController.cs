@@ -33,12 +33,12 @@ namespace Falcon.Web.Api.Controllers.V2
 
 
         [Route("v2/Questions/Level/{LevelNumber}")]
-        [ResponseType(typeof(SQuestion))]
+        [ResponseType(typeof(SQuestion[]))]
         [HttpPost]
-        public async Task<SQuestion> GetLevelQuestions(int LevelNumber)
+        public async Task<SQuestion[]> GetLevelQuestions(int LevelNumber)
         {
             var questions = await mQuestionInquiry.FetchLevelQuestions(LevelNumber);
-            return null;
+            return questions;
         }
     }
 }
