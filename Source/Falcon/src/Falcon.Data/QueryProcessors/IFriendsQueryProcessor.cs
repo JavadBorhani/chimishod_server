@@ -1,12 +1,13 @@
-﻿using Falcon.Web.Models.Api.Friend;
+﻿using Falcon.EFCommonContext.DbModel;
+using Falcon.Web.Models.Api.Friend;
 using System.Threading.Tasks;
 
 namespace Falcon.Data.QueryProcessors
 {
     public interface IFriendsQueryProcessor
     {
-        Task<int[]> GetFriendIds();
-        Task<SFriend> GetAllFriendList();
-
+        Task<Relationship[]> GetFriendRelationship();
+        Task<SFriend[]> GetAllFriendList();
+        Task<int[]> GetAllFriendIds();
     }
 }

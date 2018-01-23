@@ -30,6 +30,7 @@ namespace Falcon.Data.QueryProcessors
         Task<string> ReteriveUserUUID(SUserInfo userInfo);
         Task<bool> UpdateUserNotificationID(string UUID);
         Task<bool> Exists(string UserName);
+        Task<QueryResult<User>> SearchUserNames(PagedDataRequest RequestInfo , string Expression , int[] Excepts =  null);
 
 
     }

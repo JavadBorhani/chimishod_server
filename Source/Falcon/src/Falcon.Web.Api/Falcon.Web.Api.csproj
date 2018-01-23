@@ -199,6 +199,7 @@
     <Compile Include="AutoMappingConfiguration\UserMap\UserCountMap\UserCountToSUserCountAutoTypeConfiguration.cs" />
     <Compile Include="AutoMappingConfiguration\UserMap\UserInfoMap\UserInfoToSUserInfoAutoTypeConfiguration.cs" />
     <Compile Include="AutoMappingConfiguration\UserMap\UserStatMap\UserStatToSUserStatAutoTypeConfiguration.cs" />
+    <Compile Include="AutoMappingConfiguration\UserMap\UserToFriend\UserToSFriendAutoTypeConfiguration.cs" />
     <Compile Include="AutoMappingConfiguration\UserMap\UserToSUserAutoTypeConfiguration.cs" />
     <Compile Include="Controllers\V1\CharacteristicsController.cs" />
     <Compile Include="Controllers\V1\CodeGiftsController.cs" />

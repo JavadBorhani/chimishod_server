@@ -1,7 +1,6 @@
 ﻿using Falcon.Data.QueryProcessors;
 using Falcon.Web.Api.InquiryProcessing.Public;
 using Falcon.Web.Models.Api.Friend;
-using System;
 using System.Threading.Tasks;
 
 namespace Falcon.Web.Api.InquiryProcessing.Private
@@ -9,13 +8,21 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
     public class FriendsInquiryProcessor : IFriendsInquiryProcessor
     {
         private readonly IFriendsQueryProcessor mFriendQuery;
-        public FriendsInquiryProcessor()
+        public FriendsInquiryProcessor(IFriendsQueryProcessor FriendQuery)
         {
-
+            mFriendQuery = FriendQuery;
         }
-        public async Task<SFriend[]> GetFriendList()
+
+        public async Task<int[]> GetAllFriendIds()
         {
-            throw new NotImplementedException();
+            var friendIds = await mFriendQuery.GetAllFriendIds();
+            return friendIds;   
+        }
+
+        public async Task<SFriend[]> GetAllFriendList()
+        {
+            var friends = await mFriendQuery.GetAllFriendList();
+            return friends;
         }
     }
 }

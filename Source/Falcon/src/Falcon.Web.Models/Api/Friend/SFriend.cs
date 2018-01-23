@@ -2,10 +2,11 @@
 {
     public enum RelationStatus
     {
-        Pending,
-        Accepted , 
-        Rejected ,
-        Blocked,
+        Pending = 1 ,
+        Accepted = 2  , 
+        Rejected = 3 ,
+        Blocked = 4 ,
+        None = 5 ,
     }
 
     public class SFriend
@@ -15,7 +16,5 @@
         public string UserPictureUrl { get; set; }
         public RelationStatus Status { get; set; }
         public bool RelationOperatorIsMe { get; set; }
-
-
     }
 }

@@ -5,6 +5,7 @@ namespace Falcon.Web.Api.InquiryProcessing.Public
 {
     public interface IFriendsInquiryProcessor
     {
-        Task<SFriend[]> GetFriendList();
+        Task<SFriend[]> GetAllFriendList();
+        Task<int[]> GetAllFriendIds();
     }
 }

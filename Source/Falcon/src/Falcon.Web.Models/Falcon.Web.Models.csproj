@@ -95,6 +95,7 @@
     <Compile Include="Api\SUserStatistics.cs" />
     <Compile Include="Api\SWatchedAd.cs" />
     <Compile Include="Api\SWatchAdValidation.cs" />
+    <Compile Include="Api\User\SInputSearchExpression.cs" />
     <Compile Include="Api\User\SUserCount.cs" />
     <Compile Include="Api\User\SUserInitializationData.cs" />
     <Compile Include="Api\User\SUserRegistrationForm.cs" />

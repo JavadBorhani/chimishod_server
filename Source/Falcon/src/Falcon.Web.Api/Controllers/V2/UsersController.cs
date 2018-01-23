@@ -3,7 +3,9 @@ using Falcon.Web.Api.InquiryProcessing.Public;
 using Falcon.Web.Api.MaintenanceProcessing.Public;
 using Falcon.Web.Api.Utilities.Base;
 using Falcon.Web.Common;
+using Falcon.Web.Models;
 using Falcon.Web.Models.Api;
+using Falcon.Web.Models.Api.Friend;
 using Falcon.Web.Models.Api.User;
 using System.Net;
 using System.Threading.Tasks;
@@ -19,12 +21,17 @@ namespace Falcon.Web.Api.Controllers.V2
         private readonly IUsersMaintenanceProcessor mUsersMaintenance;
         private readonly IUsersInquiryProcessor mUsersInquiry;
         private readonly IDateTime mDateTime;
+        private readonly IPagedDataRequestFactory mPageDataRequestFactory;
+        private readonly SApplicationState mServerAppState;
 
-        public UsersController(IUsersMaintenanceProcessor UserMaintenanceProcessor , IDateTime DateTime , IUsersInquiryProcessor UsersInquiry)
+        public UsersController(IUsersMaintenanceProcessor UserMaintenanceProcessor , IDateTime DateTime , IUsersInquiryProcessor UsersInquiry
+            , IPagedDataRequestFactory PageDataRequestFactory , IGlobalApplicationState ServerState)
         {
             mUsersMaintenance = UserMaintenanceProcessor;
             mDateTime = DateTime;
             mUsersInquiry = UsersInquiry;
+            mPageDataRequestFactory = PageDataRequestFactory;
+            mServerAppState = ServerState.GetState();
         }
 
         [ResponseType(typeof(string))]
@@ -60,6 +67,20 @@ namespace Falcon.Web.Api.Controllers.V2
                 return Response(HttpStatusCode.Unauthorized);
             else
                 return Ok(result);
+        }
+
+        [ResponseType(typeof(SFriend[]))]
+        [Route("v2/User/Search")]
+        [HttpPost]
+        public async Task<PagedDataInquiryResponse<SFriend>> SearchUsers(SInputSearchExpression InputSearchExpression)
+        {
+            if (!ModelState.IsValid)
+                return null;
+
+            var page = mPageDataRequestFactory.Create(InputSearchExpression.PageNumber, mServerAppState.Paging_DefaultPageSize);
+            var friends = await mUsersInquiry.SearchUsersByExpression(page, InputSearchExpression.Expression);
+
+            return friends;
         }
 
 

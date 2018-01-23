@@ -1,17 +1,16 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using AutoMapper;
 using Falcon.Data;
-using Falcon.Web.Models;
 using Falcon.Data.QueryProcessors;
-using System.Threading.Tasks;
-using AutoMapper;
-using Falcon.Web.Models.Api;
-using PagedTaskDataInquiryResponse = Falcon.Web.Models.PagedDataInquiryResponse<Falcon.Web.Models.Api.SComment>;
 using Falcon.Web.Api.InquiryProcessing.Public;
+using Falcon.Web.Models;
+using Falcon.Web.Models.Api;
+using System.Linq;
+using System.Threading.Tasks;
+using PagedTaskDataInquiryResponse = Falcon.Web.Models.PagedDataInquiryResponse<Falcon.Web.Models.Api.SComment>;
 
 namespace Falcon.Web.Api.InquiryProcessing.Private
 {
-   
+
     public class CommentsInquiryProcessor : ICommentsInquiryProcessor
     {
         

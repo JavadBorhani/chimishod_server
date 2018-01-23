@@ -1,5 +1,6 @@
 ﻿using Falcon.Common;
 using Falcon.Common.Security;
+using Falcon.Data;
 using Falcon.Data.QueryProcessors;
 using Falcon.EFCommonContext;
 using Falcon.EFCommonContext.DbModel;
@@ -273,6 +274,31 @@ namespace Falcon.Database.SqlServer.QueryProcessors
                 .CountAsync() > 0;
 
             return item;
+        }
+
+        public async Task<QueryResult<User>> SearchUserNames(PagedDataRequest RequestInfo, string Expression , int[] Excepts = null)
+        {
+            IQueryable<User> query; 
+
+            if(Excepts != null)
+                query = mDb.Set<User>()
+                .AsNoTracking()
+                .Where(u => u.UserName.Contains(Expression) && !Excepts.Contains(u.ID));
+            else
+                query = mDb.Set<User>()
+                .AsNoTracking()
+                .Where(u => u.UserName.Contains(Expression));
+
+            var totalItemCount = await query.CountAsync();
+
+                var startIndex = ResultPagingUtility.CalculateStartIndex(RequestInfo.PageNumber, RequestInfo.PageSize);
+
+                var users = await query.Skip(startIndex).Take(RequestInfo.PageSize).ToListAsync();
+
+                var queryResult = new QueryResult<User>(users, totalItemCount, RequestInfo.PageSize);
+
+                return queryResult;
+
         }
     }
 }   
