@@ -24,8 +24,12 @@ namespace Falcon.Web.Api.Controllers.V2
         private readonly IPagedDataRequestFactory mPageDataRequestFactory;
         private readonly SApplicationState mServerAppState;
 
-        public UsersController(IUsersMaintenanceProcessor UserMaintenanceProcessor , IDateTime DateTime , IUsersInquiryProcessor UsersInquiry
-            , IPagedDataRequestFactory PageDataRequestFactory , IGlobalApplicationState ServerState)
+        public UsersController(
+            IUsersMaintenanceProcessor UserMaintenanceProcessor , 
+            IDateTime DateTime , 
+            IUsersInquiryProcessor UsersInquiry, 
+            IPagedDataRequestFactory PageDataRequestFactory , 
+            IGlobalApplicationState ServerState)
         {
             mUsersMaintenance = UserMaintenanceProcessor;
             mDateTime = DateTime;
@@ -69,7 +73,7 @@ namespace Falcon.Web.Api.Controllers.V2
                 return Ok(result);
         }
 
-        [ResponseType(typeof(SFriend[]))]
+        [ResponseType(typeof(PagedDataInquiryResponse<SFriend>))]
         [Route("v2/User/Search")]
         [HttpPost]
         public async Task<PagedDataInquiryResponse<SFriend>> SearchUsers(SInputSearchExpression InputSearchExpression)

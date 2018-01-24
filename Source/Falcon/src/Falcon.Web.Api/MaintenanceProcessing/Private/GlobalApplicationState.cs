@@ -40,7 +40,7 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
 
         public void ReadStateFromDatabase()
         {
-            var appState = mDB.Set<ServerApplicationState>().AsNoTracking().SingleOrDefault();
+            var appState = mDB.Set<ServerApplicationState>().AsNoTracking().FirstOrDefault();
             if (appState != null)
             {
                 mCurrentApplicationState = mMapper.Map<SApplicationState>(appState);

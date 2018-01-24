@@ -19,8 +19,8 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
 
         public UsersMaintenanceProcessor
             (
+            IUserInfoQueryProcessor UserInfoQuery,
             IUserQueryProcessor UserQueryProcessor ,
-            IUserInfoQueryProcessor UserInfoQuery , 
             INetworkUtils NetworkUtils , 
             IUUIDGenerator Generator , 
             IGameConfig GameConfig)

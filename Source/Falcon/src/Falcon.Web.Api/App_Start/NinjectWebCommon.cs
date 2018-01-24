@@ -1,9 +1,9 @@
-using System;
-using System.Web;
+using Falcon.Web.Common;
 using Microsoft.Web.Infrastructure.DynamicModuleHelper;
 using Ninject;
 using Ninject.Web.Common;
-using Falcon.Web.Common;
+using System;
+using System.Web;
 using System.Web.Http;
 
 [assembly: WebActivatorEx.PreApplicationStartMethod(typeof(Falcon.Web.Api.NinjectWebCommon), "Start")]
@@ -11,7 +11,7 @@ using System.Web.Http;
 
 namespace Falcon.Web.Api
 {
-    
+
 
     public static class NinjectWebCommon 
     {

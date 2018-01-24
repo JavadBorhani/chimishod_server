@@ -1,9 +1,7 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using Falcon.Web.Api.Security.Private;
+using Hangfire;
 using Microsoft.Owin;
 using Owin;
-using Hangfire;
-using Falcon.Web.Api.Security.Private;
 
 [assembly: OwinStartup(typeof(Falcon.Web.Api.Startup))]
 
