@@ -74,7 +74,7 @@ namespace Falcon.Web.Api.Controllers.V2
         }
 
         [ResponseType(typeof(PagedDataInquiryResponse<SFriend>))]
-        [Route("v2/User/Search")]
+        [Route("v2/Users/Search")]
         [HttpPost]
         public async Task<PagedDataInquiryResponse<SFriend>> SearchUsers(SInputSearchExpression InputSearchExpression)
         {

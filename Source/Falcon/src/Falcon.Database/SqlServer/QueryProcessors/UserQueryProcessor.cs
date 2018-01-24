@@ -283,21 +283,23 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             if(Excepts != null)
                 query = mDb.Set<User>()
                 .AsNoTracking()
-                .Where(u => u.UserName.Contains(Expression) && !Excepts.Contains(u.ID));
+                .Where(u => u.UserName.Contains(Expression) && !Excepts.Contains(u.ID))
+                .OrderBy(u => u.ID);
             else
                 query = mDb.Set<User>()
                 .AsNoTracking()
-                .Where(u => u.UserName.Contains(Expression));
+                .Where(u => u.UserName.Contains(Expression))
+                .OrderBy( u => u.ID);
 
             var totalItemCount = await query.CountAsync();
 
-                var startIndex = ResultPagingUtility.CalculateStartIndex(RequestInfo.PageNumber, RequestInfo.PageSize);
+            var startIndex = ResultPagingUtility.CalculateStartIndex(RequestInfo.PageNumber, RequestInfo.PageSize);
 
-                var users = await query.Skip(startIndex).Take(RequestInfo.PageSize).ToListAsync();
+            var users = await query.Skip(startIndex).Take(RequestInfo.PageSize).ToListAsync();
 
-                var queryResult = new QueryResult<User>(users, totalItemCount, RequestInfo.PageSize);
+            var queryResult = new QueryResult<User>(users, totalItemCount, RequestInfo.PageSize);
 
-                return queryResult;
+            return queryResult;
 
         }
     }

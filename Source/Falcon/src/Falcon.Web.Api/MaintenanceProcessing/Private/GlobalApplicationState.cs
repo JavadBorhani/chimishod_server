@@ -51,7 +51,7 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
         {
             if (ModelIsValid(NewState))
             {
-                var dbAppState = mDB.Set<ServerApplicationState>().SingleOrDefault();
+                var dbAppState = mDB.Set<ServerApplicationState>().FirstOrDefault();
                 dbAppState = mMapper.Map<ServerApplicationState>(NewState);
                 mDB.SaveChanges();
             }

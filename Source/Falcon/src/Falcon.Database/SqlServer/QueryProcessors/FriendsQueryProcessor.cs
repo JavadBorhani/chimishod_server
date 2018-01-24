@@ -81,7 +81,7 @@ namespace Falcon.Database.SqlServer.QueryProcessors
         {
             var friends = await mDb.Set<Relationship>()
                 .AsNoTracking()
-                .Where(r => r.UserOneID == mUserSession.ID || r.UserOneID == mUserSession.ID)
+                .Where(r => r.UserOneID == mUserSession.ID || r.UserTwoID == mUserSession.ID)
                 .Select(r => new
                 {
                     r.UserOneID,
