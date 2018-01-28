@@ -4,6 +4,7 @@ using Falcon.Data.QueryProcessors;
 using Falcon.EFCommonContext;
 using Falcon.EFCommonContext.DbModel;
 using Falcon.Web.Models.Api.Friend;
+using System;
 using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
@@ -23,9 +24,7 @@ namespace Falcon.Database.SqlServer.QueryProcessors
         }
         public async Task<SFriend[]> GetAllFriendList()
         {
-            var relations = await GetFriendRelationship();
-
-
+            var relations = await GetAllFriendRelationship();
 
             var friends = new SFriend[relations.Length];
 
@@ -65,7 +64,7 @@ namespace Falcon.Database.SqlServer.QueryProcessors
 
         }
 
-        public async Task<Relationship[]> GetFriendRelationship()
+        public async Task<Relationship[]> GetAllFriendRelationship()
         {
             var relation = await mDb.Set<Relationship>()
                 .AsNoTracking()
@@ -97,6 +96,121 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             }
             return friendIds;
 
+        }
+
+        public async Task<bool> CreateRelation(int FriendID)
+        {
+            var userOneID = (mUserSession.ID > FriendID ? FriendID : mUserSession.ID);
+            var userTwoID = (mUserSession.ID > FriendID ? mUserSession.ID : FriendID);
+
+            var friend = await GetFriendRelationship(FriendID);
+
+            if(friend != null)
+            {
+                if(friend.RelationStatus == (int)RelationStatus.Rejected)
+                {
+                    friend.RelationStatus = (int)RelationStatus.Pending;
+                    friend.OperatedByID = mUserSession.ID;
+
+                    try
+                    {
+                        await mDb.SaveChangesAsync();
+                        return true;
+                    }
+                    catch
+                    {
+                        return false;
+                    }
+                }
+                return false;
+            }
+
+            mDb.Set<Relationship>().Add(new Relationship
+            {
+               UserOneID = userOneID,
+               UserTwoID = userTwoID,
+               OperatedByID = mUserSession.ID,
+               RelationStatus = (int)RelationStatus.Pending 
+            });
+
+            try
+            {
+                await mDb.SaveChangesAsync();
+                return true;
+            }
+            catch(Exception e)
+            {
+                return false;
+            }
+        }
+
+        public async Task<Relationship> GetFriendRelationshipAsNoTracking(int FriendID)
+        {
+            var userOneID = (mUserSession.ID > FriendID ? FriendID : mUserSession.ID);
+            var userTwoID = (mUserSession.ID > FriendID ? mUserSession.ID : FriendID);
+
+            var relation = await mDb.Set<Relationship>()
+                .AsNoTracking()
+                .Where(r => r.UserOneID == userOneID && r.UserTwoID == userTwoID)
+                .SingleOrDefaultAsync();
+
+            return relation;
+        }
+
+        private async Task<Relationship> GetFriendRelationship(int FriendID)
+        {
+            var userOneID = (mUserSession.ID > FriendID ? FriendID : mUserSession.ID);
+            var userTwoID = (mUserSession.ID > FriendID ? mUserSession.ID : FriendID);
+
+            var relation = await mDb.Set<Relationship>()
+                .Where(r => r.UserOneID == userOneID && r.UserTwoID == userTwoID)
+                .SingleOrDefaultAsync();
+
+            return relation;
+        }
+
+        public async Task<bool> UpdateRelationship(int FriendID, RelationStatus Status)
+        {
+            var userOneID = (mUserSession.ID > FriendID ? FriendID : mUserSession.ID);
+            var userTwoID = (mUserSession.ID > FriendID ? mUserSession.ID : FriendID);
+
+            var relation = await mDb.Set<Relationship>()
+                .Where(r => r.UserOneID == userOneID && r.UserTwoID == userTwoID)
+                .SingleOrDefaultAsync();
+
+            relation.RelationStatus = (int)Status;
+            relation.OperatedByID = (int)mUserSession.ID;   
+
+            try
+            {
+                await mDb.SaveChangesAsync();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public async Task<bool> DeleteRelation(int FriendID)
+        {
+            var userOneID = (mUserSession.ID > FriendID ? FriendID : mUserSession.ID);
+            var userTwoID = (mUserSession.ID > FriendID ? mUserSession.ID : FriendID);
+
+            var relation = await mDb.Set<Relationship>()
+              .Where(r => r.UserOneID == userOneID && r.UserTwoID == userTwoID)
+              .SingleOrDefaultAsync();
+            mDb.Set<Relationship>().Remove(relation);
+            
+            try
+            {
+                await mDb.SaveChangesAsync();
+                return true;
+            }
+            catch(Exception e)
+            {
+                return false;   
+            }
         }
     }
 }

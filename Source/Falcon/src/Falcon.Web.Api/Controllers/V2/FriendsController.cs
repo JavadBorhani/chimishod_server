@@ -40,22 +40,25 @@ namespace Falcon.Web.Api.Controllers.V2
         }
 
 
-        [ResponseType(typeof(SFriend[]))]
+        [ResponseType(typeof(SFriend))]
         [Route("v2/Friends/")]
         [HttpPost]
-        public async Task<SFriend[]> AddFriend()
+        public async Task<SFriend> AddFriend(int FriendID)
         {
-            var friends = await mFriendsInquiry.GetAllFriendList();
+            var friends = await mFriendsMaintenance.CreateRelation(FriendID);
             return friends;
         }
 
 
-        [ResponseType(typeof(SFriend[]))]
+        [ResponseType(typeof(SFriend))]
         [Route("v2/Friends/")]
         [HttpPost]
-        public async Task<SFriend[]> UpdateFriend()
+        public async Task<SFriend> UpdateFriend(int FriendID , RelationStatus Relation)
         {
-            var friends = await mFriendsInquiry.GetAllFriendList();
+            if (Relation == RelationStatus.None)
+                return null;
+
+            var friends = await mFriendsMaintenance.UpdateRelation(FriendID , Relation);
             return friends;
         }
 
