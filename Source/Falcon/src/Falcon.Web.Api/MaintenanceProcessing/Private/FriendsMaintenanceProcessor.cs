@@ -80,7 +80,7 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
 
                     case (int)RelationStatus.Rejected:
 
-                        var rejected = await RejectedToStatus();
+                        var rejected = RejectedToStatus();
                         return rejected;
 
                     case (int)RelationStatus.Blocked:
@@ -151,7 +151,7 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
 
             return null;
         }
-        private async Task<SFriend> RejectedToStatus()
+        private  SFriend RejectedToStatus()
         {
             // no request should come here
             return null;

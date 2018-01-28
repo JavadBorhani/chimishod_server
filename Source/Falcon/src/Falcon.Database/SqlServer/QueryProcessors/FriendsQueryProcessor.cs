@@ -68,7 +68,7 @@ namespace Falcon.Database.SqlServer.QueryProcessors
         {
             var relation = await mDb.Set<Relationship>()
                 .AsNoTracking()
-                .Where(u => u.UserOneID == mUserSession.ID || u.UserTwoID == mUserSession.ID)
+                .Where(u => u.UserOneID == mUserSession.ID || u.UserTwoID == mUserSession.ID && u.RelationStatus != (int)RelationStatus.Blocked)
                 .ToArrayAsync();
 
 
@@ -80,7 +80,7 @@ namespace Falcon.Database.SqlServer.QueryProcessors
         {
             var friends = await mDb.Set<Relationship>()
                 .AsNoTracking()
-                .Where(r => r.UserOneID == mUserSession.ID || r.UserTwoID == mUserSession.ID)
+                .Where(r => r.UserOneID == mUserSession.ID || r.UserTwoID == mUserSession.ID && r.RelationStatus != (int)RelationStatus.Blocked)
                 .Select(r => new
                 {
                     r.UserOneID,
@@ -151,7 +151,7 @@ namespace Falcon.Database.SqlServer.QueryProcessors
 
             var relation = await mDb.Set<Relationship>()
                 .AsNoTracking()
-                .Where(r => r.UserOneID == userOneID && r.UserTwoID == userTwoID)
+                .Where(r => r.UserOneID == userOneID && r.UserTwoID == userTwoID && r.OperatedByID != (int)RelationStatus.Blocked)
                 .SingleOrDefaultAsync();
 
             return relation;
@@ -163,7 +163,7 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             var userTwoID = (mUserSession.ID > FriendID ? mUserSession.ID : FriendID);
 
             var relation = await mDb.Set<Relationship>()
-                .Where(r => r.UserOneID == userOneID && r.UserTwoID == userTwoID)
+                .Where(r => r.UserOneID == userOneID && r.UserTwoID == userTwoID && r.OperatedByID != (int)RelationStatus.Blocked)
                 .SingleOrDefaultAsync();
 
             return relation;

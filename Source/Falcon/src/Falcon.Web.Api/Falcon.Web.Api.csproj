@@ -323,6 +323,11 @@
     <Compile Include="MaintenanceProcessing\Public\IUsersMaintenanceProcessor.cs" />
     <Compile Include="MaintenanceProcessing\Public\IUserStatsMaintenanceProcessor.cs" />
     <Compile Include="MaintenanceProcessing\Public\IWatchAdMaintenanceProcessor.cs" />
+    <Compile Include="Notification\Private\ErrorToken.cs" />
+    <Compile Include="Notification\Private\NotificationSystem.cs" />
+    <Compile Include="Notification\Private\RequestToken.cs" />
+    <Compile Include="Notification\Private\ResponseToken.cs" />
+    <Compile Include="Notification\Public\INotificationSystem.cs" />
     <Compile Include="Security\Private\HangfireDashboardAuthorizationFilter.cs" />
     <Compile Include="Security\Private\NumberEncryptor.cs" />
     <Compile Include="Security\Private\SpinItem.cs" />
