@@ -1,9 +1,5 @@
 ﻿using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Falcon.Common.Serialization
 {
@@ -12,12 +8,25 @@ namespace Falcon.Common.Serialization
 
         public T DeserializeObject<T>(string value)
         {
-            return JsonConvert.DeserializeObject<T>(value);
-
+            try
+            {
+                return JsonConvert.DeserializeObject<T>(value);
+            }
+            catch(Exception e)
+            {
+                return default(T);
+            }
         }
         public object DeserializeObject(string value, Type type)
         {
-            return JsonConvert.DeserializeObject(value, type);
+            try
+            {
+                return JsonConvert.DeserializeObject(value, type);
+            }
+            catch
+            {
+                return null;
+            }
         }
 
         public string SerializeObject(object value)

@@ -55,7 +55,7 @@ namespace Falcon.Web.Api.Notification.Private
                     HttpStatusCode status = response.StatusCode;
                     // ... Read the string.
                     string result = await content.ReadAsStringAsync();
-                    var tokenResponse = CheckHandShakingResponse(status, result, mNotificationConfig.EndPointUri);
+                    var tokenResponse = EvaluateResponse(status, result, mNotificationConfig.EndPointUri);
 
                     if (tokenResponse != null)
                     {
@@ -68,19 +68,35 @@ namespace Falcon.Web.Api.Notification.Private
             return null;
         }
 
-        private ResponseToken CheckHandShakingResponse(HttpStatusCode StatusCode, string RawFormattedJsonString, string ProviderUri)
+        private ResponseToken EvaluateResponse(HttpStatusCode StatusCode, string RawFormattedJsonString, string ProviderUri)
         {
             switch (StatusCode)
             {
                 case HttpStatusCode.BadRequest:
 
-                    LogError(RawFormattedJsonString);
+                    var responseError = mJsonManager.DeserializeObject<ResponseToken>(RawFormattedJsonString);
+                    mLogger.Error(responseError);
+
 
                     break;
 
                 case HttpStatusCode.OK:
 
+                    
+
                     var tokenResponse = mJsonManager.DeserializeObject<ResponseToken>(RawFormattedJsonString);
+
+                    if(tokenResponse != null)
+                    {
+
+                    }
+
+                    var tokenError = mJsonManager.DeserializeObject<ErrorToken>(RawFormattedJsonString);
+
+                    if(tokenError != null)
+                    {
+
+                    }
 
                     if (tokenResponse == null)
                         mLogger.Error("Market token verifier Uri is wrong : " + ProviderUri);
@@ -95,7 +111,7 @@ namespace Falcon.Web.Api.Notification.Private
         private void LogError(string RawFormattedJsonString)
         {
             ErrorToken issue = mJsonManager.DeserializeObject<ErrorToken>(RawFormattedJsonString);
-            mLogger.Error(issue.error);
+            mLogger.Error(issue.errors);
         }
     }
 }
