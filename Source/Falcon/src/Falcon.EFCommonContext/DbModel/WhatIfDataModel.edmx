@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="Falcon.DbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="Falcon.DbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="AchievedCodeGift">
           <Key>
             <PropertyRef Name="ID" />
@@ -120,6 +120,19 @@
           <Property Name="CreatedDate" Type="datetime" Nullable="false" />
           <Property Name="UpdatedDate" Type="datetime" Nullable="false" />
           <Property Name="Code" Type="varchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <EntityType Name="NotificationSystemConfiguration">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="NotificationName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="NotificationURL" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="NotificationKey" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="NotificationAppID" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="FriendRequestMessage" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="SentRequestMessage" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="InboxRequestMessage" Type="nvarchar" MaxLength="500" Nullable="false" />
         </EntityType>
         <EntityType Name="Order">
           <Key>
@@ -248,7 +261,7 @@
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="int" Nullable="false" />
-          <Property Name="Name" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="ReportedQuestions">
           <Key>
@@ -900,6 +913,7 @@
           <EntitySet Name="HashTag" EntityType="Self.HashTag" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Level" EntityType="Self.Level" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MarketInfo" EntityType="Self.MarketInfo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="NotificationSystemConfiguration" EntityType="Self.NotificationSystemConfiguration" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Order" EntityType="Self.Order" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PlatformTypes" EntityType="Self.PlatformTypes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PriceHistory" EntityType="Self.PriceHistory" Schema="dbo" store:Type="Tables" />
@@ -1060,8 +1074,7 @@
             <End Role="WatchedAd" EntitySet="WatchedAd" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="Falcon.DbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -1107,6 +1120,7 @@
           <EntitySet Name="HashTags" EntityType="Falcon.DbModel.HashTag" />
           <EntitySet Name="Levels" EntityType="Falcon.DbModel.Level" />
           <EntitySet Name="MarketInfoes" EntityType="Falcon.DbModel.MarketInfo" />
+          <EntitySet Name="NotificationSystemConfigurations" EntityType="Falcon.DbModel.NotificationSystemConfiguration" />
           <EntitySet Name="Orders" EntityType="Falcon.DbModel.Order" />
           <EntitySet Name="PlatformTypes" EntityType="Falcon.DbModel.PlatformType" />
           <EntitySet Name="PriceHistories" EntityType="Falcon.DbModel.PriceHistory" />
@@ -1266,7 +1280,7 @@
             <End Role="WatchAdProvider" EntitySet="WatchAdProviders" />
             <End Role="WatchedAd" EntitySet="WatchedAds" />
           </AssociationSet>
-        </EntityContainer>
+          </EntityContainer>
         <ComplexType Name="sp_helpdiagramdefinition_Result">
           <Property Type="Int32" Name="version" Nullable="true" />
           <Property Type="Binary" Name="definition" Nullable="true" />
@@ -1403,6 +1417,19 @@
           <Property Name="UpdatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="Code" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Stores" Relationship="Falcon.DbModel.FK_Store_MarketInfo" FromRole="MarketInfo" ToRole="Store" />
+        </EntityType>
+        <EntityType Name="NotificationSystemConfiguration">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="NotificationName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="NotificationURL" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="NotificationKey" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="NotificationAppID" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="FriendRequestMessage" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="SentRequestMessage" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="InboxRequestMessage" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="Order">
           <Key>
@@ -1557,7 +1584,7 @@
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" />
-          <Property Name="Name" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Relationships" Relationship="Falcon.DbModel.FK_Relationship_RelationshipStatus" FromRole="RelationshipStatu" ToRole="Relationship" />
         </EntityType>
         <EntityType Name="ReportedQuestion">
@@ -1687,7 +1714,7 @@
           <Property Name="APILevel" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Device" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Model" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="RowVersion" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" ConcurrencyMode="Fixed" />
+          <Property Name="RowVersion" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
           <Property Name="IPAddress" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="AvatarImagePath" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="AchievedCodeGifts" Relationship="Falcon.DbModel.FK_AchievedCodeGift_User" FromRole="User" ToRole="AchievedCodeGift" />
@@ -2200,7 +2227,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-      </Schema>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -2351,6 +2378,20 @@
                 <ScalarProperty Name="AppPackageName" ColumnName="AppPackageName" />
                 <ScalarProperty Name="MarketKey" ColumnName="MarketKey" />
                 <ScalarProperty Name="MarketName" ColumnName="MarketName" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="NotificationSystemConfigurations">
+            <EntityTypeMapping TypeName="Falcon.DbModel.NotificationSystemConfiguration">
+              <MappingFragment StoreEntitySet="NotificationSystemConfiguration">
+                <ScalarProperty Name="InboxRequestMessage" ColumnName="InboxRequestMessage" />
+                <ScalarProperty Name="SentRequestMessage" ColumnName="SentRequestMessage" />
+                <ScalarProperty Name="FriendRequestMessage" ColumnName="FriendRequestMessage" />
+                <ScalarProperty Name="NotificationAppID" ColumnName="NotificationAppID" />
+                <ScalarProperty Name="NotificationKey" ColumnName="NotificationKey" />
+                <ScalarProperty Name="NotificationURL" ColumnName="NotificationURL" />
+                <ScalarProperty Name="NotificationName" ColumnName="NotificationName" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -2670,7 +2711,7 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-        </EntityContainerMapping>
+          </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
   </edmx:Runtime>

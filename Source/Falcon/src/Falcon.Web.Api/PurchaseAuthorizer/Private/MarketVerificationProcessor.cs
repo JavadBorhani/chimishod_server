@@ -1,18 +1,12 @@
 ﻿// Flapp Copyright 2017-2018
-using Falcon.Web.Api.Security.Public;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Threading.Tasks;
-using System.Net.Http;
-using System.Net;
-using Newtonsoft.Json;
-using log4net.Core;
 using Falcon.Common.Logging;
-using log4net;
 using Falcon.Common.Serialization;
 using Falcon.Web.Api.PurchaseAuthorizer.Public;
+using log4net;
+using System.Collections.Generic;
+using System.Net;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace Falcon.Web.Api.PurchaseAuthorizer.Private
 {

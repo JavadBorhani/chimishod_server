@@ -1,17 +1,12 @@
-﻿using Falcon.Web.Api.Security;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Falcon.Web.Models.Api;
-using log4net;
+﻿using Falcon.Common;
 using Falcon.Common.Logging;
 using Falcon.Common.Serialization;
-using System.Net.Http;
 using Falcon.Web.Api.WatchAd.Public;
+using log4net;
 using System.Net;
-using Falcon.Common;
+using System.Net.Http;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Falcon.Web.Api.WatchAd.Private
 {
@@ -32,11 +27,12 @@ namespace Falcon.Web.Api.WatchAd.Private
             { 
                 return null;
             }
-
+            
 
             var requestBody = mJsonManager.SerializeObject(RequestToken);
             var request = new StringContent(requestBody.ToString(), Encoding.UTF8, Constants.MediaTypeNames.ApplicationJson);
 
+            
             using (HttpClient client = new HttpClient())
             using (HttpResponseMessage response = await client.PostAsync(ProviderUri, request))
             using (HttpContent content = response.Content)

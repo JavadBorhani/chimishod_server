@@ -12,18 +12,15 @@ namespace Falcon.EFCommonContext.DbModel
     using System;
     using System.Collections.Generic;
     
-    public partial class RelationshipStatu
+    public partial class NotificationSystemConfiguration
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public RelationshipStatu()
-        {
-            this.Relationships = new HashSet<Relationship>();
-        }
-    
         public int ID { get; set; }
-        public string Name { get; set; }
-    
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Relationship> Relationships { get; set; }
+        public string NotificationName { get; set; }
+        public string NotificationURL { get; set; }
+        public string NotificationKey { get; set; }
+        public string NotificationAppID { get; set; }
+        public string FriendRequestMessage { get; set; }
+        public string SentRequestMessage { get; set; }
+        public string InboxRequestMessage { get; set; }
     }
 }

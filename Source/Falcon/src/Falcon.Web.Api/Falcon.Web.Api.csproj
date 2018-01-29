@@ -174,6 +174,7 @@
     <Compile Include="AutoMappingConfiguration\AppAdvertisementsMap\AppAdvertisementsToSAppAdvertAutoTypeConfiguration.cs" />
     <Compile Include="AutoMappingConfiguration\ClientAppStateMap\ClientApplicationStateToSClientAppStateAutoTypeConfiguration.cs" />
     <Compile Include="AutoMappingConfiguration\ClientAppStateMap\SClientAppStateToClientVersionInfoAutoTypeConfiguration.cs" />
+    <Compile Include="AutoMappingConfiguration\Notification\NotificationSystemConfigurationToSNotificationConfigAutoTypeConfiguration.cs" />
     <Compile Include="AutoMappingConfiguration\QuestionMap\ActionQuestion\QuestionActionToSQuestionActionAuthoTypeConfiguration.cs" />
     <Compile Include="AutoMappingConfiguration\QuestionMap\QuestionToSQuestionAutoTypeConfiguration.cs" />
     <Compile Include="AutoMappingConfiguration\Relation\RelationshipToSFriendAutoTypeConfiguration.cs" />
@@ -290,6 +291,7 @@
     <Compile Include="MaintenanceProcessing\Private\FriendsMaintenanceProcessor.cs" />
     <Compile Include="MaintenanceProcessing\Private\GlobalApplicationState.cs" />
     <Compile Include="MaintenanceProcessing\Private\ItemPurchaseManager.cs" />
+    <Compile Include="MaintenanceProcessing\Private\NotificationMaintenanceProcessor.cs" />
     <Compile Include="MaintenanceProcessing\Private\QuestionReportMaintenanceProcessor.cs" />
     <Compile Include="MaintenanceProcessing\Private\QuestionsMaintenanceProcessor.cs" />
     <Compile Include="MaintenanceProcessing\Private\QuestsMaintenanceProcessor.cs" />
@@ -313,6 +315,7 @@
     <Compile Include="MaintenanceProcessing\Public\IFriendsMaintenanceProcessor.cs" />
     <Compile Include="MaintenanceProcessing\Public\IGlobalApplicationState.cs" />
     <Compile Include="MaintenanceProcessing\Public\IItemPurchaseManager.cs" />
+    <Compile Include="MaintenanceProcessing\Public\INotificationMaintenanceProcessor.cs" />
     <Compile Include="MaintenanceProcessing\Public\IQuestionReportMaintenanceProcessor.cs" />
     <Compile Include="MaintenanceProcessing\Public\IQuestionsMaintenanceProcessor.cs" />
     <Compile Include="MaintenanceProcessing\Public\IQuestsMaintenanceProcessor.cs" />
@@ -324,9 +327,11 @@
     <Compile Include="MaintenanceProcessing\Public\IUserStatsMaintenanceProcessor.cs" />
     <Compile Include="MaintenanceProcessing\Public\IWatchAdMaintenanceProcessor.cs" />
     <Compile Include="Notification\Private\ErrorToken.cs" />
+    <Compile Include="Notification\Private\NotificationData.cs" />
     <Compile Include="Notification\Private\NotificationSystem.cs" />
     <Compile Include="Notification\Private\RequestToken.cs" />
     <Compile Include="Notification\Private\ResponseToken.cs" />
+    <Compile Include="Notification\Public\INotificationData.cs" />
     <Compile Include="Notification\Public\INotificationSystem.cs" />
     <Compile Include="Security\Private\HangfireDashboardAuthorizationFilter.cs" />
     <Compile Include="Security\Private\NumberEncryptor.cs" />

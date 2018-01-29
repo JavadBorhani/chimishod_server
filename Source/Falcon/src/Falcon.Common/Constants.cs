@@ -38,6 +38,8 @@ namespace Falcon.Common
         }
         public static class MediaTypeNames
         {
+            public const string KeepAlive = "keep-alive";
+            public const string Connection = "Connection";
             public const string ApplicationXml = "application/xml";
             public const string TextXml = "text/xml";
             public const string ApplicationJson = "application/json";

@@ -15,6 +15,7 @@ using Falcon.Web.Api.JobSystem.Private;
 using Falcon.Web.Api.JobSystem.Public;
 using Falcon.Web.Api.MaintenanceProcessing.Private;
 using Falcon.Web.Api.MaintenanceProcessing.Public;
+using Falcon.Web.Api.Notification.Public;
 using Falcon.Web.Api.PurchaseAuthorizer.Private;
 using Falcon.Web.Api.PurchaseAuthorizer.Public;
 using Falcon.Web.Api.Security.Private;
@@ -225,6 +226,12 @@ namespace Falcon.Web.Api
 
             //UUIDGenerator
             container.Bind<IUUIDGenerator>().To<UUIDGenerator>().InSingletonScope();
+
+            //NotificationSystem
+            container.Bind<INotificationSystem>().To<INotificationSystem>().InSingletonScope();
+
+            //Notification Data
+            container.Bind<INotificationData>().To<INotificationData>().InSingletonScope();
             
 
         }
