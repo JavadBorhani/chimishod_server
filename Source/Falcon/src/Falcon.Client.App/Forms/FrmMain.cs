@@ -7,8 +7,10 @@ namespace Falcon.Client.App
 {
     public partial class FrmMain : Form
     {
-        public const string ServerURI = "http://development.chimishod.ir/";
+        public const string ServerURI = "http://mvp.chimishod.ir/";
         RestClientManager mRequestManger;
+
+        private const string UUID = "YTc0NWY3ZTItYjcyYy00ZWRlLWEzNDMtYjVjOGJjMjA4MmNj";
 
         string[] users; 
 
@@ -84,6 +86,16 @@ namespace Falcon.Client.App
 
         }
 
+        private void SendHugeRequest()
+        {
+            AddToListBox("start creating...");
+            for (int i = 0; i < 100; ++i)
+            {
+                mRequestManger.SendNotification(UUID, AddToListBox);
+            }
+            AddToListBox("end creating...");
+        }
+        
         private void UpdateProgress(IRestResponse response)
         {
             Console.WriteLine("answer result" + response.ResponseStatus);
@@ -100,6 +112,16 @@ namespace Falcon.Client.App
         private void btnLoadUser_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void AnswerGroupBox_Enter(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            SendHugeRequest();
         }
     }
 }

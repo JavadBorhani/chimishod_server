@@ -40,7 +40,14 @@ namespace Falcon.Client.App.Logic
             });
         }
 
-        
+        public void SendNotification(string UUID, Action<IRestResponse> Callback)
+        {
+            var request = RequestUtils.CreateRequest("/v2/TestController/", Method.GET , UUID );
 
+            mClient.ExecuteAsync(request, res =>
+            {
+               Callback.Invoke(res);
+            });
+        }
     }
 }

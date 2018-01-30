@@ -44,6 +44,7 @@ namespace Falcon.Common
             public const string TextXml = "text/xml";
             public const string ApplicationJson = "application/json";
             public const string TextJson = "text/json";
+            public const string Authorization = "Authorization";
         }
 
         public static class Paging

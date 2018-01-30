@@ -15,6 +15,7 @@ using Falcon.Web.Api.JobSystem.Private;
 using Falcon.Web.Api.JobSystem.Public;
 using Falcon.Web.Api.MaintenanceProcessing.Private;
 using Falcon.Web.Api.MaintenanceProcessing.Public;
+using Falcon.Web.Api.Notification.Private;
 using Falcon.Web.Api.Notification.Public;
 using Falcon.Web.Api.PurchaseAuthorizer.Private;
 using Falcon.Web.Api.PurchaseAuthorizer.Public;
@@ -22,6 +23,7 @@ using Falcon.Web.Api.Security.Private;
 using Falcon.Web.Api.Security.Public;
 using Falcon.Web.Api.Utilities;
 using Falcon.Web.Api.Utilities.Mail;
+using Falcon.Web.Api.Utilities.RestClient;
 using Falcon.Web.Api.WatchAd.Private;
 using Falcon.Web.Api.WatchAd.Public;
 using Falcon.Web.Common;
@@ -228,11 +230,14 @@ namespace Falcon.Web.Api
             container.Bind<IUUIDGenerator>().To<UUIDGenerator>().InSingletonScope();
 
             //NotificationSystem
-            container.Bind<INotificationSystem>().To<INotificationSystem>().InSingletonScope();
+            container.Bind<INotificationSystem>().To<NotificationSystem>().InSingletonScope();
 
             //Notification Data
-            container.Bind<INotificationData>().To<INotificationData>().InSingletonScope();
-            
+            container.Bind<INotificationData>().To<NotificationData>().InSingletonScope();
+
+            //Rest Client
+            var rest = new RestClient();
+            container.Bind<IRestClient>().ToConstant(rest).InSingletonScope();
 
         }
 

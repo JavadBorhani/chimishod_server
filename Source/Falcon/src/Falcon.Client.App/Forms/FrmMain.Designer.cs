@@ -48,6 +48,7 @@
             this.ckbYes = new System.Windows.Forms.CheckBox();
             this.btnLoadUser = new System.Windows.Forms.Button();
             this.txtUserNumber = new System.Windows.Forms.TextBox();
+            this.button1 = new System.Windows.Forms.Button();
             this.AnswerGroupBox.SuspendLayout();
             this.AnswerStatus.SuspendLayout();
             this.SuspendLayout();
@@ -72,6 +73,7 @@
             // 
             // AnswerGroupBox
             // 
+            this.AnswerGroupBox.Controls.Add(this.button1);
             this.AnswerGroupBox.Controls.Add(this.AnswerProgressbar);
             this.AnswerGroupBox.Controls.Add(this.btnGenerate);
             this.AnswerGroupBox.Controls.Add(this.txtNoPercent);
@@ -87,6 +89,7 @@
             this.AnswerGroupBox.TabIndex = 3;
             this.AnswerGroupBox.TabStop = false;
             this.AnswerGroupBox.Text = "Answer";
+            this.AnswerGroupBox.Enter += new System.EventHandler(this.AnswerGroupBox_Enter);
             // 
             // AnswerProgressbar
             // 
@@ -244,6 +247,16 @@
             this.txtUserNumber.Text = "Total Number of Users";
             this.txtUserNumber.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(6, 371);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(96, 23);
+            this.button1.TabIndex = 9;
+            this.button1.Text = "SendNotification";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
             // FrmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -290,6 +303,7 @@
         private System.Windows.Forms.Button btnLoadUser;
         private System.Windows.Forms.TextBox txtUserNumber;
         private System.Windows.Forms.ProgressBar AnswerProgressbar;
+        private System.Windows.Forms.Button button1;
     }
 }
 
