@@ -47,6 +47,14 @@ namespace Falcon.Common
             public const string Authorization = "Authorization";
         }
 
+        public static class HttpHeaders
+        {
+            public const string KeepAlive = "keep-alive";
+            public const string Connection = "Connection";
+            public const string Authorization = "Authorization";
+            public const string ContentType = "ContentType";
+        }
+
         public static class Paging
         {
             //public const int UserNumberToShow = 20; LeaderBoard_NumberToShow

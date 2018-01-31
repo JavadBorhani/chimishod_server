@@ -23,7 +23,7 @@ using Falcon.Web.Api.Security.Private;
 using Falcon.Web.Api.Security.Public;
 using Falcon.Web.Api.Utilities;
 using Falcon.Web.Api.Utilities.Mail;
-using Falcon.Web.Api.Utilities.RestClient;
+using Falcon.Web.Api.Utilities.RestClient.Engine;
 using Falcon.Web.Api.WatchAd.Private;
 using Falcon.Web.Api.WatchAd.Public;
 using Falcon.Web.Common;
@@ -236,8 +236,9 @@ namespace Falcon.Web.Api
             container.Bind<INotificationData>().To<NotificationData>().InSingletonScope();
 
             //Rest Client
-            var rest = new RestClient();
-            container.Bind<IRestClient>().ToConstant(rest).InSingletonScope();
+            //var rest = new RestClient();
+            //container.Bind<IRestClient>().ToConstant(rest).InSingletonScope();
+            container.Bind<IRestClientEngine>().To<RestClientEngine>().InSingletonScope();
 
         }
 

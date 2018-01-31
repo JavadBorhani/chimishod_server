@@ -1,13 +1,10 @@
-﻿using Falcon.Common;
-using Falcon.Common.Logging;
+﻿using Falcon.Common.Logging;
 using Falcon.Common.Serialization;
 using Falcon.Web.Api.Notification.Public;
-using Falcon.Web.Api.Utilities.RestClient;
+using Falcon.Web.Api.Utilities.RestClient.Engine;
 using Falcon.Web.Models.Api.Notification;
 using log4net;
 using System.Net;
-using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Falcon.Web.Api.Notification.Private
@@ -17,14 +14,14 @@ namespace Falcon.Web.Api.Notification.Private
         private readonly ILog mLogger;
         private readonly IJsonManager mJsonManager;
         private readonly SNotificationConfig mNotificationConfig;
-        private readonly IRestClient mRestClient;
+        private readonly IRestClientEngine mRestClientEngine;
 
-        public NotificationSystem(ILogManager LogManager, IJsonManager JsonManager , IRestClient RestClient , INotificationData NotificationConfigData)
+        public NotificationSystem(ILogManager LogManager, IJsonManager JsonManager , IRestClientEngine RestClient , INotificationData NotificationConfigData)
         {
             mLogger = LogManager.GetLog(typeof(NotificationSystem));
             mJsonManager = JsonManager;
             mNotificationConfig = NotificationConfigData.GetState();
-            mRestClient = RestClient;
+            mRestClientEngine = RestClient;
         }
         public async Task<ResponseToken> SendToFriend(string[] FriendNotificationIDs)
         {
@@ -44,25 +41,20 @@ namespace Falcon.Web.Api.Notification.Private
                 return null;
             }
 
-
-            var requestBody = mJsonManager.SerializeObject(requestToken);
-            HttpContent request = new StringContent(requestBody.ToString(), Encoding.UTF8, Constants.MediaTypeNames.ApplicationJson);
-            mRestClient.SetAuthorization(mNotificationConfig.AuthenticationKey);
-
-            using (HttpResponseMessage response = await mRestClient.PostAsync(mNotificationConfig.EndPointUri, request))
-            using (HttpContent content = response.Content)
+            var request = mRestClientEngine.CreateRequest(mNotificationConfig.EndPointUri, RestSharp.Method.POST, requestToken, new HttpParam[]
             {
-                HttpStatusCode status = response.StatusCode;
-                // ... Read the string.
-                string result = await content.ReadAsStringAsync();
-                var tokenResponse = EvaluateResponse(status, result, mNotificationConfig.EndPointUri);
+                new HttpParam { Key = "Content-Type" , Value = "application/json" },
+                new HttpParam { Key = "Authorization" , Value = "Basic " + mNotificationConfig.AuthenticationKey },
+            });
 
-                if (tokenResponse != null)
-                {
-                    return tokenResponse;
-                }
+            var response = await mRestClientEngine.ExecuteTaskAsync(mNotificationConfig.EndPointUri, request);
+
+            var tokenResponse = EvaluateResponse(response.StatusCode, response.Content, mNotificationConfig.EndPointUri);
+
+            if(tokenResponse != null)
+            {
+                return tokenResponse;
             }
-            
             return null;
         }
 
