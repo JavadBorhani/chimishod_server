@@ -63,9 +63,20 @@ namespace Falcon.Web.Api.Notification.Private
             return (!string.IsNullOrEmpty(model.Name) ||
                 !string.IsNullOrEmpty(model.EndPointUri) ||
                 !string.IsNullOrEmpty(model.AuthenticationKey) ||
-                !string.IsNullOrEmpty(model.FriendRequestMessage) ||
-                !string.IsNullOrEmpty(model.SentRequestMessage) ||
-                !string.IsNullOrEmpty(model.InboxRequestMessage) 
+                !string.IsNullOrEmpty(model.FriendRequest_Title) ||
+                !string.IsNullOrEmpty(model.SentRequest_Title) ||
+                !string.IsNullOrEmpty(model.InboxRequest_Title) ||
+                !string.IsNullOrEmpty(model.FriendResponse_Title) ||
+
+                !string.IsNullOrEmpty(model.FriendRequest_Description) ||
+                !string.IsNullOrEmpty(model.SentRequest_Description) ||
+                !string.IsNullOrEmpty(model.InboxRequest_Description) ||
+                !string.IsNullOrEmpty(model.FriendResponse_Description) ||
+
+                !string.IsNullOrEmpty(model.FriendRequest_Image) ||
+                !string.IsNullOrEmpty(model.SentRequest_Image) ||
+                !string.IsNullOrEmpty(model.InboxRequest_Image) ||
+                !string.IsNullOrEmpty(model.FriendResponse_Image) 
                 );
 
         }

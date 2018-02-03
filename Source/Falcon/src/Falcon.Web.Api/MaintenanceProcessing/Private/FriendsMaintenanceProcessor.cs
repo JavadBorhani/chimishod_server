@@ -1,6 +1,8 @@
-﻿using Falcon.Common.Security;
+﻿using Falcon.Common;
+using Falcon.Common.Security;
 using Falcon.Data.QueryProcessors;
 using Falcon.EFCommonContext.DbModel;
+using Falcon.Web.Api.JobSystem.Public;
 using Falcon.Web.Api.MaintenanceProcessing.Public;
 using Falcon.Web.Models.Api.Friend;
 using System.Threading.Tasks;
@@ -11,11 +13,19 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
     {
         private readonly IFriendsQueryProcessor mFriendQuery;
         private readonly IUserSession mUserSession;
+        private readonly IJobManager mJobManager;
+        private readonly INotificationMaintenanceProcessor mNotificationManager;
 
-        public FriendsMaintenanceProcessor(IFriendsQueryProcessor FriendsQuery , IUserSession UserSession)
+        public FriendsMaintenanceProcessor(
+            IFriendsQueryProcessor FriendsQuery , 
+            IUserSession UserSession , 
+            IJobManager JobManager ,
+            INotificationMaintenanceProcessor NotificationManager , IUserQueryProcessor UserQuery , IDateTime DateTime)
         {
             mFriendQuery = FriendsQuery;
-            mUserSession = UserSession; 
+            mUserSession = UserSession;
+            mJobManager = JobManager;
+            mNotificationManager = NotificationManager;
         }
 
         public async Task<SFriend> CreateRelation(int FriendID)
@@ -24,6 +34,8 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
 
             if (relation)
             {
+                await mNotificationManager.SendFriendRequestNotification(FriendID);
+
                 var friend = new SFriend
                 {
                     UserID = FriendID,

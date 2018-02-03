@@ -302,5 +302,15 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             return queryResult;
 
         }
+
+        public async Task<User> GetUserByID(int UserID)
+        {
+            var user = await mDb.Set<User>()
+                .AsNoTracking()
+                .Where(u => u.ID == UserID)
+                .SingleOrDefaultAsync();
+
+            return user;
+        }
     }
 }   

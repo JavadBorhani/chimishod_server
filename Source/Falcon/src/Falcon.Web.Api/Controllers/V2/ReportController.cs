@@ -1,6 +1,7 @@
 ﻿using Falcon.Web.Api.InquiryProcessing.Public;
 using Falcon.Web.Api.MaintenanceProcessing.Public;
 using Falcon.Web.Api.Utilities.Base;
+using Falcon.Web.Common;
 using Falcon.Web.Models.Api;
 using Falcon.Web.Models.Api.Report;
 using System.Threading.Tasks;
@@ -10,6 +11,7 @@ using System.Web.Http.Description;
 namespace Falcon.Web.Api.Controllers.V2
 {
     [RoutePrefix("v2/Report")]
+    [UnitOfWorkActionFilter]
     public class ReportController : FalconApiController
     {
         private readonly IQuestionReportInquiryProcessor mReportInquiry;

@@ -96,5 +96,10 @@ namespace Falcon.Web.Api.Utilities.RestClient.Engine
 
             return request;
         }
+
+        public void ClearEngineData()
+        {
+            mClients.Clear();
+        }
     }
 }

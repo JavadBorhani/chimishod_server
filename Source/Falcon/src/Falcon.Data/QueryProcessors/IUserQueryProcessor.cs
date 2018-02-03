@@ -32,6 +32,8 @@ namespace Falcon.Data.QueryProcessors
         Task<bool> Exists(string UserName);
         Task<QueryResult<User>> SearchUserNames(PagedDataRequest RequestInfo , string Expression , int[] Excepts =  null);
 
+        Task<User> GetUserByID(int UserID);
+
 
     }
 }

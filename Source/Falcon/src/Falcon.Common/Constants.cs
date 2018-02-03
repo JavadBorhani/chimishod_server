@@ -45,6 +45,8 @@ namespace Falcon.Common
             public const string ApplicationJson = "application/json";
             public const string TextJson = "text/json";
             public const string Authorization = "Authorization";
+            public const string en = "en";
+            public const string NotificationClientKey = "NotificationData";
         }
 
         public static class HttpHeaders

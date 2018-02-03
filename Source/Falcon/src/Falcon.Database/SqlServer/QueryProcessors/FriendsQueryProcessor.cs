@@ -104,6 +104,7 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             var userTwoID = (mUserSession.ID > FriendID ? mUserSession.ID : FriendID);
 
             var friend = await GetFriendRelationship(FriendID);
+            
 
             if(friend != null)
             {

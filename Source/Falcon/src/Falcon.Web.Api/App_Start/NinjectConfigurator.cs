@@ -184,6 +184,7 @@ namespace Falcon.Web.Api
             container.Bind<IFriendsMaintenanceProcessor>().To<FriendsMaintenanceProcessor>().InRequestScope();
             container.Bind<IQuestionsMaintenanceProcessor>().To<QuestionsMaintenanceProcessor>().InRequestScope();
             container.Bind<IQuestionReportMaintenanceProcessor>().To<QuestionReportMaintenanceProcessor>().InRequestScope();
+            container.Bind<INotificationMaintenanceProcessor>().To<NotificationMaintenanceProcessor>().InRequestScope();
 
         }
 
@@ -239,6 +240,7 @@ namespace Falcon.Web.Api
             //var rest = new RestClient();
             //container.Bind<IRestClient>().ToConstant(rest).InSingletonScope();
             container.Bind<IRestClientEngine>().To<RestClientEngine>().InSingletonScope();
+
 
         }
 

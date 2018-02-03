@@ -19,8 +19,17 @@ namespace Falcon.EFCommonContext.DbModel
         public string NotificationURL { get; set; }
         public string NotificationKey { get; set; }
         public string NotificationAppID { get; set; }
-        public string FriendRequestMessage { get; set; }
-        public string SentRequestMessage { get; set; }
-        public string InboxRequestMessage { get; set; }
+        public string FriendRequest_Title { get; set; }
+        public string SentRequest_Title { get; set; }
+        public string InboxRequest_Title { get; set; }
+        public string FriendResponse_Title { get; set; }
+        public string FriendRequest_Description { get; set; }
+        public string SentRequest_Description { get; set; }
+        public string InboxRequest_Description { get; set; }
+        public string FriendResponse_Description { get; set; }
+        public string FriendRequest_Image { get; set; }
+        public string SentRequest_Image { get; set; }
+        public string InboxRequest_Image { get; set; }
+        public string FriendResponse_Image { get; set; }
     }
 }

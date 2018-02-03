@@ -53,6 +53,8 @@
     <Compile Include="Api\Input\Questions\EditInfo.cs" />
     <Compile Include="Api\Input\Questions\RemoveInfo.cs" />
     <Compile Include="Api\Level\SLevelUpInfo.cs" />
+    <Compile Include="Api\Notification\Client\SClientNotificationData.cs" />
+    <Compile Include="Api\Notification\Client\SFriendRequest.cs" />
     <Compile Include="Api\Notification\SNotificationConfig.cs" />
     <Compile Include="Api\Quest\SQuest.cs" />
     <Compile Include="Api\Report\SReportedQuestion.cs" />
