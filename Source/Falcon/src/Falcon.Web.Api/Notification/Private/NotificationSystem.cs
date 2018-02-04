@@ -3,7 +3,6 @@ using Falcon.Common.Logging;
 using Falcon.Common.Serialization;
 using Falcon.Web.Api.Notification.Public;
 using Falcon.Web.Api.Utilities.RestClient.Engine;
-using Falcon.Web.Models.Api;
 using Falcon.Web.Models.Api.Notification;
 using Falcon.Web.Models.Api.Notification.Client;
 using log4net;
@@ -12,6 +11,7 @@ using System.Threading.Tasks;
 
 namespace Falcon.Web.Api.Notification.Private
 {
+
     public class NotificationSystem : INotificationSystem
     {
         private readonly ILog mLogger;
@@ -26,24 +26,24 @@ namespace Falcon.Web.Api.Notification.Private
             mNotificationConfig = NotificationConfigData.GetState();
             mRestClientEngine = RestClient;
         }
-        public async Task<ResponseToken> SendFriendRequest(string[] FriendNotificationIDs , SClientNotificationData Notification)
+        public async Task<ResponseToken> SendRequest(string[] FriendNotificationIDs , SClientNotificationData Notification , RequestCommonInfo RequestInfo)
         {
             var requestToken = new RequestToken
             {
                 include_player_ids = FriendNotificationIDs,
                 app_id = mNotificationConfig.ApplicationID,
-                small_icon = mNotificationConfig.FriendRequest_Image,
+                small_icon = RequestInfo.ImageUrl,
                 contents = new System.Collections.Generic.Dictionary<string, string>
                 {
-                    {Constants.MediaTypeNames.en , mNotificationConfig.FriendRequest_Description }
+                    {Constants.MediaTypeNames.en , RequestInfo.Descrption }
                 } ,
                 data = new System.Collections.Generic.Dictionary<string, object>()
                 {
                     {Constants.MediaTypeNames.NotificationClientKey , Notification }
                 },
-                subtitle = new System.Collections.Generic.Dictionary<string, string>
+                headings = new System.Collections.Generic.Dictionary<string, string>
                 {
-                    {Constants.MediaTypeNames.en , mNotificationConfig.FriendRequest_Title }
+                    {Constants.MediaTypeNames.en , RequestInfo.Title }
                 },
             };
 
@@ -122,40 +122,6 @@ namespace Falcon.Web.Api.Notification.Private
         {
             ErrorToken issue = mJsonManager.DeserializeObject<ErrorToken>(RawFormattedJsonString);
             mLogger.Error(issue.errors);
-        }
-
-        public async Task<ResponseToken> SendQuestionToFriends(string[] FriendNotificationID, SQuestion Question)
-        {
-            var requestToken = new RequestToken
-            {
-                include_player_ids = FriendNotificationID,
-                app_id = mNotificationConfig.ApplicationID,
-                contents = new System.Collections.Generic.Dictionary<string, string>
-                {
-                    {"en" , mNotificationConfig.FriendRequest_Title }
-                }
-            };
-
-            if (string.IsNullOrEmpty(mNotificationConfig.EndPointUri))
-            {
-                return null;
-            }
-
-            var request = mRestClientEngine.CreateRequest(mNotificationConfig.EndPointUri, RestSharp.Method.POST, requestToken, new HttpParam[]
-            {
-                new HttpParam { Key = "Content-Type" , Value = "application/json" },
-                new HttpParam { Key = "Authorization" , Value = "Basic " + mNotificationConfig.AuthenticationKey },
-            });
-
-            var response = await mRestClientEngine.ExecuteTaskAsync(mNotificationConfig.EndPointUri, request);
-
-            var tokenResponse = EvaluateResponse(response.StatusCode, response.Content, mNotificationConfig.EndPointUri);
-
-            if (tokenResponse != null)
-            {
-                return tokenResponse;
-            }
-            return null;
         }
     }
 }

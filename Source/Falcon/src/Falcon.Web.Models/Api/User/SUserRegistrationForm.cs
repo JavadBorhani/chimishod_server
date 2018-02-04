@@ -35,6 +35,7 @@ namespace Falcon.Web.Models.Api.User
         [Required]
         public PlatformType Platform { get; set; }
 
+        [Required]
         public Guid NotificationID { get; set; }
 
         public string IPAddress { get; set; }

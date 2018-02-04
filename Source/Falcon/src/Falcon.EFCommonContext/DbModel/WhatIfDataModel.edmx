@@ -259,11 +259,11 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="UserOneID" Type="int" Nullable="false" />
           <Property Name="UserTwoID" Type="int" Nullable="false" />
           <Property Name="RelationStatus" Type="int" Nullable="false" />
           <Property Name="OperatedByID" Type="int" Nullable="false" />
-          <Property Name="ID" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="RelationshipStatus">
           <Key>
@@ -1588,11 +1588,11 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="UserOneID" Type="Int32" Nullable="false" />
           <Property Name="UserTwoID" Type="Int32" Nullable="false" />
           <Property Name="RelationStatus" Type="Int32" Nullable="false" />
           <Property Name="OperatedByID" Type="Int32" Nullable="false" />
-          <Property Name="ID" Type="Int32" Nullable="false" />
           <NavigationProperty Name="RelationshipStatu" Relationship="Falcon.DbModel.FK_Relationship_RelationshipStatus" FromRole="Relationship" ToRole="RelationshipStatu" />
           <NavigationProperty Name="User" Relationship="Falcon.DbModel.FK_Relationship_User" FromRole="Relationship" ToRole="User" />
           <NavigationProperty Name="User1" Relationship="Falcon.DbModel.FK_Relationship_User_Two" FromRole="Relationship" ToRole="User" />
@@ -2548,11 +2548,11 @@
           <EntitySetMapping Name="Relationships">
             <EntityTypeMapping TypeName="Falcon.DbModel.Relationship">
               <MappingFragment StoreEntitySet="Relationship">
-                <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="OperatedByID" ColumnName="OperatedByID" />
                 <ScalarProperty Name="RelationStatus" ColumnName="RelationStatus" />
                 <ScalarProperty Name="UserTwoID" ColumnName="UserTwoID" />
                 <ScalarProperty Name="UserOneID" ColumnName="UserOneID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

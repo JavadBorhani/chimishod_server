@@ -34,7 +34,7 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
 
             if (relation)
             {
-                await mNotificationManager.SendFriendRequestNotification(FriendID);
+                await mNotificationManager.SendFriendRequestNotification(FriendID, mUserSession.ID);
 
                 var friend = new SFriend
                 {
@@ -82,6 +82,15 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
                     case (int) RelationStatus.Pending:
 
                         var pending = await PendingToStatus(friend, FriendID, Status);
+
+                        if(pending != null)
+                        {
+                            await mNotificationManager.SendFriendResponseNotification(FriendID, new Models.Api.Notification.Client.SFriendResponse
+                            {
+                                UserID = mUserSession.ID, 
+                                RelationStatus = pending.Status
+                            });
+                        }
                         return pending;
 
 

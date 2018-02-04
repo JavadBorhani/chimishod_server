@@ -2,9 +2,9 @@
 {
     public enum RelationStatus
     {
-        Pending = 1 ,
-        Accepted = 2  , 
-        Rejected = 3 ,
+        Accepted = 1  , 
+        Rejected = 2 ,
+        Pending = 3 ,
         Blocked = 4 ,
         None = 5 ,
     }

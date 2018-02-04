@@ -312,5 +312,16 @@ namespace Falcon.Database.SqlServer.QueryProcessors
 
             return user;
         }
+
+        public async Task<string> GetNotificationID(int friendID)
+        {
+            var user = await mDb.Set<User>()
+                .AsNoTracking()
+                .Where(u => u.ID == friendID)
+                .Select(u => u.NotificationID)
+                .SingleOrDefaultAsync();
+
+            return user;
+        }
     }
 }   

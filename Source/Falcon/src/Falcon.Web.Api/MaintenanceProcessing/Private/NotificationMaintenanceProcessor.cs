@@ -4,9 +4,9 @@ using Falcon.Web.Api.JobSystem.Public;
 using Falcon.Web.Api.MaintenanceProcessing.Public;
 using Falcon.Web.Api.Notification.Public;
 using Falcon.Web.Models.Api.Friend;
+using Falcon.Web.Models.Api.Notification;
 using Falcon.Web.Models.Api.Notification.Client;
 using System.Threading.Tasks;
-
 
 namespace Falcon.Web.Api.MaintenanceProcessing.Private
 {
@@ -16,16 +16,19 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
         private readonly IDateTime mDateTime;
         private readonly IJobManager mJobManager;
         private readonly INotificationSystem mNotificationSystem;
-        public NotificationMaintenanceProcessor(IUserQueryProcessor UserQuery, IDateTime DateTime, INotificationSystem Notification , IJobManager JobManager)
+        private readonly SNotificationConfig mNotificationConfig;
+        public NotificationMaintenanceProcessor(IUserQueryProcessor UserQuery, IDateTime DateTime, INotificationSystem Notification , IJobManager JobManager , INotificationData NotificationData)
         {
             mDateTime = DateTime;
             mUserQuery = UserQuery;
             mNotificationSystem = Notification;
             mJobManager = JobManager;
+            mNotificationConfig = NotificationData.GetState();
         }
-        public async Task<bool> SendFriendRequestNotification(int UserID)
+        public async Task<bool> SendFriendRequestNotification(int FriendID, int UserInfoToSend)
         {
-            var user = await mUserQuery.GetUserByID(UserID);
+            var friendNotificationID = await mUserQuery.GetNotificationID(FriendID);
+            var user = await mUserQuery.GetUserByID(UserInfoToSend);
 
             var notification = new SClientNotificationData()
             {
@@ -33,7 +36,7 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
                 {
                     new SFriendRequest
                     {
-                        UserID = UserID ,
+                        UserID = UserInfoToSend ,
                         PictureURL = user.AvatarImagePath ,
                         RelationState =  (int)RelationStatus.Pending ,
                         Username = user.UserName
@@ -43,7 +46,45 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
                 Type = NotificationType.FriendRequest
             };
 
-            mJobManager.Enqueue(() => mNotificationSystem.SendFriendRequest(new string[] { user.NotificationID }, notification));
+            RequestCommonInfo Info = new RequestCommonInfo
+            {
+              Title = mNotificationConfig.FriendRequest_Title,
+              Descrption = mNotificationConfig.FriendRequest_Description,
+              ImageUrl = mNotificationConfig.FriendRequest_Image,
+            };
+
+            mJobManager.Enqueue(() => mNotificationSystem.SendRequest(new string[] { friendNotificationID }, notification, Info));
+
+            return true;
+        }
+
+        public async Task<bool> SendFriendResponseNotification(int FriendID, SFriendResponse FriendResponse)
+        {
+            var friendNotificationID = await mUserQuery.GetNotificationID(FriendID);
+
+            var notification = new SClientNotificationData()
+            {
+                FriendResponse = new System.Collections.Generic.List<SFriendResponse>()
+                {
+                    new SFriendResponse
+                    {
+                        RelationStatus = FriendResponse.RelationStatus,
+                        UserID = FriendResponse.UserID
+                    },
+                },
+
+                ServerDate = mDateTime.Now,
+                Type = NotificationType.FriendResponse
+            };
+
+            RequestCommonInfo Info = new RequestCommonInfo
+            {
+                Title = mNotificationConfig.FriendResponse_Title,
+                Descrption = mNotificationConfig.FriendResponse_Description,
+                ImageUrl = mNotificationConfig.FriendResponse_Image,
+            };
+
+            mJobManager.Enqueue(() => mNotificationSystem.SendRequest(new string[] { friendNotificationID }, notification , Info));
 
             return true;
         }

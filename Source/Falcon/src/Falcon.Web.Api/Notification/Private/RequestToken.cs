@@ -8,7 +8,8 @@ namespace Falcon.Web.Api.Notification.Private
         public string[] include_player_ids { get; set; }
         public string small_icon { get; set; }
         public Dictionary<string, string> contents { get; set; }
-        public Dictionary<string, string> subtitle { get; set; }
+        public Dictionary<string, string> headings { get; set; }
         public Dictionary<string, object> data { get; set; }
+
     }
 }

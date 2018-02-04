@@ -23,7 +23,7 @@ namespace Falcon.Web.Api.Controllers.V1
         [HttpGet]
         public async Task<string> GetInfo()
         {
-            var data = await mNotification.SendFriendRequestNotification(7);
+            var data = await mNotification.SendFriendRequestNotification(1 , 7);
             return data.ToString();
         }
 

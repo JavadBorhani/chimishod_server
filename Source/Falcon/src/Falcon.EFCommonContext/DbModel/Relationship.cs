@@ -14,11 +14,11 @@ namespace Falcon.EFCommonContext.DbModel
     
     public partial class Relationship
     {
+        public int ID { get; set; }
         public int UserOneID { get; set; }
         public int UserTwoID { get; set; }
         public int RelationStatus { get; set; }
         public int OperatedByID { get; set; }
-        public int ID { get; set; }
     
         public virtual RelationshipStatu RelationshipStatu { get; set; }
         public virtual User User { get; set; }

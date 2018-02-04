@@ -31,7 +31,7 @@ namespace Falcon.Data.QueryProcessors
         Task<bool> UpdateUserNotificationID(string UUID);
         Task<bool> Exists(string UserName);
         Task<QueryResult<User>> SearchUserNames(PagedDataRequest RequestInfo , string Expression , int[] Excepts =  null);
-
+        Task<string> GetNotificationID(int friendID);
         Task<User> GetUserByID(int UserID);
 
 

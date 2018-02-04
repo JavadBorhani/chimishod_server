@@ -41,7 +41,7 @@ namespace Falcon.Web.Api.Controllers.V2
 
 
         [ResponseType(typeof(SFriend))]
-        [Route("v2/Friends/")]
+        [Route("v2/Friends/Create/{FriendID}")]
         [HttpPost]
         public async Task<SFriend> AddFriend(int FriendID)
         {
@@ -51,7 +51,7 @@ namespace Falcon.Web.Api.Controllers.V2
 
 
         [ResponseType(typeof(SFriend))]
-        [Route("v2/Friends/")]
+        [Route("v2/Friends/Update/{FriendID}/{Relation}")]
         [HttpPost]
         public async Task<SFriend> UpdateFriend(int FriendID , RelationStatus Relation)
         {
