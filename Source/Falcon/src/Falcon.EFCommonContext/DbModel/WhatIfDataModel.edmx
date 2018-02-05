@@ -193,8 +193,8 @@
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="What_if" Type="nvarchar" MaxLength="250" Nullable="false" />
-          <Property Name="But" Type="nvarchar" MaxLength="250" Nullable="false" />
+          <Property Name="What_if" Type="nvarchar" MaxLength="300" Nullable="false" />
+          <Property Name="But" Type="nvarchar" MaxLength="300" Nullable="false" />
           <Property Name="UserID" Type="int" />
           <Property Name="HashTagID" Type="int" />
           <Property Name="Yes_Count" Type="int" Nullable="false" />
@@ -292,13 +292,25 @@
         </EntityType>
         <EntityType Name="Sent">
           <Key>
-            <PropertyRef Name="ID" />
+            <PropertyRef Name="GroupID" />
           </Key>
-          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="GroupID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="UserID" Type="int" Nullable="false" />
           <Property Name="QuestionID" Type="int" Nullable="false" />
-          <Property Name="GorupID" Type="int" Nullable="false" />
           <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+          <Property Name="UpdatedDate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SentGroup">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="GroupID" Type="int" Nullable="false" />
+          <Property Name="SenderID" Type="int" Nullable="false" />
+          <Property Name="RecieverID" Type="int" Nullable="false" />
+          <Property Name="QuestionID" Type="int" Nullable="false" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+          <Property Name="UpdatedDate" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="ServerApplicationState">
           <Key>
@@ -777,6 +789,44 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_SentGroup_Sent">
+          <End Role="Sent" Type="Self.Sent" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="SentGroup" Type="Self.SentGroup" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sent">
+              <PropertyRef Name="GroupID" />
+            </Principal>
+            <Dependent Role="SentGroup">
+              <PropertyRef Name="GroupID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SentGroup_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="SentGroup" Type="Self.SentGroup" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="SentGroup">
+              <PropertyRef Name="RecieverID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SentGroup_UserSender">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="SentGroup" Type="Self.SentGroup" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="SentGroup">
+              <PropertyRef Name="SenderID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Store_MarketInfo">
           <End Role="MarketInfo" Type="Self.MarketInfo" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -937,6 +987,7 @@
           <EntitySet Name="ReportedQuestions" EntityType="Self.ReportedQuestions" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ReportType" EntityType="Self.ReportType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Sent" EntityType="Self.Sent" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SentGroup" EntityType="Self.SentGroup" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ServerApplicationState" EntityType="Self.ServerApplicationState" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Store" EntityType="Self.Store" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
@@ -1050,6 +1101,18 @@
             <End Role="User" EntitySet="User" />
             <End Role="Sent" EntitySet="Sent" />
           </AssociationSet>
+          <AssociationSet Name="FK_SentGroup_Sent" Association="Self.FK_SentGroup_Sent">
+            <End Role="Sent" EntitySet="Sent" />
+            <End Role="SentGroup" EntitySet="SentGroup" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SentGroup_User" Association="Self.FK_SentGroup_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="SentGroup" EntitySet="SentGroup" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SentGroup_UserSender" Association="Self.FK_SentGroup_UserSender">
+            <End Role="User" EntitySet="User" />
+            <End Role="SentGroup" EntitySet="SentGroup" />
+          </AssociationSet>
           <AssociationSet Name="FK_Store_MarketInfo" Association="Self.FK_Store_MarketInfo">
             <End Role="MarketInfo" EntitySet="MarketInfo" />
             <End Role="Store" EntitySet="Store" />
@@ -1145,6 +1208,7 @@
           <EntitySet Name="ReportedQuestions" EntityType="Falcon.DbModel.ReportedQuestion" />
           <EntitySet Name="ReportTypes" EntityType="Falcon.DbModel.ReportType" />
           <EntitySet Name="Sents" EntityType="Falcon.DbModel.Sent" />
+          <EntitySet Name="SentGroups" EntityType="Falcon.DbModel.SentGroup" />
           <EntitySet Name="ServerApplicationStates" EntityType="Falcon.DbModel.ServerApplicationState" />
           <EntitySet Name="Stores" EntityType="Falcon.DbModel.Store" />
           <EntitySet Name="sysdiagrams" EntityType="Falcon.DbModel.sysdiagram" />
@@ -1273,6 +1337,18 @@
           <AssociationSet Name="FK_Sent_User" Association="Falcon.DbModel.FK_Sent_User">
             <End Role="User" EntitySet="Users" />
             <End Role="Sent" EntitySet="Sents" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SentGroup_Sent" Association="Falcon.DbModel.FK_SentGroup_Sent">
+            <End Role="Sent" EntitySet="Sents" />
+            <End Role="SentGroup" EntitySet="SentGroups" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SentGroup_User" Association="Falcon.DbModel.FK_SentGroup_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="SentGroup" EntitySet="SentGroups" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SentGroup_UserSender" Association="Falcon.DbModel.FK_SentGroup_UserSender">
+            <End Role="User" EntitySet="Users" />
+            <End Role="SentGroup" EntitySet="SentGroups" />
           </AssociationSet>
           <AssociationSet Name="FK_User_UserType" Association="Falcon.DbModel.FK_User_UserType">
             <End Role="UserType" EntitySet="UserTypes" />
@@ -1508,8 +1584,8 @@
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="What_if" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="But" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="What_if" Type="String" Nullable="false" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Name="But" Type="String" Nullable="false" MaxLength="300" FixedLength="false" Unicode="true" />
           <Property Name="UserID" Type="Int32" />
           <Property Name="HashTagID" Type="Int32" />
           <Property Name="Yes_Count" Type="Int32" Nullable="false" />
@@ -1630,15 +1706,31 @@
         </EntityType>
         <EntityType Name="Sent">
           <Key>
-            <PropertyRef Name="ID" />
+            <PropertyRef Name="GroupID" />
           </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="GroupID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="UserID" Type="Int32" Nullable="false" />
           <Property Name="QuestionID" Type="Int32" Nullable="false" />
-          <Property Name="GorupID" Type="Int32" Nullable="false" />
           <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UpdatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="Question" Relationship="Falcon.DbModel.FK_Sent_Question" FromRole="Sent" ToRole="Question" />
           <NavigationProperty Name="User" Relationship="Falcon.DbModel.FK_Sent_User" FromRole="Sent" ToRole="User" />
+          <NavigationProperty Name="SentGroups" Relationship="Falcon.DbModel.FK_SentGroup_Sent" FromRole="Sent" ToRole="SentGroup" />
+        </EntityType>
+        <EntityType Name="SentGroup">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="GroupID" Type="Int32" Nullable="false" />
+          <Property Name="SenderID" Type="Int32" Nullable="false" />
+          <Property Name="RecieverID" Type="Int32" Nullable="false" />
+          <Property Name="QuestionID" Type="Int32" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UpdatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Sent" Relationship="Falcon.DbModel.FK_SentGroup_Sent" FromRole="SentGroup" ToRole="Sent" />
+          <NavigationProperty Name="User" Relationship="Falcon.DbModel.FK_SentGroup_User" FromRole="SentGroup" ToRole="User" />
+          <NavigationProperty Name="User1" Relationship="Falcon.DbModel.FK_SentGroup_UserSender" FromRole="SentGroup" ToRole="User" />
         </EntityType>
         <EntityType Name="ServerApplicationState">
           <Key>
@@ -1749,6 +1841,8 @@
           <NavigationProperty Name="Relationships2" Relationship="Falcon.DbModel.FK_RelationshipUserOne" FromRole="User" ToRole="Relationship" />
           <NavigationProperty Name="ReportedQuestions" Relationship="Falcon.DbModel.FK_ReportedQuestions_User" FromRole="User" ToRole="ReportedQuestion" />
           <NavigationProperty Name="Sents" Relationship="Falcon.DbModel.FK_Sent_User" FromRole="User" ToRole="Sent" />
+          <NavigationProperty Name="SentGroups" Relationship="Falcon.DbModel.FK_SentGroup_User" FromRole="User" ToRole="SentGroup" />
+          <NavigationProperty Name="SentGroups1" Relationship="Falcon.DbModel.FK_SentGroup_UserSender" FromRole="User" ToRole="SentGroup" />
           <NavigationProperty Name="UserType" Relationship="Falcon.DbModel.FK_User_UserType" FromRole="User" ToRole="UserType" />
           <NavigationProperty Name="UserInfoes" Relationship="Falcon.DbModel.FK_UserInfo_User" FromRole="User" ToRole="UserInfo" />
           <NavigationProperty Name="WatchedAds" Relationship="Falcon.DbModel.FK_WatchedAd_User" FromRole="User" ToRole="WatchedAd" />
@@ -2194,6 +2288,44 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_SentGroup_Sent">
+          <End Type="Falcon.DbModel.Sent" Role="Sent" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="Falcon.DbModel.SentGroup" Role="SentGroup" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sent">
+              <PropertyRef Name="GroupID" />
+            </Principal>
+            <Dependent Role="SentGroup">
+              <PropertyRef Name="GroupID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SentGroup_User">
+          <End Type="Falcon.DbModel.User" Role="User" Multiplicity="1" />
+          <End Type="Falcon.DbModel.SentGroup" Role="SentGroup" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="SentGroup">
+              <PropertyRef Name="RecieverID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SentGroup_UserSender">
+          <End Type="Falcon.DbModel.User" Role="User" Multiplicity="1" />
+          <End Type="Falcon.DbModel.SentGroup" Role="SentGroup" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="SentGroup">
+              <PropertyRef Name="SenderID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_User_UserType">
           <End Type="Falcon.DbModel.UserType" Role="UserType" Multiplicity="0..1" />
           <End Type="Falcon.DbModel.User" Role="User" Multiplicity="*" />
@@ -2587,10 +2719,23 @@
           <EntitySetMapping Name="Sents">
             <EntityTypeMapping TypeName="Falcon.DbModel.Sent">
               <MappingFragment StoreEntitySet="Sent">
+                <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-                <ScalarProperty Name="GorupID" ColumnName="GorupID" />
                 <ScalarProperty Name="QuestionID" ColumnName="QuestionID" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="GroupID" ColumnName="GroupID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SentGroups">
+            <EntityTypeMapping TypeName="Falcon.DbModel.SentGroup">
+              <MappingFragment StoreEntitySet="SentGroup">
+                <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="QuestionID" ColumnName="QuestionID" />
+                <ScalarProperty Name="RecieverID" ColumnName="RecieverID" />
+                <ScalarProperty Name="SenderID" ColumnName="SenderID" />
+                <ScalarProperty Name="GroupID" ColumnName="GroupID" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>

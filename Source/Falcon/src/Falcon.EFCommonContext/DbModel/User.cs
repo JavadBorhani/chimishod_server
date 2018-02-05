@@ -28,6 +28,8 @@ namespace Falcon.EFCommonContext.DbModel
             this.Relationships2 = new HashSet<Relationship>();
             this.ReportedQuestions = new HashSet<ReportedQuestion>();
             this.Sents = new HashSet<Sent>();
+            this.SentGroups = new HashSet<SentGroup>();
+            this.SentGroups1 = new HashSet<SentGroup>();
             this.UserInfoes = new HashSet<UserInfo>();
             this.WatchedAds = new HashSet<WatchedAd>();
         }
@@ -73,6 +75,10 @@ namespace Falcon.EFCommonContext.DbModel
         public virtual ICollection<ReportedQuestion> ReportedQuestions { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Sent> Sents { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<SentGroup> SentGroups { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<SentGroup> SentGroups1 { get; set; }
         public virtual UserType UserType { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<UserInfo> UserInfoes { get; set; }

@@ -56,6 +56,8 @@
     <Compile Include="Api\Notification\Client\SClientNotificationData.cs" />
     <Compile Include="Api\Notification\Client\SFriendRequest.cs" />
     <Compile Include="Api\Notification\Client\SFriendResponse.cs" />
+    <Compile Include="Api\Notification\Client\SInboxQuestion.cs" />
+    <Compile Include="Api\Notification\Client\SSentQuestion.cs" />
     <Compile Include="Api\Notification\RequestCommonInfo.cs" />
     <Compile Include="Api\Notification\SNotificationConfig.cs" />
     <Compile Include="Api\Quest\SQuest.cs" />

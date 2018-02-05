@@ -19,26 +19,32 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
             IQuestionsQueryProcessor QuestionQuery , 
             IDateTime DateTime , 
             IFriendsInquiryProcessor FriendInquiry , 
-            ISentMaintenanceProcessor SentMaintenance)
+            ISentMaintenanceProcessor SentMaintenance , 
+            INotificationMaintenanceProcessor NotificationManager)
         {
             mFriendInquiry = FriendInquiry;
             mQuestionQuery = QuestionQuery;
             mDateTime = DateTime;
             mSentMaintenance = SentMaintenance;
+            mNotificationManager = NotificationManager;
         }
 
         public async Task<int> CreateQuestion(SCreatedQuestion CreateQuestion)
         {
-            //Adding Question To List
+            //Send and Forwrad Question
+
+            //check money before
 
             var totalCoin = await mQuestionQuery.CreateQuestion(CreateQuestion);
 
             var friendIdsExists = await mFriendInquiry.HasFriends(CreateQuestion.FriendForwardList);
+
             if(friendIdsExists)
             {
 
             }
             return 10;
         }
+
     }
 }

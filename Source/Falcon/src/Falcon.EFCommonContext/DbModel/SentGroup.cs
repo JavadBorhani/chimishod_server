@@ -9,25 +9,19 @@
 
 namespace Falcon.EFCommonContext.DbModel
 {
-    using System.Collections.Generic;
 
-    public partial class Sent
+    public partial class SentGroup
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Sent()
-        {
-            this.SentGroups = new HashSet<SentGroup>();
-        }
-    
+        public int ID { get; set; }
         public int GroupID { get; set; }
-        public int UserID { get; set; }
+        public int SenderID { get; set; }
+        public int RecieverID { get; set; }
         public int QuestionID { get; set; }
         public System.DateTime CreatedDate { get; set; }
         public System.DateTime UpdatedDate { get; set; }
     
-        public virtual Question Question { get; set; }
+        public virtual Sent Sent { get; set; }
         public virtual User User { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<SentGroup> SentGroups { get; set; }
+        public virtual User User1 { get; set; }
     }
 }
