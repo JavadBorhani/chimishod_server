@@ -12,7 +12,7 @@ namespace Falcon.Common.Serialization
             {
                 return JsonConvert.DeserializeObject<T>(value);
             }
-            catch(Exception e )
+            catch
             {
                 return default(T);
             }

@@ -3,6 +3,7 @@ using Falcon.Common.Security;
 using Falcon.Data.QueryProcessors;
 using Falcon.EFCommonContext;
 using Falcon.EFCommonContext.DbModel;
+using Falcon.Web.Models.Api;
 using System;
 using System.Data.Entity;
 using System.Linq;
@@ -112,6 +113,24 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             }
 
             return false;
+        }
+
+        public async Task<Question> CreateQuestion(SCreatedQuestion NewQuestion)
+        {
+            var newQuestion = mDb.Set<Question>().Add(new Question
+            {
+                What_if = NewQuestion.What,
+                But = NewQuestion.But,
+                IsPublic = NewQuestion.IsPublic,
+                UserID = mUserSession.ID,
+                CreatedDate = mDateTime.Now,
+                UpdateDate = mDateTime.Now,
+                HashTagID = (int)HashTagID.People
+            });
+
+            await mDb.SaveChangesAsync();  
+
+            return newQuestion;
         }
     }
 }

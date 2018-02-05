@@ -7,5 +7,6 @@ namespace Falcon.Web.Api.InquiryProcessing.Public
     {
         Task<SFriend[]> GetAllFriendList();
         Task<int[]> GetAllFriendIds();
+        Task<bool> HasFriends(int[] FriendIds);
     }
 }

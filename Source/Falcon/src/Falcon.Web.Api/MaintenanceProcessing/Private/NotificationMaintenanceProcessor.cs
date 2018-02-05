@@ -3,6 +3,7 @@ using Falcon.Data.QueryProcessors;
 using Falcon.Web.Api.JobSystem.Public;
 using Falcon.Web.Api.MaintenanceProcessing.Public;
 using Falcon.Web.Api.Notification.Public;
+using Falcon.Web.Models.Api;
 using Falcon.Web.Models.Api.Friend;
 using Falcon.Web.Models.Api.Notification;
 using Falcon.Web.Models.Api.Notification.Client;
@@ -17,7 +18,12 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
         private readonly IJobManager mJobManager;
         private readonly INotificationSystem mNotificationSystem;
         private readonly SNotificationConfig mNotificationConfig;
-        public NotificationMaintenanceProcessor(IUserQueryProcessor UserQuery, IDateTime DateTime, INotificationSystem Notification , IJobManager JobManager , INotificationData NotificationData)
+        public NotificationMaintenanceProcessor(
+            IUserQueryProcessor UserQuery, 
+            IDateTime DateTime, 
+            INotificationSystem Notification , 
+            IJobManager JobManager , 
+            INotificationData NotificationData)
         {
             mDateTime = DateTime;
             mUserQuery = UserQuery;
@@ -25,6 +31,8 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
             mJobManager = JobManager;
             mNotificationConfig = NotificationData.GetState();
         }
+
+
         public async Task<bool> SendFriendRequestNotification(int FriendID, int UserInfoToSend)
         {
             var friendNotificationID = await mUserQuery.GetNotificationID(FriendID);
@@ -85,6 +93,60 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
             };
 
             mJobManager.Enqueue(() => mNotificationSystem.SendRequest(new string[] { friendNotificationID }, notification , Info));
+
+            return true;
+        }
+
+        public async Task<bool> SentQuestionToFriends(int[] FriendID, SQuestion QuestionInfo)
+        {
+            var friendNotificationID = await mUserQuery.GetNotificationIDs(FriendID);
+
+            var notification = new SClientNotificationData()
+            {
+
+                SentQuestion = new System.Collections.Generic.List<SSentQuestion>()
+                {
+                    
+                },
+                ServerDate = mDateTime.Now,
+                Type = NotificationType.SentQuestion
+            };
+
+            RequestCommonInfo Info = new RequestCommonInfo
+            {
+                Title = mNotificationConfig.SentRequest_Title,
+                Descrption = mNotificationConfig.SentRequest_Description,
+                ImageUrl = mNotificationConfig.SentRequest_Image,
+            };
+
+            mJobManager.Enqueue(() => mNotificationSystem.SendRequest(friendNotificationID , notification, Info));
+
+            return true;
+        }
+
+        public async Task<bool> InboxQuestionToFriends(int[] FriendID, SQuestion QuestionInfo)
+        {
+            var friendNotificationID = await mUserQuery.GetNotificationIDs(FriendID);
+
+            var notification = new SClientNotificationData()
+            {
+
+                InboxQuestion = new System.Collections.Generic.List<SInboxQuestion>()
+                {
+                    
+                },
+                ServerDate = mDateTime.Now,
+                Type = NotificationType.InboxQuestion
+            };
+
+            RequestCommonInfo Info = new RequestCommonInfo
+            {
+                Title = mNotificationConfig.InboxRequest_Title,
+                Descrption = mNotificationConfig.InboxRequest_Title,
+                ImageUrl = mNotificationConfig.FriendResponse_Image,
+            };
+
+            mJobManager.Enqueue(() => mNotificationSystem.SendRequest(friendNotificationID, notification, Info));
 
             return true;
         }

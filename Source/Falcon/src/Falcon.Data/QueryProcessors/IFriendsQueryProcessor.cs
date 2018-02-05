@@ -13,6 +13,6 @@ namespace Falcon.Data.QueryProcessors
         Task<bool> DeleteRelation(int FriendID);
         Task<Relationship> GetFriendRelationshipAsNoTracking(int FriendID);
         Task<bool> UpdateRelationship(int FriendID, RelationStatus Status);
-        
+        Task<bool> HasFriends(int[] FriendIds);
     }
 }

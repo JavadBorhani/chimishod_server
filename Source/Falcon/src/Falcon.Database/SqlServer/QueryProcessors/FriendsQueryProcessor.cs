@@ -4,7 +4,6 @@ using Falcon.Data.QueryProcessors;
 using Falcon.EFCommonContext;
 using Falcon.EFCommonContext.DbModel;
 using Falcon.Web.Models.Api.Friend;
-using System;
 using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
@@ -139,7 +138,7 @@ namespace Falcon.Database.SqlServer.QueryProcessors
                 await mDb.SaveChangesAsync();
                 return true;
             }
-            catch(Exception e)
+            catch
             {
                 return false;
             }
@@ -208,10 +207,18 @@ namespace Falcon.Database.SqlServer.QueryProcessors
                 await mDb.SaveChangesAsync();
                 return true;
             }
-            catch(Exception e)
+            catch
             {
                 return false;   
             }
+        }
+
+        public async Task<bool> HasFriends(int[] FriendIds)
+        {
+            //TODO : find better solution for a pair of friend check 
+            var friends = await GetAllFriendIds();
+            var exists = !FriendIds.Except(friends).Any(); 
+            return exists;
         }
     }
 }

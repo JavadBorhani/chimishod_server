@@ -67,6 +67,7 @@
     <Compile Include="QueryProcessors\IQuestionsQueryProcessor.cs" />
     <Compile Include="QueryProcessors\IQuestsQueryProcessor.cs" />
     <Compile Include="QueryProcessors\IScoringQueryProcessor.cs" />
+    <Compile Include="QueryProcessors\ISentQueryProcessor.cs" />
     <Compile Include="QueryProcessors\ISpinWheelQueryProcessor.cs" />
     <Compile Include="QueryProcessors\IStoresQueryProcessor.cs" />
     <Compile Include="QueryProcessors\IThemesQueryProcessor.cs" />

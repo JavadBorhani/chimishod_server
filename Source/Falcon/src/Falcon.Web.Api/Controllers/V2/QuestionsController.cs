@@ -4,6 +4,7 @@ using Falcon.Web.Api.Utilities.Base;
 using Falcon.Web.Common;
 using Falcon.Web.Models.Api;
 using System.Collections.Generic;
+using System.Net;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
@@ -43,13 +44,17 @@ namespace Falcon.Web.Api.Controllers.V2
             return questions;
         }
 
-        [Route("v2/Questions/Level/{LevelNumber}")]
-        [ResponseType(typeof(SQuestion[]))]
+        [Route("v2/Questions/Create")]
+        [ResponseType(typeof(IHttpActionResult))]
         [HttpPost]
-        public async Task<SQuestion[]> CreateQuestion(int LevelNumber)
+        public async Task<IHttpActionResult> CreateQuestion(SCreatedQuestion CreateQuestion)
         {
-            var questions = await mQuestionInquiry.FetchLevelQuestions(LevelNumber);
-            return questions;
+            if (!ModelState.IsValid)
+                return Response(HttpStatusCode.BadRequest, -1);
+
+            var totalCoin = await mQuestionMaintenance.CreateQuestion(CreateQuestion);
+
+            return Response(HttpStatusCode.OK , totalCoin);
         }
 
     }

@@ -283,12 +283,12 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             if(Excepts != null)
                 query = mDb.Set<User>()
                 .AsNoTracking()
-                .Where(u => u.UserName.Contains(Expression) && !Excepts.Contains(u.ID))
+                .Where(u => u.UserName.Contains(Expression) && u.ID != mUserSession.ID && !Excepts.Contains(u.ID))
                 .OrderBy(u => u.ID);
             else
                 query = mDb.Set<User>()
                 .AsNoTracking()
-                .Where(u => u.UserName.Contains(Expression))
+                .Where(u => u.UserName.Contains(Expression) && u.ID != mUserSession.ID)
                 .OrderBy( u => u.ID);
 
             var totalItemCount = await query.CountAsync();
@@ -320,6 +320,17 @@ namespace Falcon.Database.SqlServer.QueryProcessors
                 .Where(u => u.ID == friendID)
                 .Select(u => u.NotificationID)
                 .SingleOrDefaultAsync();
+
+            return user;
+        }
+
+        public async Task<string[]> GetNotificationIDs(int[] friendID)
+        {
+            var user = await mDb.Set<User>()
+                .AsNoTracking()
+                .Where(u => friendID.Contains(u.ID))
+                .Select(u => u.NotificationID)
+                .ToArrayAsync();
 
             return user;
         }

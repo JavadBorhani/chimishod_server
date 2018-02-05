@@ -24,5 +24,11 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
             var friends = await mFriendQuery.GetAllFriendList();
             return friends;
         }
+
+        public async Task<bool> HasFriends(int[] FriendIds)
+        {
+            var exists = await mFriendQuery.HasFriends(FriendIds);
+            return exists;
+        }
     }
 }

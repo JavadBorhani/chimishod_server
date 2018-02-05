@@ -26,6 +26,7 @@ namespace Falcon.Web.Api.Notification.Private
             mNotificationConfig = NotificationConfigData.GetState();
             mRestClientEngine = RestClient;
         }
+
         public async Task<ResponseToken> SendRequest(string[] FriendNotificationIDs , SClientNotificationData Notification , RequestCommonInfo RequestInfo)
         {
             var requestToken = new RequestToken
@@ -116,12 +117,6 @@ namespace Falcon.Web.Api.Notification.Private
             }
 
             return null;
-        }
-
-        private void LogError(string RawFormattedJsonString)
-        {
-            ErrorToken issue = mJsonManager.DeserializeObject<ErrorToken>(RawFormattedJsonString);
-            mLogger.Error(issue.errors);
         }
     }
 }

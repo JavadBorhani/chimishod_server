@@ -14,10 +14,6 @@ namespace Falcon.Web.Api.Controllers.V2
         {
             mLevelInquiry = LevelInquiry;
         }
-
-
-
-        
-
+      
     }
 }

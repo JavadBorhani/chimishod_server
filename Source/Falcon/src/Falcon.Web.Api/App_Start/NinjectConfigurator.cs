@@ -123,6 +123,7 @@ namespace Falcon.Web.Api
             container.Bind<IFriendsQueryProcessor>().To<FriendsQueryProcessor>().InRequestScope();
             container.Bind<ILevelQueryProcessor>().To<LevelQueryProcessor>().InRequestScope();
             container.Bind<IQuestionReportQueryProcessor>().To<QuestionReportQueryProcessor>().InRequestScope();
+            container.Bind<ISentQueryProcessor>().To<SentQueryProcessor>().InRequestScope();
 
             //summary: Reusing an special Component With Background Process and Http In RequestScope
             //container.Bind<IUserStatQueryProcessor>()
@@ -158,6 +159,7 @@ namespace Falcon.Web.Api
             container.Bind<IInitializationInquiryProcessor>().To<InitializationInquiryProcessor>().InRequestScope();
             container.Bind<ILevelInquiryProcessor>().To<LevelInquiryProcessor>().InRequestScope();
             container.Bind<IQuestionReportInquiryProcessor>().To<QuestionReportInquiryProcessor>().InRequestScope();
+            container.Bind<ISentInquiryProcessor>().To<ISentInquiryProcessor>().InRequestScope();
             
 
         }
@@ -185,6 +187,8 @@ namespace Falcon.Web.Api
             container.Bind<IQuestionsMaintenanceProcessor>().To<QuestionsMaintenanceProcessor>().InRequestScope();
             container.Bind<IQuestionReportMaintenanceProcessor>().To<QuestionReportMaintenanceProcessor>().InRequestScope();
             container.Bind<INotificationMaintenanceProcessor>().To<NotificationMaintenanceProcessor>().InRequestScope();
+            container.Bind<ISentMaintenanceProcessor>().To<SentMaintenanceProcessor>().InRequestScope();
+            
 
         }
 

@@ -1,4 +1,5 @@
-﻿using Falcon.Web.Models.Api.Notification.Client;
+﻿using Falcon.Web.Models.Api;
+using Falcon.Web.Models.Api.Notification.Client;
 using System.Threading.Tasks;
 
 namespace Falcon.Web.Api.MaintenanceProcessing.Public
@@ -7,6 +8,7 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Public
     {
         Task<bool> SendFriendRequestNotification(int FriendID , int UserInfoToSend);
         Task<bool> SendFriendResponseNotification(int FriendID, SFriendResponse FriendResponse);
-
+        Task<bool> SentQuestionToFriends(int[] FriendID, SQuestion QuestionInfo);
+        Task<bool> InboxQuestionToFriends(int[] FriendID, SQuestion QuestionInfo);
     }
 }

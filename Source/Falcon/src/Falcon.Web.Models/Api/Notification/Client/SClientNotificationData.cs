@@ -14,9 +14,11 @@ namespace Falcon.Web.Models.Api.Notification.Client
 
     public class SClientNotificationData
     {
-        public List<SFriendRequest> FriendRequest { get; set; }
-        public List<SFriendResponse> FriendResponse { get; set; }
-        public NotificationType Type { get; set; }
-        public DateTime ServerDate { get; set; }
+        public List<SFriendRequest>     FriendRequest { get; set; }
+        public List<SFriendResponse>    FriendResponse { get; set; }
+        public List<SSentQuestion>      SentQuestion { get; set; }
+        public List<SInboxQuestion>     InboxQuestion{ get; set; }
+        public NotificationType         Type { get; set; }
+        public DateTime                 ServerDate { get; set; }
     }
 }
