@@ -49,6 +49,14 @@ namespace Falcon.Web.Common.Security
                 return ((ClaimsPrincipal)HttpContext.Current.User).FindFirst(ClaimTypes.Sid).Value; //TODO : Solve This issue later
             }
         }
+        public string ImageUrl
+        {
+            get
+            {
+                return ((ClaimsPrincipal)HttpContext.Current.User).FindFirst(ClaimTypes.Thumbprint).Value; //TODO : Solve This issue later
+            }
+        }
+
 
         //public DateTime LastSeenDateTime
         //{

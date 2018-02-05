@@ -4,6 +4,7 @@ using Falcon.Web.Api.Utilities.Base;
 using Falcon.Web.Common;
 using Falcon.Web.Models.Api;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using System.Web.Http;
@@ -50,7 +51,13 @@ namespace Falcon.Web.Api.Controllers.V2
         public async Task<IHttpActionResult> CreateQuestion(SCreatedQuestion CreateQuestion)
         {
             if (!ModelState.IsValid)
-                return Response(HttpStatusCode.BadRequest, -1);
+            {
+                var errors = ModelState.Select(x => x.Value.Errors)
+                          .Where(y => y.Count > 0)
+                          .ToList();
+                return Response(HttpStatusCode.BadRequest, errors);
+            }
+                
 
             var totalCoin = await mQuestionMaintenance.CreateQuestion(CreateQuestion);
 

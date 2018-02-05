@@ -9,7 +9,9 @@
 
 namespace Falcon.EFCommonContext.DbModel
 {
-
+    using System;
+    using System.Collections.Generic;
+    
     public partial class SentGroup
     {
         public int ID { get; set; }

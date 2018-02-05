@@ -8,6 +8,7 @@ namespace Falcon.Common.Security
         string UUID { get; }
         int ID { get; }
         string UserName { get; }
+        string ImageUrl { get; }
         //DateTime LastSeenDateTime { get; }
         //DateTime PrevLastSeenDateTime { get; }
         //bool IsTutorial { get;}

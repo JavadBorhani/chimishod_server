@@ -134,6 +134,9 @@
     <Compile Include="DbModel\Sent.cs">
       <DependentUpon>WhatIfDataModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="DbModel\SentGroup.cs">
+      <DependentUpon>WhatIfDataModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="DbModel\ServerApplicationState.cs">
       <DependentUpon>WhatIfDataModel.tt</DependentUpon>
     </Compile>

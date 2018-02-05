@@ -1,4 +1,5 @@
 ﻿using Falcon.Common;
+using Falcon.Common.Security;
 using Falcon.Data.QueryProcessors;
 using Falcon.Web.Api.JobSystem.Public;
 using Falcon.Web.Api.MaintenanceProcessing.Public;
@@ -18,18 +19,21 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
         private readonly IJobManager mJobManager;
         private readonly INotificationSystem mNotificationSystem;
         private readonly SNotificationConfig mNotificationConfig;
+        private readonly IUserSession mUserSession;
         public NotificationMaintenanceProcessor(
             IUserQueryProcessor UserQuery, 
             IDateTime DateTime, 
             INotificationSystem Notification , 
             IJobManager JobManager , 
-            INotificationData NotificationData)
+            INotificationData NotificationData,
+            IUserSession UserSession)
         {
             mDateTime = DateTime;
             mUserQuery = UserQuery;
             mNotificationSystem = Notification;
             mJobManager = JobManager;
             mNotificationConfig = NotificationData.GetState();
+            mUserSession = UserSession;
         }
 
 
@@ -126,14 +130,27 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
 
         public async Task<bool> InboxQuestionToFriends(int[] FriendID, SQuestion QuestionInfo)
         {
-            var friendNotificationID = await mUserQuery.GetNotificationIDs(FriendID);
+            var friendNotificationIDs = await mUserQuery.GetNotificationIDs(FriendID);
 
             var notification = new SClientNotificationData()
             {
 
                 InboxQuestion = new System.Collections.Generic.List<SInboxQuestion>()
                 {
-                    
+                    new SInboxQuestion
+                    {
+                        Whatif = QuestionInfo.What_if,
+                        But = QuestionInfo.But , 
+                        QuestionID = QuestionInfo.ID,
+                        DislikeCount = QuestionInfo.Dislike_Count,
+                        LikeCount = QuestionInfo.Like_Count ,
+                        NoCount = QuestionInfo.No_Count,
+                        YesCount = QuestionInfo.Yes_Count,
+                        ForwardDate = mDateTime.Now,
+                        SenderUserName = mUserSession.UserName,
+                        SenderUserID = mUserSession.ID,
+                        SenderPictureUrl = mUserSession.ImageUrl,
+                    }                    
                 },
                 ServerDate = mDateTime.Now,
                 Type = NotificationType.InboxQuestion
@@ -142,11 +159,11 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
             RequestCommonInfo Info = new RequestCommonInfo
             {
                 Title = mNotificationConfig.InboxRequest_Title,
-                Descrption = mNotificationConfig.InboxRequest_Title,
-                ImageUrl = mNotificationConfig.FriendResponse_Image,
+                Descrption = mNotificationConfig.InboxRequest_Description,
+                ImageUrl = mNotificationConfig.InboxRequest_Image,
             };
 
-            mJobManager.Enqueue(() => mNotificationSystem.SendRequest(friendNotificationID, notification, Info));
+            mJobManager.Enqueue(() => mNotificationSystem.SendRequest(friendNotificationIDs, notification, Info));
 
             return true;
         }
