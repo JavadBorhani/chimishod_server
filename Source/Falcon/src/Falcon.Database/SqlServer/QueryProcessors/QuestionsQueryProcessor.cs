@@ -147,46 +147,38 @@ namespace Falcon.Database.SqlServer.QueryProcessors
                 .OrderBy(q => q.ID);
 
 
-
             var totalItemCount = await questionQuery.CountAsync();
 
             var startIndex = ResultPagingUtility.CalculateStartIndex(RequestInfo.PageNumber, RequestInfo.PageSize);
 
-            
-            //return data;
-
-            var jointResult = await questionQuery
+            var jointResult = questionQuery
                 .Skip(startIndex)
                 .Take(RequestInfo.PageSize)
-                .GroupJoin(answerQuery, m => m.ID, s => s.QuestionID, (question, answer) => new
+                .GroupJoin(answerQuery, question => question.ID, answer => answer.QuestionID, (Questions, Answers) => new
                 {
-                    Question = question,
-                    Answer = answer,
-                }).SelectMany( temp => temp.Answer.DefaultIfEmpty(), (joinData, answer) => new SPublicQuestionWithAnswerState
+                    Questions = Questions,
+                    Answers = Answers
+                }).SelectMany(temp => temp.Answers.DefaultIfEmpty(), (joinData, Answers) => new SPublicQuestionWithAnswerState
                 {
-                    ID = joinData.Question.ID,
-                    What_if = joinData.Question.What_if,
-                    But = joinData.Question.But,
-                    CreatedDate = joinData.Question.CreatedDate,
-                    Like_Count = joinData.Question.Like_Count,
-                    Dislike_Count = joinData.Question.Dislike_Count,
-                    No_Count = joinData.Question.No_Count,
-                    Yes_Count = joinData.Question.Yes_Count,
-                    AnsweredYes = joinData.Answer.FirstOrDefault().Liked ?? false,
-                    AnsweredDisliked = joinData.Answer.FirstOrDefault().Dislike ?? false,
-                    AnsweredNo = joinData.Answer.FirstOrDefault().NoState ?? false,
-                    AnsweredLiked = joinData.Answer.FirstOrDefault().Liked ?? false
+                    What_if = joinData.Questions.What_if,
+                    But = joinData.Questions.But,
+                    Dislike_Count = joinData.Questions.Dislike_Count,
+                    ID = joinData.Questions.ID,
+                    Like_Count = joinData.Questions.Like_Count,
+                    No_Count = joinData.Questions.No_Count,
+                    Yes_Count = joinData.Questions.Yes_Count,
+                    CreatedDate = joinData.Questions.CreatedDate,
+                    AnsweredLiked = Answers.Liked ?? false,
+                    AnsweredDisliked = Answers.Dislike ?? false,
+                    AnsweredNo = Answers.NoState ?? false,
+                    AnsweredYes = Answers.YesState ?? false,
                 })
-                .OrderBy( s=> s.ID)
-                .ToArrayAsync();
+                .OrderBy(s => s.ID);
 
             var queryResult = new QueryResult<SPublicQuestionWithAnswerState>(jointResult, totalItemCount, RequestInfo.PageSize);
 
             return queryResult;
-
-
-
-
         }
+
     }
 }

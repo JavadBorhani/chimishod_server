@@ -76,7 +76,7 @@ namespace Falcon.Web.Api.Controllers.V2
 
 
         [ResponseType(typeof(SFriend))]
-        [Route("v2/Friends/Update/{FriendID}/{PageNumber}")]
+        [Route("v2/Friends/Public/{FriendID}/{PageNumber}")]
         [HttpPost]
         public async Task<PagedDataInquiryResponse<SPublicQuestionWithAnswerState>> GetFriendPublicQuestions(int FriendID, int PageNumber)
         {

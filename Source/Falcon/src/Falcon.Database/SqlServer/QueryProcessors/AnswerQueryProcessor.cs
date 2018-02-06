@@ -1,4 +1,5 @@
-﻿using Falcon.Data.QueryProcessors;
+﻿using Falcon.Common.Security;
+using Falcon.Data.QueryProcessors;
 using Falcon.EFCommonContext;
 using Falcon.EFCommonContext.DbModel;
 using System.Data.Entity;
@@ -10,9 +11,11 @@ namespace Falcon.Database.SqlServer.QueryProcessors
     public class AnswerQueryProcessor : IAnswerQueryProcessor
     {
         private readonly IDbContext mDb;
-        public AnswerQueryProcessor(IDbContext Database)
+        private readonly IUserSession mUserSession;
+        public AnswerQueryProcessor(IDbContext Database , IUserSession UserSession)
         {
             mDb = Database;
+            mUserSession = UserSession;
 
         }
         public async Task<int[]> GetUserAnsweredIds(int UserID)
@@ -24,6 +27,15 @@ namespace Falcon.Database.SqlServer.QueryProcessors
                 .ToArrayAsync();
 
             return data;
+        }
+
+        public async Task<Answer[]> GetUserAnswers(int[] QuestionIds)
+        {
+            var answers = await mDb.Set<Answer>()
+                .AsNoTracking().Where(a => a.UserID == mUserSession.ID && QuestionIds.Contains(a.QuestionID))
+                .ToArrayAsync();
+
+            return answers;
         }
     }
 }

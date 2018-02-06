@@ -14,9 +14,15 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
     {
         private readonly IFriendsQueryProcessor mFriendQuery;
         private readonly IQuestionsQueryProcessor mQuestionQuery;
+        private readonly IAnswerQueryProcessor mAnswerQuery;
         private readonly IMapper mMapper;
-        public FriendsInquiryProcessor(IFriendsQueryProcessor FriendQuery , IQuestionsQueryProcessor QuestionsQuery , IMapper Mapper)
+        public FriendsInquiryProcessor(
+            IFriendsQueryProcessor FriendQuery , 
+            IQuestionsQueryProcessor QuestionsQuery , 
+            IMapper Mapper , 
+            IAnswerQueryProcessor AnswerQuery)
         {
+            mAnswerQuery = AnswerQuery;
             mFriendQuery = FriendQuery;
             mQuestionQuery = QuestionsQuery;
             mMapper = Mapper;

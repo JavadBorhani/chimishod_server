@@ -17,11 +17,10 @@ namespace Falcon.Web.Api.Controllers.V1
 
         [Route("v2/TestController/")]
         [HttpGet]
-        public async Task<string> GetInfo()
+        public async Task<IHttpActionResult> GetInfo()
         {
 
-            
-
+            var data = await mQuestionsQuery.GetUserPublicQuestions(new Data.PagedDataRequest(1 , 30) , 3);
             return null;
         }
 
