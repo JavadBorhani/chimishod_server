@@ -1,13 +1,13 @@
-﻿using System;
-using System.Web;
-using Falcon.Data;
-using System.Net;
-using Falcon.Common;
+﻿using Falcon.Common;
 using Falcon.Common.Extentions;
-using System.Net.Http;
 using Falcon.Common.Logging;
-using log4net;
+using Falcon.Data;
 using Falcon.Web.Api.InquiryProcessing.Public;
+using log4net;
+using System;
+using System.Net;
+using System.Net.Http;
+using System.Web;
 
 namespace Falcon.Web.Api.InquiryProcessing.Private
 {
