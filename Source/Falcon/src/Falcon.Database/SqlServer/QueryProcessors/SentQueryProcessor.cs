@@ -19,9 +19,10 @@ namespace Falcon.Database.SqlServer.QueryProcessors
         {
             var item = mDb.Set<Sent>().Add(new Sent
             {
-                CreatedDate = mDateTime.Now,
                 UserID = UserID,
-                QuestionID = QuestionID
+                QuestionID = QuestionID,
+                CreatedDate = mDateTime.Now,
+                UpdatedDate = mDateTime.Now,
             });
 
             await mDb.SaveChangesAsync();
