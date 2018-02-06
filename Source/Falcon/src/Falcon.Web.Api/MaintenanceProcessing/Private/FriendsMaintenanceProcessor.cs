@@ -15,6 +15,7 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
         private readonly IUserSession mUserSession;
         private readonly IJobManager mJobManager;
         private readonly INotificationMaintenanceProcessor mNotificationManager;
+        private readonly IDateTime mDateTime;
 
         public FriendsMaintenanceProcessor(
             IFriendsQueryProcessor FriendsQuery , 
@@ -26,6 +27,7 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
             mUserSession = UserSession;
             mJobManager = JobManager;
             mNotificationManager = NotificationManager;
+            mDateTime = DateTime;
         }
 
         public async Task<SFriend> CreateRelation(int FriendID)

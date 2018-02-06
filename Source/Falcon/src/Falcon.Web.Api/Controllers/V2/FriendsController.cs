@@ -1,4 +1,5 @@
-﻿using Falcon.Web.Api.InquiryProcessing.Public;
+﻿using Falcon.Common;
+using Falcon.Web.Api.InquiryProcessing.Public;
 using Falcon.Web.Api.MaintenanceProcessing.Public;
 using Falcon.Web.Api.Utilities.Base;
 using Falcon.Web.Common;
@@ -18,49 +19,71 @@ namespace Falcon.Web.Api.Controllers.V2
         private readonly IFriendsInquiryProcessor mFriendsInquiry;
         private readonly IPagedDataRequestFactory mPageDataRequestFactory;
         private readonly SApplicationState mServerAppState;
+        private readonly IDateTime mDateTime;
 
         public FriendsController(
             IFriendsMaintenanceProcessor FriendsMaintenance , 
             IFriendsInquiryProcessor FriendsInquiry , 
             IPagedDataRequestFactory PageDataRequestFactory , 
-            IGlobalApplicationState AppState)
+            IGlobalApplicationState AppState,
+            IDateTime DateTime)
         {
             mFriendsMaintenance = FriendsMaintenance;
             mFriendsInquiry = FriendsInquiry;
             mPageDataRequestFactory = PageDataRequestFactory;
             mServerAppState = AppState.GetState();
+            mDateTime = DateTime;
         }
 
-        [ResponseType(typeof(SFriend[]))]
+        [ResponseType(typeof(DataWithServerTime<SFriend[]>))]
         [Route("v2/Friends/")]
         [HttpPost]
-        public async Task<SFriend[]> GetFriendList()
+        public async Task<DataWithServerTime<SFriend[]>> GetFriendList()
         {
             var friends = await mFriendsInquiry.GetAllFriendList();
-            return friends;
+
+            var data = new DataWithServerTime<SFriend[]>()
+            {
+                Data = friends,
+                ServerTime = mDateTime.Now,
+            };
+            return data;
         }
 
 
-        [ResponseType(typeof(SFriend))]
+        [ResponseType(typeof(DataWithServerTime<SFriend>))]
         [Route("v2/Friends/Create/{FriendID}")]
         [HttpPost]
-        public async Task<SFriend> AddFriend(int FriendID)
+        public async Task<DataWithServerTime<SFriend>> AddFriend(int FriendID)
         {
             var friends = await mFriendsMaintenance.CreateRelation(FriendID);
-            return friends;
+
+            var data = new DataWithServerTime<SFriend>()
+            {
+                Data = friends,
+                ServerTime = mDateTime.Now,
+            };
+            return data;
         }
 
 
-        [ResponseType(typeof(SFriend))]
+        [ResponseType(typeof(DataWithServerTime<SFriend>))]
         [Route("v2/Friends/Update/{FriendID}/{Relation}")]
         [HttpPost]
-        public async Task<SFriend> UpdateFriend(int FriendID , RelationStatus Relation)
+        public async Task<DataWithServerTime<SFriend>> UpdateFriend(int FriendID , RelationStatus Relation)
         {
             if (Relation == RelationStatus.None)
                 return null;
 
             var friends = await mFriendsMaintenance.UpdateRelation(FriendID , Relation);
-            return friends;
+
+
+            var data = new DataWithServerTime<SFriend>()
+            {
+                Data = friends,
+                ServerTime = mDateTime.Now,
+            };
+            return data;
         }
 
 
