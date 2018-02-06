@@ -88,6 +88,7 @@ namespace Falcon.Web.Api.Controllers.V2
                             Info.User.UserName = UserInfo.UserName;
                             Info.Password = UserInfo.Password;
                             Info.ChangeInfoDate = mDateTime.Now;
+                            Info.IsInfoEnable = true;
                             await mDb.SaveChangesAsync();
 
                             UserInfo.IsEditable = Info.IsEditable > 0 ? true : false;

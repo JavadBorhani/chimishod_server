@@ -1,9 +1,11 @@
 ﻿using Falcon.Common;
 using Falcon.Common.Security;
+using Falcon.Data;
 using Falcon.Data.QueryProcessors;
 using Falcon.EFCommonContext;
 using Falcon.EFCommonContext.DbModel;
 using Falcon.Web.Models.Api;
+using Falcon.Web.Models.Api.Friend;
 using System;
 using System.Data.Entity;
 using System.Linq;
@@ -131,6 +133,60 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             await mDb.SaveChangesAsync();  
 
             return newQuestion;
+        }
+
+        public async Task<QueryResult<SPublicQuestionWithAnswerState>> GetUserPublicQuestions(PagedDataRequest RequestInfo, int UserID)
+        {
+
+
+            var answerQuery = mDb.Set<Answer>().AsNoTracking().Where(ap => ap.UserID == mUserSession.ID);
+
+            var questionQuery = mDb.Set<Question>()
+                .AsNoTracking()
+                .Where(q => q.UserID == UserID && q.IsPublic == true && q.Banned == false)
+                .OrderBy(q => q.ID);
+
+
+
+            var totalItemCount = await questionQuery.CountAsync();
+
+            var startIndex = ResultPagingUtility.CalculateStartIndex(RequestInfo.PageNumber, RequestInfo.PageSize);
+
+            
+            //return data;
+
+            var jointResult = await questionQuery
+                .Skip(startIndex)
+                .Take(RequestInfo.PageSize)
+                .GroupJoin(answerQuery, m => m.ID, s => s.QuestionID, (question, answer) => new
+                {
+                    Question = question,
+                    Answer = answer,
+                }).SelectMany( temp => temp.Answer.DefaultIfEmpty(), (joinData, answer) => new SPublicQuestionWithAnswerState
+                {
+                    ID = joinData.Question.ID,
+                    What_if = joinData.Question.What_if,
+                    But = joinData.Question.But,
+                    CreatedDate = joinData.Question.CreatedDate,
+                    Like_Count = joinData.Question.Like_Count,
+                    Dislike_Count = joinData.Question.Dislike_Count,
+                    No_Count = joinData.Question.No_Count,
+                    Yes_Count = joinData.Question.Yes_Count,
+                    AnsweredYes = joinData.Answer.FirstOrDefault().Liked ?? false,
+                    AnsweredDisliked = joinData.Answer.FirstOrDefault().Dislike ?? false,
+                    AnsweredNo = joinData.Answer.FirstOrDefault().NoState ?? false,
+                    AnsweredLiked = joinData.Answer.FirstOrDefault().Liked ?? false
+                })
+                .OrderBy( s=> s.ID)
+                .ToArrayAsync();
+
+            var queryResult = new QueryResult<SPublicQuestionWithAnswerState>(jointResult, totalItemCount, RequestInfo.PageSize);
+
+            return queryResult;
+
+
+
+
         }
     }
 }

@@ -26,8 +26,5 @@ namespace Falcon.Web.Api.Controllers.V2
             var data = await mInitInquiry.LoadUserData(LevelVersionCode);
             return data;
         }
-
-
-
     }
 }

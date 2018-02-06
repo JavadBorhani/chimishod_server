@@ -1,5 +1,6 @@
 ﻿using Falcon.EFCommonContext.DbModel;
 using Falcon.Web.Models.Api;
+using Falcon.Web.Models.Api.Friend;
 using System.Threading.Tasks;
 
 namespace Falcon.Data.QueryProcessors
@@ -20,5 +21,6 @@ namespace Falcon.Data.QueryProcessors
         Task<bool> BanQuestion(int QuestionID);
         Task<Question> CreateQuestion(SCreatedQuestion NewQuestion); 
         Task<Question[]> GetQuestionList(bool IsPublic , int HashtagID, int Amount, OrderBy OrderBy = OrderBy.None,  int[] Excepts = null);
+        Task<QueryResult<SPublicQuestionWithAnswerState>> GetUserPublicQuestions(PagedDataRequest RequestInfo, int UserID);
     }
 }

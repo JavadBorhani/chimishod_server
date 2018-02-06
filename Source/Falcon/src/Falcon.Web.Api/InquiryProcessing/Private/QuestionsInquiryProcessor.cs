@@ -1,9 +1,12 @@
 ﻿using AutoMapper;
 using Falcon.Common.Security;
+using Falcon.Data;
 using Falcon.Data.QueryProcessors;
 using Falcon.Web.Api.InquiryProcessing.Public;
 using Falcon.Web.Models.Api;
 using Falcon.Web.Models.Api.Config;
+using Falcon.Web.Models.Api.Friend;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -81,6 +84,11 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
 
             return null;
 
-        }        
+        }
+
+        public Task<QueryResult<SPublicQuestionWithAnswerState>> GetUserPublicQuestions(PagedDataRequest RequestInfo, int UserID)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

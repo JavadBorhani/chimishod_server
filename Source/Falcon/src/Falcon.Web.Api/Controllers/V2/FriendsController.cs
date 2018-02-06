@@ -2,6 +2,7 @@
 using Falcon.Web.Api.MaintenanceProcessing.Public;
 using Falcon.Web.Api.Utilities.Base;
 using Falcon.Web.Common;
+using Falcon.Web.Models;
 using Falcon.Web.Models.Api;
 using Falcon.Web.Models.Api.Friend;
 using System.Threading.Tasks;
@@ -63,7 +64,31 @@ namespace Falcon.Web.Api.Controllers.V2
         }
 
 
-        //[Route("Comments/{QuestionID}/{PageNumber}")]
+        [ResponseType(typeof(SFriend))]
+        [Route("v2/Friends/Update/{FriendID}/{PageNumber}")]
+        [HttpPost]
+        public async Task<SFriend> GetMutualQuestions(int FriendID, int PageNumber)
+        {
+            
+            //Getting information from user 
+            return null;            
+        }
+
+
+        [ResponseType(typeof(SFriend))]
+        [Route("v2/Friends/Update/{FriendID}/{PageNumber}")]
+        [HttpPost]
+        public async Task<PagedDataInquiryResponse<SPublicQuestionWithAnswerState>> GetFriendPublicQuestions(int FriendID, int PageNumber)
+        {
+
+            var page = mPageDataRequestFactory.Create(PageNumber, mServerAppState.Paging_DefaultPageSize);
+            var questions = await mFriendsInquiry.GetFriendPublicQuestions(page, FriendID);
+
+            return questions;
+        }
+
+
+        //[Route("Comments/{QuestionID}/{PageNumber}")]s
         //[HttpPost]
         //public async Task<PagedDataInquiryResponse<SComment>> GettingComments( int QuestionID , int PageNumber)
         //{

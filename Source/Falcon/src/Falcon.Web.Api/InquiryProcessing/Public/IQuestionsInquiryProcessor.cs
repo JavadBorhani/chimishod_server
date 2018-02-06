@@ -8,5 +8,6 @@ namespace Falcon.Web.Api.InquiryProcessing.Public
     {
         Task<List<SQuestion>> PrepareQuestionList();
         Task<SQuestion[]> FetchLevelQuestions(int LevelNumber);
+        
     }
 }
