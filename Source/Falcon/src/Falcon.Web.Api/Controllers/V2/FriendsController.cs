@@ -88,13 +88,14 @@ namespace Falcon.Web.Api.Controllers.V2
 
 
         [ResponseType(typeof(SFriend))]
-        [Route("v2/Friends/Update/{FriendID}/{PageNumber}")]
+        [Route("v2/Friends/Mutual/{FriendID}/{PageNumber}")]
         [HttpPost]
-        public async Task<SFriend> GetMutualQuestions(int FriendID, int PageNumber)
+        public async Task<PagedDataInquiryResponse<SPublicQuestionWithAnswerState>> GetMutualQuestions(int FriendID, int PageNumber)
         {
-            
+            var page = mPageDataRequestFactory.Create(PageNumber, mServerAppState.Paging_DefaultPageSize);
+            var questions = await mFriendsInquiry.GetFriendMutualQuestions(page, FriendID);
             //Getting information from user 
-            return null;            
+            return questions;            
         }
 
 

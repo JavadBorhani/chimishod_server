@@ -138,7 +138,6 @@ namespace Falcon.Database.SqlServer.QueryProcessors
         public async Task<QueryResult<SPublicQuestionWithAnswerState>> GetUserPublicQuestions(PagedDataRequest RequestInfo, int UserID)
         {
 
-
             var answerQuery = mDb.Set<Answer>().AsNoTracking().Where(ap => ap.UserID == mUserSession.ID);
 
             var questionQuery = mDb.Set<Question>()
@@ -180,5 +179,70 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             return queryResult;
         }
 
+        public async Task<QueryResult<SPublicQuestionWithAnswerState>> GetUserMutualQuestions(PagedDataRequest RequestInfo, int UserID)
+        {
+
+            var answers = mDb.Set<Answer>().AsNoTracking().Where(u => u.UserID == mUserSession.ID);
+
+            var questionQuery = mDb.Set<Question>().AsNoTracking().Where( s => s.Banned == false);
+
+            var sentGroupQuery = mDb.Set<SentGroup>()
+                .AsNoTracking()
+                .Where(m =>
+               (m.SenderID == mUserSession.ID || m.RecieverID == mUserSession.ID) &&
+               (m.SenderID == UserID || m.RecieverID == UserID))
+               .GroupBy(m => new { m.SenderID, m.QuestionID })
+               .Select(m => m.OrderByDescending( s => s.UpdatedDate).FirstOrDefault());
+
+
+            var sample = await sentGroupQuery.ToArrayAsync();
+
+            var totalItemCount = await sentGroupQuery.CountAsync();
+
+            var startIndex = ResultPagingUtility.CalculateStartIndex(RequestInfo.PageNumber, RequestInfo.PageSize);
+
+
+            var joinResult = sentGroupQuery
+                .Skip(startIndex)
+                .Take(RequestInfo.PageSize)
+                .GroupJoin(answers, m => new { UserID = m.RecieverID , QuestionID = m.QuestionID}, s => new { UserID = UserID, QuestionID = s.QuestionID }, (x, y) => new
+                {
+                    SentGroup = x,
+                    Answer = y
+                })
+                .SelectMany(temp => temp.Answer.DefaultIfEmpty(), (joinData, Answer) => new
+                {
+                    NoState = Answer.NoState,
+                    YesState = Answer.YesState,
+                    Disliked = Answer.Dislike,
+                    Liked = Answer.Liked,
+                    SenderID = joinData.SentGroup.SenderID,
+                    RecieverID = joinData.SentGroup.RecieverID,
+                    QuestionID = joinData.SentGroup.QuestionID,
+                    UpdatedDate = joinData.SentGroup.UpdatedDate,
+
+                })
+                .Join(questionQuery, q => q.QuestionID, u => u.ID, (data, question) => new SPublicQuestionWithAnswerState
+                {
+                    ID = data.QuestionID,
+                    SenderUserID = data.SenderID,
+                    What_if = question.What_if,
+                    But = question.But,
+                    Yes_Count = question.Yes_Count,
+                    No_Count = question.No_Count,
+                    Like_Count = question.Like_Count,
+                    Dislike_Count = question.Dislike_Count,
+                    CreatedDate = question.CreatedDate,
+                    AnsweredLiked = data.Liked ?? false,
+                    AnsweredDisliked = data.Disliked ?? false,
+                    AnsweredNo = data.NoState ?? false,
+                    AnsweredYes = data.YesState ?? false
+                });
+
+            var queryResult = new QueryResult<SPublicQuestionWithAnswerState>(joinResult, totalItemCount, RequestInfo.PageSize);
+
+            return queryResult;
+
+        }
     }
 }

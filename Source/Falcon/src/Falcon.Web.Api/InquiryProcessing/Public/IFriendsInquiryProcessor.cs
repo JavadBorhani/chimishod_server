@@ -10,6 +10,7 @@ namespace Falcon.Web.Api.InquiryProcessing.Public
         Task<SFriend[]> GetAllFriendList();
         Task<int[]> GetAllFriendIds();
         Task<bool> HasFriends(int[] FriendIds);
-        Task<PagedDataInquiryResponse<SPublicQuestionWithAnswerState>> GetFriendPublicQuestions(PagedDataRequest Request, int FriendID);
+        Task<PagedDataInquiryResponse<SPublicQuestionWithAnswerState>> GetFriendPublicQuestions(PagedDataRequest RequestInfo, int FriendID);
+        Task<PagedDataInquiryResponse<SPublicQuestionWithAnswerState>> GetFriendMutualQuestions(PagedDataRequest RequestInfo, int FriendID);
     }
 }

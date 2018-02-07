@@ -20,7 +20,7 @@ namespace Falcon.Web.Api.Controllers.V1
         public async Task<IHttpActionResult> GetInfo()
         {
 
-            var data = await mQuestionsQuery.GetUserPublicQuestions(new Data.PagedDataRequest(1 , 30) , 3);
+            var data = await mQuestionsQuery.GetUserMutualQuestions(new Data.PagedDataRequest(1 , 30) , 3);
             return null;
         }
 

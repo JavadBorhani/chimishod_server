@@ -64,5 +64,21 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
             return exists;
         }
 
+        public async Task<PagedQuesttionWithAnswerInquiryResponse> GetFriendMutualQuestions(PagedDataRequest RequestInfo, int FriendID)
+        {
+            var queryResult = await mQuestionQuery.GetUserMutualQuestions(RequestInfo, FriendID);
+
+            var items = queryResult.QueriedItems.ToList();
+
+            var inquiryResponse = new PagedQuesttionWithAnswerInquiryResponse
+            {
+                Items = items,
+                PageCount = queryResult.TotalPageCount,
+                PageNumber = RequestInfo.PageNumber,
+                PageSize = RequestInfo.PageSize
+            };
+
+            return inquiryResponse;
+        }
     }
 }
