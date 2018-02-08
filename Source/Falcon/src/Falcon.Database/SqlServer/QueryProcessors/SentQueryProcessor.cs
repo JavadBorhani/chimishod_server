@@ -1,10 +1,12 @@
 ﻿using Falcon.Common;
+using Falcon.Common.Security;
 using Falcon.Data;
 using Falcon.Data.QueryProcessors;
 using Falcon.EFCommonContext;
 using Falcon.EFCommonContext.DbModel;
 using Falcon.Web.Models.Api.Friend;
-using System;
+using System.Data.Entity;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Falcon.Database.SqlServer.QueryProcessors
@@ -13,11 +15,13 @@ namespace Falcon.Database.SqlServer.QueryProcessors
     {
         private readonly IDbContext mDb;
         private readonly IDateTime mDateTime;
+        private readonly IUserSession mUserSession;
 
-        public SentQueryProcessor(IDbContext Database , IDateTime DateTime)
+        public SentQueryProcessor(IDbContext Database , IDateTime DateTime , IUserSession UserSession)
         {
             mDateTime = DateTime;
             mDb = Database;
+            mUserSession = UserSession;
         }
         public async Task<int> StoreMessage(int UserID, int QuestionID)
         {
@@ -59,12 +63,121 @@ namespace Falcon.Database.SqlServer.QueryProcessors
 
         public async Task<QueryResult<SQuestionWithAnswerState>> GetUserInboxMessages(PagedDataRequest RequestInfo)
         {
-            throw new NotImplementedException();
+            var answers = mDb.Set<Answer>().AsNoTracking().Where(u => u.UserID == mUserSession.ID);
+
+            var questionQuery = mDb.Set<Question>().AsNoTracking().Where(s => s.Banned == false);
+
+            var sentGroupQuery = mDb.Set<SentGroup>()
+                .AsNoTracking()
+                .Where(m => m.RecieverID == mUserSession.ID)
+                .GroupBy( m => new { m.SenderID , m.QuestionID })
+                .Select( m => m.OrderBy( s => s.CreatedDate).FirstOrDefault())
+                .OrderByDescending( m => m.CreatedDate);                
+
+
+            var totalItemCount = await sentGroupQuery.CountAsync();
+
+            var startIndex = ResultPagingUtility.CalculateStartIndex(RequestInfo.PageNumber, RequestInfo.PageSize);
+
+
+            var joinResult = await sentGroupQuery
+                .Skip(startIndex)
+                .Take(RequestInfo.PageSize)
+                .GroupJoin(answers, m => m.QuestionID, s => s.QuestionID, (x, y) => new
+                {
+                    SentGroup = x,
+                    Answer = y
+                })
+                .SelectMany(temp => temp.Answer.DefaultIfEmpty(), (joinData, Answer) => new
+                {
+                    NoState = Answer.NoState,
+                    YesState = Answer.YesState,
+                    Disliked = Answer.Dislike,
+                    Liked = Answer.Liked,
+                    SenderID = joinData.SentGroup.SenderID,
+                    RecieverID = joinData.SentGroup.RecieverID,
+                    QuestionID = joinData.SentGroup.QuestionID,
+                    UpdatedDate = joinData.SentGroup.UpdatedDate,
+
+                })
+                .Join(questionQuery, q => q.QuestionID, u => u.ID, (data, question) => new SQuestionWithAnswerState
+                {
+                    ID = data.QuestionID,
+                    SenderUserID = data.SenderID,
+                    What_if = question.What_if,
+                    But = question.But,
+                    Yes_Count = question.Yes_Count,
+                    No_Count = question.No_Count,
+                    Like_Count = question.Like_Count,
+                    Dislike_Count = question.Dislike_Count,
+                    CreatedDate = question.CreatedDate,
+                    AnsweredLiked = data.Liked ?? false,
+                    AnsweredDisliked = data.Disliked ?? false,
+                    AnsweredNo = data.NoState ?? false,
+                    AnsweredYes = data.YesState ?? false
+                })
+                .ToArrayAsync();
+
+            var queryResult = new QueryResult<SQuestionWithAnswerState>(joinResult, totalItemCount, RequestInfo.PageSize);
+
+            return queryResult;
+
         }
 
         public async Task<QueryResult<SQuestionWithAnswerState>> GetUserSentMessages(PagedDataRequest RequestInfo)
         {
-            throw new NotImplementedException();
+            var answers = mDb.Set<Answer>().AsNoTracking().Where(u => u.UserID == mUserSession.ID);
+
+            var questionQuery = mDb.Set<Question>().AsNoTracking().Where(s => s.Banned == false);
+
+            var sentGroupQuery = mDb.Set<Sent>()
+                .AsNoTracking().Where(m => m.UserID == mUserSession.ID)
+                .OrderByDescending( m => m.CreatedDate);
+
+
+            var totalItemCount = await sentGroupQuery.CountAsync();
+
+            var startIndex = ResultPagingUtility.CalculateStartIndex(RequestInfo.PageNumber, RequestInfo.PageSize);
+
+
+            var joinResult = await sentGroupQuery
+                .Skip(startIndex)
+                .Take(RequestInfo.PageSize)
+                .GroupJoin(answers, m => m.QuestionID, s => s.QuestionID, (x, y) => new
+                {
+                    SentGroup = x,
+                    Answer = y
+                })
+                .SelectMany(temp => temp.Answer.DefaultIfEmpty(), (joinData, Answer) => new
+                {
+                    NoState = Answer.NoState,
+                    YesState = Answer.YesState,
+                    Disliked = Answer.Dislike,
+                    Liked = Answer.Liked,
+                    QuestionID = joinData.SentGroup.QuestionID,
+                    UpdatedDate = joinData.SentGroup.UpdatedDate,
+
+                })
+                .Join(questionQuery, q => q.QuestionID, u => u.ID, (data, question) => new SQuestionWithAnswerState
+                {
+                    ID = data.QuestionID,
+                    What_if = question.What_if,
+                    But = question.But,
+                    Yes_Count = question.Yes_Count,
+                    No_Count = question.No_Count,
+                    Like_Count = question.Like_Count,
+                    Dislike_Count = question.Dislike_Count,
+                    CreatedDate = question.CreatedDate,
+                    AnsweredLiked = data.Liked ?? false,
+                    AnsweredDisliked = data.Disliked ?? false,
+                    AnsweredNo = data.NoState ?? false,
+                    AnsweredYes = data.YesState ?? false
+                })
+                .ToArrayAsync();
+
+            var queryResult = new QueryResult<SQuestionWithAnswerState>(joinResult, totalItemCount, RequestInfo.PageSize);
+
+            return queryResult;
         }
     }
 }
