@@ -1,7 +1,10 @@
 ﻿using Falcon.Common;
+using Falcon.Data;
 using Falcon.Data.QueryProcessors;
 using Falcon.EFCommonContext;
 using Falcon.EFCommonContext.DbModel;
+using Falcon.Web.Models.Api.Friend;
+using System;
 using System.Threading.Tasks;
 
 namespace Falcon.Database.SqlServer.QueryProcessors
@@ -10,6 +13,7 @@ namespace Falcon.Database.SqlServer.QueryProcessors
     {
         private readonly IDbContext mDb;
         private readonly IDateTime mDateTime;
+
         public SentQueryProcessor(IDbContext Database , IDateTime DateTime)
         {
             mDateTime = DateTime;
@@ -51,6 +55,16 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             await mDb.SaveChangesAsync();
 
             return true;
+        }
+
+        public async Task<QueryResult<SQuestionWithAnswerState>> GetUserInboxMessages(PagedDataRequest RequestInfo)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<QueryResult<SQuestionWithAnswerState>> GetUserSentMessages(PagedDataRequest RequestInfo)
+        {
+            throw new NotImplementedException();
         }
     }
 }

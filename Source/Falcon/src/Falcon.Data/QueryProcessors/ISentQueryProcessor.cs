@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using Falcon.Web.Models.Api.Friend;
+using System.Threading.Tasks;
 
 namespace Falcon.Data.QueryProcessors
 {
@@ -6,5 +7,7 @@ namespace Falcon.Data.QueryProcessors
     {
         Task<int> StoreMessage(int UserID, int QuestionID); //Return GroupID
         Task<bool> StoreMessageGroup(int GroupID, int SenderID, int QuestionID, int[] ReceiverID);
+        Task<QueryResult<SQuestionWithAnswerState>> GetUserInboxMessages(PagedDataRequest RequestInfo);
+        Task<QueryResult<SQuestionWithAnswerState>> GetUserSentMessages(PagedDataRequest RequestInfo);
     }
 }
