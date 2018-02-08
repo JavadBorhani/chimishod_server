@@ -6,7 +6,7 @@ using Falcon.Web.Models;
 using Falcon.Web.Models.Api.Friend;
 using System.Linq;
 using System.Threading.Tasks;
-using PagedQuesttionWithAnswerInquiryResponse = Falcon.Web.Models.PagedDataInquiryResponse<Falcon.Web.Models.Api.Friend.SPublicQuestionWithAnswerState>;
+using PagedQuesttionWithAnswerInquiryResponse = Falcon.Web.Models.PagedDataInquiryResponse<Falcon.Web.Models.Api.Friend.SQuestionWithAnswerState>;
 
 namespace Falcon.Web.Api.InquiryProcessing.Private
 {
@@ -40,7 +40,7 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
             return friends;
         }
 
-        public async Task<PagedDataInquiryResponse<SPublicQuestionWithAnswerState>> GetFriendPublicQuestions(PagedDataRequest RequestInfo, int FriendID)
+        public async Task<PagedDataInquiryResponse<SQuestionWithAnswerState>> GetFriendPublicQuestions(PagedDataRequest RequestInfo, int FriendID)
         {
 
             var queryResult = await mQuestionQuery.GetUserPublicQuestions(RequestInfo , FriendID);

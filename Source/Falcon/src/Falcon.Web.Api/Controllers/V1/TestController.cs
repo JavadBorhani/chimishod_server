@@ -21,7 +21,7 @@ namespace Falcon.Web.Api.Controllers.V1
         {
 
             var data = await mQuestionsQuery.GetUserMutualQuestions(new Data.PagedDataRequest(1 , 30) , 3);
-            return null;
+            return Ok(data);
         }
 
     }

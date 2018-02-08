@@ -135,7 +135,7 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             return newQuestion;
         }
 
-        public async Task<QueryResult<SPublicQuestionWithAnswerState>> GetUserPublicQuestions(PagedDataRequest RequestInfo, int UserID)
+        public async Task<QueryResult<SQuestionWithAnswerState>> GetUserPublicQuestions(PagedDataRequest RequestInfo, int UserID)
         {
 
             var answerQuery = mDb.Set<Answer>().AsNoTracking().Where(ap => ap.UserID == mUserSession.ID);
@@ -157,7 +157,7 @@ namespace Falcon.Database.SqlServer.QueryProcessors
                 {
                     Questions = Questions,
                     Answers = Answers
-                }).SelectMany(temp => temp.Answers.DefaultIfEmpty(), (joinData, Answers) => new SPublicQuestionWithAnswerState
+                }).SelectMany(temp => temp.Answers.DefaultIfEmpty(), (joinData, Answers) => new SQuestionWithAnswerState
                 {
                     What_if = joinData.Questions.What_if,
                     But = joinData.Questions.But,
@@ -174,12 +174,12 @@ namespace Falcon.Database.SqlServer.QueryProcessors
                 })
                 .OrderBy(s => s.ID);
 
-            var queryResult = new QueryResult<SPublicQuestionWithAnswerState>(jointResult, totalItemCount, RequestInfo.PageSize);
+            var queryResult = new QueryResult<SQuestionWithAnswerState>(jointResult, totalItemCount, RequestInfo.PageSize);
 
             return queryResult;
         }
 
-        public async Task<QueryResult<SPublicQuestionWithAnswerState>> GetUserMutualQuestions(PagedDataRequest RequestInfo, int UserID)
+        public async Task<QueryResult<SQuestionWithAnswerState>> GetUserMutualQuestions(PagedDataRequest RequestInfo, int UserID)
         {
 
             var answers = mDb.Set<Answer>().AsNoTracking().Where(u => u.UserID == mUserSession.ID);
@@ -192,20 +192,19 @@ namespace Falcon.Database.SqlServer.QueryProcessors
                (m.SenderID == mUserSession.ID || m.RecieverID == mUserSession.ID) &&
                (m.SenderID == UserID || m.RecieverID == UserID))
                .GroupBy(m => new { m.SenderID, m.QuestionID })
-               .Select(m => m.OrderByDescending( s => s.UpdatedDate).FirstOrDefault());
+               .Select(m => m.OrderByDescending(s => s.UpdatedDate).FirstOrDefault())
+               .OrderBy(m => m.ID);
 
-
-            var sample = await sentGroupQuery.ToArrayAsync();
 
             var totalItemCount = await sentGroupQuery.CountAsync();
 
             var startIndex = ResultPagingUtility.CalculateStartIndex(RequestInfo.PageNumber, RequestInfo.PageSize);
 
 
-            var joinResult = sentGroupQuery
+            var joinResult = await sentGroupQuery
                 .Skip(startIndex)
                 .Take(RequestInfo.PageSize)
-                .GroupJoin(answers, m => new { UserID = m.RecieverID , QuestionID = m.QuestionID}, s => new { UserID = UserID, QuestionID = s.QuestionID }, (x, y) => new
+                .GroupJoin(answers, m => m.QuestionID , s => s.QuestionID , (x, y) => new
                 {
                     SentGroup = x,
                     Answer = y
@@ -222,7 +221,7 @@ namespace Falcon.Database.SqlServer.QueryProcessors
                     UpdatedDate = joinData.SentGroup.UpdatedDate,
 
                 })
-                .Join(questionQuery, q => q.QuestionID, u => u.ID, (data, question) => new SPublicQuestionWithAnswerState
+                .Join(questionQuery, q => q.QuestionID, u => u.ID, (data, question) => new SQuestionWithAnswerState
                 {
                     ID = data.QuestionID,
                     SenderUserID = data.SenderID,
@@ -237,9 +236,10 @@ namespace Falcon.Database.SqlServer.QueryProcessors
                     AnsweredDisliked = data.Disliked ?? false,
                     AnsweredNo = data.NoState ?? false,
                     AnsweredYes = data.YesState ?? false
-                });
+                })
+                .ToArrayAsync();
 
-            var queryResult = new QueryResult<SPublicQuestionWithAnswerState>(joinResult, totalItemCount, RequestInfo.PageSize);
+            var queryResult = new QueryResult<SQuestionWithAnswerState>(joinResult, totalItemCount, RequestInfo.PageSize);
 
             return queryResult;
 

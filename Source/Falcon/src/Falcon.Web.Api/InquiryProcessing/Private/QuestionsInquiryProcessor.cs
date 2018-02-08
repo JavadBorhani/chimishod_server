@@ -86,7 +86,7 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
 
         }
 
-        public Task<QueryResult<SPublicQuestionWithAnswerState>> GetUserPublicQuestions(PagedDataRequest RequestInfo, int UserID)
+        public Task<QueryResult<SQuestionWithAnswerState>> GetUserPublicQuestions(PagedDataRequest RequestInfo, int UserID)
         {
             throw new NotImplementedException();
         }

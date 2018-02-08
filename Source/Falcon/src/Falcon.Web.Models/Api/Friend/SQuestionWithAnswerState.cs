@@ -20,7 +20,7 @@ namespace Falcon.Web.Models.Api.Friend
         public string UserName { get; set; }
         public string PictureUrl { get; set; }
     }
-    public class SPublicQuestionWithAnswerState
+    public class SQuestionWithAnswerState
     {
         public int ID { get; set; }
         public string What_if { get; set; }
