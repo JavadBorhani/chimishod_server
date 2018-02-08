@@ -1,5 +1,4 @@
 ﻿using Falcon.Common;
-using Falcon.Common.Security;
 using Falcon.Data.QueryProcessors;
 using Falcon.Web.Api.MaintenanceProcessing.Public;
 using System.Threading.Tasks;
@@ -10,9 +9,8 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
     {
         private readonly ISentQueryProcessor mSentQuery;
         private readonly IDateTime mDateTime;
-        private readonly IUserSession mUserSession;
 
-        public SentMaintenanceProcessor(ISentQueryProcessor SentQuery , IDateTime DateTime , IUserSession UserSession)
+        public SentMaintenanceProcessor(ISentQueryProcessor SentQuery , IDateTime DateTime)
         {
             mSentQuery = SentQuery;
             mDateTime = DateTime;

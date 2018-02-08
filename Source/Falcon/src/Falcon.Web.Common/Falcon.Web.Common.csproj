@@ -68,6 +68,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ActionTransactionHelper.cs" />
+    <Compile Include="CacheControlAttribute.cs" />
     <Compile Include="DataWithServerTime.cs" />
     <Compile Include="ErrorHandling\GlobalExceptionHandler.cs" />
     <Compile Include="ErrorHandling\SimpleErrorResult.cs" />
