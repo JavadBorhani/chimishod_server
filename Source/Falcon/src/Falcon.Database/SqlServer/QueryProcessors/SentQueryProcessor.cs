@@ -70,8 +70,6 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             var sentGroupQuery = mDb.Set<SentGroup>()
                 .AsNoTracking()
                 .Where(m => m.RecieverID == mUserSession.ID)
-                .GroupBy( m => new { m.SenderID , m.QuestionID })
-                .Select( m => m.OrderBy( s => s.CreatedDate).FirstOrDefault())
                 .OrderByDescending( m => m.CreatedDate);                
 
 

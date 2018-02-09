@@ -31,7 +31,7 @@ namespace Falcon.Web.Api.Controllers.V2
         }
 
         [ResponseType(typeof(DataWithServerTime<PagedDataInquiryResponse<SQuestionWithAnswerState>>))]
-        [Route("Message/Sent")]
+        [Route("v2/Message/Sent/{PageNumber}")]
         [HttpPost]
         public async Task<DataWithServerTime<PagedDataInquiryResponse<SQuestionWithAnswerState>>> GetSentList(int PageNumber)
         {
@@ -50,7 +50,7 @@ namespace Falcon.Web.Api.Controllers.V2
         }
 
         [ResponseType(typeof(DataWithServerTime<PagedDataInquiryResponse<SQuestionWithAnswerState>>))]
-        [Route("Message/Inbox")]
+        [Route("v2/Message/Inbox/{PageNumber}")]
         [HttpPost]
         public async Task<DataWithServerTime<PagedDataInquiryResponse<SQuestionWithAnswerState>>> GetInboxList(int PageNumber)
         {
