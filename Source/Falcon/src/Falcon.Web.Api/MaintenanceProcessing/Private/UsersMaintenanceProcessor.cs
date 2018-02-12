@@ -67,6 +67,8 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
                 return null;
 
 
+            var userInfoIsDuplicate = await mUserQuery.DeactivePreviousUser(RegistrationForm);
+
 
             RegistrationForm.IPAddress = mNetworkUtils.GetRequestNetworkIP();
             RegistrationForm.UUID = mUUID.GetNewUUID();

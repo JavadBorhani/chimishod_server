@@ -404,6 +404,7 @@
           <Property Name="RowVersion" Type="timestamp" StoreGeneratedPattern="Computed" />
           <Property Name="IPAddress" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="AvatarImagePath" Type="nvarchar" MaxLength="100" />
+          <Property Name="Activated" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="UserInfo">
           <Key>
@@ -1828,6 +1829,7 @@
           <Property Name="RowVersion" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" ConcurrencyMode="Fixed" />
           <Property Name="IPAddress" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="AvatarImagePath" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Activated" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="AchievedCodeGifts" Relationship="Falcon.DbModel.FK_AchievedCodeGift_User" FromRole="User" ToRole="AchievedCodeGift" />
           <NavigationProperty Name="Answers" Relationship="Falcon.DbModel.FK_Answer_User" FromRole="User" ToRole="Answer" />
           <NavigationProperty Name="ContactUs" Relationship="Falcon.DbModel.FK_ContactUs_User" FromRole="User" ToRole="ContactU" />
@@ -2819,6 +2821,7 @@
           <EntitySetMapping Name="Users">
             <EntityTypeMapping TypeName="Falcon.DbModel.User">
               <MappingFragment StoreEntitySet="User">
+                <ScalarProperty Name="Activated" ColumnName="Activated" />
                 <ScalarProperty Name="AvatarImagePath" ColumnName="AvatarImagePath" />
                 <ScalarProperty Name="IPAddress" ColumnName="IPAddress" />
                 <ScalarProperty Name="RowVersion" ColumnName="RowVersion" />

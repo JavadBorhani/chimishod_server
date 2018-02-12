@@ -50,6 +50,7 @@ namespace Falcon.EFCommonContext.DbModel
         public byte[] RowVersion { get; set; }
         public string IPAddress { get; set; }
         public string AvatarImagePath { get; set; }
+        public bool Activated { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<AchievedCodeGift> AchievedCodeGifts { get; set; }

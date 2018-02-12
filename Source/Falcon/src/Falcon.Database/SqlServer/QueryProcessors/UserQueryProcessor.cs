@@ -1,4 +1,5 @@
 ﻿using Falcon.Common;
+using Falcon.Common.Logging;
 using Falcon.Common.Security;
 using Falcon.Data;
 using Falcon.Data.QueryProcessors;
@@ -8,6 +9,7 @@ using Falcon.Web.Models.Api;
 using Falcon.Web.Models.Api.Config;
 using Falcon.Web.Models.Api.Level;
 using Falcon.Web.Models.Api.User;
+using log4net;
 using System;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
@@ -22,12 +24,14 @@ namespace Falcon.Database.SqlServer.QueryProcessors
         private readonly IDbContext mDb;
         private readonly IWebUserSession mUserSession;
         private readonly IDateTime mDateTime;
+        private readonly ILog mLogger;
 
-        public UserQueryProcessor(IDbContext Database, IWebUserSession UserSession , IDateTime DateTime)
+        public UserQueryProcessor(IDbContext Database, IWebUserSession UserSession , IDateTime DateTime , ILogManager LogManager)
         {
             mDb = Database;
             mUserSession = UserSession;
             mDateTime = DateTime;
+            mLogger = LogManager.GetLog(typeof(UserQueryProcessor));
         }
 
         public async Task<int> IncreaseCoin(int Coin)
@@ -86,11 +90,6 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             } while (SaveFailed);
 
             return user.TotalCoin;
-        }
-
-        public async Task<SUserCount> CreateUser(SGameConfig GameConfig)
-        {
-            throw new NotImplementedException();
         }
 
         public async Task<User> LoadUser(int UserID)
@@ -283,12 +282,12 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             if(Excepts != null)
                 query = mDb.Set<User>()
                 .AsNoTracking()
-                .Where(u => u.UserName.Contains(Expression) && u.ID != mUserSession.ID && !Excepts.Contains(u.ID))
+                .Where(u => u.UserName.Contains(Expression) && u.ID != mUserSession.ID && !Excepts.Contains(u.ID) && u.Activated == true)
                 .OrderBy(u => u.ID);
             else
                 query = mDb.Set<User>()
                 .AsNoTracking()
-                .Where(u => u.UserName.Contains(Expression) && u.ID != mUserSession.ID)
+                .Where(u => u.UserName.Contains(Expression) && u.ID != mUserSession.ID && u.Activated == true)
                 .OrderBy( u => u.ID);
 
             var totalItemCount = await query.CountAsync();
@@ -333,6 +332,32 @@ namespace Falcon.Database.SqlServer.QueryProcessors
                 .ToArrayAsync();
 
             return user;
+        }
+
+        public async Task<bool> DeactivePreviousUser(SUserRegistrationForm RegisterationForm)
+        {
+            var user = await mDb.Set<User>().Where(u => u.NotificationID == RegisterationForm.NotificationID.ToString()).ToArrayAsync();
+
+            if(user == null)
+            {
+                return false;
+            }
+
+            for(int i = 0; i < user.Length; ++i )
+            {
+                if (user[i].Model == RegisterationForm.Model && user[i].Device == RegisterationForm.Device)
+                {
+                    user[i].Activated = false;
+                }
+                else
+                {
+                    throw new BusinessRuleViolationException("Same Notification but different device , kind of a cheat ");
+                }
+            }
+
+            await mDb.SaveChangesAsync();
+            return true;
+            
         }
     }
 }   

@@ -34,7 +34,6 @@ namespace Falcon.Data.QueryProcessors
         Task<string> GetNotificationID(int friendID);
         Task<string[]> GetNotificationIDs(int[] friendID);
         Task<User> GetUserByID(int UserID);
-
-
+        Task<bool> DeactivePreviousUser(SUserRegistrationForm registrationForm);
     }
 }
