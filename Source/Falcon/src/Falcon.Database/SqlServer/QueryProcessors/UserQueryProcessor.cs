@@ -234,6 +234,7 @@ namespace Falcon.Database.SqlServer.QueryProcessors
                 APILevel = UserRegisterationData.APILevel,
                 Device = UserRegisterationData.Device,
                 Model = UserRegisterationData.Model,
+                Activated = true,
             });
 
             await mDb.SaveChangesAsync();
@@ -336,7 +337,7 @@ namespace Falcon.Database.SqlServer.QueryProcessors
 
         public async Task<bool> DeactivePreviousUser(SUserRegistrationForm RegisterationForm)
         {
-            var user = await mDb.Set<User>().Where(u => u.NotificationID == RegisterationForm.NotificationID.ToString()).ToArrayAsync();
+            var user = await mDb.Set<User>().Where(u => u.NotificationID == RegisterationForm.NotificationID.ToString() && u.Activated == true).ToArrayAsync();
 
             if(user == null)
             {

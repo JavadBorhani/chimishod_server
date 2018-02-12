@@ -34,7 +34,7 @@ namespace Falcon.Web.Api.Security.Private
 
         public virtual User GetUser(string UUID)
         {
-            return mDb.Set<User>().AsNoTracking().Where(u => u.UUID == UUID).SingleOrDefault();
+            return mDb.Set<User>().AsNoTracking().Where(u => u.UUID == UUID && u.Activated == true).SingleOrDefault();
         }
 
         public virtual IPrincipal GetUserPrincipal(User user)
