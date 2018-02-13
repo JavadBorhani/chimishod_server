@@ -4,6 +4,7 @@ using Falcon.Data.QueryProcessors;
 using Falcon.Web.Api.InquiryProcessing.Public;
 using Falcon.Web.Api.MaintenanceProcessing.Public;
 using Falcon.Web.Models.Api;
+using Falcon.Web.Models.Api.Question;
 using System.Threading.Tasks;
 
 namespace Falcon.Web.Api.MaintenanceProcessing.Private
@@ -61,5 +62,26 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
             }
         }
 
+        public async Task<int> ForwardQuestionToFriends(SForwardQuestion ForwardQuestion)
+        {
+            //remember to decrease money;
+            var question = await mQuestionQuery.GetQuestionByID(ForwardQuestion.QuestionID);
+
+            if (question != null && question.Banned == false)
+            {
+
+                var friendIdsExists = await mFriendInquiry.HasFriends(ForwardQuestion.FriendIDs);
+
+                if (friendIdsExists)
+                {
+                    var stored = await mSentMaintenance.StoreMessageSent(mUserSession.ID, ForwardQuestion.FriendIDs, question.ID);
+                    var notified = await mNotificationManager.InboxQuestionToFriends(ForwardQuestion.FriendIDs, mMapper.Map<SQuestion>(question));
+                }
+                return 200;
+            }
+
+            return -1;
+
+        }
     }
 }

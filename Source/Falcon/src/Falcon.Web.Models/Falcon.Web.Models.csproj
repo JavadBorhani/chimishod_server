@@ -61,6 +61,7 @@
     <Compile Include="Api\Notification\Client\SSentQuestion.cs" />
     <Compile Include="Api\Notification\RequestCommonInfo.cs" />
     <Compile Include="Api\Notification\SNotificationConfig.cs" />
+    <Compile Include="Api\Question\SForwardQuestion.cs" />
     <Compile Include="Api\Quest\SQuest.cs" />
     <Compile Include="Api\Report\SReportedQuestion.cs" />
     <Compile Include="Api\SCharacteristic.cs" />
@@ -73,7 +74,7 @@
     <Compile Include="Api\SApplicationState.cs" />
     <Compile Include="Api\SAvatarState.cs" />
     <Compile Include="Api\SCodeGift.cs" />
-    <Compile Include="Api\SCreatedQuestion.cs" />
+    <Compile Include="Api\Question\SCreatedQuestion.cs" />
     <Compile Include="Api\SAchievement.cs" />
     <Compile Include="Api\SAnswer.cs" />
     <Compile Include="Api\SAppTheme.cs" />

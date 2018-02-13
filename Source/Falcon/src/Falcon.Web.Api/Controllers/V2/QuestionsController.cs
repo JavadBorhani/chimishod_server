@@ -3,6 +3,7 @@ using Falcon.Web.Api.MaintenanceProcessing.Public;
 using Falcon.Web.Api.Utilities.Base;
 using Falcon.Web.Common;
 using Falcon.Web.Models.Api;
+using Falcon.Web.Models.Api.Question;
 using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
@@ -17,11 +18,16 @@ namespace Falcon.Web.Api.Controllers.V2
 
         private readonly IQuestionsInquiryProcessor mQuestionInquiry;
         private readonly IQuestionsMaintenanceProcessor mQuestionMaintenance;
+        private readonly ISentMaintenanceProcessor mSentMaintenance;
 
-        public QuestionsController(IQuestionsInquiryProcessor QuestionInquiry, IQuestionsMaintenanceProcessor QuestionMaintenance)
+        public QuestionsController(
+            IQuestionsInquiryProcessor QuestionInquiry, 
+            IQuestionsMaintenanceProcessor QuestionMaintenance , 
+            ISentMaintenanceProcessor SentMaintenance)
         {
             mQuestionInquiry = QuestionInquiry;
             mQuestionMaintenance = QuestionMaintenance;
+            mSentMaintenance = SentMaintenance;
         }
 
         [Route("v2/Questions")]
@@ -55,6 +61,20 @@ namespace Falcon.Web.Api.Controllers.V2
             var totalCoin = await mQuestionMaintenance.CreateQuestion(CreateQuestion);
 
             return Response(HttpStatusCode.OK , totalCoin);
+        }
+
+
+        [Route("v2/Questions/Forward")]
+        [ResponseType(typeof(IHttpActionResult))]
+        [HttpPost]
+        public async Task<IHttpActionResult> ForwardQuestion(SForwardQuestion CreateQuestion)
+        {
+            if (!ModelState.IsValid)
+                return Response(HttpStatusCode.BadRequest, -1);
+
+            var totalCoin = await mQuestionMaintenance.ForwardQuestionToFriends(CreateQuestion);
+
+            return Response(HttpStatusCode.OK, totalCoin);
         }
 
     }

@@ -23,5 +23,6 @@ namespace Falcon.Data.QueryProcessors
         Task<Question[]> GetQuestionList(bool IsPublic , int HashtagID, int Amount, OrderBy OrderBy = OrderBy.None,  int[] Excepts = null);
         Task<QueryResult<SQuestionWithAnswerState>> GetUserPublicQuestions(PagedDataRequest RequestInfo, int UserID);
         Task<QueryResult<SQuestionWithAnswerState>> GetUserMutualQuestions(PagedDataRequest RequestInfo, int UserID);
+        Task<Question> GetQuestionByID(int ID);
     }
 }

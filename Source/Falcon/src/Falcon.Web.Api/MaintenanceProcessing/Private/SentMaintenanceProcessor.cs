@@ -1,6 +1,8 @@
 ﻿using Falcon.Common;
 using Falcon.Data.QueryProcessors;
 using Falcon.Web.Api.MaintenanceProcessing.Public;
+using Falcon.Web.Models.Api.Question;
+using System;
 using System.Threading.Tasks;
 
 namespace Falcon.Web.Api.MaintenanceProcessing.Private
@@ -23,6 +25,11 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
             var message = await mSentQuery.StoreMessageGroup(messageGroupID, SenderID, QuestionID, ReceiverIDs);
 
             return message;
+        }
+
+        public async Task<bool> ForwardQuestionToFriends(SForwardQuestion QuestionInfo)
+        {
+            throw new NotImplementedException();
         }
     }
 }
