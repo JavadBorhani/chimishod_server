@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Falcon.Common;
 using Falcon.Common.Security;
 using Falcon.Data.QueryProcessors;
 using Falcon.Web.Api.InquiryProcessing.Public;
@@ -38,9 +39,10 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
         {
             //TODO : Checking Money 
 
+
             var createdQuestion = await mQuestionQuery.CreateQuestion(CreateQuestion);
 
-            if (CreateQuestion.FriendForwardList?.Length > 0)
+            if (CreateQuestion.FriendForwardList != null && CreateQuestion.FriendForwardList.Length > 0)
             {
                 var friendIdsExists = await mFriendInquiry.HasFriends(CreateQuestion.FriendForwardList);
 
@@ -48,9 +50,12 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
                 {
                     var stored = await mSentMaintenance.StoreMessageSent(mUserSession.ID, CreateQuestion.FriendForwardList, createdQuestion.ID);
                     var notified = await mNotificationManager.InboxQuestionToFriends(CreateQuestion.FriendForwardList, mMapper.Map<SQuestion>(createdQuestion));
+                    return 200;
                 }
-
-                return 200;
+                else
+                {
+                    throw new BusinessRuleViolationException("Cheat in Question Creation" + mUserSession.ID);
+                }
             }
             else if( createdQuestion != null)
             {
@@ -67,7 +72,7 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
             //remember to decrease money;
             var question = await mQuestionQuery.GetQuestionByID(ForwardQuestion.QuestionID);
 
-            if (question != null && question.Banned == false)
+            if (question != null && question.Banned == false && question.HashTagID != (int)HashTagID.Quest)
             {
 
                 var friendIdsExists = await mFriendInquiry.HasFriends(ForwardQuestion.FriendIDs);
@@ -76,10 +81,10 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
                 {
                     var stored = await mSentMaintenance.StoreMessageSent(mUserSession.ID, ForwardQuestion.FriendIDs, question.ID);
                     var notified = await mNotificationManager.InboxQuestionToFriends(ForwardQuestion.FriendIDs, mMapper.Map<SQuestion>(question));
-                }
-                return 200;
-            }
 
+                    return 200;
+                }
+            }
             return -1;
 
         }
