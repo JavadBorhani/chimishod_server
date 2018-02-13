@@ -7,6 +7,7 @@ using Falcon.Web.Api.MaintenanceProcessing.Public;
 using Falcon.Web.Api.Utilities.Base;
 using Falcon.Web.Common;
 using Falcon.Web.Models.Api;
+using Falcon.Web.Models.Api.User;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
@@ -71,7 +72,7 @@ namespace Falcon.Web.Api.Controllers.V2
 
         [Route("v2/UserInfoChange/Edit/")] //TODO : Refactor This
         [HttpPost]
-        public async Task<IHttpActionResult> EditUserInfo([FromBody] SUserInfo UserInfo)
+        public async Task<IHttpActionResult> EditUserInfo([FromBody] SNewUserInfo UserInfo)
         {
             if (ModelState.IsValid)
             {

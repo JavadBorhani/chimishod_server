@@ -47,7 +47,6 @@ namespace Falcon.Web.Api.Controllers.V2
             {
                 return null;
             }
-
             var user = await mUsersMaintenance.CreateNewUser(Info);
             return user;
         }
