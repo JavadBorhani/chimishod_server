@@ -37,19 +37,27 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
         {
             //TODO : Checking Money 
 
-            var friendIdsExists = await mFriendInquiry.HasFriends(CreateQuestion.FriendForwardList);
+            var createdQuestion = await mQuestionQuery.CreateQuestion(CreateQuestion);
 
-            if(friendIdsExists)
+            if (CreateQuestion.FriendForwardList?.Length > 0)
             {
-                var createdQuestion = await mQuestionQuery.CreateQuestion(CreateQuestion);
-                var stored = await mSentMaintenance.StoreMessageSent(mUserSession.ID, CreateQuestion.FriendForwardList, createdQuestion.ID);
-                var notified = await mNotificationManager.InboxQuestionToFriends(CreateQuestion.FriendForwardList, mMapper.Map<SQuestion>(createdQuestion));
+                var friendIdsExists = await mFriendInquiry.HasFriends(CreateQuestion.FriendForwardList);
 
+                if(friendIdsExists)
+                {
+                    var stored = await mSentMaintenance.StoreMessageSent(mUserSession.ID, CreateQuestion.FriendForwardList, createdQuestion.ID);
+                    var notified = await mNotificationManager.InboxQuestionToFriends(CreateQuestion.FriendForwardList, mMapper.Map<SQuestion>(createdQuestion));
+                }
+
+                return 200;
+            }
+            else if( createdQuestion != null)
+            {
                 return 200;
             }
             else
             {
-                return -1;
+                return -1; 
             }
         }
 
