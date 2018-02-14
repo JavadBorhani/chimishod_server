@@ -3,6 +3,7 @@ using Falcon.Data;
 using Falcon.Data.QueryProcessors;
 using Falcon.Web.Api.InquiryProcessing.Public;
 using Falcon.Web.Models;
+using Falcon.Web.Models.Api.Answer;
 using Falcon.Web.Models.Api.Friend;
 using System.Linq;
 using System.Threading.Tasks;
@@ -79,6 +80,12 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
             };
 
             return inquiryResponse;
+        }
+
+        public async Task<SFriendAnswer[]> GetFriendAnswers(SFriendAnswerInquiry FriendAnswerInquiry)
+        {
+            var friendResponses = await mAnswerQuery.GetUserAnsweredIds(FriendAnswerInquiry.FriendIDs);
+            return friendResponses;
         }
     }
 }

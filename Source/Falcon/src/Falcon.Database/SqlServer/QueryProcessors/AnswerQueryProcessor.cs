@@ -4,6 +4,7 @@ using Falcon.Data.QueryProcessors;
 using Falcon.EFCommonContext;
 using Falcon.EFCommonContext.DbModel;
 using Falcon.Web.Models.Api.Answer;
+using Falcon.Web.Models.Api.Friend;
 using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
@@ -79,6 +80,28 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             }
 
             return false;   
+        }
+
+        public async Task<SFriendAnswer[]> GetAnswerOfUsers(int QuestionID, int[] UserIDs)
+        {
+            var answer = await mDb.Set<Answer>()
+                .Where(a => UserIDs.Contains(a.UserID) && a.QuestionID == QuestionID)
+                .Include(a => a.User)
+                .Select(a => new SFriendAnswer
+                {
+                    UserID = a.UserID,
+                    UserName = a.User.UserName,
+                    QuestionID = a.QuestionID,
+                    AnsweredDisliked = a.Dislike ?? false,
+                    AnsweredLiked = a.Liked ?? false,
+                    AnsweredYes = a.YesState ?? false,
+                    AnsweredNo = a.NoState ?? false,
+                    PictureUrl = a.User.AvatarImagePath
+                })
+                .ToArrayAsync();
+
+
+
         }
     }
 }

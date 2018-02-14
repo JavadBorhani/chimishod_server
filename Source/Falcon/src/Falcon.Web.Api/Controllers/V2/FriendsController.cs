@@ -5,6 +5,7 @@ using Falcon.Web.Api.Utilities.Base;
 using Falcon.Web.Common;
 using Falcon.Web.Models;
 using Falcon.Web.Models.Api;
+using Falcon.Web.Models.Api.Answer;
 using Falcon.Web.Models.Api.Friend;
 using System.Threading.Tasks;
 using System.Web.Http;
@@ -110,6 +111,19 @@ namespace Falcon.Web.Api.Controllers.V2
             return questions;
         }
 
+        [ResponseType(typeof(SFriend))]
+        [Route("v2/Friends/Answer/")]
+        [HttpPost]
+
+        public async Task<SFriendAnswer[]> GetFriendAnswers(SFriendAnswerInquiry FriendAnswerInquiry)
+        {
+            if (!ModelState.IsValid)
+                return null;
+
+            var responses = mFriendsInquiry.GetFriendAnswers();
+
+            return responses;
+        }
 
         //[Route("Comments/{QuestionID}/{PageNumber}")]s
         //[HttpPost]
