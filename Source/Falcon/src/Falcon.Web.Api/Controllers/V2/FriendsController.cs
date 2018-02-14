@@ -120,7 +120,7 @@ namespace Falcon.Web.Api.Controllers.V2
             if (!ModelState.IsValid)
                 return null;
 
-            var responses = mFriendsInquiry.GetFriendAnswers();
+            var responses = await mFriendsInquiry.GetFriendAnswers(FriendAnswerInquiry);
 
             return responses;
         }

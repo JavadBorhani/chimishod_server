@@ -100,8 +100,7 @@ namespace Falcon.Database.SqlServer.QueryProcessors
                 })
                 .ToArrayAsync();
 
-
-
+            return answer;
         }
     }
 }

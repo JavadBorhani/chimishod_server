@@ -84,7 +84,7 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
 
         public async Task<SFriendAnswer[]> GetFriendAnswers(SFriendAnswerInquiry FriendAnswerInquiry)
         {
-            var friendResponses = await mAnswerQuery.GetUserAnsweredIds(FriendAnswerInquiry.FriendIDs);
+            var friendResponses = await mAnswerQuery.GetAnswerOfUsers(FriendAnswerInquiry.QuestionID, FriendAnswerInquiry.FriendIDs);
             return friendResponses;
         }
     }
