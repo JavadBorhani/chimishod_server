@@ -23,7 +23,7 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             mDb = Database;
             mUserSession = UserSession;
         }
-        public async Task<int> StoreMessage(int UserID, int QuestionID)
+        public async Task<int> SaveMessage(int UserID, int QuestionID)
         {
             var item = mDb.Set<Sent>().Add(new Sent
             {
@@ -38,7 +38,7 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             return item.GroupID;
         }
 
-        public async Task<bool> StoreMessageGroup(int GroupID ,int SenderID, int QuestionID, int[] ReceiverID)
+        public async Task<bool> SaveMessageGroup(int GroupID ,int SenderID, int QuestionID, int[] ReceiverID)
         {
             var sentGroups = new SentGroup[ReceiverID.Length];
             for (int i = 0; i < sentGroups.Length; ++i)

@@ -1,4 +1,5 @@
 ﻿using Falcon.EFCommonContext.DbModel;
+using Falcon.Web.Models.Api.Answer;
 using System.Threading.Tasks;
 
 namespace Falcon.Data.QueryProcessors
@@ -7,5 +8,8 @@ namespace Falcon.Data.QueryProcessors
     {
         Task<int[]> GetUserAnsweredIds(int UserID);
         Task<Answer[]> GetUserAnswers(int[] QuestionIds);
+        Task<bool> SaveYesNoAnswer(SYesNoAnswer Response);
+        Task<bool> SaveLikeDislikeAnswer(SLikeDislikeAnswer Response);
+        
     }
 }

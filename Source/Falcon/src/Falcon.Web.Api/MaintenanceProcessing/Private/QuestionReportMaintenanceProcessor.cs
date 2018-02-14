@@ -35,7 +35,7 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
             }
 
             var result  = await mQuestionReportQuery.ReportQuestion(Reported);
-            var answer = await mAnswerMaintenanceProcessor.SaveAnswer(Reported.QuestionID);
+            var answer = await mAnswerMaintenanceProcessor.SaveReportedAnswer(Reported.QuestionID);
 
             return result;
         }

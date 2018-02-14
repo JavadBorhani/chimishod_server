@@ -48,7 +48,7 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
 
                 if(friendIdsExists)
                 {
-                    var stored = await mSentMaintenance.StoreMessageSent(mUserSession.ID, CreateQuestion.FriendForwardList, createdQuestion.ID);
+                    var stored = await mSentMaintenance.SaveMessageSent(mUserSession.ID, CreateQuestion.FriendForwardList, createdQuestion.ID);
                     var notified = await mNotificationManager.InboxQuestionToFriends(CreateQuestion.FriendForwardList, mMapper.Map<SQuestion>(createdQuestion));
                     return 200;
                 }
@@ -79,7 +79,7 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
 
                 if (friendIdsExists)
                 {
-                    var stored = await mSentMaintenance.StoreMessageSent(mUserSession.ID, ForwardQuestion.FriendIDs, question.ID);
+                    var stored = await mSentMaintenance.SaveMessageSent(mUserSession.ID, ForwardQuestion.FriendIDs, question.ID);
                     var notified = await mNotificationManager.InboxQuestionToFriends(ForwardQuestion.FriendIDs, mMapper.Map<SQuestion>(question));
 
                     return 200;

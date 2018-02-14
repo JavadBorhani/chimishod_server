@@ -3,7 +3,6 @@ using Falcon.Web.Api.InquiryProcessing.Public;
 using Falcon.Web.Api.JobSystem.Public;
 using Falcon.Web.Api.Utilities.Mail;
 using Falcon.Web.Models.Api;
-using System;
 using System.Threading.Tasks;
 
 namespace Falcon.Web.Api.InquiryProcessing.Private
@@ -34,11 +33,6 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
                 return true;
             }
             return false;
-        }
-
-        public async Task<string> RecoverUser(SUserInfo UserInfo)
-        {
-            throw new NotImplementedException();
         }
     }
 }

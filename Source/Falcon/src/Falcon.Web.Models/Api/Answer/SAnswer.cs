@@ -4,7 +4,7 @@ using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace Falcon.Web.Models.Api
-{    
+{
     public class SAnswer
     {
         public int ID { get; set; }
@@ -27,8 +27,5 @@ namespace Falcon.Web.Models.Api
 
         public bool SendQuestion { get; set; }
 
-        public int CategoryToGetQuestion { get; set; }
-
-        public int[] ChosenCharacters { get; set; }
     }
 }

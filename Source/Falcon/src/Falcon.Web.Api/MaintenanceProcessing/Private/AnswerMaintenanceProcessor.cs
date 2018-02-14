@@ -1,10 +1,11 @@
 ﻿using Falcon.Common;
 using Falcon.Common.Security;
+using Falcon.Data.QueryProcessors;
 using Falcon.EFCommonContext;
 using Falcon.EFCommonContext.DbModel;
 using Falcon.Web.Api.MaintenanceProcessing.Public;
 using Falcon.Web.Models.Api;
-using System;
+using Falcon.Web.Models.Api.Answer;
 using System.Threading.Tasks;
 
 namespace Falcon.Web.Api.MaintenanceProcessing.Private
@@ -14,25 +15,23 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
         private readonly IDbContext mDb;
         private readonly IDateTime mDateTime;
         private readonly IUserSession mUserSession;
+        private readonly IAnswerQueryProcessor mAnswerQuery;
 
         public AnswerMaintenanceProcessor
             (
             IDbContext Database , 
             IDateTime DateTime ,
-            IUserSession UserSession
+            IUserSession UserSession,
+            IAnswerQueryProcessor AnswerQuery
             )
         {
             mDb = Database;
             mDateTime = DateTime;
             mUserSession = UserSession;
+            mAnswerQuery = AnswerQuery;
         }
 
-        public async Task<bool> Answer(SAnswer Answer)
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task<bool> SaveAnswer(int QuestionID)
+        public async Task<bool> SaveReportedAnswer(int QuestionID)
         {
 
             var answer = new Answer
@@ -49,6 +48,32 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
 
             return true;
         }
+
+        public async Task<bool> SaveYesNoAnswer(SYesNoAnswer Response)
+        {
+            var result = await mAnswerQuery.SaveYesNoAnswer(Response);
+            return result;
+
+        }
+
+        public async Task<bool> SaveLikeDislikeAnswer(SLikeDislikeAnswer Response)
+        {
+            var result = await mAnswerQuery.SaveLikeDislikeAnswer(Response);
+            return result;
+        }
+
+        public async Task<bool> SaveAnswer(SAnswer Answer)
+        {
+            //TODO:
+            // checking answer 
+            // upgrade user level 
+            // checking quest 
+            // checking score, 
+
+            return false;
+            
+        }
+
         //public async Task<bool> Answer(SAnswer Answer) // refactor this to queries
         //{
 

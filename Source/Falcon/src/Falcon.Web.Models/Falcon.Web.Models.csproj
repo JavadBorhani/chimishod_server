@@ -45,6 +45,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Api\Achievement\SAchievementStatistic.cs" />
+    <Compile Include="Api\Answer\SLikeDislikeAnswer.cs" />
+    <Compile Include="Api\Answer\SYesNoAnswer.cs" />
     <Compile Include="Api\Cache\SLevelCache.cs" />
     <Compile Include="Api\Config\SClientAppState.cs" />
     <Compile Include="Api\Config\SGameConfig.cs" />
@@ -76,7 +78,7 @@
     <Compile Include="Api\SCodeGift.cs" />
     <Compile Include="Api\Question\SCreatedQuestion.cs" />
     <Compile Include="Api\SAchievement.cs" />
-    <Compile Include="Api\SAnswer.cs" />
+    <Compile Include="Api\Answer\SAnswer.cs" />
     <Compile Include="Api\SAppTheme.cs" />
     <Compile Include="Api\SCategory.cs" />
     <Compile Include="Api\SComment.cs" />
