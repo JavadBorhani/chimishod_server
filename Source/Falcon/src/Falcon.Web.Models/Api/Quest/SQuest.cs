@@ -16,5 +16,6 @@
         public int CoinPrize { get; set; }
         public int CeilProgress { get; set; }
         public int MeanScore { get; set; }
+        public int[] ChildQuestNumbers { get; set; }
     }
 }
