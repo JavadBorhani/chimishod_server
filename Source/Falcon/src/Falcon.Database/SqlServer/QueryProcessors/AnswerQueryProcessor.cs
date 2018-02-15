@@ -82,7 +82,7 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             return false;   
         }
 
-        public async Task<SFriendAnswer[]> GetAnswerOfUsers(int QuestionID, int[] UserIDs)
+        public async Task<SFriendAnswer[]> GetAnswerOfUsers(int QuestionID, int[] UserIDs , int NumberToTake)
         {
             var answer = await mDb.Set<Answer>()
                 .Where(a => UserIDs.Contains(a.UserID) && a.QuestionID == QuestionID)
@@ -98,6 +98,7 @@ namespace Falcon.Database.SqlServer.QueryProcessors
                     AnsweredNo = a.NoState ?? false,
                     PictureUrl = a.User.AvatarImagePath
                 })
+                .Take(NumberToTake)
                 .ToArrayAsync();
 
             return answer;

@@ -16,7 +16,7 @@ namespace Falcon.Web.Api.Controllers.V2
         private readonly IQuestsInquiryProcessor mQuestInqiury;
         private readonly IQuestsMaintenanceProcessor mQuestMaintenace;
 
-        public QuestsController(IQuestsInquiryProcessor QuestsInquirProcessor , IQuestsMaintenanceProcessor QuestsMaintenanceProcessor)
+        public QuestsController( IQuestsInquiryProcessor QuestsInquirProcessor , IQuestsMaintenanceProcessor QuestsMaintenanceProcessor )
         {
             mQuestInqiury = QuestsInquirProcessor;
             mQuestMaintenace = QuestsMaintenanceProcessor;

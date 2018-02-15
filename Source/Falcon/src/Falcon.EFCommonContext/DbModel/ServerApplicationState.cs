@@ -45,5 +45,6 @@ namespace Falcon.EFCommonContext.DbModel
         public int Prize_CreateNewQuestionScore { get; set; }
         public int Prize_NewQuestionAcceptedScore { get; set; }
         public int Prize_AnswerScoreAmount { get; set; }
+        public int Friend_FriendResponsesAmount { get; set; }
     }
 }

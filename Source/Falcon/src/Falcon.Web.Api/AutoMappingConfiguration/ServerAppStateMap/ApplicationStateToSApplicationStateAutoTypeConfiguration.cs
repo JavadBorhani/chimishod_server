@@ -52,6 +52,9 @@ namespace Falcon.Web.Api.AutoMappingConfiguration.ServerAppStateMap
                 .ForMember(s => s.SpinWheelFortuneThreshold, ca => ca.MapFrom(y => y.SpinWheelFortuneThreshold))
                 .ForMember(s => s.SpinWheelLoopPrice, ca => ca.MapFrom(y => y.SpinWheelLoopPrice))
 
+                //Friend
+                .ForMember(s => s.Friend_FriendResponsesAmount, ca => ca.MapFrom(y => y.Friend_FriendResponsesAmount))
+
                 //Host
                 .ForMember(s => s.Host_WebSiteNoReplyMail, ca => ca.MapFrom(y => y.Host_WebSiteNoReplyMail))
                 .ForMember(s => s.Host_WebSiteNoReplyMailPassword, ca => ca.MapFrom(y => y.Host_WebSiteNoReplyMailPassword))
@@ -60,6 +63,7 @@ namespace Falcon.Web.Api.AutoMappingConfiguration.ServerAppStateMap
                 .ForMember(s => s.Host_SmtpServer, ca => ca.MapFrom(y => y.Host_SmtpServer))
                 .ForMember(s => s.HostCredentialUserName, ca => ca.MapFrom(y => y.HostCredentialUserName))
                 .ForMember(s => s.HostCredentialPassword, ca => ca.MapFrom(y => y.HostCredentialPassword));
+
 
         }
     }

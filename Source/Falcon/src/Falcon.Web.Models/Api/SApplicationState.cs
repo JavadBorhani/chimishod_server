@@ -107,6 +107,9 @@ namespace Falcon.Web.Models.Api
         [Required]
         public int SpinWheelLoopPrice { get; set; }
 
+        public int Friend_FriendResponsesAmount { get; set; }
+
+
 
     }
 }

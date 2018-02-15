@@ -18,5 +18,6 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
             var data = await mAnswerQueryProcessor.GetUserAnsweredIds(UserID);
             return data;
         }
+
     }
 }
