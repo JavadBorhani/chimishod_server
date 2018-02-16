@@ -27,7 +27,8 @@ namespace Falcon.EFCommonContext.DbModel
         public int QuestTypes { get; set; }
         public string QuestTitle { get; set; }
         public string QuestDescription { get; set; }
-        public string QuestIcon { get; set; }
+        public string QuestWhiteIcon { get; set; }
+        public string QuestColoredIcon { get; set; }
         public string QuestOffIcon { get; set; }
         public Nullable<int> ParentID { get; set; }
         public int Mean_Score { get; set; }

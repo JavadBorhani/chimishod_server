@@ -14,7 +14,12 @@ namespace Falcon.Web.Api.AutoMappingConfiguration.QuestMap
                 .ForMember(s => s.QuestTypes, m => m.MapFrom(s => s.QuestTypes))
                 .ForMember(s => s.QuestTitle, m => m.MapFrom(s => s.QuestTitle))
                 .ForMember(s => s.QuestDescription, m => m.MapFrom(s => s.QuestDescription))
-                .ForMember(s => s.CoinPrize, m => m.MapFrom(s => s.Mean_Score));
+                .ForMember(s => s.QuestWhiteIcon, m => m.MapFrom(s => s.QuestWhiteIcon))
+                .ForMember(s => s.QuestColoredIcon, m => m.MapFrom(s => s.QuestColoredIcon))
+                .ForMember(s => s.QuestOffIcon, m => m.MapFrom(s => s.QuestOffIcon))
+                .ForMember(s => s.CoinPrize, m => m.Ignore())
+                .ForMember(s => s.MeanScore, m => m.Ignore())
+                .ForMember(s => s.ChildQuestNumbers, m => m.Ignore());
         }
     }
 }

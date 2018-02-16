@@ -185,7 +185,8 @@
           <Property Name="QuestTypes" Type="int" Nullable="false" />
           <Property Name="QuestTitle" Type="nvarchar" MaxLength="300" Nullable="false" />
           <Property Name="QuestDescription" Type="nvarchar" MaxLength="300" Nullable="false" />
-          <Property Name="QuestIcon" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="QuestWhiteIcon" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="QuestColoredIcon" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="QuestOffIcon" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="ParentID" Type="int" />
           <Property Name="Mean_Score" Type="int" Nullable="false" />
@@ -1598,7 +1599,8 @@
           <Property Name="QuestTypes" Type="Int32" Nullable="false" />
           <Property Name="QuestTitle" Type="String" Nullable="false" MaxLength="300" FixedLength="false" Unicode="true" />
           <Property Name="QuestDescription" Type="String" Nullable="false" MaxLength="300" FixedLength="false" Unicode="true" />
-          <Property Name="QuestIcon" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="QuestWhiteIcon" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="QuestColoredIcon" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="QuestOffIcon" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="ParentID" Type="Int32" />
           <Property Name="Mean_Score" Type="Int32" Nullable="false" />
@@ -2647,7 +2649,8 @@
                 <ScalarProperty Name="Mean_Score" ColumnName="Mean_Score" />
                 <ScalarProperty Name="ParentID" ColumnName="ParentID" />
                 <ScalarProperty Name="QuestOffIcon" ColumnName="QuestOffIcon" />
-                <ScalarProperty Name="QuestIcon" ColumnName="QuestIcon" />
+                <ScalarProperty Name="QuestColoredIcon" ColumnName="QuestColoredIcon" />
+                <ScalarProperty Name="QuestWhiteIcon" ColumnName="QuestWhiteIcon" />
                 <ScalarProperty Name="QuestDescription" ColumnName="QuestDescription" />
                 <ScalarProperty Name="QuestTitle" ColumnName="QuestTitle" />
                 <ScalarProperty Name="QuestTypes" ColumnName="QuestTypes" />
