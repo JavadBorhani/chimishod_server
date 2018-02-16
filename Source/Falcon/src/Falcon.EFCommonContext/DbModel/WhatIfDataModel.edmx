@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="Falcon.DbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="Falcon.DbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="AchievedCodeGift">
           <Key>
             <PropertyRef Name="ID" />
@@ -39,6 +39,7 @@
           <Property Name="WatchAdCoin" Type="int" Nullable="false" />
           <Property Name="LevelVersionCode" Type="int" Nullable="false" />
           <Property Name="XPLevelFactor" Type="int" Nullable="false" />
+          <Property Name="PullingIntervalTimeInSeconds" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="CodeGift">
           <Key>
@@ -184,6 +185,9 @@
           <Property Name="QuestTypes" Type="int" Nullable="false" />
           <Property Name="QuestTitle" Type="nvarchar" MaxLength="300" Nullable="false" />
           <Property Name="QuestDescription" Type="nvarchar" MaxLength="300" Nullable="false" />
+          <Property Name="QuestIcon" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="QuestOffIcon" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="ParentID" Type="int" />
           <Property Name="Mean_Score" Type="int" Nullable="false" />
           <Property Name="CreatedDate" Type="datetime" Nullable="false" />
           <Property Name="UpdateDate" Type="datetime" Nullable="false" />
@@ -570,6 +574,18 @@
             </Principal>
             <Dependent Role="PriceHistory">
               <PropertyRef Name="StoreID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Quest_Quest">
+          <End Role="Quest" Type="Self.Quest" Multiplicity="0..1" />
+          <End Role="Quest1" Type="Self.Quest" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Quest">
+              <PropertyRef Name="QuestNumber" />
+            </Principal>
+            <Dependent Role="Quest1">
+              <PropertyRef Name="ParentID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1035,6 +1051,10 @@
             <End Role="Store" EntitySet="Store" />
             <End Role="PriceHistory" EntitySet="PriceHistory" />
           </AssociationSet>
+          <AssociationSet Name="FK_Quest_Quest" Association="Self.FK_Quest_Quest">
+            <End Role="Quest" EntitySet="Quest" />
+            <End Role="Quest1" EntitySet="Quest" />
+          </AssociationSet>
           <AssociationSet Name="FK_Quest_QuestTypes" Association="Self.FK_Quest_QuestTypes">
             <End Role="QuestTypes" EntitySet="QuestTypes" />
             <End Role="Quest" EntitySet="Quest" />
@@ -1148,7 +1168,8 @@
             <End Role="WatchedAd" EntitySet="WatchedAd" />
           </AssociationSet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="Falcon.DbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -1271,6 +1292,10 @@
             <End Role="Store" EntitySet="Stores" />
             <End Role="PriceHistory" EntitySet="PriceHistories" />
           </AssociationSet>
+          <AssociationSet Name="FK_Quest_Quest" Association="Falcon.DbModel.FK_Quest_Quest">
+            <End Role="Quest" EntitySet="Quests" />
+            <End Role="Quest1" EntitySet="Quests" />
+          </AssociationSet>
           <AssociationSet Name="FK_Quest_QuestTypes" Association="Falcon.DbModel.FK_Quest_QuestTypes">
             <End Role="QuestType" EntitySet="QuestTypes" />
             <End Role="Quest" EntitySet="Quests" />
@@ -1367,7 +1392,7 @@
             <End Role="WatchAdProvider" EntitySet="WatchAdProviders" />
             <End Role="WatchedAd" EntitySet="WatchedAds" />
           </AssociationSet>
-          </EntityContainer>
+        </EntityContainer>
         <ComplexType Name="sp_helpdiagramdefinition_Result">
           <Property Type="Int32" Name="version" Nullable="true" />
           <Property Type="Binary" Name="definition" Nullable="true" />
@@ -1417,6 +1442,7 @@
           <Property Name="WatchAdCoin" Type="Int32" Nullable="false" />
           <Property Name="LevelVersionCode" Type="Int32" Nullable="false" />
           <Property Name="XPLevelFactor" Type="Int32" Nullable="false" />
+          <Property Name="PullingIntervalTimeInSeconds" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="CodeGift">
           <Key>
@@ -1572,10 +1598,15 @@
           <Property Name="QuestTypes" Type="Int32" Nullable="false" />
           <Property Name="QuestTitle" Type="String" Nullable="false" MaxLength="300" FixedLength="false" Unicode="true" />
           <Property Name="QuestDescription" Type="String" Nullable="false" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Name="QuestIcon" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="QuestOffIcon" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="ParentID" Type="Int32" />
           <Property Name="Mean_Score" Type="Int32" Nullable="false" />
           <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="UpdateDate" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="Levels" Relationship="Falcon.DbModel.FK_Level_Quest" FromRole="Quest" ToRole="Level" />
+          <NavigationProperty Name="Quest1" Relationship="Falcon.DbModel.FK_Quest_Quest" FromRole="Quest" ToRole="Quest1" />
+          <NavigationProperty Name="Quest2" Relationship="Falcon.DbModel.FK_Quest_Quest" FromRole="Quest1" ToRole="Quest" />
           <NavigationProperty Name="QuestType" Relationship="Falcon.DbModel.FK_Quest_QuestTypes" FromRole="Quest" ToRole="QuestType" />
           <NavigationProperty Name="QuestQuestions" Relationship="Falcon.DbModel.FK_QuestQuestions_Quest" FromRole="Quest" ToRole="QuestQuestion" />
           <NavigationProperty Name="QuestScores" Relationship="Falcon.DbModel.FK_QuestScore_Quest" FromRole="Quest" ToRole="QuestScore" />
@@ -1827,7 +1858,7 @@
           <Property Name="APILevel" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Device" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Model" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="RowVersion" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="RowVersion" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" ConcurrencyMode="Fixed" />
           <Property Name="IPAddress" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="AvatarImagePath" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="Activated" Type="Boolean" Nullable="false" />
@@ -2068,6 +2099,18 @@
             </Principal>
             <Dependent Role="PriceHistory">
               <PropertyRef Name="StoreID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Quest_Quest">
+          <End Type="Falcon.DbModel.Quest" Role="Quest" Multiplicity="0..1" />
+          <End Type="Falcon.DbModel.Quest" Role="Quest1" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Quest">
+              <PropertyRef Name="QuestNumber" />
+            </Principal>
+            <Dependent Role="Quest1">
+              <PropertyRef Name="ParentID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2381,7 +2424,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        </Schema>
+      </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -2439,6 +2482,7 @@
           <EntitySetMapping Name="ClientApplicationStates">
             <EntityTypeMapping TypeName="Falcon.DbModel.ClientApplicationState">
               <MappingFragment StoreEntitySet="ClientApplicationState">
+                <ScalarProperty Name="PullingIntervalTimeInSeconds" ColumnName="PullingIntervalTimeInSeconds" />
                 <ScalarProperty Name="XPLevelFactor" ColumnName="XPLevelFactor" />
                 <ScalarProperty Name="LevelVersionCode" ColumnName="LevelVersionCode" />
                 <ScalarProperty Name="WatchAdCoin" ColumnName="WatchAdCoin" />
@@ -2601,6 +2645,9 @@
                 <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
                 <ScalarProperty Name="Mean_Score" ColumnName="Mean_Score" />
+                <ScalarProperty Name="ParentID" ColumnName="ParentID" />
+                <ScalarProperty Name="QuestOffIcon" ColumnName="QuestOffIcon" />
+                <ScalarProperty Name="QuestIcon" ColumnName="QuestIcon" />
                 <ScalarProperty Name="QuestDescription" ColumnName="QuestDescription" />
                 <ScalarProperty Name="QuestTitle" ColumnName="QuestTitle" />
                 <ScalarProperty Name="QuestTypes" ColumnName="QuestTypes" />
@@ -2889,7 +2936,7 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          </EntityContainerMapping>
+        </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
   </edmx:Runtime>

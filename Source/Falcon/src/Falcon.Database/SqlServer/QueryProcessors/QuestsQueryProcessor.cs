@@ -2,6 +2,7 @@
 using Falcon.Data.QueryProcessors;
 using Falcon.EFCommonContext;
 using Falcon.EFCommonContext.DbModel;
+using Falcon.Web.Models.Api.Quest;
 using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
@@ -17,10 +18,16 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             mDb = Database;
             mDateTime = DateTime;
         }
-        public async Task<Quest[]> GetAllQuests()
+
+        public async Task<SQuest[]> GetAllQuests()
         {
+            //TODO Getting List of All Quests With Child Data
+
+
+
             var data = await mDb.Set<Quest>().AsNoTracking().ToArrayAsync();
-            return data;
+
+            return null;
         }
 
         public async Task<Quest> GetQuestByID(int ID)

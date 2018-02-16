@@ -11,6 +11,7 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
     {
         private readonly IQuestsQueryProcessor mQuestQuery;
         private readonly IMapper mMapper;
+
         public QuestsInquiryProcessor(IQuestsQueryProcessor QuestQueryProcessor , IMapper Mapper)
         {
             mQuestQuery = QuestQueryProcessor;

@@ -18,6 +18,7 @@ namespace Falcon.EFCommonContext.DbModel
         public Quest()
         {
             this.Levels = new HashSet<Level>();
+            this.Quest1 = new HashSet<Quest>();
             this.QuestQuestions = new HashSet<QuestQuestion>();
             this.QuestScores = new HashSet<QuestScore>();
         }
@@ -26,12 +27,18 @@ namespace Falcon.EFCommonContext.DbModel
         public int QuestTypes { get; set; }
         public string QuestTitle { get; set; }
         public string QuestDescription { get; set; }
+        public string QuestIcon { get; set; }
+        public string QuestOffIcon { get; set; }
+        public Nullable<int> ParentID { get; set; }
         public int Mean_Score { get; set; }
         public System.DateTime CreatedDate { get; set; }
         public System.DateTime UpdateDate { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Level> Levels { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Quest> Quest1 { get; set; }
+        public virtual Quest Quest2 { get; set; }
         public virtual QuestType QuestType { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<QuestQuestion> QuestQuestions { get; set; }

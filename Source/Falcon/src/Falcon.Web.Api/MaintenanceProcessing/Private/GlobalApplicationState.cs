@@ -88,6 +88,7 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
                 model.Question_ServerBurntReturnAmount >= 0 &&
                 model.Store_DefaultReturnAmount >= 0 &&
                 model.User_DefaultUserCoin >= 0 &&
+                model.Friend_FriendResponsesAmount > 1 && 
                 //model.WatchAdCoin >= 0 &&
                 !string.IsNullOrEmpty(model.User_DefaultUserName)
                 );

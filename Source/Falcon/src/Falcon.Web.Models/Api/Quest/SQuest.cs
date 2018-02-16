@@ -1,4 +1,6 @@
-﻿namespace Falcon.Web.Models.Api.Quest
+﻿using System.Collections.Generic;
+
+namespace Falcon.Web.Models.Api.Quest
 {
     public enum QuestTypes
     {
@@ -16,6 +18,6 @@
         public int CoinPrize { get; set; }
         public int CeilProgress { get; set; }
         public int MeanScore { get; set; }
-        public int[] ChildQuestNumbers { get; set; }
+        public List<int> ChildQuestNumbers { get; set; }
     }
 }
