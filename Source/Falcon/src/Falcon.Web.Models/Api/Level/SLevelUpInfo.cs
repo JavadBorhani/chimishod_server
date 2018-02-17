@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Falcon.Web.Models.Api.Level
+﻿namespace Falcon.Web.Models.Api.Level
 {
     public enum LevelUpMode
     {

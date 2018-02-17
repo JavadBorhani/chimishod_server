@@ -6,6 +6,7 @@ using Falcon.EFCommonContext.DbModel;
 using Falcon.Web.Api.MaintenanceProcessing.Public;
 using Falcon.Web.Models.Api;
 using Falcon.Web.Models.Api.Answer;
+using Falcon.Web.Models.Api.Config;
 using System.Threading.Tasks;
 
 namespace Falcon.Web.Api.MaintenanceProcessing.Private
@@ -16,19 +17,31 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
         private readonly IDateTime mDateTime;
         private readonly IUserSession mUserSession;
         private readonly IAnswerQueryProcessor mAnswerQuery;
+        private readonly IQuestionsQueryProcessor mQuestionQuery;
+        private readonly IUsersMaintenanceProcessor mUserMaintenance;
+        private readonly IUserQueryProcessor mUserQuery;
+        private readonly SClientAppState mClientAppState; 
 
         public AnswerMaintenanceProcessor
             (
             IDbContext Database , 
             IDateTime DateTime ,
             IUserSession UserSession,
-            IAnswerQueryProcessor AnswerQuery
+            IAnswerQueryProcessor AnswerQuery ,
+            IQuestionsQueryProcessor QuestionQuery,
+            IUsersMaintenanceProcessor UserMaintenance,
+            IUserQueryProcessor UserQuery,
+            IClientApplicationState ClientAppState
             )
         {
             mDb = Database;
             mDateTime = DateTime;
             mUserSession = UserSession;
             mAnswerQuery = AnswerQuery;
+            mQuestionQuery = QuestionQuery;
+            mUserMaintenance = UserMaintenance;
+            mUserQuery = UserQuery;
+            mClientAppState = ClientAppState.State();
         }
 
         public async Task<bool> SaveReportedAnswer(int QuestionID)
@@ -64,15 +77,47 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
 
         public async Task<bool> SaveAnswer(SAnswer Answer)
         {
-            //TODO:
-            // checking answer 
-            // upgrade user level 
-            // checking quest 
-            // checking score, 
+
+            var question = await mQuestionQuery.GetQuestionByID(Answer.QuestionID);
+
+            if(question.IsPublic)
+            {
+                var stored = await mAnswerQuery.SaveRawAnswer(Answer);
+
+                if (stored != null)
+                {
+
+                    if (question.ActionID != null)
+                    {
+                        var actionCoin = question.QuestionAction?.Coin ?? 0;
+
+                        await mUserQuery.IncreaseCoin(actionCoin);
+                    }
+
+                    await mUserMaintenance.LevelUp(mClientAppState.XPLevelFactor);
+
+                    switch ((HashTagID)question.HashTagID)
+                    {
+                        case HashTagID.Fun:
+                        case HashTagID.People:
+
+                            //implement special logic for hashTags 
+                        
+
+                            break;
+
+                        case HashTagID.Quest:
+
+                            break;
+                    }
+                }
+                
+                return false;
+            }
 
             return false;
-            
         }
+
 
         //public async Task<bool> Answer(SAnswer Answer) // refactor this to queries
         //{

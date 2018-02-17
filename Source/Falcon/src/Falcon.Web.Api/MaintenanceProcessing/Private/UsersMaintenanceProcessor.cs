@@ -36,6 +36,9 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
         {
             var totalCoin = Constants.DefaultValues.NoNewCoin;
 
+            if (Prize == 0)
+                return totalCoin;
+
             SLevelUpInfo info;
             do
             {

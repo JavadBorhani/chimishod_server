@@ -37,8 +37,8 @@ namespace Falcon.EFCommonContext.DbModel
         public int ID { get; set; }
         public string UserName { get; set; }
         public Nullable<int> UserTypeID { get; set; }
-        public Nullable<int> LevelProgress { get; set; }
-        public Nullable<int> LevelNumber { get; set; }
+        public int LevelProgress { get; set; }
+        public int LevelNumber { get; set; }
         public int TotalCoin { get; set; }
         public bool IsMale { get; set; }
         public string UUID { get; set; }

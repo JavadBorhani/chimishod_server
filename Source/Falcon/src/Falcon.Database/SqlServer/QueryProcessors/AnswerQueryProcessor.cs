@@ -3,6 +3,7 @@ using Falcon.Common.Security;
 using Falcon.Data.QueryProcessors;
 using Falcon.EFCommonContext;
 using Falcon.EFCommonContext.DbModel;
+using Falcon.Web.Models.Api;
 using Falcon.Web.Models.Api.Answer;
 using Falcon.Web.Models.Api.Friend;
 using System.Data.Entity;
@@ -102,6 +103,33 @@ namespace Falcon.Database.SqlServer.QueryProcessors
                 .ToArrayAsync();
 
             return answer;
+        }
+
+        public async Task<Answer> SaveRawAnswer(SAnswer Response)
+        {
+
+            var item = new Answer
+            {
+                QuestionID = Response.QuestionID,
+                UserID = mUserSession.ID,
+                YesState = Response.YesNoState,
+                NoState = !Response.YesNoState,
+                Liked = Response.Liked,
+                Dislike = Response.Dislike,
+                CreatedDate = mDateTime.Now,
+            };
+
+            mDb.Set<Answer>().Add(item);
+            try
+            {
+                await mDb.SaveChangesAsync();
+                return item;
+            }
+            catch
+            {
+                return null;
+            }
+            
         }
     }
 }

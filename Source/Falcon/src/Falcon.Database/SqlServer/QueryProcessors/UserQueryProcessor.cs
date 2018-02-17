@@ -36,7 +36,7 @@ namespace Falcon.Database.SqlServer.QueryProcessors
 
         public async Task<int> IncreaseCoin(int Coin)
         {
-            if (Coin < 0)
+            if (Coin <= 0)
                 return -1;
 
             var user = await mDb.Set<User>().Where(u => u.ID == mUserSession.ID).SingleOrDefaultAsync();
@@ -126,7 +126,7 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             do
             {
                 SaveFailed = false;
-                //level = LevelUpChecking(ref player, player.Level.ScoreCeil, Prize, (player.CurrentLevelNumber ?? 0) + 1);
+                level = LevelUpChecking(ref player, player.Level.ScoreCeil, Prize, (player.LevelNumber) + 1);
                 level = new SLevelUpInfo();
                 try
                 {
@@ -153,8 +153,9 @@ namespace Falcon.Database.SqlServer.QueryProcessors
 
         private bool CheckIfNeedAnotherLevelUp(ref User User)
         {
-            //if (User.LevelProgress >= User.Level.ScoreCeil)
-            //    return true;
+            if (User.LevelProgress >= User.Level.ScoreCeil)
+                return true;
+
             return false;
         }
 
@@ -162,22 +163,22 @@ namespace Falcon.Database.SqlServer.QueryProcessors
         {
             SLevelUpInfo info = new SLevelUpInfo();
 
-            //if (User.LevelProgress + Prize >= LevelCeil)
-            //{
-            //    User.CurrentLevelNumber = NextLevelNumber;
-            //    int remained = (User.LevelProgress + Prize) - LevelCeil;
-            //    User.LevelProgress = remained;
+            if (User.LevelProgress + Prize >= LevelCeil)
+            {
+                User.LevelNumber = NextLevelNumber;
+                int remained = (User.LevelProgress + Prize) - LevelCeil;
+                User.LevelProgress = remained;
 
-            //    info.LevelUpMode = LevelUpMode.LeveledUp;
-            //    info.LevelUpNumber = NextLevelNumber;
-            //}
-            //else
-            //{
-            //    User.LevelProgress += Prize;
+                info.LevelUpMode = LevelUpMode.LeveledUp;
+                info.LevelUpNumber = NextLevelNumber;
+            }
+            else
+            {
+                User.LevelProgress += Prize;
 
-            //    info.LevelUpMode = LevelUpMode.NotLeveledUp;
-            //    info.LevelUpNumber = Constants.DefaultValues.NoLevelUp;
-            //}
+                info.LevelUpMode = LevelUpMode.NotLeveledUp;
+                info.LevelUpNumber = Constants.DefaultValues.NoLevelUp;
+            }
             return info;
         }
 

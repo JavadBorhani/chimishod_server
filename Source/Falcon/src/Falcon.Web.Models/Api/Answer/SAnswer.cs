@@ -15,13 +15,11 @@ namespace Falcon.Web.Models.Api
         public int QuestionID { get; set; }
 
         public Nullable<bool> Liked { get; set; }
-
+        
         public Nullable<bool> Dislike { get; set; }
 
         [Required]
         public bool YesNoState { get; set; }
-
-        public bool IsFavorited { get; set; }
 
         public DateTime CreatedDate { get; set; }
 

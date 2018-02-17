@@ -16,11 +16,16 @@ namespace Falcon.Web.Api.Controllers.V2
 
         private readonly IAnswerMaintenanceProcessor mAnswerMaintenance;
         private readonly IAnswerInquiryProcessor mAnswerInquiry;
+        private readonly IQuestionsInquiryProcessor mQuestionInquiry;
 
-        public AnswerController(IAnswerInquiryProcessor AnswerInquiry , IAnswerMaintenanceProcessor AnswerMaintenance)
+        public AnswerController(
+            IAnswerInquiryProcessor AnswerInquiry , 
+            IAnswerMaintenanceProcessor AnswerMaintenance , 
+            IQuestionsInquiryProcessor QuestionInquiry)
         {
             mAnswerInquiry = AnswerInquiry;
             mAnswerMaintenance = AnswerMaintenance;
+            mQuestionInquiry = QuestionInquiry;
         }
 
         [ResponseType(typeof(IHttpActionResult))]
@@ -32,8 +37,13 @@ namespace Falcon.Web.Api.Controllers.V2
                 return BadRequest();
 
             var response = await mAnswerMaintenance.SaveAnswer(Answer);
+            if(response && Answer.SendQuestion)
+            {
+                var Questions = mQuestionInquiry.PrepareQuestionList();
+                return Ok(new { Answer.QuestionID, Questions });
+            }
 
-            return Ok(response);
+            return NotFound();
         }
 
         [ResponseType(typeof(IHttpActionResult))]
