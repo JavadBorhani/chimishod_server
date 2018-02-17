@@ -1,0 +1,28 @@
+USE [SocialChimishod]
+GO
+/****** Object:  StoredProcedure [dbo].[UpdatePeopleNormalQuest]    Script Date: 2/17/2018 9:50:25 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+ALTER PROCEDURE [dbo].[UpdatePeopleNormalQuest]
+AS
+BEGIN
+	
+	UPDATE [dbo].[Quest]
+	SET [dbo].[Quest].Mean_Score = Result.Total / Result.PersonCount
+	FROM
+		( SELECT QuestTable.QuestNumber,
+           Processed.PersonCount,
+           Processed.Total
+   FROM (
+           (SELECT DISTINCT QuestNumber,
+                            PersonCount = COUNT(*),
+                            Total = SUM(Score)
+            FROM [SocialChimishod].[dbo].[QuestScore]
+            GROUP BY QuestNumber) Processed
+         INNER JOIN
+           (SELECT *
+            FROM Quest) QuestTable ON Processed.QuestNumber = QuestTable.QuestNumber)) RESULT
+	WHERE [dbo].[Quest].QuestNumber = Result.QuestNumber
+END

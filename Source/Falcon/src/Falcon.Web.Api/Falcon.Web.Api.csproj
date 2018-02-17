@@ -286,6 +286,7 @@
     <Compile Include="InquiryProcessing\Public\IUsersInquiryProcessor.cs" />
     <Compile Include="InquiryProcessing\Public\IUserStatsInquiryProcessor.cs" />
     <Compile Include="JobSystem\Private\JobManager.cs" />
+    <Compile Include="JobSystem\Private\Jobs\CalculateQuestPeopleNormal.cs" />
     <Compile Include="JobSystem\Private\Jobs\CharacterRankUpdate.cs" />
     <Compile Include="JobSystem\Private\Jobs\GlobalRankUpdate.cs" />
     <Compile Include="JobSystem\Private\Jobs\QuestionQualification.cs" />
