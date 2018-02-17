@@ -425,6 +425,15 @@
           <Property Name="RegisterDateTime" Type="datetime" Nullable="false" />
           <Property Name="ChangeInfoDate" Type="datetime" />
         </EntityType>
+        <EntityType Name="UserQuestAnswers">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="QuestNumber" Type="int" Nullable="false" />
+          <Property Name="Point" Type="int" Nullable="false" />
+        </EntityType>
         <EntityType Name="UserType">
           <Key>
             <PropertyRef Name="ID" />
@@ -922,6 +931,34 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_UserQuestAnswers_Quest">
+          <End Role="Quest" Type="Self.Quest" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="UserQuestAnswers" Type="Self.UserQuestAnswers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Quest">
+              <PropertyRef Name="QuestNumber" />
+            </Principal>
+            <Dependent Role="UserQuestAnswers">
+              <PropertyRef Name="QuestNumber" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserQuestAnswers_User">
+          <End Role="User" Type="Self.User" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="UserQuestAnswers" Type="Self.UserQuestAnswers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="UserQuestAnswers">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_WatchedAd_User">
           <End Role="User" Type="Self.User" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -1011,6 +1048,7 @@
           <EntitySet Name="Tutorial" EntityType="Self.Tutorial" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserInfo" EntityType="Self.UserInfo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserQuestAnswers" EntityType="Self.UserQuestAnswers" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserType" EntityType="Self.UserType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="WatchAdProvider" EntityType="Self.WatchAdProvider" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="WatchedAd" EntityType="Self.WatchedAd" Schema="dbo" store:Type="Tables" />
@@ -1158,6 +1196,14 @@
             <End Role="User" EntitySet="User" />
             <End Role="UserInfo" EntitySet="UserInfo" />
           </AssociationSet>
+          <AssociationSet Name="FK_UserQuestAnswers_Quest" Association="Self.FK_UserQuestAnswers_Quest">
+            <End Role="Quest" EntitySet="Quest" />
+            <End Role="UserQuestAnswers" EntitySet="UserQuestAnswers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserQuestAnswers_User" Association="Self.FK_UserQuestAnswers_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="UserQuestAnswers" EntitySet="UserQuestAnswers" />
+          </AssociationSet>
           <AssociationSet Name="FK_WatchedAd_User" Association="Self.FK_WatchedAd_User">
             <End Role="User" EntitySet="User" />
             <End Role="WatchedAd" EntitySet="WatchedAd" />
@@ -1236,6 +1282,7 @@
           <EntitySet Name="Tutorials" EntityType="Falcon.DbModel.Tutorial" />
           <EntitySet Name="Users" EntityType="Falcon.DbModel.User" />
           <EntitySet Name="UserInfoes" EntityType="Falcon.DbModel.UserInfo" />
+          <EntitySet Name="UserQuestAnswers" EntityType="Falcon.DbModel.UserQuestAnswer" />
           <EntitySet Name="UserTypes" EntityType="Falcon.DbModel.UserType" />
           <EntitySet Name="WatchAdProviders" EntityType="Falcon.DbModel.WatchAdProvider" />
           <EntitySet Name="WatchedAds" EntityType="Falcon.DbModel.WatchedAd" />
@@ -1306,6 +1353,10 @@
           <AssociationSet Name="FK_QuestScore_Quest" Association="Falcon.DbModel.FK_QuestScore_Quest">
             <End Role="Quest" EntitySet="Quests" />
             <End Role="QuestScore" EntitySet="QuestScores" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserQuestAnswers_Quest" Association="Falcon.DbModel.FK_UserQuestAnswers_Quest">
+            <End Role="Quest" EntitySet="Quests" />
+            <End Role="UserQuestAnswer" EntitySet="UserQuestAnswers" />
           </AssociationSet>
           <AssociationSet Name="FK_Question_QuestionAction" Association="Falcon.DbModel.FK_Question_QuestionAction">
             <End Role="QuestionAction" EntitySet="QuestionActions" />
@@ -1382,6 +1433,10 @@
           <AssociationSet Name="FK_UserInfo_User" Association="Falcon.DbModel.FK_UserInfo_User">
             <End Role="User" EntitySet="Users" />
             <End Role="UserInfo" EntitySet="UserInfoes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserQuestAnswers_User" Association="Falcon.DbModel.FK_UserQuestAnswers_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="UserQuestAnswer" EntitySet="UserQuestAnswers" />
           </AssociationSet>
           <AssociationSet Name="FK_WatchedAd_User" Association="Falcon.DbModel.FK_WatchedAd_User">
             <End Role="User" EntitySet="Users" />
@@ -1608,6 +1663,7 @@
           <NavigationProperty Name="QuestType" Relationship="Falcon.DbModel.FK_Quest_QuestTypes" FromRole="Quest" ToRole="QuestType" />
           <NavigationProperty Name="QuestQuestions" Relationship="Falcon.DbModel.FK_QuestQuestions_Quest" FromRole="Quest" ToRole="QuestQuestion" />
           <NavigationProperty Name="QuestScores" Relationship="Falcon.DbModel.FK_QuestScore_Quest" FromRole="Quest" ToRole="QuestScore" />
+          <NavigationProperty Name="UserQuestAnswers" Relationship="Falcon.DbModel.FK_UserQuestAnswers_Quest" FromRole="Quest" ToRole="UserQuestAnswer" />
         </EntityType>
         <EntityType Name="Question">
           <Key>
@@ -1877,6 +1933,7 @@
           <NavigationProperty Name="SentGroups1" Relationship="Falcon.DbModel.FK_SentGroup_UserSender" FromRole="User" ToRole="SentGroup" />
           <NavigationProperty Name="UserType" Relationship="Falcon.DbModel.FK_User_UserType" FromRole="User" ToRole="UserType" />
           <NavigationProperty Name="UserInfoes" Relationship="Falcon.DbModel.FK_UserInfo_User" FromRole="User" ToRole="UserInfo" />
+          <NavigationProperty Name="UserQuestAnswers" Relationship="Falcon.DbModel.FK_UserQuestAnswers_User" FromRole="User" ToRole="UserQuestAnswer" />
           <NavigationProperty Name="WatchedAds" Relationship="Falcon.DbModel.FK_WatchedAd_User" FromRole="User" ToRole="WatchedAd" />
         </EntityType>
         <EntityType Name="UserInfo">
@@ -1894,6 +1951,17 @@
           <Property Name="RegisterDateTime" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="ChangeInfoDate" Type="DateTime" Precision="3" />
           <NavigationProperty Name="User" Relationship="Falcon.DbModel.FK_UserInfo_User" FromRole="UserInfo" ToRole="User" />
+        </EntityType>
+        <EntityType Name="UserQuestAnswer">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="QuestNumber" Type="Int32" Nullable="false" />
+          <Property Name="Point" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Quest" Relationship="Falcon.DbModel.FK_UserQuestAnswers_Quest" FromRole="UserQuestAnswer" ToRole="Quest" />
+          <NavigationProperty Name="User" Relationship="Falcon.DbModel.FK_UserQuestAnswers_User" FromRole="UserQuestAnswer" ToRole="User" />
         </EntityType>
         <EntityType Name="UserType">
           <Key>
@@ -2152,6 +2220,20 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_UserQuestAnswers_Quest">
+          <End Type="Falcon.DbModel.Quest" Role="Quest" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="Falcon.DbModel.UserQuestAnswer" Role="UserQuestAnswer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Quest">
+              <PropertyRef Name="QuestNumber" />
+            </Principal>
+            <Dependent Role="UserQuestAnswer">
+              <PropertyRef Name="QuestNumber" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Question_QuestionAction">
           <End Type="Falcon.DbModel.QuestionAction" Role="QuestionAction" Multiplicity="0..1" />
           <End Type="Falcon.DbModel.Question" Role="Question" Multiplicity="*" />
@@ -2392,6 +2474,20 @@
               <PropertyRef Name="ID" />
             </Principal>
             <Dependent Role="UserInfo">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserQuestAnswers_User">
+          <End Type="Falcon.DbModel.User" Role="User" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="Falcon.DbModel.UserQuestAnswer" Role="UserQuestAnswer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="UserQuestAnswer">
               <PropertyRef Name="UserID" />
             </Dependent>
           </ReferentialConstraint>
@@ -2898,6 +2994,16 @@
                 <ScalarProperty Name="IsVerified" ColumnName="IsVerified" />
                 <ScalarProperty Name="Password" ColumnName="Password" />
                 <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserQuestAnswers">
+            <EntityTypeMapping TypeName="Falcon.DbModel.UserQuestAnswer">
+              <MappingFragment StoreEntitySet="UserQuestAnswers">
+                <ScalarProperty Name="Point" ColumnName="Point" />
+                <ScalarProperty Name="QuestNumber" ColumnName="QuestNumber" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>

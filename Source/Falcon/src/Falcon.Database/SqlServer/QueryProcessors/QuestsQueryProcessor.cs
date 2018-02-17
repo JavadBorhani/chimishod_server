@@ -1,4 +1,5 @@
 ﻿using Falcon.Common;
+using Falcon.Common.Security;
 using Falcon.Data.QueryProcessors;
 using Falcon.EFCommonContext;
 using Falcon.EFCommonContext.DbModel;
@@ -14,10 +15,14 @@ namespace Falcon.Database.SqlServer.QueryProcessors
     {
         private readonly IDbContext mDb;
         private readonly IDateTime mDateTime;
-        public QuestsQueryProcessor(IDbContext Database , IDateTime DateTime)
+        private readonly IUserSession mUserSession;
+        private readonly IUserQueryProcessor mUserQuery;
+        public QuestsQueryProcessor(IDbContext Database , IDateTime DateTime , IUserSession UserSession , IUserQueryProcessor UserQuery)
         {
             mDb = Database;
             mDateTime = DateTime;
+            mUserSession = UserSession;
+            mUserQuery = UserQuery;
         }
 
         public async Task<SQuest[]> GetAllQuests()
@@ -78,6 +83,18 @@ namespace Falcon.Database.SqlServer.QueryProcessors
                 .ToArrayAsync();
 
             return questions;
+        }
+
+        public async Task<QuestQuestion> GetQuestQuestionLimitedByCurrentUserQuest(int QuestionID)
+        {
+            var currentUserQuest = await mUserQuery.GetUserCurrentQuestNumber(); //TODO Optimise this 
+
+            var item = await mDb.Set<QuestQuestion>()
+                .AsNoTracking()
+                .Where(qq => qq.QuestNumber == currentUserQuest && qq.QuestionID == QuestionID)
+                .SingleOrDefaultAsync();
+
+            return item;
         }
     }
 }

@@ -72,6 +72,7 @@
     <Compile Include="QueryProcessors\IStoresQueryProcessor.cs" />
     <Compile Include="QueryProcessors\IThemesQueryProcessor.cs" />
     <Compile Include="QueryProcessors\IUserQueryProcessor.cs" />
+    <Compile Include="QueryProcessors\IUserQuestAnswerQueryProcessor.cs" />
     <Compile Include="QueryProcessors\IWatchAdQueryProcessor.cs" />
     <Compile Include="QueryProcessors\IUserStatQueryProcessor.cs" />
     <Compile Include="QueryProcessors\UserInfoQueryProcessor.cs" />

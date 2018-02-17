@@ -1,8 +1,5 @@
-﻿using Falcon.Common;
-using Falcon.Common.Security;
+﻿using Falcon.Common.Security;
 using Falcon.Data.QueryProcessors;
-using Falcon.EFCommonContext;
-using Falcon.EFCommonContext.DbModel;
 using Falcon.Web.Api.MaintenanceProcessing.Public;
 using Falcon.Web.Models.Api;
 using Falcon.Web.Models.Api.Answer;
@@ -13,53 +10,42 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
 {
     public class AnswerMaintenanceProcessor : IAnswerMaintenanceProcessor
     {
-        private readonly IDbContext mDb;
-        private readonly IDateTime mDateTime;
         private readonly IUserSession mUserSession;
         private readonly IAnswerQueryProcessor mAnswerQuery;
         private readonly IQuestionsQueryProcessor mQuestionQuery;
         private readonly IUsersMaintenanceProcessor mUserMaintenance;
         private readonly IUserQueryProcessor mUserQuery;
-        private readonly SClientAppState mClientAppState; 
+        private readonly SClientAppState mClientAppState;
+        private readonly IUserQuestAnswerQueryProcessor mUserQuestAnswer;
+        private readonly IQuestsMaintenanceProcessor mQuestsMaintenance;
 
         public AnswerMaintenanceProcessor
             (
-            IDbContext Database , 
-            IDateTime DateTime ,
             IUserSession UserSession,
             IAnswerQueryProcessor AnswerQuery ,
             IQuestionsQueryProcessor QuestionQuery,
             IUsersMaintenanceProcessor UserMaintenance,
             IUserQueryProcessor UserQuery,
-            IClientApplicationState ClientAppState
+            IClientApplicationState ClientAppState,
+            IUserQuestAnswerQueryProcessor UserQuestAnswer,
+            IQuestsMaintenanceProcessor QuestsMaintenance
             )
         {
-            mDb = Database;
-            mDateTime = DateTime;
             mUserSession = UserSession;
             mAnswerQuery = AnswerQuery;
             mQuestionQuery = QuestionQuery;
             mUserMaintenance = UserMaintenance;
             mUserQuery = UserQuery;
             mClientAppState = ClientAppState.State();
+            mUserQuestAnswer = UserQuestAnswer;
+            mQuestsMaintenance = QuestsMaintenance;
         }
 
         public async Task<bool> SaveReportedAnswer(int QuestionID)
         {
-
-            var answer = new Answer
-            {
-                IsReported = true,
-                QuestionID = QuestionID,
-                UserID = mUserSession.ID,
-                CreatedDate = mDateTime.Now,
-            };
-
-            mDb.Set<Answer>().Add(answer);
-
-            await mDb.SaveChangesAsync();
-
-            return true;
+            var response = await mAnswerQuery.SaveReportedAnswer(QuestionID);
+            return response;
+            
         }
 
         public async Task<bool> SaveYesNoAnswer(SYesNoAnswer Response)
@@ -108,8 +94,12 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
 
                         case HashTagID.Quest:
 
+                            await mQuestsMaintenance.AddScore(question.ID, Answer.YesNoState);
+
                             break;
                     }
+
+                    return true;
                 }
                 
                 return false;

@@ -67,6 +67,7 @@
     <Compile Include="Api\Notification\SNotificationConfig.cs" />
     <Compile Include="Api\Question\SForwardQuestion.cs" />
     <Compile Include="Api\Quest\SQuest.cs" />
+    <Compile Include="Api\Quest\SUserQuestAnswer.cs" />
     <Compile Include="Api\Report\SReportedQuestion.cs" />
     <Compile Include="Api\SCharacteristic.cs" />
     <Compile Include="Api\SCharcteristicLeaderBoard.cs" />

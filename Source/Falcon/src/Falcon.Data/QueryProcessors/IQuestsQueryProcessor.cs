@@ -9,5 +9,6 @@ namespace Falcon.Data.QueryProcessors
         Task<SQuest[]> GetAllQuests();
         Task<Quest> GetQuestByID(int QuestNumber);
         Task<Question[]> GetQuestQuestions(int QuestNumber);
+        Task<QuestQuestion> GetQuestQuestionLimitedByCurrentUserQuest(int QuestionID);
     }
 }

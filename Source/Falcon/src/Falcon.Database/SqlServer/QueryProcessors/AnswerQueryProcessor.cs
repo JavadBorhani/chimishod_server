@@ -131,5 +131,22 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             }
             
         }
+
+        public async Task<bool> SaveReportedAnswer(int QuestionID)
+        {
+            var answer = new Answer
+            {
+                IsReported = true,
+                QuestionID = QuestionID,
+                UserID = mUserSession.ID,
+                CreatedDate = mDateTime.Now,
+            };
+
+            mDb.Set<Answer>().Add(answer);
+
+            await mDb.SaveChangesAsync();
+
+            return true;
+        }
     }
 }

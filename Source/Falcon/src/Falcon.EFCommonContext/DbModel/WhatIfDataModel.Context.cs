@@ -59,6 +59,7 @@ namespace Falcon.EFCommonContext.DbModel
         public virtual DbSet<Tutorial> Tutorials { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<UserInfo> UserInfoes { get; set; }
+        public virtual DbSet<UserQuestAnswer> UserQuestAnswers { get; set; }
         public virtual DbSet<UserType> UserTypes { get; set; }
         public virtual DbSet<WatchAdProvider> WatchAdProviders { get; set; }
         public virtual DbSet<WatchedAd> WatchedAds { get; set; }

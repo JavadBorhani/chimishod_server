@@ -21,6 +21,7 @@ namespace Falcon.EFCommonContext.DbModel
             this.Quest1 = new HashSet<Quest>();
             this.QuestQuestions = new HashSet<QuestQuestion>();
             this.QuestScores = new HashSet<QuestScore>();
+            this.UserQuestAnswers = new HashSet<UserQuestAnswer>();
         }
     
         public int QuestNumber { get; set; }
@@ -45,5 +46,7 @@ namespace Falcon.EFCommonContext.DbModel
         public virtual ICollection<QuestQuestion> QuestQuestions { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<QuestScore> QuestScores { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<UserQuestAnswer> UserQuestAnswers { get; set; }
     }
 }

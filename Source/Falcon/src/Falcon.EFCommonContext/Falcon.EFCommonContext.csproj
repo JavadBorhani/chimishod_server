@@ -161,6 +161,9 @@
     <Compile Include="DbModel\UserInfo.cs">
       <DependentUpon>WhatIfDataModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="DbModel\UserQuestAnswer.cs">
+      <DependentUpon>WhatIfDataModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="DbModel\UserType.cs">
       <DependentUpon>WhatIfDataModel.tt</DependentUpon>
     </Compile>

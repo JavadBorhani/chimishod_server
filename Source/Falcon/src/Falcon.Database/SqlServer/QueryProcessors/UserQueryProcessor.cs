@@ -182,14 +182,14 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             return info;
         }
 
-        public async Task<SUserCount> GetUserCountInfo(int UserID)
-        {
-            //var data = await mDb.Set<UserCount>()
-            //                .AsNoTracking()
-            //                .Where(u => u.UserID == UserID)
-            //                .SingleOrDefaultAsync();
-            return null;
-        }
+        //public async Task<SUserCount> GetUserCountInfo(int UserID)
+        //{
+        //    //var data = await mDb.Set<UserCount>()
+        //    //                .AsNoTracking()
+        //    //                .Where(u => u.UserID == UserID)
+        //    //                .SingleOrDefaultAsync();
+        //    return null;
+        //}
         //public async Task<bool> UpdateLastSeenDateTime()
         //{
         //    var user = await mDb.Set<User>().Where(u => u.ID == mUserSession.ID).SingleOrDefaultAsync();
@@ -360,6 +360,18 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             await mDb.SaveChangesAsync();
             return true;
             
+        }
+
+        public async Task<int> GetUserCurrentQuestNumber()
+        {
+            var currentUserQuest = await mDb.Set<User>()
+                .AsNoTracking()
+                .Where(u => u.ID == mUserSession.ID)
+                .Include(u => u.Level)
+                .Select(u => u.Level.QuestID)
+                .SingleOrDefaultAsync();
+
+            return currentUserQuest;    
         }
     }
 }   
