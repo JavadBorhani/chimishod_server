@@ -20,8 +20,10 @@ namespace Falcon.EFCommonContext.DbModel
             : base("name=DbEntity")
         {
         }
+
         public DbEntity(string NameOrConnectionString) : base(NameOrConnectionString)
         {
+
         }
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -175,6 +177,11 @@ namespace Falcon.EFCommonContext.DbModel
         public virtual int UpdateUserGlobalRank()
         {
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("UpdateUserGlobalRank");
+        }
+    
+        public virtual int UpdatePeopleNormalQuest()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("UpdatePeopleNormalQuest");
         }
     }
 }

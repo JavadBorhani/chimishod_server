@@ -20,5 +20,6 @@ namespace Falcon.EFCommonContext
         // Stored Procedures 
         int UpdateCharacterRank();
         int UpdateUserGlobalRank();
+        int UpdatePeopleNormalQuest();
     }
 }

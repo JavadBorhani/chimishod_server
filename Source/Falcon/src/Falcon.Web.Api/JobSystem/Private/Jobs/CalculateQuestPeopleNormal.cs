@@ -12,8 +12,8 @@ namespace Falcon.Web.Api.JobSystem.Private.Jobs
 
         public override string StartJob()
         {
-            //fetch each item and recalculate per level 
-            var value = mDb.UpdateCharacterRank();
+            
+            var value = mDb.UpdatePeopleNormalQuest();
 
             Done = true;
             EndTransaction();
