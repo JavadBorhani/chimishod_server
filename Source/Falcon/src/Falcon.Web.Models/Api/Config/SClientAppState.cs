@@ -8,5 +8,6 @@
         public int WatchAdCoin { get; set; }
         public int LevelVersionCode { get; set; }
         public int XPLevelFactor { get; set; }
+        public int PollingIntervalTimeInSeconds { get; set; }
     }
 }

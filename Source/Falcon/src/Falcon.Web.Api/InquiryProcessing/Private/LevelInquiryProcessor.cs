@@ -19,7 +19,7 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
         public async Task<SLevel[]> GetLevelList()
         {
             var levels = await mLevelQuery.GetAll();
-            return mMapper.Map<SLevel[]>(levels);
+            return levels;  
         }
 
         public async Task<int> GetLevelQuestNumber(int LevelNumber)

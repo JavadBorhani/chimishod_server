@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="Falcon.DbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="Falcon.DbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="AchievedCodeGift">
           <Key>
             <PropertyRef Name="ID" />
@@ -39,7 +39,7 @@
           <Property Name="WatchAdCoin" Type="int" Nullable="false" />
           <Property Name="LevelVersionCode" Type="int" Nullable="false" />
           <Property Name="XPLevelFactor" Type="int" Nullable="false" />
-          <Property Name="PullingIntervalTimeInSeconds" Type="int" Nullable="false" />
+          <Property Name="PollingIntervalTimeInSeconds" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="CodeGift">
           <Key>
@@ -96,8 +96,6 @@
           <Property Name="CoinPrize" Type="int" Nullable="false" />
           <Property Name="ScoreCeil" Type="int" Nullable="false" />
           <Property Name="QuestID" Type="int" Nullable="false" />
-          <Property Name="QuestType" Type="int" Nullable="false" />
-          <Property Name="QuestTitle" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="CreatedDate" Type="datetime" Nullable="false" />
           <Property Name="UpdatedDate" Type="datetime" Nullable="false" />
         </EntityType>
@@ -1169,8 +1167,7 @@
             <End Role="WatchedAd" EntitySet="WatchedAd" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="Falcon.DbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -1393,7 +1390,7 @@
             <End Role="WatchAdProvider" EntitySet="WatchAdProviders" />
             <End Role="WatchedAd" EntitySet="WatchedAds" />
           </AssociationSet>
-        </EntityContainer>
+          </EntityContainer>
         <ComplexType Name="sp_helpdiagramdefinition_Result">
           <Property Type="Int32" Name="version" Nullable="true" />
           <Property Type="Binary" Name="definition" Nullable="true" />
@@ -1443,7 +1440,7 @@
           <Property Name="WatchAdCoin" Type="Int32" Nullable="false" />
           <Property Name="LevelVersionCode" Type="Int32" Nullable="false" />
           <Property Name="XPLevelFactor" Type="Int32" Nullable="false" />
-          <Property Name="PullingIntervalTimeInSeconds" Type="Int32" Nullable="false" />
+          <Property Name="PollingIntervalTimeInSeconds" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="CodeGift">
           <Key>
@@ -1503,8 +1500,6 @@
           <Property Name="CoinPrize" Type="Int32" Nullable="false" />
           <Property Name="ScoreCeil" Type="Int32" Nullable="false" />
           <Property Name="QuestID" Type="Int32" Nullable="false" />
-          <Property Name="QuestType" Type="Int32" Nullable="false" />
-          <Property Name="QuestTitle" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="UpdatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="Quest" Relationship="Falcon.DbModel.FK_Level_Quest" FromRole="Level" ToRole="Quest" />
@@ -1860,7 +1855,7 @@
           <Property Name="APILevel" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Device" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Model" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="RowVersion" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" ConcurrencyMode="Fixed" />
+          <Property Name="RowVersion" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
           <Property Name="IPAddress" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="AvatarImagePath" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="Activated" Type="Boolean" Nullable="false" />
@@ -2426,7 +2421,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-      </Schema>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -2484,7 +2479,7 @@
           <EntitySetMapping Name="ClientApplicationStates">
             <EntityTypeMapping TypeName="Falcon.DbModel.ClientApplicationState">
               <MappingFragment StoreEntitySet="ClientApplicationState">
-                <ScalarProperty Name="PullingIntervalTimeInSeconds" ColumnName="PullingIntervalTimeInSeconds" />
+                <ScalarProperty Name="PollingIntervalTimeInSeconds" ColumnName="PollingIntervalTimeInSeconds" />
                 <ScalarProperty Name="XPLevelFactor" ColumnName="XPLevelFactor" />
                 <ScalarProperty Name="LevelVersionCode" ColumnName="LevelVersionCode" />
                 <ScalarProperty Name="WatchAdCoin" ColumnName="WatchAdCoin" />
@@ -2551,8 +2546,6 @@
               <MappingFragment StoreEntitySet="Level">
                 <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-                <ScalarProperty Name="QuestTitle" ColumnName="QuestTitle" />
-                <ScalarProperty Name="QuestType" ColumnName="QuestType" />
                 <ScalarProperty Name="QuestID" ColumnName="QuestID" />
                 <ScalarProperty Name="ScoreCeil" ColumnName="ScoreCeil" />
                 <ScalarProperty Name="CoinPrize" ColumnName="CoinPrize" />
@@ -2939,7 +2932,7 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-        </EntityContainerMapping>
+          </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
   </edmx:Runtime>

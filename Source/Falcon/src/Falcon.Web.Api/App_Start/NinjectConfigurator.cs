@@ -160,7 +160,6 @@ namespace Falcon.Web.Api
             container.Bind<ILevelInquiryProcessor>().To<LevelInquiryProcessor>().InRequestScope();
             container.Bind<IQuestionReportInquiryProcessor>().To<QuestionReportInquiryProcessor>().InRequestScope();
             container.Bind<ISentInquiryProcessor>().To<SentInquiryProcessor>().InRequestScope();
-            container.Bind<IQuestInMemoryProcessor>().To<QuestInMemoryProcessor>().InRequestScope();
 
         }
 
@@ -210,6 +209,8 @@ namespace Falcon.Web.Api
             container.Bind<IClientApplicationState>().To<ClientApplicationState>().InSingletonScope();
             //Game Configuration 
             container.Bind<IGameConfig>().To<GameConfig>().InSingletonScope();
+
+            container.Bind<IQuestInMemoryProcessor>().To<QuestInMemoryProcessor>().InSingletonScope();
 
 
             container.Bind<IItemPurchaseManager>().To<ItemPurchaseManager>().InRequestScope();

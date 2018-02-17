@@ -1,11 +1,11 @@
-﻿using Falcon.EFCommonContext.DbModel;
+﻿using Falcon.Web.Models.Api.Level;
 using System.Threading.Tasks;
 
 namespace Falcon.Data.QueryProcessors
 {
     public interface ILevelQueryProcessor
     {
-        Task<Level[]> GetAll();
+        Task<SLevel[]> GetAll();
         Task<int> GetLevelQuest(int LevelID);
     }
 }
