@@ -84,13 +84,6 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
 
                     switch ((HashTagID)question.HashTagID)
                     {
-                        case HashTagID.Fun:
-                        case HashTagID.People:
-
-                            //implement special logic for hashTags 
-                        
-
-                            break;
 
                         case HashTagID.Quest:
 
