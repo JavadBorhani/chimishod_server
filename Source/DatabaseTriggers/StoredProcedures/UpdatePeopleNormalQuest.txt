@@ -1,28 +1,52 @@
 USE [SocialChimishod]
 GO
-/****** Object:  StoredProcedure [dbo].[UpdatePeopleNormalQuest]    Script Date: 2/17/2018 9:50:25 PM ******/
+/****** Object:  Trigger [dbo].[after_update_quest_score_of_player]    Script Date: 2/18/2018 12:55:14 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-ALTER PROCEDURE [dbo].[UpdatePeopleNormalQuest]
-AS
+--— =============================================
+--— Author:    <Jeb,JavadBorhani>
+--— Create date: <Now I mean Now>
+--— Description:  <trigger to update table>
+--— =============================================
+ALTER TRIGGER [dbo].[after_update_quest_score_of_player]
+   ON  [dbo].[UserQuestAnswers]
+   after Delete , insert
+AS 
 BEGIN
 	
-	UPDATE [dbo].[Quest]
-	SET [dbo].[Quest].Mean_Score = Result.Total / Result.PersonCount
-	FROM
-		( SELECT QuestTable.QuestNumber,
-           Processed.PersonCount,
-           Processed.Total
-   FROM (
-           (SELECT DISTINCT QuestNumber,
-                            PersonCount = COUNT(*),
-                            Total = SUM(Score)
-            FROM [SocialChimishod].[dbo].[QuestScore]
-            GROUP BY QuestNumber) Processed
-         INNER JOIN
-           (SELECT *
-            FROM Quest) QuestTable ON Processed.QuestNumber = QuestTable.QuestNumber)) RESULT
-	WHERE [dbo].[Quest].QuestNumber = Result.QuestNumber
+	INSERT INTO [QuestScore] (UserID, QuestNumber)
+	SELECT  UserID, QuestNumber from inserted I 
+	EXCEPT
+	SELECT  UserID , QuestNumber from [QuestScore]
+
+	Update 
+	[dbo].[QuestScore]
+	Set 
+		Score = 0 + Score + 
+		(
+		Select SUM(Point)
+		From inserted I 
+		Where I.UserID = [dbo].[QuestScore].UserID And I.QuestNumber = [dbo].[QuestScore].QuestNumber
+		)
+	Where 
+			UserID IN (Select UserID from inserted)
+		And 
+			QuestNumber IN (Select QuestNumber from inserted)
+
+	Update 
+	[dbo].[QuestScore]
+	Set 
+		Score = 0 + Score -
+		(
+		Select SUM(Point)
+		From deleted I 
+		Where I.UserID = [dbo].[QuestScore].UserID And I.QuestNumber = [dbo].[QuestScore].QuestNumber
+		)
+	Where 
+			UserID IN (Select UserID from deleted)
+		And 
+			QuestNumber IN (Select QuestNumber from deleted)
+
 END

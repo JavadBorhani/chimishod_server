@@ -1,4 +1,5 @@
-﻿using System.Data.Entity;
+﻿using System;
+using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 
 namespace Falcon.EFCommonContext
@@ -13,6 +14,11 @@ namespace Falcon.EFCommonContext
         public int UpdateCharacterRank()
         {
             return this.UpdateCharacterRank();
+        }
+
+        public int UpdatePeopleNormalQuest()
+        {
+            return this.UpdatePeopleNormalQuest();
         }
 
         public int UpdateUserGlobalRank()
