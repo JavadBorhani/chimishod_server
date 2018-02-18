@@ -101,11 +101,11 @@ namespace Falcon.Database.SqlServer.QueryProcessors
         {
             var questScore = mDb.Set<QuestScore>()
                 .AsNoTracking()
-                .Where(m => m.UserID == mUserSession.ID && m.QuestNumber == QuestNumber);
+                .Where(m => m.UserID == mUserSession.ID);
 
             var questDetail = await mDb.Set<Quest>()
                 .AsNoTracking()
-                .Where(qd => qd.QuestNumber == QuestNumber && qd.ParentID == QuestNumber)
+                .Where(qd => qd.QuestNumber == QuestNumber || qd.ParentID == QuestNumber)
                 .Join(questScore, m => m.QuestNumber, s => s.QuestNumber, (Quest, QuestScore) => new SQuestDetail
                 {
                     PeopleScore = Quest.Mean_Score,
@@ -123,9 +123,11 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             //TODO : Check if user finished the quest otherwise i'm comparing with the semi state;
             var friendQuestScore = mDb.Set<QuestScore>()
                 .AsNoTracking()
-                .Where(m => m.UserID == FriendID && m.QuestNumber == QuestNumber);
+                .Where(m => m.UserID == FriendID);
 
-            var questDetail = await mDb.Set<Quest>().AsNoTracking().Where(qd => qd.QuestNumber == QuestNumber)
+            var questDetail = await mDb.Set<Quest>()
+                .AsNoTracking()
+                .Where(qd => qd.QuestNumber == QuestNumber)
                 .Join(friendQuestScore, m => m.QuestNumber, s => s.QuestNumber, (Quest, QuestScore) => new SFriendQuestDetail
                 {
                     QuestNumber = Quest.QuestNumber,

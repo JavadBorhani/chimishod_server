@@ -37,14 +37,14 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
         {
             var questDetail = await mQuestQuery.GetQuestDetail(QuestNumebr);
 
-            return questDetail;
+            return questDetail.Length > 0 ? questDetail : null;
         }
 
         public async Task<SFriendQuestDetail[]> GetFriendQuestDetail(int FriendID, int QuestNumber)
         {
             var friendQuestDetail = await mQuestQuery.GetFriendQuestDetail(FriendID, QuestNumber);
 
-            return friendQuestDetail;
+            return friendQuestDetail.Length > 0 ? friendQuestDetail : null ;
         }
     }
 }

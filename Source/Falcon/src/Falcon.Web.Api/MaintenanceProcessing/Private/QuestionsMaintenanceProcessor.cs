@@ -42,14 +42,20 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
 
             var createdQuestion = await mQuestionQuery.CreateQuestion(CreateQuestion);
 
+            var storedMessageGroupID = await mSentMaintenance.SaveSentPublicMessage(mUserSession.ID, createdQuestion.ID);
+
             if (CreateQuestion.FriendForwardList != null && CreateQuestion.FriendForwardList.Length > 0)
             {
                 var friendIdsExists = await mFriendInquiry.HasFriends(CreateQuestion.FriendForwardList);
 
                 if(friendIdsExists)
                 {
-                    var stored = await mSentMaintenance.SaveMessageSent(mUserSession.ID, CreateQuestion.FriendForwardList, createdQuestion.ID);
-                    var notified = await mNotificationManager.InboxQuestionToFriends(CreateQuestion.FriendForwardList, mMapper.Map<SQuestion>(createdQuestion));
+                    var stored = await mSentMaintenance
+                        .SavePublicQuestionToFriends(mUserSession.ID, createdQuestion.ID ,storedMessageGroupID , CreateQuestion.FriendForwardList);
+
+                    var notified = await mNotificationManager
+                        .InboxQuestionToFriends(CreateQuestion.FriendForwardList, mMapper.Map<SQuestion>(createdQuestion));
+
                     return 200;
                 }
                 else
@@ -70,6 +76,7 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
         public async Task<int> ForwardQuestionToFriends(SForwardQuestion ForwardQuestion)
         {
             //remember to decrease money;
+
             var question = await mQuestionQuery.GetQuestionByID(ForwardQuestion.QuestionID);
 
             if (question != null && question.Banned == false && question.HashTagID != (int)HashTagID.Quest)
