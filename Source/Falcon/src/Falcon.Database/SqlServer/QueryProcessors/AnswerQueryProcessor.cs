@@ -54,15 +54,8 @@ namespace Falcon.Database.SqlServer.QueryProcessors
                 CreatedDate = mDateTime.Now
             });
 
-            try
-            {
-                await mDb.SaveChangesAsync();
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
+            await mDb.SaveChangesAsync();
+            return true;
         }
 
         public async Task<bool> SaveLikeDislikeAnswer(SLikeDislikeAnswer Response)
@@ -120,6 +113,7 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             };
 
             mDb.Set<Answer>().Add(item);
+
             try
             {
                 await mDb.SaveChangesAsync();
@@ -127,9 +121,10 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             }
             catch
             {
-                return null;
+                throw new BusinessRuleViolationException("Answer is Already Exits");
+             
             }
-            
+
         }
 
         public async Task<bool> SaveReportedAnswer(int QuestionID)

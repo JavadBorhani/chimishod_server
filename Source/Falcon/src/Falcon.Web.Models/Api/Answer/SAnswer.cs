@@ -23,6 +23,7 @@ namespace Falcon.Web.Models.Api
 
         public DateTime CreatedDate { get; set; }
 
+        [Required]
         public bool SendQuestion { get; set; }
 
     }

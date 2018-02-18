@@ -4,7 +4,6 @@ using Falcon.Data.QueryProcessors;
 using Falcon.EFCommonContext;
 using Falcon.EFCommonContext.DbModel;
 using Falcon.Web.Models.Api.Quest;
-using System;
 using System.Threading.Tasks;
 
 namespace Falcon.Database.SqlServer.QueryProcessors
@@ -21,14 +20,29 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             mDateTime = DateTime;
             mUserSession = UserSession;
         }
-        public Task<bool> AddUserAnswer(SUserQuestAnswer Answer)
+        public async Task<bool> AddUserAnswer(SUserQuestAnswer Answer)
         {
-            throw new NotImplementedException();
+            if (Answer == null)
+                return false;
+
+            
+            var userAnswers = new UserQuestAnswer
+            {
+                UserID = mUserSession.ID,
+                QuestNumber = Answer.QuestNumber,
+                Point = Answer.QuestNumber,
+            };
+
+            mDb.Set<UserQuestAnswer>().Add(userAnswers);
+
+            await mDb.SaveChangesAsync();
+
+            return true;
         }
 
         public async Task<bool> AddUserAnswer(SUserQuestAnswer[] Answer)
         {
-            if(Answer != null)
+            if(Answer == null)
                 return false;
 
             var userAnswers = new UserQuestAnswer[Answer.Length];

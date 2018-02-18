@@ -37,10 +37,16 @@ namespace Falcon.Web.Api.Controllers.V2
                 return BadRequest();
 
             var response = await mAnswerMaintenance.SaveAnswer(Answer);
-            if(response && Answer.SendQuestion)
+
+            if(response)
             {
-                var Questions = mQuestionInquiry.PrepareQuestionList();
-                return Ok(new { Answer.QuestionID, Questions });
+                if(Answer.SendQuestion)
+                {
+                    var Questions = await mQuestionInquiry.PrepareQuestionList();
+                    return Ok(new { Answer.QuestionID, Questions });
+                }
+
+                return Ok(new { Answer.QuestionID });
             }
 
             return NotFound();
