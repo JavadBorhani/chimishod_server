@@ -96,5 +96,45 @@ namespace Falcon.Database.SqlServer.QueryProcessors
 
             return item;
         }
+
+        public async Task<SQuestDetail[]> GetQuestDetail(int QuestNumber)
+        {
+            var questScore = mDb.Set<QuestScore>()
+                .AsNoTracking()
+                .Where(m => m.UserID == mUserSession.ID && m.QuestNumber == QuestNumber);
+
+            var questDetail = await mDb.Set<Quest>()
+                .AsNoTracking()
+                .Where(qd => qd.QuestNumber == QuestNumber && qd.ParentID == QuestNumber)
+                .Join(questScore, m => m.QuestNumber, s => s.QuestNumber, (Quest, QuestScore) => new SQuestDetail
+                {
+                    PeopleScore = Quest.Mean_Score,
+                    QuestTitle = Quest.QuestTitle,
+                    QuestNumber = QuestScore.QuestNumber , 
+                    UserScore = QuestScore.Score
+                })
+                .ToArrayAsync();
+
+            return questDetail;
+        }
+
+        public async Task<SFriendQuestDetail[]> GetFriendQuestDetail(int FriendID, int QuestNumber)
+        {
+            //TODO : Check if user finished the quest otherwise i'm comparing with the semi state;
+            var friendQuestScore = mDb.Set<QuestScore>()
+                .AsNoTracking()
+                .Where(m => m.UserID == FriendID && m.QuestNumber == QuestNumber);
+
+            var questDetail = await mDb.Set<Quest>().AsNoTracking().Where(qd => qd.QuestNumber == QuestNumber)
+                .Join(friendQuestScore, m => m.QuestNumber, s => s.QuestNumber, (Quest, QuestScore) => new SFriendQuestDetail
+                {
+                    QuestNumber = Quest.QuestNumber,
+                    QuestTitle = Quest.QuestTitle,
+                    UserScore = QuestScore.Score
+                })
+                .ToArrayAsync();
+
+            return questDetail;
+        }
     }
 }

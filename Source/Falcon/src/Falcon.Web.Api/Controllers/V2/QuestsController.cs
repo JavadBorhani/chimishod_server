@@ -24,11 +24,39 @@ namespace Falcon.Web.Api.Controllers.V2
 
 
         [ResponseType(typeof(SQuest))]
-        [Route("v2/Quests/Get")]
+        [Route("v2/Quests/All")]
+        
         public async Task<SQuest[]> GetQuestList()
         {
             var data = await mQuestInqiury.GetQuestList();
+
             return data;    
+        }
+
+        [ResponseType(typeof(SQuest))]
+        [Route("v2/Quests/Detail")]
+        [HttpPost]
+        public async Task<SQuestDetail[]> GetQuestDetail([FromBody] SQuestInquiry Inquiry)
+        {
+            if (!ModelState.IsValid)
+                return null;
+
+            var data = await mQuestInqiury.GetQuestDetail(Inquiry.QuestNumber);
+
+            return data;
+        }
+
+        [ResponseType(typeof(SQuest))]
+        [Route("v2/Quests/Friend")]
+        [HttpPost]
+        public async Task<SFriendQuestDetail[]> GetFriendQuestDetail([FromBody] SQuestInquiry Inquiry)
+        {
+            if (!ModelState.IsValid)
+                return null;
+
+            var data = await mQuestInqiury.GetFriendQuestDetail(Inquiry.FriendID , Inquiry.QuestNumber);
+
+            return data;
         }
 
     }
