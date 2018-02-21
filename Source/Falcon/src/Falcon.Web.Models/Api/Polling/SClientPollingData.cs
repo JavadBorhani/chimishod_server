@@ -6,8 +6,8 @@ namespace Falcon.Web.Models.Api.Polling
 {
     public class SClientPollingData
     {
-        public List<SFriendRequest> FriendRequest { get; set; }
-        public List<SFriendResponse> FriendResponse { get; set; }
-        public List<SQuestionWithAnswerState> InboxQuestion { get; set; }
+        public List<SFriendRequest> FriendRequests { get; set; }
+        public List<SFriendResponse> FriendResponses { get; set; }
+        public List<SQuestionWithAnswerState> InboxQuestions { get; set; }
     }
 }

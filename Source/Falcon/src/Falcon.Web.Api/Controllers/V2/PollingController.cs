@@ -23,7 +23,6 @@ namespace Falcon.Web.Api.Controllers.V2
         }
 
 
-
         [ResponseType(typeof(IHttpActionResult))]
         [Route("v2/Polling/")]
         [HttpPost]
@@ -32,12 +31,14 @@ namespace Falcon.Web.Api.Controllers.V2
             if (!ModelState.IsValid)
                 return BadRequest();
 
+            var time = mDateTime.Now;
+
             var lastData = await mPollingProcessor.PollingMainRequests(Inquiry);
 
             var response = new DataWithServerTime<SClientPollingData>
             {
                 Data = lastData,
-                ServerTime = mDateTime.Now
+                ServerTime = time
             };
 
             return Ok(response);

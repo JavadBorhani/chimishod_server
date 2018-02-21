@@ -161,6 +161,7 @@ namespace Falcon.Web.Api
             container.Bind<ILevelInquiryProcessor>().To<LevelInquiryProcessor>().InRequestScope();
             container.Bind<IQuestionReportInquiryProcessor>().To<QuestionReportInquiryProcessor>().InRequestScope();
             container.Bind<ISentInquiryProcessor>().To<SentInquiryProcessor>().InRequestScope();
+            container.Bind<IPollingInquiryProcessor>().To<PollingInquiryProcessor>().InRequestScope();
 
         }
 
