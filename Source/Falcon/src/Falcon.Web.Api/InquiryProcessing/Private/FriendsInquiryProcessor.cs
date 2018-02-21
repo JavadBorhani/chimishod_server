@@ -98,7 +98,7 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
         public async Task<SFriendAnswer[]> GetFriendAnswers(SFriendAnswerInquiry FriendAnswerInquiry)
         {
             var friendResponses = await mAnswerQuery
-                .GetAnswerOfUsers (FriendAnswerInquiry.QuestionID, FriendAnswerInquiry.FriendIDs ,  mServerAppState.Friend_FriendResponsesAmount);
+                .GetAnswerOfUsers(FriendAnswerInquiry.QuestionID, FriendAnswerInquiry.FriendIDs, mServerAppState.Friend_FriendResponsesAmount);
 
             return friendResponses;
         }
@@ -112,21 +112,30 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
             var friendRequest = new List<SFriendRequest>();
             var friendResponse = new List<SFriendResponse>();
 
-            for(int i = 0; i < friendList.Length;  ++i)
+            for (int i = 0; i < friendList.Length; ++i)
             {
-                
-                if(friendList[i].RelationOperatorIsMe == true)
-                friendRequest.Add(new SFriendRequest
-                {
-                    
-                });
 
-                friendResponse.Add(new SFriendResponse
+                if (friendList[i].Status == RelationStatus.Pending && friendList[i].UpdatedDate >= FriendRequestDate)
                 {
+                    friendRequest.Add(new SFriendRequest
+                    {
+                        PictureURL = friendList[i].UserPictureUrl,
+                        RelationState = friendList[i].Status,
+                        UserID = friendList[i].UserID,
+                        Username = friendList[i].UserName
+                    });
+                }
+                else if (friendList[i].UpdatedDate >= FriendResponseDate)
+                {
+                    friendResponse.Add(new SFriendResponse
+                    {
+                        UserID = friendList[i].UserID,
+                        RelationStatus = friendList[i].Status,
+                    });
+                }
 
-                });
             }
-        
+
             var response = new SFriendStatus
             {
                 FriendRequst = friendRequest,
