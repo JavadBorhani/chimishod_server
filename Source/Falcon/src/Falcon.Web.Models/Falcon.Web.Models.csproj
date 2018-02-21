@@ -65,6 +65,8 @@
     <Compile Include="Api\Notification\Client\SSentQuestion.cs" />
     <Compile Include="Api\Notification\RequestCommonInfo.cs" />
     <Compile Include="Api\Notification\SNotificationConfig.cs" />
+    <Compile Include="Api\Polling\SClientPollingData.cs" />
+    <Compile Include="Api\Polling\SPollingInquiry.cs" />
     <Compile Include="Api\Question\SForwardQuestion.cs" />
     <Compile Include="Api\Quest\SFriendQuestDetail.cs" />
     <Compile Include="Api\Quest\SQuest.cs" />

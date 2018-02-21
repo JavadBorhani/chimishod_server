@@ -225,6 +225,7 @@
     <Compile Include="Controllers\V2\FriendsController.cs" />
     <Compile Include="Controllers\V2\InitializationController.cs" />
     <Compile Include="Controllers\V2\LevelController.cs" />
+    <Compile Include="Controllers\V2\PollingController.cs" />
     <Compile Include="Controllers\V2\QuestionsController.cs" />
     <Compile Include="Controllers\V2\QuestsController.cs" />
     <Compile Include="Controllers\V2\ReportController.cs" />
@@ -245,6 +246,7 @@
     <Compile Include="InquiryProcessing\Private\InitializationInquiryProcessor.cs" />
     <Compile Include="InquiryProcessing\Private\LevelInMemoryProcessor.cs" />
     <Compile Include="InquiryProcessing\Private\LevelInquiryProcessor.cs" />
+    <Compile Include="InquiryProcessing\Private\PollingInquiryProcessor.cs" />
     <Compile Include="InquiryProcessing\Private\QuestInMemoryProcessor.cs" />
     <Compile Include="InquiryProcessing\Private\QuestionReportInquiryProcessor.cs" />
     <Compile Include="InquiryProcessing\Private\QuestionsInquiryProcessor.cs" />
@@ -274,6 +276,7 @@
     <Compile Include="InquiryProcessing\Public\IPagedDataRequestFactory.cs" />
     <Compile Include="InquiryProcessing\Private\PagedDataRequestFactory.cs" />
     <Compile Include="InquiryProcessing\Public\INotificationInquiryProcessor.cs" />
+    <Compile Include="InquiryProcessing\Public\IPollingInquiryProcessor.cs" />
     <Compile Include="InquiryProcessing\Public\IQuestInMemoryProcessor.cs" />
     <Compile Include="InquiryProcessing\Public\IQuestionReportInquiryProcessor.cs" />
     <Compile Include="InquiryProcessing\Public\IQuestionsInquiryProcessor.cs" />

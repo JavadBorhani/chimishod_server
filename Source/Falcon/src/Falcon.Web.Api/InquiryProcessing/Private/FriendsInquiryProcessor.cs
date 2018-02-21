@@ -7,6 +7,7 @@ using Falcon.Web.Models;
 using Falcon.Web.Models.Api;
 using Falcon.Web.Models.Api.Answer;
 using Falcon.Web.Models.Api.Friend;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using PagedQuesttionWithAnswerInquiryResponse = Falcon.Web.Models.PagedDataInquiryResponse<Falcon.Web.Models.Api.Friend.SQuestionWithAnswerState>;
@@ -20,6 +21,7 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
         private readonly IAnswerQueryProcessor mAnswerQuery;
         private readonly IMapper mMapper;
         private readonly SApplicationState mServerAppState;
+
         public FriendsInquiryProcessor(
             IFriendsQueryProcessor FriendQuery , 
             IQuestionsQueryProcessor QuestionsQuery , 
@@ -93,6 +95,12 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
                 .GetAnswerOfUsers (FriendAnswerInquiry.QuestionID, FriendAnswerInquiry.FriendIDs ,  mServerAppState.Friend_FriendResponsesAmount);
 
             return friendResponses;
+        }
+
+        public async Task<bool> GetFriendListFromDateUpToNow(DateTime FriendRequestDate, DateTime FriendResponseDate)
+        {
+            //TODO : Get Friend Request And Responses together 
+            throw new NotImplementedException();
         }
     }
 }

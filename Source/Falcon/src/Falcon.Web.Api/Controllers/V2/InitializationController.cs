@@ -13,6 +13,7 @@ namespace Falcon.Web.Api.Controllers.V2
     public class InitializationController : FalconApiController
     {
         private readonly IInitializationInquiryProcessor mInitInquiry;
+
         public InitializationController(IInitializationInquiryProcessor InitializationInquiry)
         {
             mInitInquiry = InitializationInquiry;
@@ -26,5 +27,8 @@ namespace Falcon.Web.Api.Controllers.V2
             var data = await mInitInquiry.LoadUserData(LevelVersionCode);
             return data;
         }
+
+
+
     }
 }

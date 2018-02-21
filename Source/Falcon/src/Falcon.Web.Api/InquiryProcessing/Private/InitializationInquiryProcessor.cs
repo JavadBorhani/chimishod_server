@@ -12,6 +12,7 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
         private readonly ILevelInquiryProcessor mLevelInquiry;
         private readonly IClientApplicationState mClientAppState;
         private readonly IMapper mMapper;
+
         public InitializationInquiryProcessor
             (
             IUsersInquiryProcessor UsersQuery,
@@ -47,6 +48,5 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
 
             return initializationInfo;    
         }
-
     }
 }

@@ -31,7 +31,6 @@ namespace Falcon.Web.Models.Api.Friend
         public int Dislike_Count { get; set; }
         public DateTime CreatedDate { get; set; }
         public int SenderUserID { get; set; }
-
         public bool AnsweredLiked { get; set; }
         public bool AnsweredDisliked { get; set; }
         public bool AnsweredYes { get; set; }
