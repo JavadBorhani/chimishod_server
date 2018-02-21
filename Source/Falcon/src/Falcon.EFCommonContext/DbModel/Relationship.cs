@@ -19,6 +19,8 @@ namespace Falcon.EFCommonContext.DbModel
         public int UserTwoID { get; set; }
         public int RelationStatus { get; set; }
         public int OperatedByID { get; set; }
+        public System.DateTime CreatedDate { get; set; }
+        public System.DateTime UpdatedDate { get; set; }
     
         public virtual RelationshipStatu RelationshipStatu { get; set; }
         public virtual User User { get; set; }

@@ -4,6 +4,7 @@ using Falcon.Data.QueryProcessors;
 using Falcon.EFCommonContext;
 using Falcon.EFCommonContext.DbModel;
 using Falcon.Web.Models.Api.Friend;
+using System;
 using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
@@ -130,7 +131,9 @@ namespace Falcon.Database.SqlServer.QueryProcessors
                UserOneID = userOneID,
                UserTwoID = userTwoID,
                OperatedByID = mUserSession.ID,
-               RelationStatus = (int)RelationStatus.Pending 
+               RelationStatus = (int)RelationStatus.Pending,
+               CreatedDate = mDateTime.Now,
+               UpdatedDate = mDateTime.Now, 
             });
 
             try
@@ -179,7 +182,8 @@ namespace Falcon.Database.SqlServer.QueryProcessors
                 .SingleOrDefaultAsync();
 
             relation.RelationStatus = (int)Status;
-            relation.OperatedByID = (int)mUserSession.ID;   
+            relation.OperatedByID = (int)mUserSession.ID;
+            relation.UpdatedDate = mDateTime.Now;
 
             try
             {
@@ -200,6 +204,7 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             var relation = await mDb.Set<Relationship>()
               .Where(r => r.UserOneID == userOneID && r.UserTwoID == userTwoID)
               .SingleOrDefaultAsync();
+
             mDb.Set<Relationship>().Remove(relation);
             
             try
@@ -219,6 +224,55 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             var friends = await GetAllFriendIds();
             var exists = !FriendIds.Except(friends).Any(); 
             return exists;
+        }
+
+        public async Task<SFriend[]> GetAllFriendFromDateUpToNow(DateTime DateTime)
+        {
+            var relations = await mDb.Set<Relationship>()
+                  .AsNoTracking()
+                  .Where(u => u.UserOneID == mUserSession.ID ||  u.UserTwoID == mUserSession.ID && u.UpdatedDate >= DateTime)
+                  .ToArrayAsync();
+
+            if (relations.Length <= 0)
+                return null;
+
+            var friends = new SFriend[relations.Length];
+
+            for (int i = 0; i < relations.Length; ++i)
+            {
+                friends[i] = new SFriend();
+                friends[i].UserID = (relations[i].UserOneID == mUserSession.ID ? relations[i].UserTwoID : relations[i].UserOneID);
+                friends[i].RelationOperatorIsMe = (relations[i].OperatedByID == mUserSession.ID ? true : false);
+                friends[i].Status = (RelationStatus)relations[i].RelationStatus;
+                friends[i].UpdatedDate = relations[i].UpdatedDate;
+            }
+
+            var friendIds = friends.Select(f => f.UserID).ToArray();
+
+            var infos = await mDb.Set<User>()
+                .AsNoTracking()
+                .Where(u => friendIds.Contains(u.ID))
+                .Select(u => new
+                {
+                    u.ID,
+                    u.UserName,
+                    u.AvatarImagePath
+                })
+                .ToArrayAsync();
+
+            var result = infos
+                .Join(friends, s => s.ID, u => u.UserID, (user, relation) => new SFriend
+                {
+                    UserID = user.ID,
+                    UserName = user.UserName,
+                    UserPictureUrl = user.AvatarImagePath,
+                    Status = relation.Status,
+                    RelationOperatorIsMe = relation.RelationOperatorIsMe,
+                    UpdatedDate = relation.UpdatedDate
+                })
+                .ToArray();
+
+            return result;
         }
     }
 }

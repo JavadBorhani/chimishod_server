@@ -13,6 +13,7 @@ namespace Falcon.Web.Api.AutoMappingConfiguration.UserMap.UserToFriend
                 .ForMember(s => s.UserName, m => m.MapFrom(u => u.UserName))
                 .ForMember(s => s.UserPictureUrl, m => m.MapFrom(u => u.AvatarImagePath))
                 .ForMember(s => s.Status, m => m.UseValue(RelationStatus.None))
+                .ForMember(s => s.UpdatedDate, m => m.Ignore())
                 .ForMember(s => s.RelationOperatorIsMe, m => m.UseValue(false));
         }
     }

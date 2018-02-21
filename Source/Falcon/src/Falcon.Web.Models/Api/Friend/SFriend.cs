@@ -1,4 +1,6 @@
-﻿namespace Falcon.Web.Models.Api.Friend
+﻿using System;
+
+namespace Falcon.Web.Models.Api.Friend
 {
     public enum RelationStatus
     {
@@ -16,5 +18,6 @@
         public string UserPictureUrl { get; set; }
         public RelationStatus Status { get; set; }
         public bool RelationOperatorIsMe { get; set; }
+        public DateTime UpdatedDate { get; set; }
     }
 }

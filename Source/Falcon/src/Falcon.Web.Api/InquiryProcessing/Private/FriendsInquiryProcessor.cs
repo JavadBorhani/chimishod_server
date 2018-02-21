@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Falcon.Common.Security;
 using Falcon.Data;
 using Falcon.Data.QueryProcessors;
 using Falcon.Web.Api.InquiryProcessing.Public;
@@ -7,7 +8,9 @@ using Falcon.Web.Models;
 using Falcon.Web.Models.Api;
 using Falcon.Web.Models.Api.Answer;
 using Falcon.Web.Models.Api.Friend;
+using Falcon.Web.Models.Api.Notification.Client;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using PagedQuesttionWithAnswerInquiryResponse = Falcon.Web.Models.PagedDataInquiryResponse<Falcon.Web.Models.Api.Friend.SQuestionWithAnswerState>;
@@ -21,19 +24,22 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
         private readonly IAnswerQueryProcessor mAnswerQuery;
         private readonly IMapper mMapper;
         private readonly SApplicationState mServerAppState;
+        private readonly IUserSession mUserSession;
 
         public FriendsInquiryProcessor(
             IFriendsQueryProcessor FriendQuery , 
             IQuestionsQueryProcessor QuestionsQuery , 
             IMapper Mapper , 
             IAnswerQueryProcessor AnswerQuery , 
-            IGlobalApplicationState AppState)
+            IGlobalApplicationState AppState,
+            IUserSession UserSession)
         {
             mAnswerQuery = AnswerQuery;
             mFriendQuery = FriendQuery;
             mQuestionQuery = QuestionsQuery;
             mMapper = Mapper;
             mServerAppState = AppState.GetState();
+            mUserSession = UserSession;
         }
 
         public async Task<int[]> GetAllFriendIds()
@@ -97,10 +103,37 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
             return friendResponses;
         }
 
-        public async Task<bool> GetFriendListFromDateUpToNow(DateTime FriendRequestDate, DateTime FriendResponseDate)
+        public async Task<SFriendStatus> GetFriendListFromDateUpToNow(DateTime FriendRequestDate, DateTime FriendResponseDate)
         {
-            //TODO : Get Friend Request And Responses together 
-            throw new NotImplementedException();
+            var olderDate = (FriendRequestDate > FriendResponseDate) ? FriendResponseDate : FriendRequestDate;
+
+            var friendList = await mFriendQuery.GetAllFriendFromDateUpToNow(olderDate);
+
+            var friendRequest = new List<SFriendRequest>();
+            var friendResponse = new List<SFriendResponse>();
+
+            for(int i = 0; i < friendList.Length;  ++i)
+            {
+                
+                if(friendList[i].RelationOperatorIsMe == true)
+                friendRequest.Add(new SFriendRequest
+                {
+                    
+                });
+
+                friendResponse.Add(new SFriendResponse
+                {
+
+                });
+            }
+        
+            var response = new SFriendStatus
+            {
+                FriendRequst = friendRequest,
+                FriendResponse = friendResponse,
+            };
+
+            return response;
         }
     }
 }

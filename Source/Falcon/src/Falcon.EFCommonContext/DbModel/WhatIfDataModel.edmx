@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="Falcon.DbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="Falcon.DbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="AchievedCodeGift">
           <Key>
             <PropertyRef Name="ID" />
@@ -267,6 +267,8 @@
           <Property Name="UserTwoID" Type="int" Nullable="false" />
           <Property Name="RelationStatus" Type="int" Nullable="false" />
           <Property Name="OperatedByID" Type="int" Nullable="false" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+          <Property Name="UpdatedDate" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="RelationshipStatus">
           <Key>
@@ -1214,7 +1216,8 @@
             <End Role="WatchedAd" EntitySet="WatchedAd" />
           </AssociationSet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="Falcon.DbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -1251,6 +1254,7 @@
           <FunctionImport Name="sp_upgraddiagrams" />
           <FunctionImport Name="UpdateCharacterRank" />
           <FunctionImport Name="UpdateUserGlobalRank" />
+          <FunctionImport Name="UpdatePeopleNormalQuest" />
           <EntitySet Name="AchievedCodeGifts" EntityType="Falcon.DbModel.AchievedCodeGift" />
           <EntitySet Name="Answers" EntityType="Falcon.DbModel.Answer" />
           <EntitySet Name="ClientApplicationStates" EntityType="Falcon.DbModel.ClientApplicationState" />
@@ -1446,7 +1450,6 @@
             <End Role="WatchAdProvider" EntitySet="WatchAdProviders" />
             <End Role="WatchedAd" EntitySet="WatchedAds" />
           </AssociationSet>
-          <FunctionImport Name="UpdatePeopleNormalQuest" />
         </EntityContainer>
         <ComplexType Name="sp_helpdiagramdefinition_Result">
           <Property Type="Int32" Name="version" Nullable="true" />
@@ -1732,7 +1735,7 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="UserID" Type="Int32" Nullable="false" />
           <Property Name="QuestNumber" Type="Int32" Nullable="false" />
           <Property Name="Score" Type="Int32" Nullable="false" />
@@ -1756,6 +1759,8 @@
           <Property Name="UserTwoID" Type="Int32" Nullable="false" />
           <Property Name="RelationStatus" Type="Int32" Nullable="false" />
           <Property Name="OperatedByID" Type="Int32" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UpdatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="RelationshipStatu" Relationship="Falcon.DbModel.FK_Relationship_RelationshipStatus" FromRole="Relationship" ToRole="RelationshipStatu" />
           <NavigationProperty Name="User" Relationship="Falcon.DbModel.FK_Relationship_User" FromRole="Relationship" ToRole="User" />
           <NavigationProperty Name="User1" Relationship="Falcon.DbModel.FK_Relationship_User_Two" FromRole="Relationship" ToRole="User" />
@@ -1957,7 +1962,7 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="UserID" Type="Int32" Nullable="false" />
           <Property Name="QuestNumber" Type="Int32" Nullable="false" />
           <Property Name="Point" Type="Int32" Nullable="false" />
@@ -2549,6 +2554,7 @@
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="sp_renamediagram" FunctionName="Falcon.DbModel.Store.sp_renamediagram" />
           <FunctionImportMapping FunctionImportName="sp_upgraddiagrams" FunctionName="Falcon.DbModel.Store.sp_upgraddiagrams" />
+          <FunctionImportMapping FunctionImportName="UpdatePeopleNormalQuest" FunctionName="Falcon.DbModel.Store.UpdatePeopleNormalQuest" />
           <EntitySetMapping Name="AchievedCodeGifts">
             <EntityTypeMapping TypeName="Falcon.DbModel.AchievedCodeGift">
               <MappingFragment StoreEntitySet="AchievedCodeGift">
@@ -2824,6 +2830,8 @@
           <EntitySetMapping Name="Relationships">
             <EntityTypeMapping TypeName="Falcon.DbModel.Relationship">
               <MappingFragment StoreEntitySet="Relationship">
+                <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
                 <ScalarProperty Name="OperatedByID" ColumnName="OperatedByID" />
                 <ScalarProperty Name="RelationStatus" ColumnName="RelationStatus" />
                 <ScalarProperty Name="UserTwoID" ColumnName="UserTwoID" />
@@ -3040,7 +3048,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <FunctionImportMapping FunctionImportName="UpdatePeopleNormalQuest" FunctionName="Falcon.DbModel.Store.UpdatePeopleNormalQuest" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
