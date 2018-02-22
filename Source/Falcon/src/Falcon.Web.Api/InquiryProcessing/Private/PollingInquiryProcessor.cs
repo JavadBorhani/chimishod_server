@@ -26,8 +26,8 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
             var response = new SClientPollingData
             {
                 InboxQuestions = inbox,
-                FriendRequests = friends.FriendRequst,
-                FriendResponses = friends.FriendResponse
+                FriendRequests = friends?.FriendRequst,
+                FriendResponses = friends?.FriendResponse
             };
 
             return response;

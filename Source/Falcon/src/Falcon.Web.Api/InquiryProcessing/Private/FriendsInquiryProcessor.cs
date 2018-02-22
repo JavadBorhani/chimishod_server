@@ -109,13 +109,16 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
 
             var friendList = await mFriendQuery.GetAllFriendFromDateUpToNow(olderDate);
 
+            if (friendList == null || friendList.Length <= 0 )
+                return null;
+
             var friendRequest = new List<SFriendRequest>();
             var friendResponse = new List<SFriendResponse>();
 
             for (int i = 0; i < friendList.Length; ++i)
             {
 
-                if (friendList[i].Status == RelationStatus.Pending && friendList[i].UpdatedDate >= FriendRequestDate)
+                if (friendList[i].Status == RelationStatus.Pending && !friendList[i].RelationOperatorIsMe && friendList[i].UpdatedDate >= FriendRequestDate)
                 {
                     friendRequest.Add(new SFriendRequest
                     {

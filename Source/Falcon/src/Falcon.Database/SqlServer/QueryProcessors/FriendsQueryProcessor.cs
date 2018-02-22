@@ -182,7 +182,7 @@ namespace Falcon.Database.SqlServer.QueryProcessors
                 .SingleOrDefaultAsync();
 
             relation.RelationStatus = (int)Status;
-            relation.OperatedByID = (int)mUserSession.ID;
+            relation.OperatedByID = mUserSession.ID;
             relation.UpdatedDate = mDateTime.Now;
 
             try
@@ -230,7 +230,7 @@ namespace Falcon.Database.SqlServer.QueryProcessors
         {
             var relations = await mDb.Set<Relationship>()
                   .AsNoTracking()
-                  .Where(u => u.UserOneID == mUserSession.ID ||  u.UserTwoID == mUserSession.ID && u.UpdatedDate >= DateTime)
+                  .Where(u => (u.UserOneID == mUserSession.ID ||  u.UserTwoID == mUserSession.ID) && u.UpdatedDate >= DateTime)
                   .ToArrayAsync();
 
             if (relations.Length <= 0)

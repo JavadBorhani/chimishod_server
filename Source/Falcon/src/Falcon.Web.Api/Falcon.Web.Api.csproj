@@ -223,6 +223,7 @@
     <Compile Include="Controllers\V2\AnswerController.cs" />
     <Compile Include="Controllers\V2\AppStatesController.cs" />
     <Compile Include="Controllers\V2\FriendsController.cs" />
+    <Compile Include="Controllers\V2\ImageController.cs" />
     <Compile Include="Controllers\V2\InitializationController.cs" />
     <Compile Include="Controllers\V2\LevelController.cs" />
     <Compile Include="Controllers\V2\PollingController.cs" />
