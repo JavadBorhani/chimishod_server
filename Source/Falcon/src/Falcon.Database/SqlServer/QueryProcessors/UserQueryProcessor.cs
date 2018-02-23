@@ -105,16 +105,22 @@ namespace Falcon.Database.SqlServer.QueryProcessors
 
         public async Task<bool> LevelExits(int LevelNumber)
         {
-            //var exists = await mDb.Set<Level>().AsNoTracking().CountAsync(l => l.LevelNumber == LevelNumber) > 0;
-            //return exists;
-            return false;
+            var exists = await mDb.Set<Level>()
+                .AsNoTracking()
+                .CountAsync(l => l.LevelNumber == LevelNumber) > 0;
+
+            return exists;
         }
 
         public async Task<int> GetLevelPrize(int LevelNumber)
         {
-            //int prize = await mDb.Set<Level>().AsNoTracking().Where(l => l.LevelNumber == LevelNumber).Select(l => l.Star).SingleOrDefaultAsync();
-            //return prize;
-            return 1;
+            int prize = await mDb.Set<Level>()
+                .AsNoTracking()
+                .Where(l => l.LevelNumber == LevelNumber)
+                .Select(l => l.CoinPrize)
+                .SingleOrDefaultAsync();
+
+            return prize;
         }
 
         public async Task<SLevelUpInfo> UpdateLevel(int Prize)

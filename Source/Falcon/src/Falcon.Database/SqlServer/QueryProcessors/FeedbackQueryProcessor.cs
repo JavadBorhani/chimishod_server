@@ -14,6 +14,7 @@ namespace Falcon.Database.SqlServer.QueryProcessors
         private readonly IDbContext mDb;
         private readonly IDateTime mDateTime;
         private readonly IUserSession mUserSession;
+
         public FeedbackQueryProcessor(IDbContext Database , IDateTime DateTime , IUserSession UserSession)
         {
             mDb = Database;

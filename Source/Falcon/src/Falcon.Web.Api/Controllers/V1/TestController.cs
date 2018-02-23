@@ -1,7 +1,4 @@
-﻿using Falcon.Data.QueryProcessors;
-using Falcon.Web.Api.InquiryProcessing.Public;
-using Falcon.Web.Api.MaintenanceProcessing.Public;
-using Falcon.Web.Api.Utilities.Base;
+﻿using Falcon.Web.Api.Utilities.Base;
 using Falcon.Web.Common;
 using System.Web.Http;
 
@@ -11,9 +8,8 @@ namespace Falcon.Web.Api.Controllers.V1
     public class TestController : FalconApiController
     {
 
-        public TestController(IFeedbackInquiryProcessor inquiry , IFeedbackMaintenanceProcessor Maintenance , IFeedbackQueryProcessor query)
-        {
-            int x = 10;             
+        public TestController()
+        {    
         }
 
         [Route("v2/TestController/")]
