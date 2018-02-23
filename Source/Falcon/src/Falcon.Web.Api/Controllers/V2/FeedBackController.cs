@@ -1,5 +1,6 @@
 ﻿using Falcon.Web.Api.InquiryProcessing.Public;
 using Falcon.Web.Api.MaintenanceProcessing.Public;
+using Falcon.Web.Models.Api.Feedback;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
@@ -19,19 +20,26 @@ namespace Falcon.Web.Api.Controllers.V2
 
 
         [Route("v2/Feedback/Get")]
-        [ResponseType(typeof(bool))]
+        [ResponseType(typeof(SFeedbackType[]))]
         [HttpPost]
-        public async Task<bool> GetFeedbackList()
+        public async Task<SFeedbackType[]> GetFeedbackList()
         {
-            return false;
+            var response = await mFeedbackInquiry.GetFeedbackTypes();
+            return response;
         }
 
         [Route("v2/Feedback/Post")]
-        [ResponseType(typeof(bool))]
+        [ResponseType(typeof(IHttpActionResult))]
         [HttpPost]
-        public async Task<bool> SendFeedback()
+        public async Task<IHttpActionResult> SendFeedback(SFeedback Inquiry)
         {
-            return false;
+            if (!ModelState.IsValid)
+                return BadRequest();
+
+            var response = await mFeedbackMaintenance.SaveFeedback(Inquiry);
+
+            return Ok(response);
+
         }
 
     }

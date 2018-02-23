@@ -12,14 +12,19 @@ namespace Falcon.EFCommonContext.DbModel
     using System;
     using System.Collections.Generic;
     
-    public partial class ContactU
+    public partial class FeedbackType
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public FeedbackType()
+        {
+            this.Feedbacks = new HashSet<Feedback>();
+        }
+    
         public int ID { get; set; }
-        public int UserID { get; set; }
-        public string Message { get; set; }
-        public int Type { get; set; }
-        public int AdminResponse { get; set; }
-        public System.DateTime CreatedDate { get; set; }
-        public System.DateTime UpdateDate { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Feedback> Feedbacks { get; set; }
     }
 }

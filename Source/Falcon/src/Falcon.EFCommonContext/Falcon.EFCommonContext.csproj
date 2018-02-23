@@ -77,6 +77,12 @@
     <Compile Include="DbModel\ContactU.cs">
       <DependentUpon>WhatIfDataModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="DbModel\Feedback.cs">
+      <DependentUpon>WhatIfDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DbModel\FeedbackType.cs">
+      <DependentUpon>WhatIfDataModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="DbModel\GameConfig.cs">
       <DependentUpon>WhatIfDataModel.tt</DependentUpon>
     </Compile>

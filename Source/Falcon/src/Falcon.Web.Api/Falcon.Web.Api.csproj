@@ -182,6 +182,7 @@
     <Compile Include="AutoMappingConfiguration\AppAdvertisementsMap\AppAdvertisementsToSAppAdvertAutoTypeConfiguration.cs" />
     <Compile Include="AutoMappingConfiguration\ClientAppStateMap\ClientApplicationStateToSClientAppStateAutoTypeConfiguration.cs" />
     <Compile Include="AutoMappingConfiguration\ClientAppStateMap\SClientAppStateToClientVersionInfoAutoTypeConfiguration.cs" />
+    <Compile Include="AutoMappingConfiguration\Feedback\FeedbackTypeToSFeedbackTypeAutoTypeConfiguration.cs" />
     <Compile Include="AutoMappingConfiguration\Notification\NotificationSystemConfigurationToSNotificationConfigAutoTypeConfiguration.cs" />
     <Compile Include="AutoMappingConfiguration\QuestionMap\ActionQuestion\QuestionActionToSQuestionActionAuthoTypeConfiguration.cs" />
     <Compile Include="AutoMappingConfiguration\QuestionMap\QuestionToSQuestionAutoTypeConfiguration.cs" />

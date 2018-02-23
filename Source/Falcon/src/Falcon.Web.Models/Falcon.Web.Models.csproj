@@ -52,6 +52,8 @@
     <Compile Include="Api\Config\SClientAppState.cs" />
     <Compile Include="Api\Config\SGameConfig.cs" />
     <Compile Include="Api\Config\SClientVersionInfo.cs" />
+    <Compile Include="Api\Feedback\SFeedback.cs" />
+    <Compile Include="Api\Feedback\SFeedbackType.cs" />
     <Compile Include="Api\Friend\SFriend.cs" />
     <Compile Include="Api\Friend\SFriendAnswer.cs" />
     <Compile Include="Api\Friend\SQuestionWithAnswerState.cs" />

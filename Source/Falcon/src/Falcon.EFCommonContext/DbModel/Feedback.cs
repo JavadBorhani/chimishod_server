@@ -12,14 +12,17 @@ namespace Falcon.EFCommonContext.DbModel
     using System;
     using System.Collections.Generic;
     
-    public partial class ContactU
+    public partial class Feedback
     {
         public int ID { get; set; }
+        public int FeedbackTypeID { get; set; }
         public int UserID { get; set; }
         public string Message { get; set; }
-        public int Type { get; set; }
-        public int AdminResponse { get; set; }
+        public string AdminResponse { get; set; }
         public System.DateTime CreatedDate { get; set; }
-        public System.DateTime UpdateDate { get; set; }
+        public System.DateTime UpdatedDate { get; set; }
+    
+        public virtual FeedbackType FeedbackType { get; set; }
+        public virtual User User { get; set; }
     }
 }
