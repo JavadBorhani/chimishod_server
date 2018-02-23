@@ -45,7 +45,8 @@ namespace Falcon.Database.SqlServer.QueryProcessors
                 {
                     u.ID,
                     u.UserName ,
-                    u.AvatarImagePath
+                    u.AvatarImagePath,
+                    u.IsMale
                 })
                 .ToArrayAsync();
 
@@ -55,6 +56,7 @@ namespace Falcon.Database.SqlServer.QueryProcessors
                     UserID = user.ID,
                     UserName = user.UserName,
                     UserPictureUrl = user.AvatarImagePath,
+                    GenderIsMale = user.IsMale,
                     Status = relation.Status,
                     RelationOperatorIsMe = relation.RelationOperatorIsMe,
                 })

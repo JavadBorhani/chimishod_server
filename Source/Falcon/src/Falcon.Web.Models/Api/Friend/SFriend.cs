@@ -18,6 +18,7 @@ namespace Falcon.Web.Models.Api.Friend
         public string UserPictureUrl { get; set; }
         public RelationStatus Status { get; set; }
         public bool RelationOperatorIsMe { get; set; }
+        public bool GenderIsMale { get; set; }
         public DateTime UpdatedDate { get; set; }
     }
 }
