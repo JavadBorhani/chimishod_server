@@ -55,6 +55,7 @@
     <Compile Include="QueryProcessors\ICommentsQueryProcessor.cs" />
     <Compile Include="QueryProcessors\ICreatedQuestionsQueryProcessor.cs" />
     <Compile Include="QueryProcessors\IDWMQueryProcessor.cs" />
+    <Compile Include="QueryProcessors\IFeedbackQueryProcessor.cs" />
     <Compile Include="QueryProcessors\IFriendsQueryProcessor.cs" />
     <Compile Include="QueryProcessors\IGameConfigQueryProcessor.cs" />
     <Compile Include="QueryProcessors\IGiftQueryProcessor.cs" />

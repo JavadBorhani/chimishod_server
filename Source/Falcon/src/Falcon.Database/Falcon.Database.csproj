@@ -69,6 +69,7 @@
     <Compile Include="SqlServer\QueryProcessors\CommentsQueryProcessor.cs" />
     <Compile Include="SqlServer\QueryProcessors\CreatedQuestionsQueryProcessor.cs" />
     <Compile Include="SqlServer\QueryProcessors\DWMQueryProcessor.cs" />
+    <Compile Include="SqlServer\QueryProcessors\FeedbackQueryProcessor.cs" />
     <Compile Include="SqlServer\QueryProcessors\FriendsQueryProcessor.cs" />
     <Compile Include="SqlServer\QueryProcessors\GameConfigQueryProcessor.cs" />
     <Compile Include="SqlServer\QueryProcessors\GiftQueryProcessor.cs" />

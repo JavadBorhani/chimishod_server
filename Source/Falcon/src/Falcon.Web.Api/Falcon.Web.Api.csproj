@@ -222,6 +222,7 @@
     <Compile Include="Controllers\V1\WatchAdController.cs" />
     <Compile Include="Controllers\V2\AnswerController.cs" />
     <Compile Include="Controllers\V2\AppStatesController.cs" />
+    <Compile Include="Controllers\V2\FeedBackController.cs" />
     <Compile Include="Controllers\V2\FriendsController.cs" />
     <Compile Include="Controllers\V2\ImageController.cs" />
     <Compile Include="Controllers\V2\InitializationController.cs" />
@@ -242,6 +243,7 @@
     <Compile Include="InquiryProcessing\Private\CommentsInquiryProcessor.cs" />
     <Compile Include="InquiryProcessing\Private\CreatedQuestionsInquiryProcessor.cs" />
     <Compile Include="InquiryProcessing\Private\DWMInquiryProcessor.cs" />
+    <Compile Include="InquiryProcessing\Private\FeedbackInquiryProcessor.cs" />
     <Compile Include="InquiryProcessing\Private\FriendsInquiryProcessor.cs" />
     <Compile Include="InquiryProcessing\Private\GameConfig.cs" />
     <Compile Include="InquiryProcessing\Private\InitializationInquiryProcessor.cs" />
@@ -269,6 +271,7 @@
     <Compile Include="InquiryProcessing\Public\ICommentsInquiryProcessor.cs" />
     <Compile Include="InquiryProcessing\Public\ICreatedQuestionsInquiryProcessor.cs" />
     <Compile Include="InquiryProcessing\Public\IDWMInquiryProcessor.cs" />
+    <Compile Include="InquiryProcessing\Public\IFeedbackInquiryProcessor.cs" />
     <Compile Include="InquiryProcessing\Public\IFriendsInquiryProcessor.cs" />
     <Compile Include="InquiryProcessing\Public\IGameConfig.cs" />
     <Compile Include="InquiryProcessing\Public\IInitializationInquiryProcessor.cs" />
@@ -308,8 +311,10 @@
     <Compile Include="MaintenanceProcessing\Private\CodeGiftsMaintenanceProcessor.cs" />
     <Compile Include="MaintenanceProcessing\Private\CreatedQuestionsMaintenanceProcessor.cs" />
     <Compile Include="MaintenanceProcessing\Private\DWMMaintenanceProcessor.cs" />
+    <Compile Include="MaintenanceProcessing\Private\FeedbackMaintenanceProcessor.cs" />
     <Compile Include="MaintenanceProcessing\Private\FriendsMaintenanceProcessor.cs" />
     <Compile Include="MaintenanceProcessing\Private\GlobalApplicationState.cs" />
+    <Compile Include="MaintenanceProcessing\Private\ImageUploaderMaintenanceProcessor.cs" />
     <Compile Include="MaintenanceProcessing\Private\ItemPurchaseManager.cs" />
     <Compile Include="MaintenanceProcessing\Private\NotificationMaintenanceProcessor.cs" />
     <Compile Include="MaintenanceProcessing\Private\QuestionReportMaintenanceProcessor.cs" />
@@ -333,8 +338,10 @@
     <Compile Include="MaintenanceProcessing\Public\ICodeGiftsMaintenanceProcessor.cs" />
     <Compile Include="MaintenanceProcessing\Public\ICreatedQuestionsMaintenanceProcessor.cs" />
     <Compile Include="MaintenanceProcessing\Public\IDWMMaintenanceProcessor.cs" />
+    <Compile Include="MaintenanceProcessing\Public\IFeedbackMaintenanceProcessor.cs" />
     <Compile Include="MaintenanceProcessing\Public\IFriendsMaintenanceProcessor.cs" />
     <Compile Include="MaintenanceProcessing\Public\IGlobalApplicationState.cs" />
+    <Compile Include="MaintenanceProcessing\Public\IImageUploaderMaintenanceProcessor.cs" />
     <Compile Include="MaintenanceProcessing\Public\IItemPurchaseManager.cs" />
     <Compile Include="MaintenanceProcessing\Public\INotificationMaintenanceProcessor.cs" />
     <Compile Include="MaintenanceProcessing\Public\IQuestionReportMaintenanceProcessor.cs" />
@@ -362,6 +369,7 @@
     <Compile Include="Startup.cs" />
     <Compile Include="Utilities\IInMemory.cs" />
     <Compile Include="Utilities\INetworkUtils.cs" />
+    <Compile Include="Utilities\ImageStreamProvider.cs" />
     <Compile Include="Utilities\RestClient\IRestClient.cs" />
     <Compile Include="Utilities\Mail\IMailManager.cs" />
     <Compile Include="Utilities\Mail\MailManager.cs" />
@@ -424,7 +432,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\" />
+    <Folder Include="App_Data\Upload\" />
+    <Folder Include="Images\" />
+    <Folder Include="Upload\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Falcon.Common\Falcon.Common.csproj">
