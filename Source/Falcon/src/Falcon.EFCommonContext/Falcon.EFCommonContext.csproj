@@ -74,9 +74,6 @@
     <Compile Include="DbModel\CodeGift.cs">
       <DependentUpon>WhatIfDataModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="DbModel\ContactU.cs">
-      <DependentUpon>WhatIfDataModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="DbModel\Feedback.cs">
       <DependentUpon>WhatIfDataModel.tt</DependentUpon>
     </Compile>

@@ -39,9 +39,16 @@ namespace Falcon.Database.SqlServer.QueryProcessors
 
             mDb.Set<Feedback>().Add(feedback);
 
-            await mDb.SaveChangesAsync();
+            try
+            {
+                await mDb.SaveChangesAsync();
 
-            return true;
+                return true;
+            }
+            catch
+            {
+                throw new BusinessRuleViolationException("Feedback Information is not correct" + mUserSession.ID);
+            }
 
         }
     }

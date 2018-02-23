@@ -32,7 +32,6 @@ namespace Falcon.EFCommonContext.DbModel
         public virtual DbSet<Answer> Answers { get; set; }
         public virtual DbSet<ClientApplicationState> ClientApplicationStates { get; set; }
         public virtual DbSet<CodeGift> CodeGifts { get; set; }
-        public virtual DbSet<ContactU> ContactUs { get; set; }
         public virtual DbSet<Feedback> Feedbacks { get; set; }
         public virtual DbSet<FeedbackType> FeedbackTypes { get; set; }
         public virtual DbSet<GameConfig> GameConfigs { get; set; }
