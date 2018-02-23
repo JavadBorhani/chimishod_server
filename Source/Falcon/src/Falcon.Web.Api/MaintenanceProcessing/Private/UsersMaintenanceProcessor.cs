@@ -89,5 +89,12 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
             }
                 
         }
+
+        public async Task<bool> SaveImageUrl(string ImageRelativePath)
+        {
+            var response = await mUserQuery.SaveUserImageUrl(ImageRelativePath);
+
+            return response;
+        }
     }
 }

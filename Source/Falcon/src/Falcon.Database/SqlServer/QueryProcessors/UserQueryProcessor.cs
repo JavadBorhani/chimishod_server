@@ -373,5 +373,16 @@ namespace Falcon.Database.SqlServer.QueryProcessors
 
             return currentUserQuest;    
         }
+
+        public async Task<bool> SaveUserImageUrl(string ImageRelativePath)
+        {
+            var user = await mDb.Set<User>().FindAsync(mUserSession.ID);
+
+            user.AvatarImagePath = ImageRelativePath;
+
+            await mDb.SaveChangesAsync();
+
+            return true;
+        }
     }
 }   

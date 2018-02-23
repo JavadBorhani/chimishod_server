@@ -1,4 +1,6 @@
-﻿using Falcon.Common.Security;
+﻿using Falcon.Common;
+using Falcon.Common.Security;
+using Falcon.Web.Api.MaintenanceProcessing.Public;
 using Falcon.Web.Api.Utilities.Base;
 using System.Drawing;
 using System.IO;
@@ -15,9 +17,11 @@ namespace Falcon.Web.Api.Controllers.V2
     {
 
         private IUserSession mUserSession;
-        public ImageController(IUserSession Session)
+        private readonly IUsersMaintenanceProcessor mUserMaintenance;
+        public ImageController(IUserSession Session, IUsersMaintenanceProcessor UsersMaintenance)
         {
             mUserSession = Session;
+            mUserMaintenance = UsersMaintenance;
         }
 
         [ResponseType(typeof(IHttpActionResult))]
@@ -49,11 +53,13 @@ namespace Falcon.Web.Api.Controllers.V2
                         Stream stream = content.ReadAsStreamAsync().Result;
                         Image image = Image.FromStream(stream);
                         var testName = content.Headers.ContentDisposition.Name;
-                        string filePath = HostingEnvironment.MapPath("~/Images/users/");
+                        string filePath = HostingEnvironment.MapPath("~" + Constants.ServerVariables.ImageUploadLocation);
                         
                         string fileName = result + ".jpg";
                         string fullPath = Path.Combine(filePath, fileName);
                         image.Save(fullPath);
+
+                        
                     }
 
                 });
@@ -64,6 +70,7 @@ namespace Falcon.Web.Api.Controllers.V2
                 }
                 else
                 {
+                    var amount = await mUserMaintenance.SaveImageUrl(Constants.ServerVariables.ImageUploadLocation + mUserSession.ID + ".jpg");
                     return Ok(true);
                 }
                

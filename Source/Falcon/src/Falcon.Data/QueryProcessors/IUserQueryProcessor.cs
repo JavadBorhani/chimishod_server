@@ -36,5 +36,6 @@ namespace Falcon.Data.QueryProcessors
         Task<User> GetUserByID(int UserID);
         Task<bool> DeactivePreviousUser(SUserRegistrationForm registrationForm);
         Task<int> GetUserCurrentQuestNumber();
+        Task<bool> SaveUserImageUrl(string ImageRelativePath);
     }
 }
