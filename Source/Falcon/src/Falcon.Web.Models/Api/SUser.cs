@@ -14,6 +14,6 @@ namespace Falcon.Web.Models.Api
         public string UUID { get; set; }
         public string AvatarImagePath { get; set; }
         public SLevel CurrentLevel { get; set; }
-        public int GenderIsMale { get; set; }
+        public bool GenderIsMale { get; set; }
     }
 }
