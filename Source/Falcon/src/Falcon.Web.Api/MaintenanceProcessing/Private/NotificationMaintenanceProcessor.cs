@@ -51,7 +51,8 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
                         UserID = UserInfoToSend ,
                         PictureURL = user.AvatarImagePath ,
                         RelationState =  RelationStatus.Pending ,
-                        Username = user.UserName
+                        Username = user.UserName,
+                        GenderIsMale = user.IsMale
                     }
                 },
                 ServerDate = mDateTime.Now,

@@ -17,6 +17,7 @@ namespace Falcon.Web.Api.AutoMappingConfiguration.LevelMap
                 .ForMember(s => s.QuestWhiteIcon, m => m.MapFrom(l => l.Quest.QuestWhiteIcon))
                 .ForMember(s => s.QuestColoredIcon, m => m.MapFrom(l => l.Quest.QuestColoredIcon))
                 .ForMember(s => s.QuestOffIcon, m => m.MapFrom(l => l.Quest.QuestOffIcon))
+                .ForMember(s => s.QuestHighScore , m => m.MapFrom( l => l.Quest.QuestHighScore))
                 .ForMember(s => s.QuestTitle, m => m.MapFrom(l => l.Quest.QuestTitle));
         }
     }

@@ -13,6 +13,7 @@ namespace Falcon.Web.Models.Api.Level
         public string QuestWhiteIcon { get; set; }
         public string QuestColoredIcon { get; set; }
         public string QuestOffIcon { get; set; }
+        public int QuestHighScore { get; set; }
         
     }
 }

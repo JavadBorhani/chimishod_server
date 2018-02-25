@@ -8,5 +8,6 @@ namespace Falcon.Web.Models.Api.Notification.Client
         public string Username { get; set; }
         public string PictureURL { get; set; }
         public RelationStatus RelationState { get; set; }
+        public bool GenderIsMale { get; set; }
     }
 }

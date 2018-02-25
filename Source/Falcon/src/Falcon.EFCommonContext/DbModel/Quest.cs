@@ -31,6 +31,7 @@ namespace Falcon.EFCommonContext.DbModel
         public string QuestWhiteIcon { get; set; }
         public string QuestColoredIcon { get; set; }
         public string QuestOffIcon { get; set; }
+        public int QuestHighScore { get; set; }
         public Nullable<int> ParentID { get; set; }
         public int Mean_Score { get; set; }
         public System.DateTime CreatedDate { get; set; }

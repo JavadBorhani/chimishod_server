@@ -31,6 +31,7 @@ namespace Falcon.Database.SqlServer.QueryProcessors
                     QuestWhiteIcon = s.Quest.QuestWhiteIcon,
                     QuestOffIcon = s.Quest.QuestOffIcon , 
                     QuestTitle = s.Quest.QuestTitle,
+                    QuestHighScore = s.Quest.QuestHighScore,
                     QuestType = (QuestTypes)s.Quest.QuestTypes,
                     ScoreCeil = s.ScoreCeil,
                 })

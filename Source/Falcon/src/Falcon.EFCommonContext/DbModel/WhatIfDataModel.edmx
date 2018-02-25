@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="Falcon.DbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="Falcon.DbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="AchievedCodeGift">
           <Key>
             <PropertyRef Name="ID" />
@@ -194,6 +194,7 @@
           <Property Name="QuestWhiteIcon" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="QuestColoredIcon" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="QuestOffIcon" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="QuestHighScore" Type="int" Nullable="false" />
           <Property Name="ParentID" Type="int" />
           <Property Name="Mean_Score" Type="int" Nullable="false" />
           <Property Name="CreatedDate" Type="datetime" Nullable="false" />
@@ -1241,8 +1242,7 @@
             <End Role="WatchedAd" EntitySet="WatchedAd" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="Falcon.DbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -1480,7 +1480,7 @@
             <End Role="WatchAdProvider" EntitySet="WatchAdProviders" />
             <End Role="WatchedAd" EntitySet="WatchedAds" />
           </AssociationSet>
-        </EntityContainer>
+          </EntityContainer>
         <ComplexType Name="sp_helpdiagramdefinition_Result">
           <Property Type="Int32" Name="version" Nullable="true" />
           <Property Type="Binary" Name="definition" Nullable="true" />
@@ -1697,6 +1697,7 @@
           <Property Name="QuestWhiteIcon" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="QuestColoredIcon" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="QuestOffIcon" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="QuestHighScore" Type="Int32" Nullable="false" />
           <Property Name="ParentID" Type="Int32" />
           <Property Name="Mean_Score" Type="Int32" Nullable="false" />
           <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
@@ -1958,7 +1959,7 @@
           <Property Name="APILevel" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Device" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Model" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="RowVersion" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" ConcurrencyMode="Fixed" />
+          <Property Name="RowVersion" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
           <Property Name="IPAddress" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="AvatarImagePath" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="Activated" Type="Boolean" Nullable="false" />
@@ -2576,7 +2577,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-      </Schema>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -2806,6 +2807,7 @@
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
                 <ScalarProperty Name="Mean_Score" ColumnName="Mean_Score" />
                 <ScalarProperty Name="ParentID" ColumnName="ParentID" />
+                <ScalarProperty Name="QuestHighScore" ColumnName="QuestHighScore" />
                 <ScalarProperty Name="QuestOffIcon" ColumnName="QuestOffIcon" />
                 <ScalarProperty Name="QuestColoredIcon" ColumnName="QuestColoredIcon" />
                 <ScalarProperty Name="QuestWhiteIcon" ColumnName="QuestWhiteIcon" />
@@ -3109,7 +3111,7 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-        </EntityContainerMapping>
+          </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
   </edmx:Runtime>

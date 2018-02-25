@@ -1,21 +1,12 @@
 ﻿// Flapp Copyright 2017-2018
 
-using System.Data;
-using System.Data.Entity;
-using System.Linq;
-using System.Net;
+using Falcon.Web.Api.InquiryProcessing.Public;
+using Falcon.Web.Api.MaintenanceProcessing.Public;
+using Falcon.Web.Api.Utilities.Base;
+using Falcon.Web.Common;
+using Falcon.Web.Models.Api;
 using System.Threading.Tasks;
 using System.Web.Http;
-using Falcon.EFCommonContext.DbModel;
-using Falcon.Common;
-using AutoMapper;
-using Falcon.Web.Models.Api;
-using Falcon.Web.Common;
-using Falcon.EFCommonContext;
-using Falcon.Web.Api.Utilities.Base;
-using Falcon.Common.Security;
-using Falcon.Web.Api.MaintenanceProcessing.Public;
-using Falcon.Web.Api.InquiryProcessing.Public;
 
 namespace Falcon.Web.Api.Controllers.V1
 {

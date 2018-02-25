@@ -12,6 +12,7 @@ namespace Falcon.Web.Api.AutoMappingConfiguration.UserMap
                 .ForMember(s => s.ID,               m => m.MapFrom(s => s.ID))
                 .ForMember(s => s.UserName ,        m => m.MapFrom( s => s.UserName))
                 .ForMember(s => s.LevelProgress,    m => m.MapFrom(s => s.LevelProgress))
+                .ForMember(s => s.GenderIsMale,     m => m.MapFrom(s => s.IsMale))
                 .ForMember(s => s.LevelNumber,      m => m.MapFrom(s => s.LevelNumber))
                 .ForMember(s => s.TotalCoin,        m => m.MapFrom(s => s.TotalCoin))
                 .ForMember(s => s.UUID,             m => m.MapFrom(s => s.UUID))

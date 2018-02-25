@@ -125,7 +125,8 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
                         PictureURL = friendList[i].UserPictureUrl,
                         RelationState = friendList[i].Status,
                         UserID = friendList[i].UserID,
-                        Username = friendList[i].UserName
+                        Username = friendList[i].UserName,
+                        GenderIsMale = friendList[i].GenderIsMale
                     });
                 }
                 else if (friendList[i].UpdatedDate >= FriendResponseDate)
