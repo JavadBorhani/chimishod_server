@@ -11,6 +11,7 @@ namespace Falcon.Data.QueryProcessors
         Task<SFriend[]> GetAllFriendList();
         Task<SFriend[]> GetAllFriendFromDateUpToNow(DateTime DateTime);
         Task<int[]> GetAllFriendIds();
+        Task<int[]> GetAllAcceptedFriendIds();
         Task<bool> CreateRelation(int FriendID);
         Task<bool> DeleteRelation(int FriendID);
         Task<Relationship> GetFriendRelationshipAsNoTracking(int FriendID);

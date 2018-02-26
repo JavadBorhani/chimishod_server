@@ -100,6 +100,27 @@ namespace Falcon.Database.SqlServer.QueryProcessors
 
         }
 
+        public async Task<int[]> GetAllAcceptedFriendIds()
+        {
+            var friends = await mDb.Set<Relationship>()
+              .AsNoTracking()
+              .Where(r => r.UserOneID == mUserSession.ID || r.UserTwoID == mUserSession.ID && r.RelationStatus == (int)RelationStatus.Accepted)
+              .Select(r => new
+              {
+                  r.UserOneID,
+                  r.UserTwoID
+              })
+              .ToArrayAsync();
+
+            int[] friendIds = new int[friends.Length];
+
+            for (int i = 0; i < friendIds.Length; ++i)
+            {
+                friendIds[i] = (friends[i].UserOneID == mUserSession.ID ? friends[i].UserTwoID : friends[i].UserOneID);
+            }
+            return friendIds;
+        }
+
         public async Task<bool> CreateRelation(int FriendID)
         {
             var userOneID = (mUserSession.ID > FriendID ? FriendID : mUserSession.ID);
@@ -223,7 +244,7 @@ namespace Falcon.Database.SqlServer.QueryProcessors
         public async Task<bool> HasFriends(int[] FriendIds)
         {
             //TODO : find better solution for a pair of friend check 
-            var friends = await GetAllFriendIds();
+            var friends = await GetAllAcceptedFriendIds();
             var exists = !FriendIds.Except(friends).Any(); 
             return exists;
         }
