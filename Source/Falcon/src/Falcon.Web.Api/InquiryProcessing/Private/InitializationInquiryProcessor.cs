@@ -11,6 +11,7 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
         private readonly IUsersInquiryProcessor mUsersQuery;
         private readonly ILevelInquiryProcessor mLevelInquiry;
         private readonly IClientApplicationState mClientAppState;
+        private readonly IServerInquiryProcessor mServerInquiry;
         private readonly IMapper mMapper;
 
         public InitializationInquiryProcessor
@@ -18,12 +19,14 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
             IUsersInquiryProcessor UsersQuery,
             ILevelInquiryProcessor LevelInquiry,
             IClientApplicationState ClientAppState,
+            IServerInquiryProcessor ServerInquiry,
             IMapper Mapper
             )
         {
             mUsersQuery = UsersQuery;
             mLevelInquiry = LevelInquiry;
             mClientAppState = ClientAppState;
+            mServerInquiry = ServerInquiry;
             mMapper = Mapper;
         }
 
@@ -47,6 +50,12 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
             initializationInfo.User = user;
 
             return initializationInfo;    
+        }
+
+        public async Task<bool> ReloadServerConfig()
+        {
+            var response = await mServerInquiry.ReadConfigurationFilesFromServer();
+            return response;
         }
     }
 }

@@ -29,6 +29,15 @@ namespace Falcon.Web.Api.Controllers.V2
         }
 
 
+        [ResponseType(typeof(bool))]
+        [Route("v2/ServerConfig/")]
+        [HttpPost]
+        public async Task<bool> ReloadServerConfigFiles()
+        {
+            var response = await mInitInquiry.ReloadServerConfig();
+            return response;
+        }
+
 
     }
 }

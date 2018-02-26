@@ -23,12 +23,12 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             mUserSession = UserSession;
             mDateTime = DateTime;
         }
-        public async Task<int[]> GetUserAnsweredIds(int UserID)
+        public async Task<int[]> GetUserAnsweredQuestionIds(int UserID)
         {
             var data = await mDb.Set<Answer>()
                 .AsNoTracking()
                 .Where(a => a.UserID == UserID)
-                .Select(a => a.ID)
+                .Select(a => a.QuestionID)
                 .ToArrayAsync();
 
             return data;

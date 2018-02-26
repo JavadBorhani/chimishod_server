@@ -15,7 +15,7 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
         }
         public async Task<int[]> GetUserAnswerQuestions(int UserID)
         {
-            var data = await mAnswerQueryProcessor.GetUserAnsweredIds(UserID);
+            var data = await mAnswerQueryProcessor.GetUserAnsweredQuestionIds(UserID);
             return data;
         }
 
