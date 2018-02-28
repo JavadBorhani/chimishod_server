@@ -18,12 +18,14 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
         private readonly IQuestInMemoryProcessor mQuestInMemory;
         private readonly IUserQueryProcessor mUserQuery;
         private readonly IMemoryStore mMemory;
+        private readonly IQuestSnapshotQueryProcessor mQuestSnapshot;
 
         public QuestsMaintenanceProcessor(IQuestsQueryProcessor QuestsQueryProcessor , 
             IUserQuestAnswerQueryProcessor UserQuestAnswer , 
             IUserSession UserSession , 
             IQuestInMemoryProcessor QuestInMemory , 
             IUserQueryProcessor UserQuery , 
+            IQuestSnapshotQueryProcessor QuestSnapshot,
             IMemoryStore Memory)
         {
             mQuestsQueryProcessor = QuestsQueryProcessor;
@@ -32,6 +34,8 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
             mQuestInMemory = QuestInMemory;
             mUserQuery = UserQuery;
             mMemory = Memory;
+            mQuestSnapshot = QuestSnapshot;
+
         }
         public async Task<bool> AddScore(int QuestionID , bool IsYes)
         {
@@ -101,7 +105,7 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
             if(levelNumber != 0)
             {
                 var quest = mQuestInMemory.GetQuestByLevelNumber(levelNumber);
-                var questFatherNumber = quest.ParentID ?? 0;
+                var questFatherNumber = quest.ParentID ?? quest.QuestNumber;
 
                 if(questFatherNumber != 0)
                 {
@@ -113,16 +117,15 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
                     };
 
                     var questsToTakeSnapshot = await mQuestsQueryProcessor.GetUserQuestScoresByIds(questIdsToTakeSnapshot);
-                    
-                    
 
+                    var snapshot = await mQuestSnapshot.SaveUserCheckPoint(questsToTakeSnapshot, levelNumber);
 
+                    return true;
                     //take snapshot 
-
                 }
             }
 
-            return true;
+            return false;
             
         }
     }

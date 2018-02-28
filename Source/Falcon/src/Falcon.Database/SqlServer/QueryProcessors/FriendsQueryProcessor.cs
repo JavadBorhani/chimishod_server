@@ -243,7 +243,6 @@ namespace Falcon.Database.SqlServer.QueryProcessors
 
         public async Task<bool> HasFriends(int[] FriendIds)
         {
-            //TODO : find better solution for a pair of friend check 
             var friends = await GetAllAcceptedFriendIds();
             var exists = !FriendIds.Except(friends).Any(); 
             return exists;

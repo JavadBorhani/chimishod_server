@@ -54,9 +54,9 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
             return initializationInfo;    
         }
 
-        public async Task<bool> ReloadServerConfig()
+        public bool ReloadServerConfig()
         {
-            var response = await mServerInquiry.ReadConfigurationFilesFromServer();
+            var response = mServerInquiry.ReadConfigurationFilesFromServer();
             return response;
         }
     }

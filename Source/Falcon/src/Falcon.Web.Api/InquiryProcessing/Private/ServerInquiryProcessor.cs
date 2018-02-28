@@ -1,7 +1,6 @@
 ﻿using Falcon.Web.Api.InquiryProcessing.Public;
 using Falcon.Web.Api.MaintenanceProcessing.Public;
 using Falcon.Web.Api.Notification.Public;
-using System.Threading.Tasks;
 
 namespace Falcon.Web.Api.InquiryProcessing.Private
 {
@@ -25,15 +24,13 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
             mGameConfig = GameConfig;
             mQuestProcessor = QuestsInMemoryProcessor;
         }
-        public async Task<bool> ReadConfigurationFilesFromServer()
+        public bool ReadConfigurationFilesFromServer()
         {
             mClientAppState.ReadStateFromDatabase();
             mGlobalAppState.ReadStateFromDatabase();
             mGameConfig.ReadStateFromDatabase();
             mQuestProcessor.ReadStateFromDatabase();
             mNotificationData.ReadStateFromDatabase();
-
-
             return true;
         }
     }

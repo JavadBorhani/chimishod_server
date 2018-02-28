@@ -6,6 +6,6 @@ namespace Falcon.Web.Api.InquiryProcessing.Public
     public interface IInitializationInquiryProcessor
     {
         Task<SUserInitializationData> LoadUserData(int LevelVersion);
-        Task<bool> ReloadServerConfig();
+        bool ReloadServerConfig();
     }
 }

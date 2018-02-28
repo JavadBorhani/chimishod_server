@@ -35,6 +35,8 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
 
         public SQuest GetQuestByID(int ID)
         {
+            CheckAvalibility();
+
             SQuest data;
             mQuests.TryGetValue(ID, out data);
 
@@ -43,6 +45,8 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
 
         public SQuest GetQuestByLevelNumber(int LevelNumber)
         {
+            CheckAvalibility();
+
             SQuest data;
             mLevelQuests.TryGetValue(LevelNumber ,out data);
             return data;
@@ -50,11 +54,16 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
 
         public ConcurrentDictionary<int, SQuest> GetState()
         {
-            if(mQuests.Count == 0 )
+            CheckAvalibility();
+            return mQuests;
+        }
+
+        private void CheckAvalibility()
+        {
+            if (mQuests.Count == 0)
             {
                 ReadStateFromDatabase();
             }
-            return mQuests;
         }
 
         public void ReadStateFromDatabase()
