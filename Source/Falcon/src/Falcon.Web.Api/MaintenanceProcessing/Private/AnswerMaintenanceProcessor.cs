@@ -1,4 +1,5 @@
-﻿using Falcon.Common.Security;
+﻿using Falcon.Common;
+using Falcon.Common.Security;
 using Falcon.Data.QueryProcessors;
 using Falcon.Web.Api.MaintenanceProcessing.Public;
 using Falcon.Web.Models.Api;
@@ -80,7 +81,12 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
                         await mUserQuery.IncreaseCoin(actionCoin);
                     }
 
-                    await mUserMaintenance.LevelUp(mClientAppState.XPLevelFactor);
+                    var coin = await mUserMaintenance.LevelUp(mClientAppState.XPLevelFactor);
+
+                    if(coin != Constants.DefaultValues.NoNewCoin)
+                    {
+                        await mQuestsMaintenance.TakeSnapshot();
+                    }
 
                     switch ((HashTagID)question.HashTagID)
                     {

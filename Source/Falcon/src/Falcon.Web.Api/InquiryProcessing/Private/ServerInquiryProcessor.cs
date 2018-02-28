@@ -1,5 +1,6 @@
 ﻿using Falcon.Web.Api.InquiryProcessing.Public;
 using Falcon.Web.Api.MaintenanceProcessing.Public;
+using Falcon.Web.Api.Notification.Public;
 using System.Threading.Tasks;
 
 namespace Falcon.Web.Api.InquiryProcessing.Private
@@ -10,8 +11,15 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
         private readonly IGlobalApplicationState mGlobalAppState;
         private readonly IGameConfig mGameConfig;
         private readonly IQuestInMemoryProcessor mQuestProcessor;
-        public ServerInquiryProcessor(IClientApplicationState ClientAppState ,IGlobalApplicationState GlobalAppState , IGameConfig GameConfig , IQuestInMemoryProcessor QuestsInMemoryProcessor)
+        private readonly INotificationData mNotificationData;
+        public ServerInquiryProcessor(
+            IClientApplicationState ClientAppState ,
+            IGlobalApplicationState GlobalAppState , 
+            IGameConfig GameConfig , 
+            IQuestInMemoryProcessor QuestsInMemoryProcessor , 
+            INotificationData Notification)
         {
+            mNotificationData = Notification;
             mClientAppState = ClientAppState;
             mGlobalAppState = GlobalAppState;
             mGameConfig = GameConfig;
@@ -23,6 +31,8 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
             mGlobalAppState.ReadStateFromDatabase();
             mGameConfig.ReadStateFromDatabase();
             mQuestProcessor.ReadStateFromDatabase();
+            mNotificationData.ReadStateFromDatabase();
+
 
             return true;
         }

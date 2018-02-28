@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Falcon.Web.Common.Memmory
+﻿namespace Falcon.Web.Common.Memmory
 {
-    public enum GlobalVariables { ConcurrencyIssueResolved }
+    public enum GlobalVariables { ConcurrencyIssueResolved , LevelToTakeSnapshot }
     public interface IMemoryStore
     {
         void SaveState<T>(GlobalVariables Variable , T Data);

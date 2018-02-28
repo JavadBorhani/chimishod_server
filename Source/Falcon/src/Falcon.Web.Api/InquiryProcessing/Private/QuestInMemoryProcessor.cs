@@ -5,14 +5,17 @@ using Falcon.Web.Api.InquiryProcessing.Public;
 using Falcon.Web.Common;
 using Falcon.Web.Models.Api.Quest;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 
 namespace Falcon.Web.Api.InquiryProcessing.Private
 {
     public class QuestInMemoryProcessor : IQuestInMemoryProcessor
     {
-        private Dictionary<int, SQuest> mQuests = new Dictionary<int, SQuest>();
+        private ConcurrentDictionary<int, SQuest> mQuests = new ConcurrentDictionary<int, SQuest>();
+        private ConcurrentDictionary<int, SQuest> mLevelQuests = new ConcurrentDictionary<int, SQuest>();
 
         public virtual IDbContext mDB
         {
@@ -30,7 +33,22 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
             }
         }
 
-        public Dictionary<int, SQuest> GetState()
+        public SQuest GetQuestByID(int ID)
+        {
+            SQuest data;
+            mQuests.TryGetValue(ID, out data);
+
+            return data;    
+        }
+
+        public SQuest GetQuestByLevelNumber(int LevelNumber)
+        {
+            SQuest data;
+            mLevelQuests.TryGetValue(LevelNumber ,out data);
+            return data;
+        }
+
+        public ConcurrentDictionary<int, SQuest> GetState()
         {
             if(mQuests.Count == 0 )
             {
@@ -44,13 +62,17 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
 
             var query = mDB.Set<Quest>()
                 .AsNoTracking()
+                .Include(u => u.Levels)
                 .OrderBy(u => u.ParentID)
                 .ToArray();
 
             mQuests.Clear();
+            mLevelQuests.Clear();            
 
             for (int i = 0; i < query.Length; ++i)
             {
+                var level = query[i].Levels.FirstOrDefault();
+
                 SQuest quest = new SQuest
                 {
                     QuestNumber = query[i].QuestNumber,
@@ -61,22 +83,36 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
                     QuestColoredIcon = query[i].QuestColoredIcon,
                     QuestOffIcon = query[i].QuestOffIcon,
                     MeanScore = query[i].Mean_Score,
+                    ParentID = query[i].ParentID,
                     ChildQuestNumbers = new List<int>(),
+                    LevelNumber = level.LevelNumber,
                 };
 
-                mQuests.Add(query[i].QuestNumber, quest);
+                //add quest list
+                mQuests.TryAdd(query[i].QuestNumber, quest);
+
+                //add level with quest list
+                mLevelQuests.TryAdd(level.LevelNumber, quest);
 
                 if (query[i].ParentID != null)
                 {
                     int parentID = query[i].ParentID ?? 0;
+
+
+                    //add to quest list 
                     mQuests[parentID].ChildQuestNumbers.Add(query[i].QuestNumber);
+                    //add to level quest list 
+                    mLevelQuests[mQuests[parentID].LevelNumber].ChildQuestNumbers.Add(query[i].QuestNumber);
                 }
+
             }
         }
 
-        public bool SetState(Dictionary<int, SQuest> NewState)
+        public bool SetState(ConcurrentDictionary<int, SQuest> NewState)
         {
             throw new NotImplementedException();
         }
+
+        
     }
 }

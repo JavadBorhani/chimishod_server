@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Runtime.Serialization;
 
 namespace Falcon.Web.Models.Api.Quest
 {
@@ -8,6 +9,7 @@ namespace Falcon.Web.Models.Api.Quest
         Main,
         Finale
     }
+    [DataContract]
     public class SQuest
     {
 
@@ -20,6 +22,10 @@ namespace Falcon.Web.Models.Api.Quest
         public string QuestOffIcon { get; set; }
         public int CoinPrize { get; set; }
         public int MeanScore { get; set; }
+        [IgnoreDataMember]
+        public int? ParentID { get; set; }
+        [IgnoreDataMember]
+        public int LevelNumber { get; set; }
         public List<int> ChildQuestNumbers { get; set; }
     }
 }

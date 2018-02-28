@@ -1,5 +1,6 @@
 ﻿using Falcon.EFCommonContext.DbModel;
 using Falcon.Web.Models.Api.Quest;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Falcon.Data.QueryProcessors
@@ -12,5 +13,6 @@ namespace Falcon.Data.QueryProcessors
         Task<QuestQuestion> GetQuestQuestionLimitedByCurrentUserQuest(int QuestionID);
         Task<SQuestDetail[]> GetQuestDetail(int QuestNumber);
         Task<SFriendQuestDetail[]> GetFriendQuestDetail(int FriendID, int QuestNumber);
+        Task<QuestScore[]> GetUserQuestScoresByIds(List<int> Ids);
     }
 }

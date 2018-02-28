@@ -19,6 +19,7 @@ namespace Falcon.Web.Api.AutoMappingConfiguration.QuestMap
                 .ForMember(s => s.QuestOffIcon, m => m.MapFrom(s => s.QuestOffIcon))
                 .ForMember(s => s.CoinPrize, m => m.Ignore())
                 .ForMember(s => s.MeanScore, m => m.Ignore())
+                .ForMember(s => s.LevelNumber , m => m.Ignore())
                 .ForMember(s => s.ChildQuestNumbers, m => m.Ignore());
         }
     }

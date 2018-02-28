@@ -138,5 +138,15 @@ namespace Falcon.Database.SqlServer.QueryProcessors
 
             return questDetail;
         }
+
+        public async Task<QuestScore[]> GetUserQuestScoresByIds(List<int> Ids)
+        {
+            var items = await mDb.Set<QuestScore>()
+                .AsNoTracking()
+                .Where(s => s.UserID == mUserSession.ID && Ids.Contains(s.QuestNumber))
+                .ToArrayAsync();
+
+            return items;
+        }
     }
 }

@@ -3,6 +3,7 @@ using Falcon.Data.QueryProcessors;
 using Falcon.Web.Api.InquiryProcessing.Public;
 using Falcon.Web.Api.MaintenanceProcessing.Public;
 using Falcon.Web.Api.Utilities;
+using Falcon.Web.Common.Memmory;
 using Falcon.Web.Models.Api.Level;
 using Falcon.Web.Models.Api.User;
 using System.Threading.Tasks;
@@ -16,6 +17,7 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
         private readonly INetworkUtils mNetworkUtils;
         private readonly IUUIDGenerator mUUID;
         private readonly IGameConfig mGameConfig;
+        private readonly IMemoryStore mMemory;
 
         public UsersMaintenanceProcessor
             (
@@ -23,13 +25,15 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
             IUserQueryProcessor UserQueryProcessor ,
             INetworkUtils NetworkUtils , 
             IUUIDGenerator Generator , 
-            IGameConfig GameConfig)
+            IGameConfig GameConfig , 
+            IMemoryStore Memory)
         {
             mUserQuery = UserQueryProcessor;
             mUserInfoQuery = UserInfoQuery;
             mNetworkUtils = NetworkUtils;
             mUUID = Generator;
             mGameConfig = GameConfig;
+            mMemory = Memory;
         }
 
         public async Task<int> LevelUp(int Prize)
@@ -52,6 +56,9 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
                     {
                         totalCoin = await mUserQuery.IncreaseCoin(levelPrize);
                     }
+                    //push the level
+
+                    mMemory.SaveState(GlobalVariables.LevelToTakeSnapshot, info.LevelUpNumber);
                 }
 
                 Prize = 0; 

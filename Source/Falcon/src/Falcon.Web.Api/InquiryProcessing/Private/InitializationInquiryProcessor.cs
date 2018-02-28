@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Falcon.Web.Api.InquiryProcessing.Public;
 using Falcon.Web.Api.MaintenanceProcessing.Public;
+using Falcon.Web.Api.Notification.Public;
 using Falcon.Web.Models.Api.User;
 using System.Threading.Tasks;
 
@@ -20,6 +21,7 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
             ILevelInquiryProcessor LevelInquiry,
             IClientApplicationState ClientAppState,
             IServerInquiryProcessor ServerInquiry,
+            INotificationData Notification,
             IMapper Mapper
             )
         {

@@ -6,6 +6,7 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
 {
     public class ImageUploaderMaintenanceProcessor : IImageUploaderMaintenanceProcessor
     {
+
         
         public ImageUploaderMaintenanceProcessor()
         {
