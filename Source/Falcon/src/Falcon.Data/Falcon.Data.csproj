@@ -66,6 +66,7 @@
     <Compile Include="QueryProcessors\IQuestionReportQueryProcessor.cs" />
     <Compile Include="QueryProcessors\IQuestionSelectorQueryProcessor.cs" />
     <Compile Include="QueryProcessors\IQuestionsQueryProcessor.cs" />
+    <Compile Include="QueryProcessors\IQuestSnapshotQueryProcessor.cs" />
     <Compile Include="QueryProcessors\IQuestsQueryProcessor.cs" />
     <Compile Include="QueryProcessors\IScoringQueryProcessor.cs" />
     <Compile Include="QueryProcessors\ISentQueryProcessor.cs" />

@@ -126,6 +126,7 @@ namespace Falcon.Web.Api
             container.Bind<ISentQueryProcessor>().To<SentQueryProcessor>().InRequestScope();
             container.Bind<IUserQuestAnswerQueryProcessor>().To<UserQuestAnswerQueryProcessor>().InRequestScope();
             container.Bind<IFeedbackQueryProcessor>().To<FeedbackQueryProcessor>().InRequestScope();
+            container.Bind<IQuestSnapshotQueryProcessor>().To<QuestSnapshotQueryProcessor>().InRequestScope();
 
             //summary: Reusing an special Component With Background Process and Http In RequestScope
             //container.Bind<IUserStatQueryProcessor>()

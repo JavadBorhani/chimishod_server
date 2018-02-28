@@ -80,6 +80,7 @@
     <Compile Include="SqlServer\QueryProcessors\QuestionReportQueryProcessor.cs" />
     <Compile Include="SqlServer\QueryProcessors\QuestionSelectorQueryProcessor.cs" />
     <Compile Include="SqlServer\QueryProcessors\QuestionsQueryProcessor.cs" />
+    <Compile Include="SqlServer\QueryProcessors\QuestSnapshotQueryProcessor.cs" />
     <Compile Include="SqlServer\QueryProcessors\QuestsQueryProcessor.cs" />
     <Compile Include="SqlServer\QueryProcessors\ScoringQueryProcessor.cs" />
     <Compile Include="SqlServer\QueryProcessors\SentQueryProcessor.cs" />
