@@ -31,7 +31,7 @@ namespace Falcon.Web.Api.Controllers.V2
         {
             if (Request.Content.IsMimeMultipartContent())
             {
-                int maxLength = 3 * 1024 * 1024;
+                int maxLength = 100 * 1024;
 
                 int result = mUserSession.ID;
                 var badRequest = false;
@@ -70,8 +70,9 @@ namespace Falcon.Web.Api.Controllers.V2
                 }
                 else
                 {
-                    var amount = await mUserMaintenance.SaveImageUrl(Constants.ServerVariables.ImageUploadLocation + mUserSession.ID + ".jpg");
-                    return Ok(true);
+                    var path = Constants.ServerVariables.ImageUploadLocation + mUserSession.ID + ".jpg";
+                    var amount = await mUserMaintenance.SaveImageUrl(path);
+                    return Ok(path);
                 }
                
             }

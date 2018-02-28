@@ -31,7 +31,7 @@ namespace Falcon.Web.Api.Controllers.V2
             if (!ModelState.IsValid)
                 return BadRequest();
 
-            var time = mDateTime.Now;
+            var time = mDateTime.Now.AddSeconds(-1);
 
             var lastData = await mPollingProcessor.PollingMainRequests(Inquiry);
 
