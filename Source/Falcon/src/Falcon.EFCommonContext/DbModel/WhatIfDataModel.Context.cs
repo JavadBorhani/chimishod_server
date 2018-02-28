@@ -20,6 +20,7 @@ namespace Falcon.EFCommonContext.DbModel
             : base("name=DbEntity")
         {
         }
+
         public DbEntity(string NameOrConnectionString) : base(NameOrConnectionString)
         {
         }
@@ -45,8 +46,10 @@ namespace Falcon.EFCommonContext.DbModel
         public virtual DbSet<Quest> Quests { get; set; }
         public virtual DbSet<Question> Questions { get; set; }
         public virtual DbSet<QuestionAction> QuestionActions { get; set; }
+        public virtual DbSet<QuestPeopleScore> QuestPeopleScores { get; set; }
         public virtual DbSet<QuestQuestion> QuestQuestions { get; set; }
         public virtual DbSet<QuestScore> QuestScores { get; set; }
+        public virtual DbSet<QuestScoreSnapshot> QuestScoreSnapshots { get; set; }
         public virtual DbSet<QuestType> QuestTypes { get; set; }
         public virtual DbSet<Relationship> Relationships { get; set; }
         public virtual DbSet<RelationshipStatu> RelationshipStatus { get; set; }

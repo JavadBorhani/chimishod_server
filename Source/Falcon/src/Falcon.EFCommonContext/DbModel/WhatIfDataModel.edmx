@@ -239,6 +239,15 @@
           <Property Name="MarketIntentString" Type="varchar" MaxLength="100" />
           <Property Name="AppStoreUri" Type="varchar" MaxLength="100" />
         </EntityType>
+        <EntityType Name="QuestPeopleScore">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="LevelNumber" Type="int" Nullable="false" />
+          <Property Name="QuestNumber" Type="int" Nullable="false" />
+          <Property Name="MeanScorePoint" Type="int" Nullable="false" />
+        </EntityType>
         <EntityType Name="QuestQuestions">
           <Key>
             <PropertyRef Name="ID" />
@@ -259,6 +268,18 @@
           <Property Name="UserID" Type="int" Nullable="false" />
           <Property Name="QuestNumber" Type="int" Nullable="false" />
           <Property Name="Score" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="QuestScoreSnapshot">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="UserLevelNumber" Type="int" Nullable="false" />
+          <Property Name="QuestNumber" Type="int" Nullable="false" />
+          <Property Name="ScorePoint" Type="int" Nullable="false" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+          <Property Name="UpdatedDate" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="QuestTypes">
           <Key>
@@ -668,6 +689,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_QuestPeopleScore_Level">
+          <End Role="Level" Type="Self.Level" Multiplicity="1" />
+          <End Role="QuestPeopleScore" Type="Self.QuestPeopleScore" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Level">
+              <PropertyRef Name="LevelNumber" />
+            </Principal>
+            <Dependent Role="QuestPeopleScore">
+              <PropertyRef Name="LevelNumber" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_QuestPeopleScore_Quest">
+          <End Role="Quest" Type="Self.Quest" Multiplicity="1" />
+          <End Role="QuestPeopleScore" Type="Self.QuestPeopleScore" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Quest">
+              <PropertyRef Name="QuestNumber" />
+            </Principal>
+            <Dependent Role="QuestPeopleScore">
+              <PropertyRef Name="QuestNumber" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_QuestQuestions_Quest">
           <End Role="Quest" Type="Self.Quest" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -718,6 +763,44 @@
               <PropertyRef Name="ID" />
             </Principal>
             <Dependent Role="QuestScore">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_QuestScoreSnapshot_Level">
+          <End Role="Level" Type="Self.Level" Multiplicity="1" />
+          <End Role="QuestScoreSnapshot" Type="Self.QuestScoreSnapshot" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Level">
+              <PropertyRef Name="LevelNumber" />
+            </Principal>
+            <Dependent Role="QuestScoreSnapshot">
+              <PropertyRef Name="UserLevelNumber" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_QuestScoreSnapshot_Quest">
+          <End Role="Quest" Type="Self.Quest" Multiplicity="1" />
+          <End Role="QuestScoreSnapshot" Type="Self.QuestScoreSnapshot" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Quest">
+              <PropertyRef Name="QuestNumber" />
+            </Principal>
+            <Dependent Role="QuestScoreSnapshot">
+              <PropertyRef Name="QuestNumber" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_QuestScoreSnapshot_User">
+          <End Role="User" Type="Self.User" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="QuestScoreSnapshot" Type="Self.QuestScoreSnapshot" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="QuestScoreSnapshot">
               <PropertyRef Name="UserID" />
             </Dependent>
           </ReferentialConstraint>
@@ -1058,8 +1141,10 @@
           <EntitySet Name="Quest" EntityType="Self.Quest" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Question" EntityType="Self.Question" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="QuestionAction" EntityType="Self.QuestionAction" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="QuestPeopleScore" EntityType="Self.QuestPeopleScore" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="QuestQuestions" EntityType="Self.QuestQuestions" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="QuestScore" EntityType="Self.QuestScore" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="QuestScoreSnapshot" EntityType="Self.QuestScoreSnapshot" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="QuestTypes" EntityType="Self.QuestTypes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Relationship" EntityType="Self.Relationship" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="RelationshipStatus" EntityType="Self.RelationshipStatus" Schema="dbo" store:Type="Tables" />
@@ -1137,6 +1222,14 @@
             <End Role="User" EntitySet="User" />
             <End Role="Question" EntitySet="Question" />
           </AssociationSet>
+          <AssociationSet Name="FK_QuestPeopleScore_Level" Association="Self.FK_QuestPeopleScore_Level">
+            <End Role="Level" EntitySet="Level" />
+            <End Role="QuestPeopleScore" EntitySet="QuestPeopleScore" />
+          </AssociationSet>
+          <AssociationSet Name="FK_QuestPeopleScore_Quest" Association="Self.FK_QuestPeopleScore_Quest">
+            <End Role="Quest" EntitySet="Quest" />
+            <End Role="QuestPeopleScore" EntitySet="QuestPeopleScore" />
+          </AssociationSet>
           <AssociationSet Name="FK_QuestQuestions_Quest" Association="Self.FK_QuestQuestions_Quest">
             <End Role="Quest" EntitySet="Quest" />
             <End Role="QuestQuestions" EntitySet="QuestQuestions" />
@@ -1152,6 +1245,18 @@
           <AssociationSet Name="FK_QuestScore_User" Association="Self.FK_QuestScore_User">
             <End Role="User" EntitySet="User" />
             <End Role="QuestScore" EntitySet="QuestScore" />
+          </AssociationSet>
+          <AssociationSet Name="FK_QuestScoreSnapshot_Level" Association="Self.FK_QuestScoreSnapshot_Level">
+            <End Role="Level" EntitySet="Level" />
+            <End Role="QuestScoreSnapshot" EntitySet="QuestScoreSnapshot" />
+          </AssociationSet>
+          <AssociationSet Name="FK_QuestScoreSnapshot_Quest" Association="Self.FK_QuestScoreSnapshot_Quest">
+            <End Role="Quest" EntitySet="Quest" />
+            <End Role="QuestScoreSnapshot" EntitySet="QuestScoreSnapshot" />
+          </AssociationSet>
+          <AssociationSet Name="FK_QuestScoreSnapshot_User" Association="Self.FK_QuestScoreSnapshot_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="QuestScoreSnapshot" EntitySet="QuestScoreSnapshot" />
           </AssociationSet>
           <AssociationSet Name="FK_Relationship_RelationshipStatus" Association="Self.FK_Relationship_RelationshipStatus">
             <End Role="RelationshipStatus" EntitySet="RelationshipStatus" />
@@ -1297,8 +1402,10 @@
           <EntitySet Name="Quests" EntityType="Falcon.DbModel.Quest" />
           <EntitySet Name="Questions" EntityType="Falcon.DbModel.Question" />
           <EntitySet Name="QuestionActions" EntityType="Falcon.DbModel.QuestionAction" />
+          <EntitySet Name="QuestPeopleScores" EntityType="Falcon.DbModel.QuestPeopleScore" />
           <EntitySet Name="QuestQuestions" EntityType="Falcon.DbModel.QuestQuestion" />
           <EntitySet Name="QuestScores" EntityType="Falcon.DbModel.QuestScore" />
+          <EntitySet Name="QuestScoreSnapshots" EntityType="Falcon.DbModel.QuestScoreSnapshot" />
           <EntitySet Name="QuestTypes" EntityType="Falcon.DbModel.QuestType" />
           <EntitySet Name="Relationships" EntityType="Falcon.DbModel.Relationship" />
           <EntitySet Name="RelationshipStatus" EntityType="Falcon.DbModel.RelationshipStatu" />
@@ -1348,6 +1455,14 @@
             <End Role="Quest" EntitySet="Quests" />
             <End Role="Level" EntitySet="Levels" />
           </AssociationSet>
+          <AssociationSet Name="FK_QuestPeopleScore_Level" Association="Falcon.DbModel.FK_QuestPeopleScore_Level">
+            <End Role="Level" EntitySet="Levels" />
+            <End Role="QuestPeopleScore" EntitySet="QuestPeopleScores" />
+          </AssociationSet>
+          <AssociationSet Name="FK_QuestScoreSnapshot_Level" Association="Falcon.DbModel.FK_QuestScoreSnapshot_Level">
+            <End Role="Level" EntitySet="Levels" />
+            <End Role="QuestScoreSnapshot" EntitySet="QuestScoreSnapshots" />
+          </AssociationSet>
           <AssociationSet Name="FK_User_Level" Association="Falcon.DbModel.FK_User_Level">
             <End Role="Level" EntitySet="Levels" />
             <End Role="User" EntitySet="Users" />
@@ -1380,6 +1495,10 @@
             <End Role="QuestType" EntitySet="QuestTypes" />
             <End Role="Quest" EntitySet="Quests" />
           </AssociationSet>
+          <AssociationSet Name="FK_QuestPeopleScore_Quest" Association="Falcon.DbModel.FK_QuestPeopleScore_Quest">
+            <End Role="Quest" EntitySet="Quests" />
+            <End Role="QuestPeopleScore" EntitySet="QuestPeopleScores" />
+          </AssociationSet>
           <AssociationSet Name="FK_QuestQuestions_Quest" Association="Falcon.DbModel.FK_QuestQuestions_Quest">
             <End Role="Quest" EntitySet="Quests" />
             <End Role="QuestQuestion" EntitySet="QuestQuestions" />
@@ -1387,6 +1506,10 @@
           <AssociationSet Name="FK_QuestScore_Quest" Association="Falcon.DbModel.FK_QuestScore_Quest">
             <End Role="Quest" EntitySet="Quests" />
             <End Role="QuestScore" EntitySet="QuestScores" />
+          </AssociationSet>
+          <AssociationSet Name="FK_QuestScoreSnapshot_Quest" Association="Falcon.DbModel.FK_QuestScoreSnapshot_Quest">
+            <End Role="Quest" EntitySet="Quests" />
+            <End Role="QuestScoreSnapshot" EntitySet="QuestScoreSnapshots" />
           </AssociationSet>
           <AssociationSet Name="FK_UserQuestAnswers_Quest" Association="Falcon.DbModel.FK_UserQuestAnswers_Quest">
             <End Role="Quest" EntitySet="Quests" />
@@ -1419,6 +1542,10 @@
           <AssociationSet Name="FK_QuestScore_User" Association="Falcon.DbModel.FK_QuestScore_User">
             <End Role="User" EntitySet="Users" />
             <End Role="QuestScore" EntitySet="QuestScores" />
+          </AssociationSet>
+          <AssociationSet Name="FK_QuestScoreSnapshot_User" Association="Falcon.DbModel.FK_QuestScoreSnapshot_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="QuestScoreSnapshot" EntitySet="QuestScoreSnapshots" />
           </AssociationSet>
           <AssociationSet Name="FK_Relationship_RelationshipStatus" Association="Falcon.DbModel.FK_Relationship_RelationshipStatus">
             <End Role="RelationshipStatu" EntitySet="RelationshipStatus" />
@@ -1603,6 +1730,8 @@
           <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="UpdatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="Quest" Relationship="Falcon.DbModel.FK_Level_Quest" FromRole="Level" ToRole="Quest" />
+          <NavigationProperty Name="QuestPeopleScores" Relationship="Falcon.DbModel.FK_QuestPeopleScore_Level" FromRole="Level" ToRole="QuestPeopleScore" />
+          <NavigationProperty Name="QuestScoreSnapshots" Relationship="Falcon.DbModel.FK_QuestScoreSnapshot_Level" FromRole="Level" ToRole="QuestScoreSnapshot" />
           <NavigationProperty Name="Users" Relationship="Falcon.DbModel.FK_User_Level" FromRole="Level" ToRole="User" />
         </EntityType>
         <EntityType Name="MarketInfo">
@@ -1706,8 +1835,10 @@
           <NavigationProperty Name="Quest1" Relationship="Falcon.DbModel.FK_Quest_Quest" FromRole="Quest" ToRole="Quest1" />
           <NavigationProperty Name="Quest2" Relationship="Falcon.DbModel.FK_Quest_Quest" FromRole="Quest1" ToRole="Quest" />
           <NavigationProperty Name="QuestType" Relationship="Falcon.DbModel.FK_Quest_QuestTypes" FromRole="Quest" ToRole="QuestType" />
+          <NavigationProperty Name="QuestPeopleScores" Relationship="Falcon.DbModel.FK_QuestPeopleScore_Quest" FromRole="Quest" ToRole="QuestPeopleScore" />
           <NavigationProperty Name="QuestQuestions" Relationship="Falcon.DbModel.FK_QuestQuestions_Quest" FromRole="Quest" ToRole="QuestQuestion" />
           <NavigationProperty Name="QuestScores" Relationship="Falcon.DbModel.FK_QuestScore_Quest" FromRole="Quest" ToRole="QuestScore" />
+          <NavigationProperty Name="QuestScoreSnapshots" Relationship="Falcon.DbModel.FK_QuestScoreSnapshot_Quest" FromRole="Quest" ToRole="QuestScoreSnapshot" />
           <NavigationProperty Name="UserQuestAnswers" Relationship="Falcon.DbModel.FK_UserQuestAnswers_Quest" FromRole="Quest" ToRole="UserQuestAnswer" />
         </EntityType>
         <EntityType Name="Question">
@@ -1758,6 +1889,17 @@
           <Property Name="AppStoreUri" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Questions" Relationship="Falcon.DbModel.FK_Question_QuestionAction" FromRole="QuestionAction" ToRole="Question" />
         </EntityType>
+        <EntityType Name="QuestPeopleScore">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="LevelNumber" Type="Int32" Nullable="false" />
+          <Property Name="QuestNumber" Type="Int32" Nullable="false" />
+          <Property Name="MeanScorePoint" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Level" Relationship="Falcon.DbModel.FK_QuestPeopleScore_Level" FromRole="QuestPeopleScore" ToRole="Level" />
+          <NavigationProperty Name="Quest" Relationship="Falcon.DbModel.FK_QuestPeopleScore_Quest" FromRole="QuestPeopleScore" ToRole="Quest" />
+        </EntityType>
         <EntityType Name="QuestQuestion">
           <Key>
             <PropertyRef Name="ID" />
@@ -1782,6 +1924,21 @@
           <Property Name="Score" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Quest" Relationship="Falcon.DbModel.FK_QuestScore_Quest" FromRole="QuestScore" ToRole="Quest" />
           <NavigationProperty Name="User" Relationship="Falcon.DbModel.FK_QuestScore_User" FromRole="QuestScore" ToRole="User" />
+        </EntityType>
+        <EntityType Name="QuestScoreSnapshot">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="UserLevelNumber" Type="Int32" Nullable="false" />
+          <Property Name="QuestNumber" Type="Int32" Nullable="false" />
+          <Property Name="ScorePoint" Type="Int32" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UpdatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Level" Relationship="Falcon.DbModel.FK_QuestScoreSnapshot_Level" FromRole="QuestScoreSnapshot" ToRole="Level" />
+          <NavigationProperty Name="Quest" Relationship="Falcon.DbModel.FK_QuestScoreSnapshot_Quest" FromRole="QuestScoreSnapshot" ToRole="Quest" />
+          <NavigationProperty Name="User" Relationship="Falcon.DbModel.FK_QuestScoreSnapshot_User" FromRole="QuestScoreSnapshot" ToRole="User" />
         </EntityType>
         <EntityType Name="QuestType">
           <Key>
@@ -1971,6 +2128,7 @@
           <NavigationProperty Name="PlatformType" Relationship="Falcon.DbModel.FK_User_PlatformTypes" FromRole="User" ToRole="PlatformType" />
           <NavigationProperty Name="Questions" Relationship="Falcon.DbModel.FK_Question_User" FromRole="User" ToRole="Question" />
           <NavigationProperty Name="QuestScores" Relationship="Falcon.DbModel.FK_QuestScore_User" FromRole="User" ToRole="QuestScore" />
+          <NavigationProperty Name="QuestScoreSnapshots" Relationship="Falcon.DbModel.FK_QuestScoreSnapshot_User" FromRole="User" ToRole="QuestScoreSnapshot" />
           <NavigationProperty Name="Relationships" Relationship="Falcon.DbModel.FK_Relationship_User" FromRole="User" ToRole="Relationship" />
           <NavigationProperty Name="Relationships1" Relationship="Falcon.DbModel.FK_Relationship_User_Two" FromRole="User" ToRole="Relationship" />
           <NavigationProperty Name="Relationships2" Relationship="Falcon.DbModel.FK_RelationshipUserOne" FromRole="User" ToRole="Relationship" />
@@ -2147,6 +2305,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_QuestPeopleScore_Level">
+          <End Type="Falcon.DbModel.Level" Role="Level" Multiplicity="1" />
+          <End Type="Falcon.DbModel.QuestPeopleScore" Role="QuestPeopleScore" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Level">
+              <PropertyRef Name="LevelNumber" />
+            </Principal>
+            <Dependent Role="QuestPeopleScore">
+              <PropertyRef Name="LevelNumber" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_QuestScoreSnapshot_Level">
+          <End Type="Falcon.DbModel.Level" Role="Level" Multiplicity="1" />
+          <End Type="Falcon.DbModel.QuestScoreSnapshot" Role="QuestScoreSnapshot" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Level">
+              <PropertyRef Name="LevelNumber" />
+            </Principal>
+            <Dependent Role="QuestScoreSnapshot">
+              <PropertyRef Name="UserLevelNumber" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_User_Level">
           <End Type="Falcon.DbModel.Level" Role="Level" Multiplicity="1" />
           <End Type="Falcon.DbModel.User" Role="User" Multiplicity="*" />
@@ -2251,6 +2433,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_QuestPeopleScore_Quest">
+          <End Type="Falcon.DbModel.Quest" Role="Quest" Multiplicity="1" />
+          <End Type="Falcon.DbModel.QuestPeopleScore" Role="QuestPeopleScore" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Quest">
+              <PropertyRef Name="QuestNumber" />
+            </Principal>
+            <Dependent Role="QuestPeopleScore">
+              <PropertyRef Name="QuestNumber" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_QuestQuestions_Quest">
           <End Type="Falcon.DbModel.Quest" Role="Quest" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -2275,6 +2469,18 @@
               <PropertyRef Name="QuestNumber" />
             </Principal>
             <Dependent Role="QuestScore">
+              <PropertyRef Name="QuestNumber" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_QuestScoreSnapshot_Quest">
+          <End Type="Falcon.DbModel.Quest" Role="Quest" Multiplicity="1" />
+          <End Type="Falcon.DbModel.QuestScoreSnapshot" Role="QuestScoreSnapshot" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Quest">
+              <PropertyRef Name="QuestNumber" />
+            </Principal>
+            <Dependent Role="QuestScoreSnapshot">
               <PropertyRef Name="QuestNumber" />
             </Dependent>
           </ReferentialConstraint>
@@ -2379,6 +2585,20 @@
               <PropertyRef Name="ID" />
             </Principal>
             <Dependent Role="QuestScore">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_QuestScoreSnapshot_User">
+          <End Type="Falcon.DbModel.User" Role="User" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="Falcon.DbModel.QuestScoreSnapshot" Role="QuestScoreSnapshot" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="QuestScoreSnapshot">
               <PropertyRef Name="UserID" />
             </Dependent>
           </ReferentialConstraint>
@@ -2859,6 +3079,16 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="QuestPeopleScores">
+            <EntityTypeMapping TypeName="Falcon.DbModel.QuestPeopleScore">
+              <MappingFragment StoreEntitySet="QuestPeopleScore">
+                <ScalarProperty Name="MeanScorePoint" ColumnName="MeanScorePoint" />
+                <ScalarProperty Name="QuestNumber" ColumnName="QuestNumber" />
+                <ScalarProperty Name="LevelNumber" ColumnName="LevelNumber" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="QuestQuestions">
             <EntityTypeMapping TypeName="Falcon.DbModel.QuestQuestion">
               <MappingFragment StoreEntitySet="QuestQuestions">
@@ -2877,6 +3107,19 @@
               <MappingFragment StoreEntitySet="QuestScore">
                 <ScalarProperty Name="Score" ColumnName="Score" />
                 <ScalarProperty Name="QuestNumber" ColumnName="QuestNumber" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="QuestScoreSnapshots">
+            <EntityTypeMapping TypeName="Falcon.DbModel.QuestScoreSnapshot">
+              <MappingFragment StoreEntitySet="QuestScoreSnapshot">
+                <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="ScorePoint" ColumnName="ScorePoint" />
+                <ScalarProperty Name="QuestNumber" ColumnName="QuestNumber" />
+                <ScalarProperty Name="UserLevelNumber" ColumnName="UserLevelNumber" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>

@@ -113,6 +113,8 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
                     };
 
                     var questsToTakeSnapshot = await mQuestsQueryProcessor.GetUserQuestScoresByIds(questIdsToTakeSnapshot);
+                    
+                    
 
 
                     //take snapshot 

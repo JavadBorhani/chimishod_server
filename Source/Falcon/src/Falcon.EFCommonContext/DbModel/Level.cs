@@ -17,6 +17,8 @@ namespace Falcon.EFCommonContext.DbModel
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Level()
         {
+            this.QuestPeopleScores = new HashSet<QuestPeopleScore>();
+            this.QuestScoreSnapshots = new HashSet<QuestScoreSnapshot>();
             this.Users = new HashSet<User>();
         }
     
@@ -28,6 +30,10 @@ namespace Falcon.EFCommonContext.DbModel
         public System.DateTime UpdatedDate { get; set; }
     
         public virtual Quest Quest { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<QuestPeopleScore> QuestPeopleScores { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<QuestScoreSnapshot> QuestScoreSnapshots { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<User> Users { get; set; }
     }
