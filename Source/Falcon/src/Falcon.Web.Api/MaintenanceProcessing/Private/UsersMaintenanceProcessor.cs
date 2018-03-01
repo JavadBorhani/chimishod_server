@@ -58,7 +58,7 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
                     }
                     //push the level
 
-                    mMemory.SaveState(GlobalVariables.LevelToTakeSnapshot, info.LevelUpNumber);
+                    mMemory.SaveState(GlobalVariables.LevelToTakeSnapshot, info.LevelUpNumber - 1 );
                 }
 
                 Prize = 0; 

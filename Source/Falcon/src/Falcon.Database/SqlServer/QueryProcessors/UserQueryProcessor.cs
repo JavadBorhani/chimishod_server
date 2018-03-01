@@ -133,7 +133,6 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             {
                 SaveFailed = false;
                 level = LevelUpChecking(ref player, player.Level.ScoreCeil, Prize, (player.LevelNumber) + 1);
-                level = new SLevelUpInfo();
                 try
                 {
                     await mDb.SaveChangesAsync();

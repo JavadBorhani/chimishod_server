@@ -110,8 +110,8 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
 
                     //add to quest list 
                     mQuests[parentID].ChildQuestNumbers.Add(query[i].QuestNumber);
-                    //add to level quest list 
-                    mLevelQuests[mQuests[parentID].LevelNumber].ChildQuestNumbers.Add(query[i].QuestNumber);
+
+                    //add to level quest list -> doesn't need to be added since they reference the same memory 
                 }
 
             }

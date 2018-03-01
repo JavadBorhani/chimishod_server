@@ -81,13 +81,6 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
                         await mUserQuery.IncreaseCoin(actionCoin);
                     }
 
-                    var coin = await mUserMaintenance.LevelUp(mClientAppState.XPLevelFactor);
-
-                    if(coin != Constants.DefaultValues.NoNewCoin)
-                    {
-                        await mQuestsMaintenance.TakeSnapshot();
-                    }
-
                     switch ((HashTagID)question.HashTagID)
                     {
 
@@ -96,6 +89,13 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
                             await mQuestsMaintenance.AddScore(question.ID, Answer.YesNoState);
 
                             break;
+                    }
+
+                    var coin = await mUserMaintenance.LevelUp(mClientAppState.XPLevelFactor);
+
+                    if (coin != Constants.DefaultValues.NoNewCoin)
+                    {
+                        await mQuestsMaintenance.TakeSnapshot();
                     }
 
                     return true;

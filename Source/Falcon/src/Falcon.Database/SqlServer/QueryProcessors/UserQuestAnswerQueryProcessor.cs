@@ -30,7 +30,7 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             {
                 UserID = mUserSession.ID,
                 QuestNumber = Answer.QuestNumber,
-                Point = Answer.QuestNumber,
+                Point = Answer.Point,
             };
 
             mDb.Set<UserQuestAnswer>().Add(userAnswers);
@@ -52,7 +52,7 @@ namespace Falcon.Database.SqlServer.QueryProcessors
                 {
                     UserID = mUserSession.ID,
                     QuestNumber = Answer[i].QuestNumber,
-                    Point = Answer[i].QuestNumber,
+                    Point = Answer[i].Point,
                 };
             }
 

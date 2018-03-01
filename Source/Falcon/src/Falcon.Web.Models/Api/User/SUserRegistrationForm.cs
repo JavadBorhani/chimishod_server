@@ -19,7 +19,7 @@ namespace Falcon.Web.Models.Api.User
         public string UUID { get; set;}
 
         [Required]
-        [StringLength(maximumLength: 50, MinimumLength = 3)]
+        [StringLength(maximumLength: 40, MinimumLength = 3)]
         public string UserName { get; set; }
 
         [Required]

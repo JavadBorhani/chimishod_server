@@ -10,6 +10,7 @@ namespace Falcon.Web.Models.Api
         public string Email { get; set; }
 
         [Required (AllowEmptyStrings = false)]
+        
         public string UserName { get; set; }
 
         public bool IsEditable { get; set; }

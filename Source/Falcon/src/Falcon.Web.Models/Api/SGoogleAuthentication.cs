@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Falcon.Web.Models.Api
 {
@@ -11,6 +6,7 @@ namespace Falcon.Web.Models.Api
     {
         [EmailAddress(ErrorMessage = "email is not correct")]
         [Required(AllowEmptyStrings = false)]
+        [StringLength(maximumLength: 200, MinimumLength = 5)]
         public string Email { get; set; }
         public string Credentials { get; set; }
     }
