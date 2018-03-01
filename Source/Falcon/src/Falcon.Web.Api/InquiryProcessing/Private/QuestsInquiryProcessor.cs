@@ -33,7 +33,7 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
             return mMapper.Map<SQuestion[]>(questions);
         }
 
-        public async Task<SQuestDetail[]> GetQuestDetail(int QuestNumebr)
+        public async Task<SQuestDetail[]> GetQuestDetail(int QuestNumebr , bool Alive)
         {
             var questDetail = await mQuestQuery.GetQuestDetail(QuestNumebr);
 

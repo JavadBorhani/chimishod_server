@@ -8,5 +8,8 @@ namespace Falcon.Web.Models.Api.Quest
         public int QuestNumber { get; set; }
 
         public int FriendID { get; set; }
+
+        [Required]
+        public bool Alive { get; set; }
     }
 }
