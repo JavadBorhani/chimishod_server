@@ -41,7 +41,7 @@ namespace Falcon.Web.Api.Controllers.V2
             if (!ModelState.IsValid)
                 return null;
 
-            var data = await mQuestInqiury.GetQuestDetail(Inquiry.QuestNumber , Inquiry.Alive);
+            var data = await mQuestInqiury.GetQuestDetail(Inquiry);
 
             return data;
         }

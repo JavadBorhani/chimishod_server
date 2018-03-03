@@ -7,6 +7,10 @@ namespace Falcon.Web.Models.Api.Quest
         [Required]
         public int QuestNumber { get; set; }
 
+        [Required]
+        public int LevelNumber { get; set; }
+
+        [Range(0 , int.MaxValue)]
         public int FriendID { get; set; }
 
         [Required]

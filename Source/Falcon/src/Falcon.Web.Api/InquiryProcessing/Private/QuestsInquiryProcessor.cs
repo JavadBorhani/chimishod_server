@@ -11,11 +11,13 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
     {
         private readonly IQuestsQueryProcessor mQuestQuery;
         private readonly IMapper mMapper;
+        private readonly IQuestInMemoryProcessor mQuestInMemory;
 
-        public QuestsInquiryProcessor(IQuestsQueryProcessor QuestQueryProcessor , IMapper Mapper)
+        public QuestsInquiryProcessor(IQuestsQueryProcessor QuestQueryProcessor , IMapper Mapper , IQuestInMemoryProcessor QuestInMemory)
         {
             mQuestQuery = QuestQueryProcessor;
             mMapper = Mapper;
+            mQuestInMemory = QuestInMemory;
         }
         public async Task<SQuest[]> GetQuestList()
         {
@@ -33,11 +35,21 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
             return mMapper.Map<SQuestion[]>(questions);
         }
 
-        public async Task<SQuestDetail[]> GetQuestDetail(int QuestNumebr , bool Alive)
+        public async Task<SQuestDetail[]> GetQuestDetail(SQuestInquiry Inquiry)
         {
-            var questDetail = await mQuestQuery.GetQuestDetail(QuestNumebr);
+            if(Inquiry.Alive)
+            {
+                //fetching quest information from quest;
+                var questDetail = await mQuestQuery.GetQuestDetail(Inquiry);
 
-            return questDetail.Length > 0 ? questDetail : null;
+                return questDetail.Length > 0 ? questDetail : null;
+            }
+            else
+            {
+                //TODO : call without alive 
+                return null;
+            }
+            
         }
 
         public async Task<SFriendQuestDetail[]> GetFriendQuestDetail(int FriendID, int QuestNumber)

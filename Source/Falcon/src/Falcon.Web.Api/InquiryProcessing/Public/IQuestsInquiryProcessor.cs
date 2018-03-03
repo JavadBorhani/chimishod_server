@@ -8,7 +8,7 @@ namespace Falcon.Web.Api.InquiryProcessing.Public
     {
         Task<SQuest[]> GetQuestList();
         Task<SQuestion[]> GetQuestQuestions(int QuestNumber);
-        Task<SQuestDetail[]> GetQuestDetail(int QuestNumebr , bool Alive);
+        Task<SQuestDetail[]> GetQuestDetail(SQuestInquiry Inquiry);
         Task<SFriendQuestDetail[]> GetFriendQuestDetail(int FriendID, int QuestNumber);
     }
 }

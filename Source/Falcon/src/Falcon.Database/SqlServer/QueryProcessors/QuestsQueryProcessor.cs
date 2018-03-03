@@ -4,6 +4,7 @@ using Falcon.Data.QueryProcessors;
 using Falcon.EFCommonContext;
 using Falcon.EFCommonContext.DbModel;
 using Falcon.Web.Models.Api.Quest;
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
@@ -17,6 +18,7 @@ namespace Falcon.Database.SqlServer.QueryProcessors
         private readonly IDateTime mDateTime;
         private readonly IUserSession mUserSession;
         private readonly IUserQueryProcessor mUserQuery;
+
         public QuestsQueryProcessor(IDbContext Database , IDateTime DateTime , IUserSession UserSession , IUserQueryProcessor UserQuery)
         {
             mDb = Database;
@@ -87,7 +89,7 @@ namespace Falcon.Database.SqlServer.QueryProcessors
 
         public async Task<QuestQuestion> GetQuestQuestionLimitedByCurrentUserQuest(int QuestionID)
         {
-            var currentUserQuest = await mUserQuery.GetUserCurrentQuestNumber(); //TODO Optimise this 
+            var currentUserQuest = await mUserQuery.GetUserCurrentQuestNumber(); //TODO Optimize this 
 
             var item = await mDb.Set<QuestQuestion>()
                 .AsNoTracking()
@@ -97,7 +99,7 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             return item;
         }
 
-        public async Task<SQuestDetail[]> GetQuestDetail(int QuestNumber)
+        public async Task<SQuestDetail[]> GetLiveQuestDetail(int LevelNumber , int QuestNumber)
         {
             var questScore = mDb.Set<QuestScore>()
                 .AsNoTracking()
@@ -120,7 +122,7 @@ namespace Falcon.Database.SqlServer.QueryProcessors
 
         public async Task<SFriendQuestDetail[]> GetFriendQuestDetail(int FriendID, int QuestNumber)
         {
-            //TODO : Check if user finished the quest otherwise i'm comparing with the semi state;
+            
             var friendQuestScore = mDb.Set<QuestScore>()
                 .AsNoTracking()
                 .Where(m => m.UserID == FriendID);
@@ -147,6 +149,11 @@ namespace Falcon.Database.SqlServer.QueryProcessors
                 .ToArrayAsync();
 
             return items;
+        }
+
+        public async Task<SQuestDetail[]> GetQuestDetail(int LevelNumber, int QuestNumber)
+        {
+            throw new NotImplementedException();
         }
     }
 }
