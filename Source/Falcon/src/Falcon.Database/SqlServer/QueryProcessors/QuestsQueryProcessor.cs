@@ -4,7 +4,6 @@ using Falcon.Data.QueryProcessors;
 using Falcon.EFCommonContext;
 using Falcon.EFCommonContext.DbModel;
 using Falcon.Web.Models.Api.Quest;
-using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
@@ -99,46 +98,17 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             return item;
         }
 
-        public async Task<SQuestDetail[]> GetLiveQuestDetail(int LevelNumber , int QuestNumber)
+        public async Task<List<QuestScoreSnapshot>> GetFriendQuestDetail(int UserID, int LevelNumber, List<int> QuestNumber)
         {
-            var questScore = mDb.Set<QuestScore>()
+
+            var friendScores = await mDb.Set<QuestScoreSnapshot>()
                 .AsNoTracking()
-                .Where(m => m.UserID == mUserSession.ID);
+                .Where(m => m.UserID == UserID && m.UserLevelNumber == LevelNumber && QuestNumber.Contains(m.QuestNumber))
+                .OrderBy( m => m.QuestNumber)
+                .ToListAsync();
 
-            var questDetail = await mDb.Set<Quest>()
-                .AsNoTracking()
-                .Where(qd => qd.QuestNumber == QuestNumber || qd.ParentID == QuestNumber)
-                .Join(questScore, m => m.QuestNumber, s => s.QuestNumber, (Quest, QuestScore) => new SQuestDetail
-                {
-                    PeopleScore = Quest.Mean_Score,
-                    QuestTitle = Quest.QuestTitle,
-                    QuestNumber = QuestScore.QuestNumber , 
-                    UserScore = QuestScore.Score
-                })
-                .ToArrayAsync();
 
-            return questDetail;
-        }
-
-        public async Task<SFriendQuestDetail[]> GetFriendQuestDetail(int FriendID, int QuestNumber)
-        {
-            
-            var friendQuestScore = mDb.Set<QuestScore>()
-                .AsNoTracking()
-                .Where(m => m.UserID == FriendID);
-
-            var questDetail = await mDb.Set<Quest>()
-                .AsNoTracking()
-                .Where(qd => qd.QuestNumber == QuestNumber)
-                .Join(friendQuestScore, m => m.QuestNumber, s => s.QuestNumber, (Quest, QuestScore) => new SFriendQuestDetail
-                {
-                    QuestNumber = Quest.QuestNumber,
-                    QuestTitle = Quest.QuestTitle,
-                    UserScore = QuestScore.Score
-                })
-                .ToArrayAsync();
-
-            return questDetail;
+            return friendScores;
         }
 
         public async Task<QuestScore[]> GetUserQuestScoresByIds(List<int> Ids)
@@ -151,9 +121,46 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             return items;
         }
 
-        public async Task<SQuestDetail[]> GetQuestDetail(int LevelNumber, int QuestNumber)
+        public async Task<List<SQuestDetail>> GetQuestDetailWithPeopleStatus(int LevelNumber, List<int> QuestNumbers)
         {
-            throw new NotImplementedException();
+
+            var scores = mDb.Set<QuestPeopleScore>()
+                .AsNoTracking()
+                .Where(u => u.LevelNumber == LevelNumber && QuestNumbers.Contains(u.QuestNumber));
+
+            var userScores = await mDb.Set<QuestScoreSnapshot>()
+                .AsNoTracking()
+                .Where(m => m.UserID == mUserSession.ID && m.UserLevelNumber == LevelNumber && QuestNumbers.Contains(m.QuestNumber))
+                .Join(scores, m => m.QuestNumber, u => u.QuestNumber, (scoreSnapshot, peopleScore) => new SQuestDetail
+                {
+                    QuestNumber = scoreSnapshot.QuestNumber,
+                    UserScore = scoreSnapshot.ScorePoint,
+                    PeopleScore = peopleScore.MeanScorePoint,
+                })
+                .ToListAsync();
+
+
+            return userScores;
+        }
+
+        public async Task<List<SQuestDetail>> GetLiveQuestDetailWithPeopleStatus(int LevelNumber, List<int> QuestNumbers)
+        {
+            var scores = mDb.Set<QuestPeopleScore>()
+                .AsNoTracking()
+                .Where(u => u.LevelNumber == LevelNumber && QuestNumbers.Contains(u.QuestNumber));
+
+            var userScores = await mDb.Set<QuestScore>()
+                .AsNoTracking()
+                .Where(m => m.UserID == mUserSession.ID && QuestNumbers.Contains(m.QuestNumber))
+                .Join(scores, m => m.QuestNumber, u => u.QuestNumber, (liveScore, peopleScore) => new SQuestDetail
+                {
+                    QuestNumber = liveScore.QuestNumber,
+                    UserScore = liveScore.Score,
+                    PeopleScore = peopleScore.MeanScorePoint,
+                })
+                .ToListAsync();
+
+            return userScores;
         }
     }
 }

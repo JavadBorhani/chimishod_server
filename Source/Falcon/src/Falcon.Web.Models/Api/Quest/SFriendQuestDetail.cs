@@ -4,6 +4,6 @@
     {
         public int QuestNumber { get; set; }
         public string QuestTitle { get; set; }
-        public int UserScore { get; set; }
+        public float UserScore { get; set; }
     }
 }

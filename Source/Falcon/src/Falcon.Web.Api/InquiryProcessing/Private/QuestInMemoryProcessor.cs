@@ -33,7 +33,7 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
             }
         }
 
-        public SQuest GetQuestByID(int ID)
+        public SQuest GetQuestByQuestNumber(int ID)
         {
             CheckAvalibility();
 

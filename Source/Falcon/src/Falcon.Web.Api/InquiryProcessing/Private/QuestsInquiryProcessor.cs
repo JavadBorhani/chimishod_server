@@ -3,6 +3,8 @@ using Falcon.Data.QueryProcessors;
 using Falcon.Web.Api.InquiryProcessing.Public;
 using Falcon.Web.Models.Api;
 using Falcon.Web.Models.Api.Quest;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Falcon.Web.Api.InquiryProcessing.Private
@@ -37,26 +39,172 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
 
         public async Task<SQuestDetail[]> GetQuestDetail(SQuestInquiry Inquiry)
         {
-            if(Inquiry.Alive)
+            // find quest 
+             if(Inquiry.Alive)
             {
-                //fetching quest information from quest;
-                var questDetail = await mQuestQuery.GetQuestDetail(Inquiry);
+                var questDetail = await GetLiveQuestDetailWithNormalPeople(Inquiry);
+                return questDetail;
 
-                return questDetail.Length > 0 ? questDetail : null;
             }
             else
             {
-                //TODO : call without alive 
-                return null;
+                var result = await GetQuestDetailWithNormalPeopole(Inquiry);
+                return result;
             }
             
         }
 
-        public async Task<SFriendQuestDetail[]> GetFriendQuestDetail(int FriendID, int QuestNumber)
+        private async Task<SQuestDetail[]> GetQuestDetailWithNormalPeopole(SQuestInquiry Inquiry)
         {
-            var friendQuestDetail = await mQuestQuery.GetFriendQuestDetail(FriendID, QuestNumber);
+            var quest = mQuestInMemory.GetQuestByQuestNumber(Inquiry.QuestNumber);
 
-            return friendQuestDetail.Length > 0 ? friendQuestDetail : null ;
+            var questNumbers = new List<int>();
+            int parentQuestNumber;
+
+            if (quest.ParentID == null)
+            {
+                questNumbers.Add(quest.QuestNumber);
+                questNumbers.AddRange(quest.ChildQuestNumbers);
+                parentQuestNumber = quest.QuestNumber;
+            }
+            else
+            {
+                questNumbers.Add(quest.QuestNumber);
+                questNumbers.Add(quest.ParentID ?? 0);
+                parentQuestNumber = quest.ParentID ?? 0;
+            }
+
+
+            var questDetails = await mQuestQuery.GetQuestDetailWithPeopleStatus(Inquiry.LevelNumber, questNumbers);
+
+            if (questDetails.Count > 0)
+            {
+                var parentQuest = questDetails.Where(u => u.QuestNumber == parentQuestNumber).SingleOrDefault();
+
+                questDetails.Remove(parentQuest);
+
+                var response = new SQuestDetail[questNumbers.Count - 1];
+
+                for (int i = 0; i < questNumbers.Count - 1; ++i)
+                {
+                    var questTitle = mQuestInMemory.GetQuestByLevelNumber(questDetails[i].QuestNumber).QuestTitle;
+
+                    response[i] = new SQuestDetail
+                    {
+                        QuestNumber = questDetails[i].QuestNumber,
+                        QuestTitle = questTitle,
+                        UserScore = questDetails[i].UserScore / parentQuest.UserScore,
+                        PeopleScore = questDetails[i].PeopleScore / parentQuest.PeopleScore,
+                    };
+                }
+
+                return response.Length > 0 ? response : null;
+            }
+
+            return null;
+        }
+
+        private async Task<SQuestDetail[]> GetLiveQuestDetailWithNormalPeople(SQuestInquiry Inquiry)
+        {
+
+            var quest = mQuestInMemory.GetQuestByQuestNumber(Inquiry.QuestNumber);
+
+            var questNumbers = new List<int>();
+
+            int parentQuestNumber;
+
+            if (quest.ParentID == null)
+            {
+                questNumbers.Add(quest.QuestNumber);
+                questNumbers.AddRange(quest.ChildQuestNumbers);
+                parentQuestNumber = quest.QuestNumber;
+            }
+            else
+            {
+                questNumbers.Add(quest.QuestNumber);
+                questNumbers.Add(quest.ParentID ?? 0);
+                parentQuestNumber = quest.ParentID ?? 0;
+            }
+
+            var questDetails = await mQuestQuery.GetLiveQuestDetailWithPeopleStatus(Inquiry.LevelNumber, questNumbers);
+
+            if (questDetails.Count > 0)
+            {
+                var parentQuest = questDetails.Where(u => u.QuestNumber == parentQuestNumber).SingleOrDefault();
+
+                questDetails.Remove(parentQuest);
+
+                var response = new SQuestDetail[questNumbers.Count - 1];
+
+                for (int i = 0; i < questNumbers.Count - 1; ++i)
+                {
+                    var questTitle = mQuestInMemory.GetQuestByLevelNumber(questDetails[i].QuestNumber).QuestTitle;
+
+                    response[i] = new SQuestDetail
+                    {
+                        QuestNumber = questDetails[i].QuestNumber,
+                        QuestTitle = questTitle,
+                        UserScore = questDetails[i].UserScore / parentQuest.UserScore,
+                        PeopleScore = questDetails[i].PeopleScore / parentQuest.PeopleScore,
+                    };
+                }
+
+                return response.Length > 0 ? response : null;
+            }
+
+            return null;
+
+        }
+
+
+        public async Task<SFriendQuestDetail[]> GetFriendQuestDetail(SQuestInquiry Inquiry)
+        {
+            
+            var quest = mQuestInMemory.GetQuestByQuestNumber(Inquiry.QuestNumber);
+
+            var questNumbers = new List<int>();
+
+            int parentQuestNumber; 
+
+            if(quest.ParentID == null)
+            {
+                questNumbers.Add(quest.QuestNumber);
+                questNumbers.AddRange(quest.ChildQuestNumbers);
+                parentQuestNumber = quest.QuestNumber;
+            }
+            else
+            {
+                questNumbers.Add(quest.QuestNumber);
+                questNumbers.Add(quest.ParentID ?? 0);
+                parentQuestNumber = quest.ParentID ?? 0;
+            }
+
+
+            var friendQuestDetail = await mQuestQuery.GetFriendQuestDetail(Inquiry.FriendID , Inquiry.LevelNumber , questNumbers);
+
+            if(friendQuestDetail.Count > 0 )
+            {
+                var parentQuest = friendQuestDetail.Where(u => u.QuestNumber == parentQuestNumber).SingleOrDefault();
+
+                friendQuestDetail.Remove(parentQuest);
+
+                var response = new SFriendQuestDetail[questNumbers.Count - 1];
+
+                for (int i = 0; i < questNumbers.Count - 1; ++i)
+                {
+                    var questTitle = mQuestInMemory.GetQuestByLevelNumber(friendQuestDetail[i].QuestNumber).QuestTitle;
+
+                    response[i] = new SFriendQuestDetail
+                    {
+                        QuestNumber = friendQuestDetail[i].QuestNumber,
+                        QuestTitle = questTitle,
+                        UserScore = friendQuestDetail[i].ScorePoint / (float)parentQuest.ScorePoint,
+                    };
+                }
+                return response.Length > 0 ? response : null;
+            }
+
+            return null;
         }
     }
 }

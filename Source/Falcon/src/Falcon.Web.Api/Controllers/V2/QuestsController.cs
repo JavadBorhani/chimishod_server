@@ -54,7 +54,7 @@ namespace Falcon.Web.Api.Controllers.V2
             if (!ModelState.IsValid)
                 return null;
 
-            var data = await mQuestInqiury.GetFriendQuestDetail(Inquiry.FriendID , Inquiry.QuestNumber);
+            var data = await mQuestInqiury.GetFriendQuestDetail(Inquiry);
 
             return data;
         }

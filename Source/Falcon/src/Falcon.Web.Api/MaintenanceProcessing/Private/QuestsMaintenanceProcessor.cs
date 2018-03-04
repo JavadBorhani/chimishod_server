@@ -50,7 +50,7 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
                 var noQuestNumber = questQuestion.NoQuestNumber;
                 var noPoint = questQuestion.NoScore;
 
-                var questDetail = mQuestInMemory.GetQuestByID(questQuestion.QuestNumber);
+                var questDetail = mQuestInMemory.GetQuestByQuestNumber(questQuestion.QuestNumber);
                 var questFather = questDetail.ParentID ?? 0;
 
                 if (questFather == 0)
@@ -109,7 +109,7 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
 
                 if(questFatherNumber != 0)
                 {
-                    var questFather = mQuestInMemory.GetQuestByID(questFatherNumber);
+                    var questFather = mQuestInMemory.GetQuestByQuestNumber(questFatherNumber);
 
                     List<int> questIdsToTakeSnapshot = new List<int>(questFather.ChildQuestNumbers)
                     {
