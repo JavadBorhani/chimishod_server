@@ -42,8 +42,9 @@ namespace Falcon.Web.Api.Controllers.V2
             {
                 int maxLength = 100 * 1024;
 
-                int result = mUserSession.ID;
+                var result = mGenerator.GetNewUUID();
                 var badRequest = false;
+                var finished = false;
 
                 await Request.Content.ReadAsMultipartAsync(new MultipartMemoryStreamProvider()).ContinueWith((task) =>
                 {
@@ -68,23 +69,30 @@ namespace Falcon.Web.Api.Controllers.V2
                         string fullPath = Path.Combine(filePath, fileName);
                         image.Save(fullPath);
 
-                        
+                        if(File.Exists(fullPath))
+                        {
+                            finished = true;
+                        }
+                        else
+                        {
+                            finished = false;
+                        }
                     }
 
                 });
 
-                if(badRequest)
+                if(badRequest || !finished)
                 {
                     return BadRequest("image size can't be bigger than 100kb");
                 }
                 else
                 {
-                    var id = mGenerator.GetNewUUID();
 
-                    var path = Constants.ServerVariables.ImageUploadLocation + id + ".jpg";
+                    var path = Constants.ServerVariables.ImageUploadLocation + result + ".jpg";
                     var amount = await mUserMaintenance.SaveImageUrl(path);
                     mUsersInMemory.UpdateImagePath(mUserSession.ID, path);
                     return Ok(path);
+
                 }
                
             }
