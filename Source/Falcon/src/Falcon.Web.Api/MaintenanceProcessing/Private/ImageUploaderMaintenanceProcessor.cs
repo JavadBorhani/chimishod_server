@@ -1,6 +1,5 @@
 ﻿using Falcon.Web.Api.MaintenanceProcessing.Public;
 using System;
-using System.Threading.Tasks;
 
 namespace Falcon.Web.Api.MaintenanceProcessing.Private
 {
@@ -12,7 +11,7 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
         {
 
         }
-        public async Task<bool> UploadImage()
+        public bool UploadImage()
         {
             throw new NotImplementedException();
         }

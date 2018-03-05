@@ -56,7 +56,9 @@
     <Compile Include="Api\Feedback\SFeedbackType.cs" />
     <Compile Include="Api\Friend\SFriend.cs" />
     <Compile Include="Api\Friend\SFriendAnswer.cs" />
+    <Compile Include="Api\Friend\SFriendCharacterDetailInquiry.cs" />
     <Compile Include="Api\Friend\SQuestionWithAnswerState.cs" />
+    <Compile Include="Api\Friend\SUserNameAndImagePath.cs" />
     <Compile Include="Api\Input\Questions\EditInfo.cs" />
     <Compile Include="Api\Input\Questions\RemoveInfo.cs" />
     <Compile Include="Api\Level\SLevelUpInfo.cs" />

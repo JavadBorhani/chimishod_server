@@ -18,7 +18,7 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
         private readonly IUUIDGenerator mUUID;
         private readonly IGameConfig mGameConfig;
         private readonly IMemoryStore mMemory;
-
+        private readonly IUsersInMemory mUserInMemory;
         public UsersMaintenanceProcessor
             (
             IUserInfoQueryProcessor UserInfoQuery,
@@ -26,7 +26,8 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
             INetworkUtils NetworkUtils , 
             IUUIDGenerator Generator , 
             IGameConfig GameConfig , 
-            IMemoryStore Memory)
+            IMemoryStore Memory , 
+            IUsersInMemory UserInMemory)
         {
             mUserQuery = UserQueryProcessor;
             mUserInfoQuery = UserInfoQuery;
@@ -34,6 +35,7 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
             mUUID = Generator;
             mGameConfig = GameConfig;
             mMemory = Memory;
+            mUserInMemory = UserInMemory;
         }
 
         public async Task<int> LevelUp(int Prize)
@@ -85,6 +87,8 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
 
             var user = await mUserQuery.CreateNewUser(RegistrationForm , mGameConfig.GetState());
             var created = await mUserInfoQuery.CreateEmptyUserInfo(user.ID);
+
+            mUserInMemory.AddItem(user.ID, new SUserDetail() { UserName = RegistrationForm.UserName});
 
             if (created)
             {

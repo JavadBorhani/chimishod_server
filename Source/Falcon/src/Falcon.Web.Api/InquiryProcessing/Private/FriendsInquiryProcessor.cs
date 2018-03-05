@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using PagedQuesttionWithAnswerInquiryResponse = Falcon.Web.Models.PagedDataInquiryResponse<Falcon.Web.Models.Api.Friend.SQuestionWithAnswerState>;
+using UserDictionary = System.Collections.Concurrent.ConcurrentDictionary<int, Falcon.Web.Api.MaintenanceProcessing.Public.SUserDetail>;
 
 namespace Falcon.Web.Api.InquiryProcessing.Private
 {
@@ -25,6 +26,7 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
         private readonly IMapper mMapper;
         private readonly SApplicationState mServerAppState;
         private readonly IUserSession mUserSession;
+        private readonly UserDictionary mUserInMemory;
 
         public FriendsInquiryProcessor(
             IFriendsQueryProcessor FriendQuery , 
@@ -32,7 +34,8 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
             IMapper Mapper , 
             IAnswerQueryProcessor AnswerQuery , 
             IGlobalApplicationState AppState,
-            IUserSession UserSession)
+            IUserSession UserSession , 
+            IUsersInMemory UserInMemory)
         {
             mAnswerQuery = AnswerQuery;
             mFriendQuery = FriendQuery;
@@ -40,6 +43,7 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
             mMapper = Mapper;
             mServerAppState = AppState.GetState();
             mUserSession = UserSession;
+            mUserInMemory = UserInMemory.GetState();
         }
 
         public async Task<int[]> GetAllFriendIds()
@@ -147,6 +151,31 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
             };
 
             return response;
+        }
+
+        public List<SUserNameAndImagePath> GetFriendUserNameAndImageFromCache(SFriendCharacterDetailInquiry FriendList)
+        {
+
+            int friendLength = FriendList.UserIDs.Length;
+            var items = new List<SUserNameAndImagePath>(friendLength);
+
+            for (int i = 0; i < friendLength; ++i)
+            {
+                SUserDetail detail;
+
+                mUserInMemory.TryGetValue(FriendList.UserIDs[i], out detail);
+                if (detail != null)
+                {
+                    items.Add(new SUserNameAndImagePath
+                    {
+                        UserID = FriendList.UserIDs[i],
+                        ImagePath = detail.ImagePath,
+                        UserName = detail.UserName,
+                    });
+                }
+            }
+
+            return items;
         }
     }
 }

@@ -328,6 +328,7 @@
     <Compile Include="MaintenanceProcessing\Private\StoresMaintenanceProcessor.cs" />
     <Compile Include="MaintenanceProcessing\Private\ThemesMaintenanceProcessor.cs" />
     <Compile Include="MaintenanceProcessing\Private\UserInfoMaintenanceProcessor.cs" />
+    <Compile Include="MaintenanceProcessing\Private\UsersInMemory.cs" />
     <Compile Include="MaintenanceProcessing\Private\UsersMaintenanceProcessor.cs" />
     <Compile Include="MaintenanceProcessing\Private\UserStatsMaintenanceProcessor.cs" />
     <Compile Include="MaintenanceProcessing\Private\WatchAdMaintenanceProcessor.cs" />
@@ -355,6 +356,7 @@
     <Compile Include="MaintenanceProcessing\Public\IStoresMaintenanceProcessor.cs" />
     <Compile Include="MaintenanceProcessing\Public\IThemesMaintenanceProcessor.cs" />
     <Compile Include="MaintenanceProcessing\Public\IUserInfoMaintenanceProcessor.cs" />
+    <Compile Include="MaintenanceProcessing\Public\IUsersInMemory.cs" />
     <Compile Include="MaintenanceProcessing\Public\IUsersMaintenanceProcessor.cs" />
     <Compile Include="MaintenanceProcessing\Public\IUserStatsMaintenanceProcessor.cs" />
     <Compile Include="MaintenanceProcessing\Public\IWatchAdMaintenanceProcessor.cs" />

@@ -217,9 +217,13 @@ namespace Falcon.Web.Api
             //Game Configuration 
             container.Bind<IGameConfig>().To<GameConfig>().InSingletonScope();
 
+            //Quest Data in Memory -> should update whenever data is changed in database 
             container.Bind<IQuestInMemoryProcessor>().To<QuestInMemoryProcessor>().InSingletonScope();
 
+            //UsersCommonData
+            container.Bind<IUsersInMemory>().To<UsersInMemory>().InSingletonScope();
 
+            //
             container.Bind<IItemPurchaseManager>().To<ItemPurchaseManager>().InRequestScope();
 
             //Encryption
@@ -248,6 +252,9 @@ namespace Falcon.Web.Api
 
             //Notification Data
             container.Bind<INotificationData>().To<NotificationData>().InSingletonScope();
+
+
+            
 
             //Rest Client
             //var rest = new RestClient();

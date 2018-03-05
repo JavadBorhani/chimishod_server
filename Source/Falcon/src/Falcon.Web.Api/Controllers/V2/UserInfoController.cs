@@ -27,11 +27,13 @@ namespace Falcon.Web.Api.Controllers.V2
         private readonly IWebUserSession mUserSession;
         private readonly IGlobalApplicationState mAppState;
         private readonly IDbContext mDb;
+        private readonly IUsersInMemory mUsersInMemory;
 
         public UserInfoController(IUserInfoMaintenanceProcessor UserInfoMaintenance, IUserInfoInquiryProcessor UserInfoInquiry, IDateTime DateTime,
             IDbContext Database,
             IWebUserSession UserSession,
-            IGlobalApplicationState AppState)
+            IGlobalApplicationState AppState , 
+            IUsersInMemory UsersInMemory)
         {
             mUserInfoMaintenance = UserInfoMaintenance;
             mUserInfoInquiry = UserInfoInquiry;
@@ -39,6 +41,7 @@ namespace Falcon.Web.Api.Controllers.V2
             mDb = Database;
             mUserSession = UserSession;
             mAppState = AppState;
+            mUsersInMemory = UsersInMemory;
         }
 
         [ResponseType(typeof(SUserInfo))]
@@ -91,6 +94,7 @@ namespace Falcon.Web.Api.Controllers.V2
                             Info.ChangeInfoDate = mDateTime.Now;
                             Info.IsInfoEnable = true;
                             await mDb.SaveChangesAsync();
+                            mUsersInMemory.UpdateUserName(mUserSession.ID, UserInfo.UserName);
 
                             UserInfo.IsEditable = Info.IsEditable > 0 ? true : false;
                             UserInfo.Password = null;

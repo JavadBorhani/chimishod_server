@@ -7,9 +7,11 @@ using Falcon.Web.Models;
 using Falcon.Web.Models.Api;
 using Falcon.Web.Models.Api.Answer;
 using Falcon.Web.Models.Api.Friend;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
+
 
 namespace Falcon.Web.Api.Controllers.V2
 {
@@ -21,6 +23,7 @@ namespace Falcon.Web.Api.Controllers.V2
         private readonly IPagedDataRequestFactory mPageDataRequestFactory;
         private readonly SApplicationState mServerAppState;
         private readonly IDateTime mDateTime;
+        
 
         public FriendsController(
             IFriendsMaintenanceProcessor FriendsMaintenance , 
@@ -125,15 +128,36 @@ namespace Falcon.Web.Api.Controllers.V2
             return responses;
         }
 
-        //[Route("Comments/{QuestionID}/{PageNumber}")]s
-        //[HttpPost]
-        //public async Task<PagedDataInquiryResponse<SComment>> GettingComments( int QuestionID , int PageNumber)
-        //{
-        //    var page = mPagedDataRequestFactory.Create(PageNumber , mAppState.GetState().Paging_DefaultPageSize);
-        //    var comments = await mCommentInquiryProcessor.GetComments(page , QuestionID);
-        //    return comments;
-        //}
+        [ResponseType(typeof(SFriend))]
+        [Route("v2/Friends/CharacterInfo/")]
+        [HttpPost]
 
+        public List<SUserNameAndImagePath> GetFriendImageAndUsername(SFriendCharacterDetailInquiry FriendList)
+        {
+            
+            if (!ModelState.IsValid)
+                return null;
 
+            var items = mFriendsInquiry.GetFriendUserNameAndImageFromCache(FriendList);
+
+            return items;
+        }
     }
 }
+
+//TODO : 
+
+//****************************************************************************************************************
+        /*
+         * Refactor fetching PeopleScore and UserScore in Quest
+         * Refactor all in memories in one folder instead of inquiry  
+         * Refactor user recovery 
+         * 
+         * 
+         * 
+         * 
+         * 
+         * 
+         */ 
+    
+

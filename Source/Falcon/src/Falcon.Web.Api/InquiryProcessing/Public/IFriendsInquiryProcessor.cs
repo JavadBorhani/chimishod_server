@@ -4,6 +4,7 @@ using Falcon.Web.Models.Api.Answer;
 using Falcon.Web.Models.Api.Friend;
 using Falcon.Web.Models.Api.Notification.Client;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Falcon.Web.Api.InquiryProcessing.Public
@@ -17,5 +18,7 @@ namespace Falcon.Web.Api.InquiryProcessing.Public
         Task<PagedDataInquiryResponse<SQuestionWithAnswerState>> GetFriendMutualQuestions(PagedDataRequest RequestInfo, int FriendID);
         Task<SFriendAnswer[]> GetFriendAnswers(SFriendAnswerInquiry FriendAnswerInquiry);
         Task<SFriendStatus> GetFriendListFromDateUpToNow(DateTime FriendRequestDate , DateTime FriendResponseDate);
+        List<SUserNameAndImagePath> GetFriendUserNameAndImageFromCache(SFriendCharacterDetailInquiry FriendList);
+
     }
 }

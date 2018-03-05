@@ -1,4 +1,5 @@
 ﻿using Falcon.Common.Logging;
+using Falcon.Web.Api.InquiryProcessing.Public;
 using Falcon.Web.Api.JobSystem.Public;
 using Falcon.Web.Api.Security.Private;
 using Falcon.Web.Api.Security.Public;
@@ -19,6 +20,7 @@ namespace Falcon.Web.Api
 
             RegisterHandlers();
             RegisterJobs();
+            InitializeSystems();
         }
 
         private void RegisterHandlers()
@@ -33,7 +35,12 @@ namespace Falcon.Web.Api
             GlobalConfiguration.Configuration.MessageHandlers.Insert(0, new ServerCompressionHandler
                 (new GZipCompressor(), new DeflateCompressor()));
 
-
+            
+        }
+        
+        private void InitializeSystems()
+        {
+            WebContainerManager.Get<IServerInquiryProcessor>().ReadConfigurationFilesFromServer();
         }
         private void RegisterJobs()
         {

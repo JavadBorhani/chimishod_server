@@ -16,12 +16,21 @@ namespace Falcon.Web.Api.Controllers.V2
     public class ImageController : FalconApiController
     {
 
-        private IUserSession mUserSession;
+        private readonly IUserSession mUserSession;
         private readonly IUsersMaintenanceProcessor mUserMaintenance;
-        public ImageController(IUserSession Session, IUsersMaintenanceProcessor UsersMaintenance)
+        private readonly IUsersInMemory mUsersInMemory;
+        private readonly IUUIDGenerator mGenerator;
+
+        public ImageController(
+            IUserSession Session, 
+            IUsersMaintenanceProcessor UsersMaintenance , 
+            IUsersInMemory UsersInMemory , 
+            IUUIDGenerator Generator)
         {
             mUserSession = Session;
             mUserMaintenance = UsersMaintenance;
+            mUsersInMemory = UsersInMemory;
+            mGenerator = Generator;
         }
 
         [ResponseType(typeof(IHttpActionResult))]
@@ -40,8 +49,8 @@ namespace Falcon.Web.Api.Controllers.V2
                 {
 
                     MultipartMemoryStreamProvider provider = task.Result;
-                    //if (provider.Contents.Count > 1)
-                    //    return;
+                    if (provider.Contents.Count > 1)
+                        return;
 
                     foreach (HttpContent content in provider.Contents)
                     {
@@ -66,12 +75,15 @@ namespace Falcon.Web.Api.Controllers.V2
 
                 if(badRequest)
                 {
-                    return BadRequest("image size can't be bigger than 70kb");
+                    return BadRequest("image size can't be bigger than 100kb");
                 }
                 else
                 {
-                    var path = Constants.ServerVariables.ImageUploadLocation + mUserSession.ID + ".jpg";
+                    var id = mGenerator.GetNewUUID();
+
+                    var path = Constants.ServerVariables.ImageUploadLocation + id + ".jpg";
                     var amount = await mUserMaintenance.SaveImageUrl(path);
+                    mUsersInMemory.UpdateImagePath(mUserSession.ID, path);
                     return Ok(path);
                 }
                
@@ -81,5 +93,6 @@ namespace Falcon.Web.Api.Controllers.V2
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.NotAcceptable, "This request is not properly formatted"));
             }
         }
+
     }
 }

@@ -11,18 +11,22 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
         private readonly IGameConfig mGameConfig;
         private readonly IQuestInMemoryProcessor mQuestProcessor;
         private readonly INotificationData mNotificationData;
+        private readonly IUsersInMemory mUserInMemory;
+
         public ServerInquiryProcessor(
             IClientApplicationState ClientAppState ,
             IGlobalApplicationState GlobalAppState , 
             IGameConfig GameConfig , 
             IQuestInMemoryProcessor QuestsInMemoryProcessor , 
-            INotificationData Notification)
+            INotificationData Notification , 
+            IUsersInMemory UserInMemory)
         {
             mNotificationData = Notification;
             mClientAppState = ClientAppState;
             mGlobalAppState = GlobalAppState;
             mGameConfig = GameConfig;
             mQuestProcessor = QuestsInMemoryProcessor;
+            mUserInMemory = UserInMemory;
         }
         public bool ReadConfigurationFilesFromServer()
         {
@@ -31,6 +35,8 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
             mGameConfig.ReadStateFromDatabase();
             mQuestProcessor.ReadStateFromDatabase();
             mNotificationData.ReadStateFromDatabase();
+            mUserInMemory.ReadStateFromDatabase();
+
             return true;
         }
     }
