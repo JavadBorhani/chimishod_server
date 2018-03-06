@@ -1,4 +1,6 @@
-﻿namespace Falcon.Web.Models.Api.Config
+﻿using System;
+
+namespace Falcon.Web.Models.Api.Config
 {
     public class SClientAppState
     {
@@ -9,5 +11,7 @@
         public int LevelVersionCode { get; set; }
         public int XPLevelFactor { get; set; }
         public int PollingIntervalTimeInSeconds { get; set; }
+        public DateTime ServerTime { get; set; }
+        public int ForwardPricePerFriend { get; set; }
     }
 }

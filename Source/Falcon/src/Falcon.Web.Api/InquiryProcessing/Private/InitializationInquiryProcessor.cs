@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Falcon.Common;
 using Falcon.Web.Api.InquiryProcessing.Public;
 using Falcon.Web.Api.MaintenanceProcessing.Public;
 using Falcon.Web.Api.Notification.Public;
@@ -14,6 +15,7 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
         private readonly IClientApplicationState mClientAppState;
         private readonly IServerInquiryProcessor mServerInquiry;
         private readonly IMapper mMapper;
+        private readonly IDateTime mDateTime;
 
         public InitializationInquiryProcessor
             (
@@ -22,7 +24,8 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
             IClientApplicationState ClientAppState,
             IServerInquiryProcessor ServerInquiry,
             INotificationData Notification,
-            IMapper Mapper
+            IMapper Mapper , 
+            IDateTime DateTime
             )
         {
             mUsersQuery = UsersQuery;
@@ -30,6 +33,7 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
             mClientAppState = ClientAppState;
             mServerInquiry = ServerInquiry;
             mMapper = Mapper;
+            mDateTime = DateTime;
         }
 
         public async Task<SUserInitializationData> LoadUserData(int LevelVersion)
@@ -38,6 +42,7 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
             var initializationInfo = new SUserInitializationData();
 
             initializationInfo.ClientAppState = mClientAppState.State();
+            initializationInfo.ClientAppState.ServerTime = mDateTime.Now;
 
 
             if (LevelVersion < mClientAppState.State().LevelVersionCode)

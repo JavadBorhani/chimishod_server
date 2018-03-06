@@ -40,6 +40,7 @@
           <Property Name="LevelVersionCode" Type="int" Nullable="false" />
           <Property Name="XPLevelFactor" Type="int" Nullable="false" />
           <Property Name="PollingIntervalTimeInSeconds" Type="int" Nullable="false" />
+          <Property Name="ForwardPricePerFriend" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="CodeGift">
           <Key>
@@ -832,7 +833,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Relationship_User_Two">
-          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="User" Type="Self.User" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="Relationship" Type="Self.Relationship" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="User">
@@ -896,7 +899,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Sent_Question">
-          <End Role="Question" Type="Self.Question" Multiplicity="1" />
+          <End Role="Question" Type="Self.Question" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="Sent" Type="Self.Sent" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Question">
@@ -1659,6 +1664,7 @@
           <Property Name="LevelVersionCode" Type="Int32" Nullable="false" />
           <Property Name="XPLevelFactor" Type="Int32" Nullable="false" />
           <Property Name="PollingIntervalTimeInSeconds" Type="Int32" Nullable="false" />
+          <Property Name="ForwardPricePerFriend" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="CodeGift">
           <Key>
@@ -2551,7 +2557,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Sent_Question">
-          <End Type="Falcon.DbModel.Question" Role="Question" Multiplicity="1" />
+          <End Type="Falcon.DbModel.Question" Role="Question" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Type="Falcon.DbModel.Sent" Role="Sent" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Question">
@@ -2631,7 +2639,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Relationship_User_Two">
-          <End Type="Falcon.DbModel.User" Role="User" Multiplicity="1" />
+          <End Type="Falcon.DbModel.User" Role="User" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Type="Falcon.DbModel.Relationship" Role="Relationship" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="User">
@@ -2857,6 +2867,7 @@
           <EntitySetMapping Name="ClientApplicationStates">
             <EntityTypeMapping TypeName="Falcon.DbModel.ClientApplicationState">
               <MappingFragment StoreEntitySet="ClientApplicationState">
+                <ScalarProperty Name="ForwardPricePerFriend" ColumnName="ForwardPricePerFriend" />
                 <ScalarProperty Name="PollingIntervalTimeInSeconds" ColumnName="PollingIntervalTimeInSeconds" />
                 <ScalarProperty Name="XPLevelFactor" ColumnName="XPLevelFactor" />
                 <ScalarProperty Name="LevelVersionCode" ColumnName="LevelVersionCode" />

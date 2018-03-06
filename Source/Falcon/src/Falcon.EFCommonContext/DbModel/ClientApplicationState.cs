@@ -22,5 +22,6 @@ namespace Falcon.EFCommonContext.DbModel
         public int LevelVersionCode { get; set; }
         public int XPLevelFactor { get; set; }
         public int PollingIntervalTimeInSeconds { get; set; }
+        public int ForwardPricePerFriend { get; set; }
     }
 }
