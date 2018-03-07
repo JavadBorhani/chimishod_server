@@ -156,7 +156,6 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
         private async Task<SFriend> AcceptedToStatus(int FriendID , RelationStatus Status)
         {
             if (Status == RelationStatus.Accepted ||
-                           Status == RelationStatus.Rejected ||
                            Status == RelationStatus.Pending)
                 return null;
 

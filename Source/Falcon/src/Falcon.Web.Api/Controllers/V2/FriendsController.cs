@@ -148,16 +148,16 @@ namespace Falcon.Web.Api.Controllers.V2
 //TODO : 
 
 //****************************************************************************************************************
-        /*
-         * Refactor fetching PeopleScore and UserScore in Quest
-         * Refactor all in memories in one folder instead of inquiry  
-         * Refactor user recovery 
-         * 
-         * 
-         * 
-         * 
-         * 
-         * 
-         */ 
-    
+/*
+ * Refactor fetching PeopleScore and UserScore in Quest
+ * Refactor all in memories in one folder instead of inquiry  
+ * Refactor user recovery 
+ * Refactor to use HttpClient https://d-fens.ch/2014/04/12/httpclient-and-how-to-use-headers-content-type-and-postasync/ in market and video ads 
+ * 
+ * 
+ * 
+ * 
+ * 
+ */
+
 

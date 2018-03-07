@@ -237,12 +237,12 @@ namespace Falcon.Web.Api.Controllers.V1
                 return await mDb.Set<UserInfo>().Where(ui => ui.UserID == userID).Select(ui => ui.IsEditable).SingleOrDefaultAsync() > 0; 
             }
 
-
             private async Task<bool> UserNameIsAccessible(int UserID, string UserName)
             {
                 //TODO : Move Email and password to User Table
                 return await mDb.Set<User>().AsNoTracking().CountAsync(u => u.ID != UserID && u.UserName == UserName) == 0;
             }
+
             private async Task<bool> EmailIsAccessible(int UserInfoID, string Email)
             {
                 //TODO : Move Email and password to User Table

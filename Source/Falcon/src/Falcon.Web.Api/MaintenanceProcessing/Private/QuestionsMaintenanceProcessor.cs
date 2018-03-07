@@ -5,6 +5,7 @@ using Falcon.Data.QueryProcessors;
 using Falcon.Web.Api.InquiryProcessing.Public;
 using Falcon.Web.Api.MaintenanceProcessing.Public;
 using Falcon.Web.Models.Api;
+using Falcon.Web.Models.Api.Config;
 using Falcon.Web.Models.Api.Question;
 using System.Threading.Tasks;
 
@@ -17,13 +18,18 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
         private readonly IFriendsInquiryProcessor mFriendInquiry;
         private readonly INotificationMaintenanceProcessor mNotificationManager;
         private readonly ISentMaintenanceProcessor mSentMaintenance;
+        private readonly IUserQueryProcessor mUserQuery;
+        private readonly SClientAppState mClientAppState;
         private readonly IMapper mMapper;
+
 
         public QuestionsMaintenanceProcessor(
             IQuestionsQueryProcessor QuestionQuery , 
             IFriendsInquiryProcessor FriendInquiry , 
             ISentMaintenanceProcessor SentMaintenance , 
             INotificationMaintenanceProcessor NotificationManager,
+            IUserQueryProcessor UserQuery,
+            IClientApplicationState ClientAppState,
             IUserSession UserSession,
             IMapper Mapper)
         {
@@ -33,12 +39,18 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
             mNotificationManager = NotificationManager;
             mUserSession = UserSession;
             mMapper = Mapper;
+            mClientAppState = ClientAppState.State();
+            mUserQuery = UserQuery;
         }
 
         public async Task<int> CreateQuestion(SCreatedQuestion CreateQuestion)
         {
-            //TODO : Checking Money 
 
+            var checkout = mClientAppState.CreateQuestionPrice + (CreateQuestion.FriendForwardList.Length * mClientAppState.ForwardPricePerFriend);
+            var totalCoin = await mUserQuery.DecreaseCoin(checkout);
+
+            if (totalCoin < 0)
+                throw new BusinessRuleViolationException("UserID : " + mUserSession.ID + " , Cheat in Question Creation userID , money is not enough");
 
             var createdQuestion = await mQuestionQuery.CreateQuestion(CreateQuestion);
 
@@ -55,27 +67,26 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
 
                     var notified = await mNotificationManager
                         .InboxQuestionToFriends(CreateQuestion.FriendForwardList, mMapper.Map<SQuestion>(createdQuestion));
-
-                    return 200;
                 }
                 else
                 {
                     throw new BusinessRuleViolationException("Cheat in Question Creation" + mUserSession.ID);
                 }
             }
-            else if( createdQuestion != null)
-            {
-                return 200;
-            }
-            else
-            {
-                return -1; 
-            }
+
+            return totalCoin;
+
         }
 
         public async Task<int> ForwardQuestionToFriends(SForwardQuestion ForwardQuestion)
         {
-            //remember to decrease money;
+
+            var checkout = (ForwardQuestion.FriendIDs.Length * mClientAppState.ForwardPricePerFriend);
+            var totalCoin = await mUserQuery.DecreaseCoin(checkout);
+
+            if (totalCoin < 0)
+                throw new BusinessRuleViolationException("UserID : " + mUserSession.ID + " , Cheat in Question Forward ,  money is not enough");
+
 
             var question = await mQuestionQuery.GetQuestionByID(ForwardQuestion.QuestionID);
 
@@ -88,9 +99,9 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
                 {
                     var stored = await mSentMaintenance.SaveMessageSent(mUserSession.ID, ForwardQuestion.FriendIDs, question.ID);
                     var notified = await mNotificationManager.InboxQuestionToFriends(ForwardQuestion.FriendIDs, mMapper.Map<SQuestion>(question));
-
-                    return 200;
+       
                 }
+                return totalCoin;
             }
             return -1;
 

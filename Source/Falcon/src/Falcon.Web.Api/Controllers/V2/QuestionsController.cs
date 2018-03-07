@@ -73,7 +73,7 @@ namespace Falcon.Web.Api.Controllers.V2
                 return Response(HttpStatusCode.BadRequest, -1);
 
             var totalCoin = await mQuestionMaintenance.ForwardQuestionToFriends(CreateQuestion);
-
+        
             return Response(HttpStatusCode.OK, totalCoin);
         }
 

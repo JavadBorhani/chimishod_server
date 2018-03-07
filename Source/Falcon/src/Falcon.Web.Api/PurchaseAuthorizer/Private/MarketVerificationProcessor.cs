@@ -114,28 +114,36 @@ namespace Falcon.Web.Api.PurchaseAuthorizer.Private
             {
                 return null;    
             }
+            
             var request = string.Format(PurchaseVerificationRequest.VerificationLink,
                 PurchaseVerificationRequest.AppPackageName,
                 PurchaseVerificationRequest.ProductID,
                 PurchaseVerificationRequest.Token);
 
             if (!IgnoreAccessToken)
-                request += "?access_token=" + PurchaseVerificationRequest.AccessToken; 
+                request += "?access_token=" + PurchaseVerificationRequest.AccessToken;  //cafe bazzar , iran apps 
+
 
             using (HttpClient client = new HttpClient())
-            using (HttpResponseMessage response = await client.GetAsync(request))
-            using (HttpContent content = response.Content)
             {
-                HttpStatusCode status = response.StatusCode;
-                // ... Read the string.
-                string result = await content.ReadAsStringAsync();
+                if (IgnoreAccessToken)
+                    client.DefaultRequestHeaders.Add("X-Access-Token", PurchaseVerificationRequest.AccessToken); // myket
 
-                var verifyResponse = CheckPurchaseVerification(status, result);
-                if(verifyResponse != null)
+                using (HttpResponseMessage response = await client.GetAsync(request))
+                using (HttpContent content = response.Content)
                 {
-                    return verifyResponse;
+                    HttpStatusCode status = response.StatusCode;
+                    // ... Read the string.
+                    string result = await content.ReadAsStringAsync();
+
+                    var verifyResponse = CheckPurchaseVerification(status, result);
+                    if (verifyResponse != null)
+                    {
+                        return verifyResponse;
+                    }
                 }
             }
+            
             return null;
         }
 
