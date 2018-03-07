@@ -24,6 +24,15 @@ namespace Falcon.Client.App.Logic
             
         }
 
+        public void GetUserInfo(string UUID, Action<IRestResponse> Callback)
+        {
+            var request = RequestUtils.CreateRequest("v2/Initialize/2", Method.POST, UUID);
+            mClient.ExecuteAsync(request, res =>
+           {
+               Callback.Invoke(res);
+           });
+        }
+
         public void SendAnswerAsync(string UUID, int QuestionID, bool Yes, bool Like, bool Dislike , Action<IRestResponse> Callback)
         {
             var request = RequestUtils.CreateRequest("Answers/Answer", Method.POST, UUID , new

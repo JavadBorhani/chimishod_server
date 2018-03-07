@@ -6,5 +6,7 @@ namespace Falcon.EFCommonContext
         IDbContext GetCurrentContext();
         IDbContext GetNewOrCurrentContext();
         void Reset();
+        void IncrementConnectionCount();
+        void DecrementConnectionCount();
     }
 }

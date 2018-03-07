@@ -1,7 +1,7 @@
-﻿using System;
-using System.Data.Entity;
+﻿using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Reflection;
+using System.Threading;
 using System.Web;
 
 namespace Falcon.EFCommonContext
@@ -11,6 +11,7 @@ namespace Falcon.EFCommonContext
         public const string DbContextCacheKey = "DbContext";
         private readonly DbCompiledModel mCompiledModel;
         private readonly string mNameOrConnectionString;
+        public static int ConnectionCount = 0;
 
         private WebContextFactory(string nameOrConnectionString, DbCompiledModel compiledModel)
         {
@@ -47,6 +48,7 @@ namespace Falcon.EFCommonContext
             if (!ContextExists)
             {
                 var context = new CommonCodeFirstDbContext(mNameOrConnectionString, mCompiledModel);
+                IncrementConnectionCount();
                 context.Database.Connection.Open();
                 HttpContext.Current.Items[DbContextCacheKey] = context;
             }
@@ -76,6 +78,16 @@ namespace Falcon.EFCommonContext
         public static WebContextFactory BuildSqlServer2012Factory(string NameOrConnectionString)
         {
             return new WebContextFactory(NameOrConnectionString);
+        }
+
+        public void IncrementConnectionCount()
+        {
+            Interlocked.Increment(ref ConnectionCount);
+        }
+
+        public void DecrementConnectionCount()
+        {
+            Interlocked.Decrement(ref ConnectionCount);
         }
     }
 }

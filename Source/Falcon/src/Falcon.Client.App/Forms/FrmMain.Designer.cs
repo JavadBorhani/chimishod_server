@@ -31,6 +31,7 @@
             this.btnCreateUser = new System.Windows.Forms.Button();
             this.RequestResultListBox = new System.Windows.Forms.ListBox();
             this.AnswerGroupBox = new System.Windows.Forms.GroupBox();
+            this.button1 = new System.Windows.Forms.Button();
             this.AnswerProgressbar = new System.Windows.Forms.ProgressBar();
             this.btnGenerate = new System.Windows.Forms.Button();
             this.txtNoPercent = new System.Windows.Forms.TextBox();
@@ -48,7 +49,7 @@
             this.ckbYes = new System.Windows.Forms.CheckBox();
             this.btnLoadUser = new System.Windows.Forms.Button();
             this.txtUserNumber = new System.Windows.Forms.TextBox();
-            this.button1 = new System.Windows.Forms.Button();
+            this.btnUserInfo = new System.Windows.Forms.Button();
             this.AnswerGroupBox.SuspendLayout();
             this.AnswerStatus.SuspendLayout();
             this.SuspendLayout();
@@ -73,6 +74,7 @@
             // 
             // AnswerGroupBox
             // 
+            this.AnswerGroupBox.Controls.Add(this.btnUserInfo);
             this.AnswerGroupBox.Controls.Add(this.button1);
             this.AnswerGroupBox.Controls.Add(this.AnswerProgressbar);
             this.AnswerGroupBox.Controls.Add(this.btnGenerate);
@@ -90,6 +92,16 @@
             this.AnswerGroupBox.TabStop = false;
             this.AnswerGroupBox.Text = "Answer";
             this.AnswerGroupBox.Enter += new System.EventHandler(this.AnswerGroupBox_Enter);
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(6, 371);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(96, 23);
+            this.button1.TabIndex = 9;
+            this.button1.Text = "SendNotification";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // AnswerProgressbar
             // 
@@ -247,15 +259,15 @@
             this.txtUserNumber.Text = "Total Number of Users";
             this.txtUserNumber.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
-            // button1
+            // btnUserInfo
             // 
-            this.button1.Location = new System.Drawing.Point(6, 371);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(96, 23);
-            this.button1.TabIndex = 9;
-            this.button1.Text = "SendNotification";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.btnUserInfo.Location = new System.Drawing.Point(109, 370);
+            this.btnUserInfo.Name = "btnUserInfo";
+            this.btnUserInfo.Size = new System.Drawing.Size(75, 23);
+            this.btnUserInfo.TabIndex = 10;
+            this.btnUserInfo.Text = "Get User Info";
+            this.btnUserInfo.UseVisualStyleBackColor = true;
+            this.btnUserInfo.Click += new System.EventHandler(this.btnUserInfo_Click);
             // 
             // FrmMain
             // 
@@ -304,6 +316,7 @@
         private System.Windows.Forms.TextBox txtUserNumber;
         private System.Windows.Forms.ProgressBar AnswerProgressbar;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button btnUserInfo;
     }
 }
 

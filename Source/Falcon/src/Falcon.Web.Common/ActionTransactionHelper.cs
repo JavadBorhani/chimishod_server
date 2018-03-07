@@ -76,6 +76,8 @@ namespace Falcon.Web.Common
             context.Dispose();
             mContextFactory.Reset();
             SessionClosed = true;
+            mContextFactory.DecrementConnectionCount();
+            
         }
     }
 }

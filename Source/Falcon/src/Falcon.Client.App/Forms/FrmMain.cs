@@ -55,6 +55,8 @@ namespace Falcon.Client.App
 
             RequestResultListBox.Invoke((MethodInvoker) delegate { RequestResultListBox.Items.Add("response : " + response.Request.Parameters.Count); });
         }
+
+
         private void AddToListBox(string text)
         {
             if (RequestResultListBox == null)
@@ -122,6 +124,16 @@ namespace Falcon.Client.App
         private void button1_Click(object sender, EventArgs e)
         {
             SendHugeRequest();
+        }
+
+        private void btnUserInfo_Click(object sender, EventArgs e)
+        {
+            AddToListBox("start request...");
+            for(int i = 0; i < 100; ++i)
+            {
+                mRequestManger.GetUserInfo("M2FkZGVmNjctNzc1YS00MjM1LThjZjctYTQ5ZTVkZDhmMTg2", AddToListBox);
+            }
+            AddToListBox("finish request...");
         }
     }
 }

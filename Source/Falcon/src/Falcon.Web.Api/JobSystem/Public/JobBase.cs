@@ -54,6 +54,7 @@ namespace Falcon.Web.Api.JobSystem.Public
                 mDb.Database.Connection.Close();
                 mDb.Dispose();
             }
+            WebContextModelFactory.Decrement();
         }
 
         public void BeginTransaction()
@@ -61,6 +62,7 @@ namespace Falcon.Web.Api.JobSystem.Public
             mDb = new CommonModelFirstDbContext(null);
             mDb.Database.Connection.Open();
             mDb.Database.BeginTransaction();
+            WebContextModelFactory.Increment();
         }
     }
 }
