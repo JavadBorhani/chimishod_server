@@ -12,6 +12,7 @@ using System.Web.Http.Description;
 
 namespace Falcon.Web.Api.Controllers.V2
 {
+    [UnitOfWorkActionFilter]
     public class SentInboxController : FalconApiController
     {
         private readonly ISentInquiryProcessor mSentInquiry;

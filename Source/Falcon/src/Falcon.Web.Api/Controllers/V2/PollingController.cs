@@ -9,7 +9,7 @@ using System.Web.Http.Description;
 
 namespace Falcon.Web.Api.Controllers.V2
 {
-    //[UnitOfWorkActionFilter]
+    [UnitOfWorkActionFilter]
     public class PollingController : FalconApiController
     {
 

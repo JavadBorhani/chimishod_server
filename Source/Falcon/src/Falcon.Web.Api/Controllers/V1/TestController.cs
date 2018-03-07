@@ -1,7 +1,6 @@
 ﻿using Falcon.Web.Api.InquiryProcessing.Public;
 using Falcon.Web.Api.Utilities.Base;
 using Falcon.Web.Common;
-using System.Threading.Tasks;
 using System.Web.Http;
 
 namespace Falcon.Web.Api.Controllers.V1
@@ -17,7 +16,7 @@ namespace Falcon.Web.Api.Controllers.V1
 
         [Route("v2/TestController/")]
         [HttpGet]
-        public async Task<IHttpActionResult> GetInfo()
+        public  IHttpActionResult GetInfo()
         {
 
             var item = mFriendInquiry.GetFriendUserNameAndImageFromCache(new Models.Api.Friend.SFriendCharacterDetailInquiry

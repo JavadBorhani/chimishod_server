@@ -13,11 +13,19 @@ namespace Falcon.Web.Api.JobSystem.Private.Jobs
         public override string StartJob()
         {
             
-            var value = mDb.UpdatePeopleNormalQuest();
+            try
+            {
+                var value = mDb.UpdatePeopleNormalQuest();
 
-            Done = true;
-            EndTransaction();
-            return "Message  : " + value;
+                Done = true;
+                EndTransaction();
+                return "Message  : " + value;
+            }
+            catch
+            {
+                EndTransaction();
+                return "Message : Exception occured in job system";
+            }
         }
 
     }
