@@ -131,7 +131,7 @@ namespace Falcon.Database.SqlServer.QueryProcessors
 
             if(friend != null)
             {
-                if(friend.RelationStatus == (int)RelationStatus.Rejected)
+                if(friend.RelationStatus == (int)RelationStatus.Rejected || friend.RelationStatus == (int)RelationStatus.None)
                 {
                     friend.RelationStatus = (int)RelationStatus.Pending;
                     friend.OperatedByID = mUserSession.ID;
@@ -146,6 +146,7 @@ namespace Falcon.Database.SqlServer.QueryProcessors
                         return false;
                     }
                 }
+
                 return false;
             }
 

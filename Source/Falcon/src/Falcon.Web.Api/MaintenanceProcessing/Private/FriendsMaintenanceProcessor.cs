@@ -120,38 +120,34 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
         private async Task<SFriend> PendingToStatus(Relationship Relationship, int FriendID , RelationStatus Status)
         {
 
-            if (Relationship.OperatedByID != mUserSession.ID)
+            if (Status == RelationStatus.Pending || Status == RelationStatus.Accepted || Status == RelationStatus.Blocked)
+                return null;
+
+            var status = await mFriendQuery.UpdateRelationship(FriendID, Status);
+
+            if (status)
             {
-
-                if (Status == RelationStatus.Pending)
-                    return null;
-
-                var status = await mFriendQuery.UpdateRelationship(FriendID, Status);
-
-                if (status)
+                if(Status == RelationStatus.Rejected || Status == RelationStatus.None)
                 {
-                    if(Status == RelationStatus.Rejected)
+                    return new SFriend
                     {
-                        return new SFriend
-                        {
-                            UserID = FriendID,
-                            RelationOperatorIsMe = true,
-                            Status = RelationStatus.None
-                        };
-                    }
-                    else
-                    {
-                        return new SFriend
-                        {
-                            UserID = FriendID,
-                            RelationOperatorIsMe = true,
-                            Status = Status
-                        };
-                    }                   
+                        UserID = FriendID,
+                        RelationOperatorIsMe = true,
+                        Status = RelationStatus.None
+                    };
                 }
+                else
+                {
+                    return new SFriend
+                    {
+                        UserID = FriendID,
+                        RelationOperatorIsMe = true,
+                        Status = Status
+                    };
+                }                   
             }
-
             return null;
+
         }
         private async Task<SFriend> AcceptedToStatus(int FriendID , RelationStatus Status)
         {
