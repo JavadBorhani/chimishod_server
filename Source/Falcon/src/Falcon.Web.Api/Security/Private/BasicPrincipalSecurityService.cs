@@ -85,12 +85,7 @@ namespace Falcon.Web.Api.Security.Private
 
         private void CloseDatabase()
         {
-            if(mDb != null)
-            {
-                mDb.Database.Connection.Close();
-                mDb.Dispose();
-                WebContextModelFactory.Decrement();
-            }
+            WebContainerManager.Get<IActionTransactionHelper>().CloseSession();
         }
 
         public bool SetRawPrincipal(string UUID)

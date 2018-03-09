@@ -129,9 +129,10 @@ namespace Falcon.Client.App
         private void btnUserInfo_Click(object sender, EventArgs e)
         {
             AddToListBox("start request...");
-            for(int i = 0; i < 50; ++i)
+            for(int i = 0; i < 1000; ++i)
             {
-                mRequestManger.GetUserInfo("OTEwNmFjNTctMzkyZC00ZTA0LTk5OWYtMzg4YTY5N2U4M2Ew", AddToListBox);
+                mRequestManger.GetUserInfo("NWRhNTQxZmItNjY1YS00MDM4LWE0ZDEtZjU5YjdiODQwYTg4", AddToListBox);
+                mRequestManger.GetUserInfo("M2FkZGVmNjctNzc1YS00MjM1LThjZjctYTQ5ZTVkZDhmMTg2", AddToListBox);
             }
             AddToListBox("finish request...");
         }

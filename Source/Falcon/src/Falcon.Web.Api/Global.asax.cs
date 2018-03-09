@@ -40,6 +40,7 @@ namespace Falcon.Web.Api
         
         private void InitializeSystems()
         {
+
             WebContainerManager.Get<IServerInquiryProcessor>().ReadConfigurationFilesFromServer();
             WebContainerManager.Get<IActionTransactionHelper>().CloseSession();
         }

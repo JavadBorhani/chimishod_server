@@ -9,5 +9,6 @@ namespace Falcon.Web.Common
         void BeginTransaction();
         void EndTransaction(HttpActionExecutedContext filterContext);
         void CloseSession();
+        //void CloseDatabaseConnection();
     }
 }
