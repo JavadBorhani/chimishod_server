@@ -1,10 +1,5 @@
-﻿using Hangfire.Dashboard;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using Hangfire.Annotations;
-using Microsoft.Owin;
+﻿using Hangfire.Annotations;
+using Hangfire.Dashboard;
 
 namespace Falcon.Web.Api.Security.Private
 {
@@ -12,12 +7,8 @@ namespace Falcon.Web.Api.Security.Private
     {
         public bool Authorize([NotNull] DashboardContext context)
         {
-            //TODO : Remember to Add Hangfire Authorization 
-            // https://github.com/HangfireIO/Hangfire.Dashboard.Authorization
 
             return true;
-            //var owin = new OwinContext(context.GetOwinEnvironment());
-            //return owin.Authentication.User.Identity.IsAuthenticated;
         }
     }
 }

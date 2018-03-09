@@ -1,5 +1,5 @@
-﻿using Falcon.Web.Api.Security.Private;
-using Hangfire;
+﻿using Hangfire;
+using Hangfire.Dashboard;
 using Microsoft.Owin;
 using Owin;
 
@@ -11,10 +11,27 @@ namespace Falcon.Web.Api
     {
         public void Configuration(IAppBuilder app)
         {
+
             app.UseHangfireDashboard("/ServerJobs", new DashboardOptions
             {
-                Authorization = new[] { new HangfireDashboardAuthorizationFilter() }
+                AuthorizationFilters = new [] {new BasicAuthAuthorizationFilter(new BasicAuthAuthorizationFilterOptions
+                {
+                    SslRedirect = false,
+                    RequireSsl = false,
+                    // Case sensitive login checking
+                    LoginCaseSensitive = true,
+                    // Users
+                    Users = new[]
+                    {
+                        new BasicAuthAuthorizationUser
+                        {
+                            Login = "FlappAdmin",
+                            PasswordClear = "@@@Visualbasic7"
+                        },
+                    }
+                })}
             });
+
             app.UseHangfireServer();
         }
     }
