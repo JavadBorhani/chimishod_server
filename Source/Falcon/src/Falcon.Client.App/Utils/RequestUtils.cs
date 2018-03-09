@@ -13,7 +13,7 @@ namespace Falcon.Client.App.Utils
         {
             var request = new RestRequest(Path, Method);
 
-            request.AddHeader("Authorization", "Base " + UUIDBase64);
+            request.AddHeader("Authorization", "Basic " + UUIDBase64);
 
             for (int parameter = 0; parameter < Parameters?.Length; ++parameter)
             {
@@ -30,7 +30,7 @@ namespace Falcon.Client.App.Utils
         public static RestRequest CreateRequest(string Path, Method Method , string UUIDBase64 , object BodyItems , HttpParam[] Parameters = null, HttpParam[] Headers = null)
         {
             var request = new RestRequest(Path, Method);
-            request.AddHeader("Authorization", "Base " + UUIDBase64);
+            request.AddHeader("Authorization", "Basic " + UUIDBase64);
             request.AddJsonBody(BodyItems);
 
             for (int parameter = 0; parameter < Parameters?.Length; ++parameter)

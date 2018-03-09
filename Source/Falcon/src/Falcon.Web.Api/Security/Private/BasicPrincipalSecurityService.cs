@@ -68,6 +68,8 @@ namespace Falcon.Web.Api.Security.Private
             IPrincipal principal = null;
             if(user == null || (principal = GetUserPrincipal(user)) == null)
             {
+                CloseDatabase();
+
                 //TODO : record ip address and all related informations 
                 mLogger.ErrorFormat("Unauthorized User Access UUID : {0} , IP:{1}", UUID, HttpContext.Current.Request.UserHostName);
                 return false;   
@@ -79,6 +81,16 @@ namespace Falcon.Web.Api.Security.Private
                 HttpContext.Current.User = principal;
             }
             return true;
+        }
+
+        private void CloseDatabase()
+        {
+            if(mDb != null)
+            {
+                mDb.Database.Connection.Close();
+                mDb.Dispose();
+                WebContextModelFactory.Decrement();
+            }
         }
 
         public bool SetRawPrincipal(string UUID)

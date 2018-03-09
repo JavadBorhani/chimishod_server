@@ -53,7 +53,7 @@ namespace Falcon.Client.App
             if(RequestResultListBox == null)
                 RequestResultListBox = new ListBox();
 
-            RequestResultListBox.Invoke((MethodInvoker) delegate { RequestResultListBox.Items.Add("response : " + response.Request.Parameters.Count); });
+            RequestResultListBox.Invoke((MethodInvoker) delegate { RequestResultListBox.Items.Add("response : " + response.StatusCode); });
         }
 
 
@@ -129,9 +129,9 @@ namespace Falcon.Client.App
         private void btnUserInfo_Click(object sender, EventArgs e)
         {
             AddToListBox("start request...");
-            for(int i = 0; i < 100; ++i)
+            for(int i = 0; i < 50; ++i)
             {
-                mRequestManger.GetUserInfo("M2FkZGVmNjctNzc1YS00MjM1LThjZjctYTQ5ZTVkZDhmMTg2", AddToListBox);
+                mRequestManger.GetUserInfo("OTEwNmFjNTctMzkyZC00ZTA0LTk5OWYtMzg4YTY5N2U4M2Ew", AddToListBox);
             }
             AddToListBox("finish request...");
         }

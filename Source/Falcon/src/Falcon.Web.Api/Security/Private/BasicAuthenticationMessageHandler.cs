@@ -2,6 +2,7 @@
 using Falcon.Common;
 using Falcon.Common.Logging;
 using Falcon.Web.Api.Security.Public;
+using Falcon.Web.Common;
 using log4net;
 using System;
 using System.Net;
@@ -29,7 +30,15 @@ namespace Falcon.Web.Api.Security.Private
             mBasicPrincipalSecurityService = BasicPrincipalSecurityService;
         }
 
-       protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+        public virtual IActionTransactionHelper mConnectionManager
+        {
+            get
+            {
+                return WebContainerManager.Get<IActionTransactionHelper>();
+            }
+        }
+
+        protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
             bool isGranted = IsGranted(request);            
 
@@ -86,6 +95,7 @@ namespace Falcon.Web.Api.Security.Private
                 {
                     return false;
                 }
+                
                 return mBasicPrincipalSecurityService.SetPrincipal(credentialParts[UUIDIndex]);
             }
             else
