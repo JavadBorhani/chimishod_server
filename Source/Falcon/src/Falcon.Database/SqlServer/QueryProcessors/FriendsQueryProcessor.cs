@@ -82,7 +82,7 @@ namespace Falcon.Database.SqlServer.QueryProcessors
         {
             var friends = await mDb.Set<Relationship>()
                 .AsNoTracking()
-                .Where(r => r.UserOneID == mUserSession.ID || r.UserTwoID == mUserSession.ID && r.RelationStatus != (int)RelationStatus.Blocked)
+                .Where(r => (r.UserOneID == mUserSession.ID || r.UserTwoID == mUserSession.ID) && (r.RelationStatus == (int)RelationStatus.Accepted || r.RelationStatus == (int)RelationStatus.Pending || r.RelationStatus == (int)RelationStatus.Blocked))
                 .Select(r => new
                 {
                     r.UserOneID,
@@ -135,6 +135,7 @@ namespace Falcon.Database.SqlServer.QueryProcessors
                 {
                     friend.RelationStatus = (int)RelationStatus.Pending;
                     friend.OperatedByID = mUserSession.ID;
+                    friend.UpdatedDate = mDateTime.Now;
 
                     try
                     {

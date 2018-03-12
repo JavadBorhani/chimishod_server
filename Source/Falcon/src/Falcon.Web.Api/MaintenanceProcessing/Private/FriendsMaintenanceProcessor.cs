@@ -119,15 +119,22 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
 
         private async Task<SFriend> PendingToStatus(Relationship Relationship, int FriendID , RelationStatus Status)
         {
-
-            if (Status == RelationStatus.Pending || Status == RelationStatus.Accepted || Status == RelationStatus.Blocked)
-                return null;
+            if (Relationship.OperatedByID == mUserSession.ID) // previous event was me
+            {
+                if (Status == RelationStatus.Pending || Status == RelationStatus.Accepted || Status == RelationStatus.Blocked)
+                    return null;
+            }
+            else // previous state wasn't me 
+            {
+                if (Status == RelationStatus.Pending || Status == RelationStatus.None)
+                    return null;
+            }
 
             var status = await mFriendQuery.UpdateRelationship(FriendID, Status);
 
             if (status)
             {
-                if(Status == RelationStatus.Rejected || Status == RelationStatus.None)
+                if (Status == RelationStatus.Rejected || Status == RelationStatus.None)
                 {
                     return new SFriend
                     {
@@ -144,15 +151,13 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
                         RelationOperatorIsMe = true,
                         Status = Status
                     };
-                }                   
+                }
             }
             return null;
-
         }
         private async Task<SFriend> AcceptedToStatus(int FriendID , RelationStatus Status)
         {
-            if (Status == RelationStatus.Accepted ||
-                           Status == RelationStatus.Pending)
+            if (Status == RelationStatus.Accepted || Status == RelationStatus.Pending) ////todo : None = 5 , Consider none
                 return null;
 
             var accepted = await mFriendQuery.UpdateRelationship(FriendID, Status);
