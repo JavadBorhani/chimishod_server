@@ -31,7 +31,8 @@ namespace Falcon.Database.SqlServer.QueryProcessors
         {
             var gameConfig = await mDb.Set<GameConfig>().SingleOrDefaultAsync();
 
-            gameConfig.PeopleQuestionsPercent = Config.PeopleQuestionsPercent;
+            gameConfig.NewCreatedQuestionsPercent = Config.NewCreatedQuestionsPercent;
+            gameConfig.HighQualityQuestionsPercent = Config.HighQualityQuestionsPercent;
             gameConfig.TotalNumberOfQuestions = Config.TotalNumberOfQuestions;
             gameConfig.FunQuestionsPercent = Config.FunQuestionsPercent;
 

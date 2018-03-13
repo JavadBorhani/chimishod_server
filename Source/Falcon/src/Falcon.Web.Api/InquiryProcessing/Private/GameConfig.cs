@@ -61,7 +61,7 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
         {
             if( NewState != null && 
                 NewState.FunQuestionsPercent != 0 && 
-                NewState.PeopleQuestionsPercent != 0 && 
+                NewState.NewCreatedQuestionsPercent != 0 && 
                 NewState.TotalNumberOfQuestions != 0 )
 
             mGameConfig = NewState;

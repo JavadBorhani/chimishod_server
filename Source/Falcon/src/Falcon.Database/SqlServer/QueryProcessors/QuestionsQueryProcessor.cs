@@ -7,6 +7,7 @@ using Falcon.EFCommonContext.DbModel;
 using Falcon.Web.Models.Api;
 using Falcon.Web.Models.Api.Friend;
 using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
@@ -64,7 +65,7 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             throw new NotImplementedException();
         }
 
-        public async Task<Question[]> GetQuestionList(bool IsPublic, int HashtagID, int Amount ,OrderBy OrderBy = OrderBy.None, int[] Excepts = null)
+        public async Task<Question[]> GetQuestionList(bool IsPublic, int HashtagID, int Amount ,OrderBy OrderBy = OrderBy.None, List<int> Excepts = null)
         {
             IQueryable<Question> query = null;
 
@@ -79,7 +80,7 @@ namespace Falcon.Database.SqlServer.QueryProcessors
                    .Where(q => q.IsPublic == true && q.HashTagID == HashtagID && !Excepts.Contains(q.ID))
                    .OrderBy(q => q.CreatedDate)
                    .ThenBy(q => q.AnswerCount)
-                   .Take(Amount);
+                   .Take(Amount); 
 
                     break;
                 case OrderBy.CountDateTimeWeight:

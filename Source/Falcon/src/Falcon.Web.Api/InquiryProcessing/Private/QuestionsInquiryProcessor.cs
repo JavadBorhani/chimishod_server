@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using Falcon.Common.Security;
+﻿using Falcon.Common.Security;
 using Falcon.Data;
 using Falcon.Data.QueryProcessors;
 using Falcon.Web.Api.InquiryProcessing.Public;
@@ -8,7 +7,6 @@ using Falcon.Web.Models.Api.Config;
 using Falcon.Web.Models.Api.Friend;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Falcon.Web.Api.InquiryProcessing.Private
@@ -49,23 +47,43 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
             var config = CalculateConfigAmounts(mGameConfig);
 
 
-            var userAnsweredIds = await mAnswerInquiry.GetUserAnswerQuestions(mUserSession.ID);
+            var IdsToBeIgnored = await mAnswerInquiry.GetUserAnswerQuestions(mUserSession.ID);
 
-            var funQuestions = await mQuestionSelector.GetFunQuestions(config.FunQuestionsPercent , userAnsweredIds);
+            var funQuestions = await mQuestionSelector.GetFunQuestions(config.FunQuestionsPercent , IdsToBeIgnored);
 
-            var peopleQuestions = await mQuestionSelector.GetPeopleQuestions(config.PeopleQuestionsPercent , userAnsweredIds);
+            MergeList(ref IdsToBeIgnored, ref funQuestions);
 
-            var items = funQuestions.Concat(peopleQuestions);
+            var peopleCreatedQuestions = await mQuestionSelector.GetPeopleCreatedQuestions(config.NewCreatedQuestionsPercent , IdsToBeIgnored);
 
-            return items.ToList();                
+            MergeList(ref IdsToBeIgnored, ref peopleCreatedQuestions);
+
+            var highQualityQuestions = await mQuestionSelector.GetPeopleHighQualityQuestions(config.HighQualityQuestionsPercent, IdsToBeIgnored);
+
+
+            var items = new List<SQuestion>();
+
+            items.AddRange(funQuestions);
+            items.AddRange(peopleCreatedQuestions);
+            items.AddRange(highQualityQuestions);
+
+            return items;                
+        }
+
+        private void MergeList(ref List<int> MainList , ref List<SQuestion> newItems)
+        {
+            for(int i = 0; i < newItems.Count; ++i)
+            {
+                MainList.Add(newItems[i].ID);
+            }
         }
 
         private SGameConfig CalculateConfigAmounts(SGameConfig Config)
         {
             SGameConfig config = new SGameConfig();
 
-            config.PeopleQuestionsPercent = (int)(((float)Config.PeopleQuestionsPercent / 100) * Config.TotalNumberOfQuestions);
-            config.FunQuestionsPercent= (int)(((float)Config.FunQuestionsPercent / 100) * Config.TotalNumberOfQuestions);
+            config.NewCreatedQuestionsPercent = (int)(((float)Config.NewCreatedQuestionsPercent / 100) * Config.TotalNumberOfQuestions);
+            config.FunQuestionsPercent = (int)(((float)Config.FunQuestionsPercent / 100) * Config.TotalNumberOfQuestions);
+            config.HighQualityQuestionsPercent = (int)(((float)Config.HighQualityQuestionsPercent / 100) * Config.TotalNumberOfQuestions);
 
             return config;
         }

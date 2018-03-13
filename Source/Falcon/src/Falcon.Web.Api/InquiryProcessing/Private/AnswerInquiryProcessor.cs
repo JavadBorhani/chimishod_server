@@ -1,5 +1,6 @@
 ﻿using Falcon.Data.QueryProcessors;
 using Falcon.Web.Api.InquiryProcessing.Public;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Falcon.Web.Api.InquiryProcessing.Private
@@ -13,7 +14,7 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
         {
             mAnswerQueryProcessor = AnswerQueryProcessor; 
         }
-        public async Task<int[]> GetUserAnswerQuestions(int UserID)
+        public async Task<List<int>> GetUserAnswerQuestions(int UserID)
         {
             var data = await mAnswerQueryProcessor.GetUserAnsweredQuestionIds(UserID);
             return data;

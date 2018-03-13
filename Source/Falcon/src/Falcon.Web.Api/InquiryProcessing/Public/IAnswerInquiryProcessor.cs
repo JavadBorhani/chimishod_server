@@ -1,9 +1,10 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Falcon.Web.Api.InquiryProcessing.Public
 {
     public interface IAnswerInquiryProcessor
     {
-        Task<int[]> GetUserAnswerQuestions(int UserID);
+        Task<List<int>> GetUserAnswerQuestions(int UserID);
     }
 }

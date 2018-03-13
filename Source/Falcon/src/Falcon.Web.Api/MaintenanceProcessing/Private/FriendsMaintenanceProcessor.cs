@@ -76,6 +76,7 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
         public async Task<SFriend> UpdateRelation(int FriendID, RelationStatus Status)
         {
             var friend = await mFriendQuery.GetFriendRelationshipAsNoTracking(FriendID);
+            SFriend response = null;
 
             if (friend != null)
             {
@@ -83,35 +84,35 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
                 {
                     case (int) RelationStatus.Pending:
 
-                        var pending = await PendingToStatus(friend, FriendID, Status);
-
-                        if(pending != null)
-                        {
-                            await mNotificationManager.SendFriendResponseNotification(FriendID, new Models.Api.Notification.Client.SFriendResponse
-                            {
-                                UserID = mUserSession.ID, 
-                                RelationStatus = pending.Status
-                            });
-                        }
-                        return pending;
-
-
+                        response = await PendingToStatus(friend, FriendID, Status);
+                        break;  
+                     
                     case (int) RelationStatus.Accepted:
 
-                        var accpeted = await AcceptedToStatus(FriendID, Status);
-                        return accpeted;    
+                        response = await AcceptedToStatus(FriendID, Status);
+                        break; 
 
                     case (int)RelationStatus.Rejected:
 
-                        var rejected = RejectedToStatus();
-                        return rejected;
+                        response =  RejectedToStatus();
+                        break;
 
                     case (int)RelationStatus.Blocked:
 
-                        var blocked = await BlockedToStatus(FriendID, friend, Status);
-                        return blocked;
-
+                        response = await BlockedToStatus(FriendID, friend, Status);
+                        break;
                 }
+
+                if(response != null)
+                {
+                    await mNotificationManager.SendFriendResponseNotification(FriendID, new Models.Api.Notification.Client.SFriendResponse
+                    {
+                        UserID = mUserSession.ID,
+                        RelationStatus = response.Status
+                    });
+                }
+
+                return response; 
 
             }
             return null;

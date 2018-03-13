@@ -6,6 +6,7 @@ using Falcon.EFCommonContext.DbModel;
 using Falcon.Web.Models.Api;
 using Falcon.Web.Models.Api.Answer;
 using Falcon.Web.Models.Api.Friend;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
@@ -23,13 +24,13 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             mUserSession = UserSession;
             mDateTime = DateTime;
         }
-        public async Task<int[]> GetUserAnsweredQuestionIds(int UserID)
+        public async Task<List<int>> GetUserAnsweredQuestionIds(int UserID)
         {
             var data = await mDb.Set<Answer>()
                 .AsNoTracking()
                 .Where(a => a.UserID == UserID)
                 .Select(a => a.QuestionID)
-                .ToArrayAsync();
+                .ToListAsync();
 
             return data;
         }

@@ -2,13 +2,14 @@
 using Falcon.Web.Models.Api;
 using Falcon.Web.Models.Api.Answer;
 using Falcon.Web.Models.Api.Friend;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Falcon.Data.QueryProcessors
 {
     public interface IAnswerQueryProcessor
     {
-        Task<int[]> GetUserAnsweredQuestionIds(int UserID);
+        Task<List<int>> GetUserAnsweredQuestionIds(int UserID);
         Task<SFriendAnswer[]> GetAnswerOfUsers(int QuestionID , int[] UserIDs , int NumberToTake);
         Task<Answer[]> GetUserAnswers(int[] QuestionIds);
         Task<bool> SaveYesNoAnswer(SYesNoAnswer Response);

@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="Falcon.DbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="Falcon.DbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="AchievedCodeGift">
           <Key>
             <PropertyRef Name="ID" />
@@ -83,8 +83,9 @@
           </Key>
           <Property Name="ID" Type="int" Nullable="false" />
           <Property Name="TotalNumberOfQuestions" Type="int" Nullable="false" />
-          <Property Name="PeopleQuestionsPercent" Type="int" Nullable="false" />
+          <Property Name="HighQualityQuestionsPercent" Type="int" Nullable="false" />
           <Property Name="FunQuestionsPercent" Type="int" Nullable="false" />
+          <Property Name="NewCreatedQuestionsPercent" Type="int" Nullable="false" />
           <Property Name="DefaultUserCoinAmount" Type="int" Nullable="false" />
           <Property Name="DefaultUserLevelNumber" Type="int" Nullable="false" />
           <Property Name="DefaultUserLevelProgress" Type="int" Nullable="false" />
@@ -1352,8 +1353,7 @@
             <End Role="WatchedAd" EntitySet="WatchedAd" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="Falcon.DbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -1613,7 +1613,7 @@
             <End Role="WatchAdProvider" EntitySet="WatchAdProviders" />
             <End Role="WatchedAd" EntitySet="WatchedAds" />
           </AssociationSet>
-        </EntityContainer>
+          </EntityContainer>
         <ComplexType Name="sp_helpdiagramdefinition_Result">
           <Property Type="Int32" Name="version" Nullable="true" />
           <Property Type="Binary" Name="definition" Nullable="true" />
@@ -1711,8 +1711,9 @@
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" />
           <Property Name="TotalNumberOfQuestions" Type="Int32" Nullable="false" />
-          <Property Name="PeopleQuestionsPercent" Type="Int32" Nullable="false" />
+          <Property Name="HighQualityQuestionsPercent" Type="Int32" Nullable="false" />
           <Property Name="FunQuestionsPercent" Type="Int32" Nullable="false" />
+          <Property Name="NewCreatedQuestionsPercent" Type="Int32" Nullable="false" />
           <Property Name="DefaultUserCoinAmount" Type="Int32" Nullable="false" />
           <Property Name="DefaultUserLevelNumber" Type="Int32" Nullable="false" />
           <Property Name="DefaultUserLevelProgress" Type="Int32" Nullable="false" />
@@ -2123,7 +2124,7 @@
           <Property Name="APILevel" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Device" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Model" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="RowVersion" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" ConcurrencyMode="Fixed" />
+          <Property Name="RowVersion" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
           <Property Name="IPAddress" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="AvatarImagePath" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="Activated" Type="Boolean" Nullable="false" />
@@ -2808,7 +2809,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-      </Schema>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -2924,8 +2925,9 @@
                 <ScalarProperty Name="DefaultUserLevelProgress" ColumnName="DefaultUserLevelProgress" />
                 <ScalarProperty Name="DefaultUserLevelNumber" ColumnName="DefaultUserLevelNumber" />
                 <ScalarProperty Name="DefaultUserCoinAmount" ColumnName="DefaultUserCoinAmount" />
+                <ScalarProperty Name="NewCreatedQuestionsPercent" ColumnName="NewCreatedQuestionsPercent" />
                 <ScalarProperty Name="FunQuestionsPercent" ColumnName="FunQuestionsPercent" />
-                <ScalarProperty Name="PeopleQuestionsPercent" ColumnName="PeopleQuestionsPercent" />
+                <ScalarProperty Name="HighQualityQuestionsPercent" ColumnName="HighQualityQuestionsPercent" />
                 <ScalarProperty Name="TotalNumberOfQuestions" ColumnName="TotalNumberOfQuestions" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
@@ -3366,7 +3368,7 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-        </EntityContainerMapping>
+          </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
   </edmx:Runtime>
