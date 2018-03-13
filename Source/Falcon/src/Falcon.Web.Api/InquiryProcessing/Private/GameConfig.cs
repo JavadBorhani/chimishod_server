@@ -4,7 +4,6 @@ using Falcon.EFCommonContext;
 using Falcon.Web.Api.InquiryProcessing.Public;
 using Falcon.Web.Common;
 using Falcon.Web.Models.Api.Config;
-using System.Threading.Tasks;
 
 namespace Falcon.Web.Api.InquiryProcessing.Private
 {

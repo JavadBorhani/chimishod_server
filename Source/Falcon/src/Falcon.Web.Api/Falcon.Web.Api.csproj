@@ -433,6 +433,10 @@
     <None Include="Properties\PublishProfiles\Api.Chimishod.ir.pubxml" />
     <None Include="Properties\PublishProfiles\ApiAsp.pubxml" />
     <None Include="Properties\PublishProfiles\development.pubxml" />
+    <None Include="Properties\PublishProfiles\NovinTechDevelopment.pubxml" />
+    <None Include="Properties\PublishProfiles\NovinTechLive.pubxml" />
+    <None Include="Properties\PublishProfiles\NovinTechMvp.pubxml" />
+    <None Include="Properties\PublishProfiles\NovinTechQA.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
