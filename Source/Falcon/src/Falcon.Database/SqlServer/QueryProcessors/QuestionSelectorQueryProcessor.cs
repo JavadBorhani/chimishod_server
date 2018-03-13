@@ -24,21 +24,22 @@ namespace Falcon.Database.SqlServer.QueryProcessors
 
         public async Task<List<SQuestion>> GetFunQuestions(int Amount, List<int> Answered)
         {
-            var questions = await mQuestionQuery.GetQuestionList(true , (int)HashTagID.Fun ,Amount ,OrderBy.CountDateTimeAscending ,  Answered);
+            var questions = await mQuestionQuery.GetQuestionList(true , (int)HashTagID.Fun ,Amount ,OrderBy.CountDateTimeDescending ,  Answered);
 
             return mMapper.Map<List<SQuestion>>(questions);
         }
 
         public async Task<List<SQuestion>> GetPeopleCreatedQuestions(int Amount, List<int> Answered)
         {
-            var questions = await mQuestionQuery.GetQuestionList(true , (int)HashTagID.People , Amount, OrderBy.CountDateTimeAscending, Answered);
+            var questions = await mQuestionQuery.GetQuestionList(true , (int)HashTagID.People , Amount, OrderBy.CountDateTimeDescending, Answered);
 
             return mMapper.Map<List<SQuestion>>(questions);
         }
 
         public async Task<List<SQuestion>> GetPeopleHighQualityQuestions(int Amount , List<int> Answered)
         {
-            var questions = await mQuestionQuery.GetQuestionList(true, (int)HashTagID.People, Amount, OrderBy.CountDateTimeWeight, Answered);
+            var questions = await mQuestionQuery.GetQuestionList(true, (int)HashTagID.People, Amount, OrderBy.WeightDateTime, Answered);
+
             return mMapper.Map<List<SQuestion>>(questions);
         }
     }

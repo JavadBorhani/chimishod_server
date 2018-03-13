@@ -6,7 +6,6 @@ using Falcon.EFCommonContext;
 using Falcon.EFCommonContext.DbModel;
 using Falcon.Web.Models.Api;
 using Falcon.Web.Models.Api.Friend;
-using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
@@ -42,7 +41,7 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             return false;
         }
 
-        public async Task<bool> IsDeletable(int QuestionID)
+        public Task<bool> IsDeletable(int QuestionID)
         {
             //    var item = await mDb.Set<Manufacture>().AsNoTracking()
             //        .Where(u => u.UserID == mUserSession.ID)
@@ -57,12 +56,7 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             //    }
             //    return false;  
 
-            return false;
-        }
-
-        public async Task<Question[]> GetQuestionList()
-        {
-            throw new NotImplementedException();
+            return Task.FromResult(false);
         }
 
         public async Task<Question[]> GetQuestionList(bool IsPublic, int HashtagID, int Amount ,OrderBy OrderBy = OrderBy.None, List<int> Excepts = null)
@@ -71,20 +65,42 @@ namespace Falcon.Database.SqlServer.QueryProcessors
 
             switch(OrderBy)
             {
-                case OrderBy.CountDateTimeAscending:
+                case OrderBy.CountDateTimeDescending:
 
                     query = mDb.Set<Question>()
                    .AsNoTracking()
                    .Include(q => q.QuestionAction)
                    .Include(q => q.User)
-                   .Where(q => q.IsPublic == true && q.HashTagID == HashtagID && !Excepts.Contains(q.ID))
-                   .OrderBy(q => q.CreatedDate)
+                   .Where(q => q.IsPublic == IsPublic && q.HashTagID == HashtagID && !Excepts.Contains(q.ID))
+                   .OrderByDescending(q => q.CreatedDate)
                    .ThenBy(q => q.AnswerCount)
                    .Take(Amount); 
 
                     break;
+
                 case OrderBy.CountDateTimeWeight:
-                    break;  
+
+                    query = mDb.Set<Question>()
+                    .AsNoTracking()
+                    .Include(q => q.QuestionAction)
+                    .Include(q => q.User)
+                    .Where(q => q.IsPublic == IsPublic && q.HashTagID == HashtagID && !Excepts.Contains(q.ID))
+                    .OrderByDescending(q => q.CreatedDate)
+                    .ThenBy(q => q.AnswerCount)
+                    .Take(Amount);
+
+                    break;
+                case OrderBy.Weight:
+
+                    query = mDb.Set<Question>()
+                    .AsNoTracking()
+                    .Include(q => q.QuestionAction)
+                    .Include(q => q.User)
+                    .Where(q => q.IsPublic == IsPublic && q.HashTagID == HashtagID && !Excepts.Contains(q.ID))
+                    .OrderByDescending(q => q.Weight)
+                    .Take(Amount);
+
+                    break;
             }
 
 

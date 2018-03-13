@@ -10,9 +10,10 @@ namespace Falcon.Data.QueryProcessors
     {
         None,
         DateTime,
+        Weight,
         DateTimeAndWeight,
         CountDateTimeWeight,
-        CountDateTimeAscending
+        CountDateTimeDescending
     }
     public interface IQuestionsQueryProcessor
     {
