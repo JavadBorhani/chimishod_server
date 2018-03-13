@@ -6,14 +6,15 @@ using System.Threading.Tasks;
 
 namespace Falcon.Data.QueryProcessors
 {
+    //ASC Or DESC Comes after 
     public enum OrderBy
     {
         None,
         DateTime,
-        Weight,
-        DateTimeAndWeight,
+        WeightDESC,
+        AnswerCountASCCreatedDateDESC,
         CountDateTimeWeight,
-        CountDateTimeDescending
+        LikeDESC
     }
     public interface IQuestionsQueryProcessor
     {

@@ -65,7 +65,7 @@ namespace Falcon.Database.SqlServer.QueryProcessors
 
             switch(OrderBy)
             {
-                case OrderBy.CountDateTimeDescending:
+                case OrderBy.AnswerCountASCCreatedDateDESC:
 
                     query = mDb.Set<Question>()
                    .AsNoTracking()
@@ -78,19 +78,18 @@ namespace Falcon.Database.SqlServer.QueryProcessors
 
                     break;
 
-                case OrderBy.CountDateTimeWeight:
+                case OrderBy.LikeDESC:
 
                     query = mDb.Set<Question>()
                     .AsNoTracking()
                     .Include(q => q.QuestionAction)
                     .Include(q => q.User)
                     .Where(q => q.IsPublic == IsPublic && q.HashTagID == HashtagID && !Excepts.Contains(q.ID))
-                    .OrderByDescending(q => q.CreatedDate)
-                    .ThenBy(q => q.AnswerCount)
+                    .OrderByDescending(q => q.Like_Count)
                     .Take(Amount);
 
                     break;
-                case OrderBy.Weight:
+                case OrderBy.WeightDESC:
 
                     query = mDb.Set<Question>()
                     .AsNoTracking()
