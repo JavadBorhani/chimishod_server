@@ -4,7 +4,7 @@
     {
         public int QuestNumber { get; set; }
         public string QuestTitle { get; set; }
-        public float PeopleScore { get; set; }
-        public float UserScore { get; set; }
+        public double PeopleScore { get; set; }
+        public double UserScore { get; set; }
     }
 }
