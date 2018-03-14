@@ -1,6 +1,6 @@
 USE [SocialChimishod]
 GO
-/****** Object:  StoredProcedure [dbo].[UpdatePeopleNormalQuest]    Script Date: 3/1/2018 4:58:06 PM ******/
+/****** Object:  StoredProcedure [dbo].[UpdatePeopleNormalQuest]    Script Date: 3/14/2018 7:28:05 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -15,7 +15,7 @@ BEGIN
 	SELECT  LevelNumber , QuestNumber from [QuestPeopleScore]
 
 	UPDATE [dbo].[QuestPeopleScore]
-	SET MeanScorePoint = Result.Total / Result.PersonCount
+	SET MeanScorePoint = Result.Total / cast(Result.PersonCount as decimal)
 	FROM
 		( SELECT UserLevelNumber, QuestNumber, PersonCount = COUNT(*), Total = SUM(ScorePoint) FROM [SocialChimishod].[dbo].[QuestScoreSnapshot] GROUP BY UserLevelNumber, QuestNumber) RESULT
 	WHERE [QuestPeopleScore].LevelNumber = RESULT.UserLevelNumber And [QuestPeopleScore].QuestNumber = Result.QuestNumber

@@ -20,7 +20,6 @@ namespace Falcon.EFCommonContext.DbModel
             : base("name=DbEntity")
         {
         }
-
         public DbEntity(string NameOrConnectionString) : base(NameOrConnectionString)
         {
         }

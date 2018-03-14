@@ -17,7 +17,7 @@ namespace Falcon.EFCommonContext.DbModel
         public int ID { get; set; }
         public int LevelNumber { get; set; }
         public int QuestNumber { get; set; }
-        public int MeanScorePoint { get; set; }
+        public double MeanScorePoint { get; set; }
     
         public virtual Level Level { get; set; }
         public virtual Quest Quest { get; set; }
