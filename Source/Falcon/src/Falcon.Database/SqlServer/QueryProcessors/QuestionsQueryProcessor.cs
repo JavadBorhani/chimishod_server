@@ -71,7 +71,7 @@ namespace Falcon.Database.SqlServer.QueryProcessors
                    .AsNoTracking()
                    .Include(q => q.QuestionAction)
                    .Include(q => q.User)
-                   .Where(q => q.IsPublic == IsPublic && q.HashTagID == HashtagID && !Excepts.Contains(q.ID))
+                   .Where(q => q.IsPublic == IsPublic && q.Banned == false && q.HashTagID == HashtagID && !Excepts.Contains(q.ID))
                    .OrderByDescending(q => q.CreatedDate)
                    .ThenBy(q => q.AnswerCount)
                    .Take(Amount); 
@@ -84,7 +84,7 @@ namespace Falcon.Database.SqlServer.QueryProcessors
                     .AsNoTracking()
                     .Include(q => q.QuestionAction)
                     .Include(q => q.User)
-                    .Where(q => q.IsPublic == IsPublic && q.HashTagID == HashtagID && !Excepts.Contains(q.ID))
+                    .Where(q => q.IsPublic == IsPublic && q.Banned == false &&  q.HashTagID == HashtagID && !Excepts.Contains(q.ID))
                     .OrderByDescending(q => q.Like_Count)
                     .Take(Amount);
 
@@ -95,7 +95,7 @@ namespace Falcon.Database.SqlServer.QueryProcessors
                     .AsNoTracking()
                     .Include(q => q.QuestionAction)
                     .Include(q => q.User)
-                    .Where(q => q.IsPublic == IsPublic && q.HashTagID == HashtagID && !Excepts.Contains(q.ID))
+                    .Where(q => q.IsPublic == IsPublic && q.Banned == false && q.HashTagID == HashtagID && !Excepts.Contains(q.ID))
                     .OrderByDescending(q => q.Weight)
                     .Take(Amount);
 
