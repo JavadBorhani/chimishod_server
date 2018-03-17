@@ -132,17 +132,13 @@ namespace Falcon.Database.SqlServer.QueryProcessors
         {
             var player = await mDb.Set<User>().Where(m => m.ID == mUserSession.ID).Include( u => u.Level).SingleOrDefaultAsync();
 
-
-            if (player.LevelNumber >= LastLevel)
-                return new SLevelUpInfo() { LevelUpMode = LevelUpMode.NotLeveledUp, LevelUpNumber = -1 };
-
             SLevelUpInfo level;
             bool SaveFailed = false;
           
             do
             {
                 SaveFailed = false;
-                level = LevelUpChecking(ref player, player.Level.ScoreCeil, Prize, (player.LevelNumber) + 1);
+                level = LevelUpChecking(ref player, player.Level.ScoreCeil, Prize, (player.LevelNumber) + 1 , LastLevel);
                 try
                 {
                     await mDb.SaveChangesAsync();
@@ -174,12 +170,15 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             return false;
         }
 
-        private SLevelUpInfo LevelUpChecking(ref User User, int LevelCeil, int Prize, int NextLevelNumber)
+        private SLevelUpInfo LevelUpChecking(ref User User, int LevelCeil, int Prize, int NextLevelNumber , int LastLevel)
         {
             SLevelUpInfo info = new SLevelUpInfo();
 
             if ((User.LevelProgress + Prize >= LevelCeil))
             {
+                if (NextLevelNumber > LastLevel)
+                    return info;
+
                 User.LevelNumber = NextLevelNumber;
                 int remained = (User.LevelProgress + Prize) - LevelCeil;
                 User.LevelProgress = remained;
