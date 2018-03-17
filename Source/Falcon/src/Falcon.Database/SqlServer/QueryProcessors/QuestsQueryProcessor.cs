@@ -92,7 +92,7 @@ namespace Falcon.Database.SqlServer.QueryProcessors
 
             var item = await mDb.Set<QuestQuestion>()
                 .AsNoTracking()
-                .Where(qq => qq.QuestNumber == currentUserQuest && qq.QuestionID == QuestionID)
+                .Where(qq => qq.QuestionID == QuestionID)
                 .SingleOrDefaultAsync();
 
             return item;

@@ -19,7 +19,7 @@ namespace Falcon.Data.QueryProcessors
         //Task<int> GetDWMCount();
         //Task<bool> UpdateLastSeenDateTime();
         //Task<bool> UpdateLastSeenDateTimeToNow();
-        Task<SLevelUpInfo> UpdateLevel(int Prize);
+        Task<SLevelUpInfo> UpdateLevel(int Prize , int LastLevel);
         Task<bool> LevelExits(int LevelNumber);
         Task<int> GetLevelPrize(int LevelNumber);
         //Task<SUserCount> GetUserCountInfo(int UserID);

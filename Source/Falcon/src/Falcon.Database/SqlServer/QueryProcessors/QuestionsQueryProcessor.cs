@@ -210,7 +210,7 @@ namespace Falcon.Database.SqlServer.QueryProcessors
                (m.SenderID == UserID || m.RecieverID == UserID))
                .GroupBy(m => new { m.SenderID, m.QuestionID })
                .Select(m => m.OrderByDescending(s => s.UpdatedDate).FirstOrDefault())
-               .OrderBy(m => m.ID);
+               .OrderByDescending(m => m.CreatedDate);
 
 
             var totalItemCount = await sentGroupQuery.CountAsync();

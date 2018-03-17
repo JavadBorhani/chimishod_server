@@ -19,6 +19,7 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
         private readonly IGameConfig mGameConfig;
         private readonly IMemoryStore mMemory;
         private readonly IUsersInMemory mUserInMemory;
+        private readonly IQuestInMemoryProcessor mQuestInMemory;
         public UsersMaintenanceProcessor
             (
             IUserInfoQueryProcessor UserInfoQuery,
@@ -27,7 +28,8 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
             IUUIDGenerator Generator , 
             IGameConfig GameConfig , 
             IMemoryStore Memory , 
-            IUsersInMemory UserInMemory)
+            IUsersInMemory UserInMemory , 
+            IQuestInMemoryProcessor QuestInMemory)
         {
             mUserQuery = UserQueryProcessor;
             mUserInfoQuery = UserInfoQuery;
@@ -36,6 +38,7 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
             mGameConfig = GameConfig;
             mMemory = Memory;
             mUserInMemory = UserInMemory;
+            mQuestInMemory = QuestInMemory;
         }
 
         public async Task<int> LevelUp(int Prize)
@@ -45,10 +48,11 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
             if (Prize == 0)
                 return totalCoin;
 
+
             SLevelUpInfo info;
             do
             {
-                info = await mUserQuery.UpdateLevel(Prize);
+                info = await mUserQuery.UpdateLevel(Prize , mQuestInMemory.GetLastLevel());
 
                 if (info.LevelUpMode != LevelUpMode.NotLeveledUp)
                 {

@@ -16,6 +16,7 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
     {
         private ConcurrentDictionary<int, SQuest> mQuests = new ConcurrentDictionary<int, SQuest>();
         private ConcurrentDictionary<int, SQuest> mLevelQuests = new ConcurrentDictionary<int, SQuest>();
+        private int lastLevel; 
 
         public virtual IDbContext mDB
         {
@@ -76,11 +77,15 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
                 .ToArray();
 
             mQuests.Clear();
-            mLevelQuests.Clear();            
+            mLevelQuests.Clear();
+            lastLevel = 0;            
 
             for (int i = 0; i < query.Length; ++i)
             {
                 var level = query[i].Levels.FirstOrDefault();
+
+                if (level.LevelNumber > lastLevel)
+                    lastLevel = level.LevelNumber;  
 
                 SQuest quest = new SQuest
                 {
@@ -122,6 +127,9 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
             throw new NotImplementedException();
         }
 
-        
+        public int GetLastLevel()
+        {
+            return lastLevel;
+        }
     }
 }
