@@ -6,6 +6,7 @@ using Falcon.Web.Common;
 using Falcon.Web.Models;
 using Falcon.Web.Models.Api;
 using Falcon.Web.Models.Api.Friend;
+using Falcon.Web.Models.Api.Notification;
 using Falcon.Web.Models.Api.User;
 using System.Net;
 using System.Threading.Tasks;
@@ -87,6 +88,17 @@ namespace Falcon.Web.Api.Controllers.V2
         }
 
 
+        [ResponseType(typeof(bool))]
+        [Route("v2/Users/NotifyID")]
+        [HttpPost]
+        public async Task<IHttpActionResult> UpdateNotificationID(SNotificationID NotificationID)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest();
+
+            var response = await mUsersMaintenance.UpdateNotificationID(NotificationID);
+            return Ok(response);
+        }
 
     }
 }

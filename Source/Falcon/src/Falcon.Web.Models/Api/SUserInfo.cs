@@ -16,9 +16,8 @@ namespace Falcon.Web.Models.Api
         public bool IsEditable { get; set; }
 
         [Required (AllowEmptyStrings = false)]
-        public string Password { get; set; }
+        public string Password { get; set; } 
 
-        [Required]
         public Guid NotificationID { get; set; }
 
         public bool HasRegistered { get; set; }

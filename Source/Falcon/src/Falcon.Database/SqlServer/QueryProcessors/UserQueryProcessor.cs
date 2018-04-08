@@ -256,24 +256,24 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             return user;
         }
 
-        public async Task<string> ReteriveUserUUID(SUserInfo userInfo)
+        public async Task<User> ReteriveUserByUserPass(SUserInfo userInfo)
         {
-            var uuid = await mDb.Set<UserInfo>().AsNoTracking()
+            var user = await mDb.Set<UserInfo>().AsNoTracking()
                 .Include(u => u.User)
                 .Where(u => u.User.UserName == userInfo.UserName && u.Password == userInfo.Password && u.IsInfoEnable == true)
-                .Select(u => u.User.UUID)
+                .Select(u => u.User)
                 .SingleOrDefaultAsync();
 
-            return uuid;
+            return user;
         }
 
-        public async Task<bool> UpdateUserNotificationID(string UUID)
+        public async Task<bool> UpdateUserNotificationID(int UserID , string UUID)
         {
-            var item = await mDb.Set<User>().Where(u => u.UUID == UUID).SingleOrDefaultAsync();
+            var user = await mDb.Set<User>().FindAsync(UserID);
 
-            if(item != null)
+            if(user != null)
             {
-                item.NotificationID = UUID;
+                user.NotificationID = UUID;
                 await mDb.SaveChangesAsync();
                 return true;
             }
@@ -398,5 +398,12 @@ namespace Falcon.Database.SqlServer.QueryProcessors
 
             return true;
         }
+
+        public async Task<User> GetUserByUUIDAsNoTracking(string UUID)
+        {
+            var user = await mDb.Set<User>().AsNoTracking().Where(u => u.UUID == UUID).SingleOrDefaultAsync();
+            return user;
+        }
+
     }
 }   

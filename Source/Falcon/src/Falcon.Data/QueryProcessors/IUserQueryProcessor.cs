@@ -27,8 +27,10 @@ namespace Falcon.Data.QueryProcessors
         //v2 Create User
         Task<User> CreateNewUser(SUserRegistrationForm UserRegisterationData , SGameConfig GameConfig);
 
-        Task<string> ReteriveUserUUID(SUserInfo userInfo);
-        Task<bool> UpdateUserNotificationID(string UUID);
+        Task<User> GetUserByUUIDAsNoTracking(string UUID);
+
+        Task<User> ReteriveUserByUserPass(SUserInfo userInfo);
+        Task<bool> UpdateUserNotificationID(int UserID, string UUID);
         Task<bool> Exists(string UserName);
         Task<QueryResult<User>> SearchUserNames(PagedDataRequest RequestInfo , string Expression , int[] Excepts =  null);
         Task<string> GetNotificationID(int friendID);

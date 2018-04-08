@@ -1,10 +1,12 @@
 ﻿using Falcon.Common;
+using Falcon.Common.Security;
 using Falcon.Data.QueryProcessors;
 using Falcon.Web.Api.InquiryProcessing.Public;
 using Falcon.Web.Api.MaintenanceProcessing.Public;
 using Falcon.Web.Api.Utilities;
 using Falcon.Web.Common.Memmory;
 using Falcon.Web.Models.Api.Level;
+using Falcon.Web.Models.Api.Notification;
 using Falcon.Web.Models.Api.User;
 using System.Threading.Tasks;
 
@@ -20,6 +22,7 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
         private readonly IMemoryStore mMemory;
         private readonly IUsersInMemory mUserInMemory;
         private readonly IQuestInMemoryProcessor mQuestInMemory;
+        private readonly IUserSession mUserSession;
         public UsersMaintenanceProcessor
             (
             IUserInfoQueryProcessor UserInfoQuery,
@@ -29,7 +32,8 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
             IGameConfig GameConfig , 
             IMemoryStore Memory , 
             IUsersInMemory UserInMemory , 
-            IQuestInMemoryProcessor QuestInMemory)
+            IQuestInMemoryProcessor QuestInMemory , 
+            IUserSession UserSession)
         {
             mUserQuery = UserQueryProcessor;
             mUserInfoQuery = UserInfoQuery;
@@ -39,6 +43,7 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
             mMemory = Memory;
             mUserInMemory = UserInMemory;
             mQuestInMemory = QuestInMemory;
+            mUserSession = UserSession;
         }
 
         public async Task<int> LevelUp(int Prize)
@@ -92,10 +97,10 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
             var user = await mUserQuery.CreateNewUser(RegistrationForm , mGameConfig.GetState());
             var created = await mUserInfoQuery.CreateEmptyUserInfo(user.ID);
 
-            mUserInMemory.AddItem(user.ID, new SUserDetail() { UserName = RegistrationForm.UserName});
-
             if (created)
             {
+                mUserInMemory.AddItem(user.ID, new SUserDetail() { UserName = RegistrationForm.UserName });
+
                 return RegistrationForm.UUID;
             }
             else
@@ -109,6 +114,12 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
         {
             var response = await mUserQuery.SaveUserImageUrl(ImageRelativePath);
 
+            return response;
+        }
+
+        public async Task<bool> UpdateNotificationID(SNotificationID Notification)
+        {
+            var response = await mUserQuery.UpdateUserNotificationID(mUserSession.ID, Notification.UUID.ToString());
             return response;
         }
     }
