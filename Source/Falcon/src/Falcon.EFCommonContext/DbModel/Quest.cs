@@ -30,14 +30,14 @@ namespace Falcon.EFCommonContext.DbModel
         public int QuestTypes { get; set; }
         public string QuestTitle { get; set; }
         public string QuestDescription { get; set; }
-        public string QuestWhiteIcon { get; set; }
-        public string QuestColoredIcon { get; set; }
-        public string QuestOffIcon { get; set; }
-        public int QuestHighScore { get; set; }
-        public Nullable<int> ParentID { get; set; }
         public int Mean_Score { get; set; }
         public System.DateTime CreatedDate { get; set; }
         public System.DateTime UpdateDate { get; set; }
+        public string QuestWhiteIcon { get; set; }
+        public string QuestColoredIcon { get; set; }
+        public string QuestOffIcon { get; set; }
+        public Nullable<int> ParentID { get; set; }
+        public int QuestHighScore { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Level> Levels { get; set; }

@@ -12,16 +12,10 @@ namespace Falcon.EFCommonContext.DbModel
     using System;
     using System.Collections.Generic;
     
-    public partial class GameConfig
+    public partial class ProfanityWord
     {
         public int ID { get; set; }
-        public int TotalNumberOfQuestions { get; set; }
-        public int HighQualityQuestionsPercent { get; set; }
-        public int FunQuestionsPercent { get; set; }
-        public int DefaultUserCoinAmount { get; set; }
-        public int DefaultUserLevelNumber { get; set; }
-        public int DefaultUserLevelProgress { get; set; }
-        public int MaxReportCount { get; set; }
-        public int NewCreatedQuestionsPercent { get; set; }
+        public string Expression { get; set; }
+        public bool Active { get; set; }
     }
 }

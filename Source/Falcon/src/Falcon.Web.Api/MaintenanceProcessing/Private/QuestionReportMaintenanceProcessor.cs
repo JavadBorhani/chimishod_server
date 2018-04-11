@@ -25,6 +25,7 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
             mQuestionsQuery = QuestionQuery;
             mAnswerMaintenanceProcessor = AnswerMaintenance;
         }
+        
         public async Task<bool> ReportQuestion(SReportedQuestion Reported)
         {
             var reportCount = await mQuestionsQuery.GetQuestionReportCount(Reported.QuestionID);
@@ -39,5 +40,7 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
 
             return result;
         }
+
+
     }
 }

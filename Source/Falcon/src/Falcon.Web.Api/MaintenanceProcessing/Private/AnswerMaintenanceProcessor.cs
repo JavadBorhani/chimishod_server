@@ -71,6 +71,7 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
             {
                 var stored = await mAnswerQuery.SaveRawAnswer(Answer);
 
+
                 if (stored != null)
                 {
 
@@ -100,7 +101,11 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
 
                     return true;
                 }
-                
+                else if( stored == null)
+                {
+                    return true; // means the answer is already exists
+                }
+
                 return false;
             }
 

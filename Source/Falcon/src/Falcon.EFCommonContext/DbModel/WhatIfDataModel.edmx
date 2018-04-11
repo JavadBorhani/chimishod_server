@@ -85,11 +85,11 @@
           <Property Name="TotalNumberOfQuestions" Type="int" Nullable="false" />
           <Property Name="HighQualityQuestionsPercent" Type="int" Nullable="false" />
           <Property Name="FunQuestionsPercent" Type="int" Nullable="false" />
-          <Property Name="NewCreatedQuestionsPercent" Type="int" Nullable="false" />
           <Property Name="DefaultUserCoinAmount" Type="int" Nullable="false" />
           <Property Name="DefaultUserLevelNumber" Type="int" Nullable="false" />
           <Property Name="DefaultUserLevelProgress" Type="int" Nullable="false" />
           <Property Name="MaxReportCount" Type="int" Nullable="false" />
+          <Property Name="NewCreatedQuestionsPercent" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="HashTag">
           <Key>
@@ -185,6 +185,14 @@
           <Property Name="Price" Type="int" Nullable="false" />
           <Property Name="InsertDate" Type="datetime" Nullable="false" />
         </EntityType>
+        <EntityType Name="ProfanityWords">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="Expression" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+        </EntityType>
         <EntityType Name="Quest">
           <Key>
             <PropertyRef Name="QuestNumber" />
@@ -193,14 +201,14 @@
           <Property Name="QuestTypes" Type="int" Nullable="false" />
           <Property Name="QuestTitle" Type="nvarchar" MaxLength="300" Nullable="false" />
           <Property Name="QuestDescription" Type="nvarchar" MaxLength="300" Nullable="false" />
-          <Property Name="QuestWhiteIcon" Type="nvarchar" MaxLength="100" Nullable="false" />
-          <Property Name="QuestColoredIcon" Type="nvarchar" MaxLength="100" Nullable="false" />
-          <Property Name="QuestOffIcon" Type="nvarchar" MaxLength="100" Nullable="false" />
-          <Property Name="QuestHighScore" Type="int" Nullable="false" />
-          <Property Name="ParentID" Type="int" />
           <Property Name="Mean_Score" Type="int" Nullable="false" />
           <Property Name="CreatedDate" Type="datetime" Nullable="false" />
           <Property Name="UpdateDate" Type="datetime" Nullable="false" />
+          <Property Name="QuestWhiteIcon" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="QuestColoredIcon" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="QuestOffIcon" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="ParentID" Type="int" />
+          <Property Name="QuestHighScore" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Question">
           <Key>
@@ -217,7 +225,6 @@
           <Property Name="Dislike_Count" Type="int" Nullable="false" />
           <Property Name="ActionID" Type="int" />
           <Property Name="Weight" Type="float" Nullable="false" />
-          <Property Name="AnswerCount" Type="int" Nullable="false" />
           <Property Name="CommentCount" Type="int" Nullable="false" />
           <Property Name="ReportCount" Type="int" Nullable="false" />
           <Property Name="Banned" Type="bit" Nullable="false" />
@@ -226,6 +233,7 @@
           <Property Name="IsOurAuthor" Type="bit" Nullable="false" />
           <Property Name="CreatedDate" Type="datetime" Nullable="false" />
           <Property Name="UpdateDate" Type="datetime" Nullable="false" />
+          <Property Name="AnswerCount" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="QuestionAction">
           <Key>
@@ -326,6 +334,8 @@
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="30" Nullable="false" />
           <Property Name="Description" Type="nvarchar" MaxLength="50" />
+          <Property Name="BanUser" Type="bit" Nullable="false" />
+          <Property Name="ReportCountToFilter" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Sent">
           <Key>
@@ -1144,6 +1154,7 @@
           <EntitySet Name="Order" EntityType="Self.Order" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PlatformTypes" EntityType="Self.PlatformTypes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PriceHistory" EntityType="Self.PriceHistory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ProfanityWords" EntityType="Self.ProfanityWords" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Quest" EntityType="Self.Quest" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Question" EntityType="Self.Question" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="QuestionAction" EntityType="Self.QuestionAction" Schema="dbo" store:Type="Tables" />
@@ -1406,6 +1417,7 @@
           <EntitySet Name="Orders" EntityType="Falcon.DbModel.Order" />
           <EntitySet Name="PlatformTypes" EntityType="Falcon.DbModel.PlatformType" />
           <EntitySet Name="PriceHistories" EntityType="Falcon.DbModel.PriceHistory" />
+          <EntitySet Name="ProfanityWords" EntityType="Falcon.DbModel.ProfanityWord" />
           <EntitySet Name="Quests" EntityType="Falcon.DbModel.Quest" />
           <EntitySet Name="Questions" EntityType="Falcon.DbModel.Question" />
           <EntitySet Name="QuestionActions" EntityType="Falcon.DbModel.QuestionAction" />
@@ -1714,11 +1726,11 @@
           <Property Name="TotalNumberOfQuestions" Type="Int32" Nullable="false" />
           <Property Name="HighQualityQuestionsPercent" Type="Int32" Nullable="false" />
           <Property Name="FunQuestionsPercent" Type="Int32" Nullable="false" />
-          <Property Name="NewCreatedQuestionsPercent" Type="Int32" Nullable="false" />
           <Property Name="DefaultUserCoinAmount" Type="Int32" Nullable="false" />
           <Property Name="DefaultUserLevelNumber" Type="Int32" Nullable="false" />
           <Property Name="DefaultUserLevelProgress" Type="Int32" Nullable="false" />
           <Property Name="MaxReportCount" Type="Int32" Nullable="false" />
+          <Property Name="NewCreatedQuestionsPercent" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="HashTag">
           <Key>
@@ -1824,6 +1836,14 @@
           <Property Name="InsertDate" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="Store" Relationship="Falcon.DbModel.FK_PriceList_Store" FromRole="PriceHistory" ToRole="Store" />
         </EntityType>
+        <EntityType Name="ProfanityWord">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="Expression" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+        </EntityType>
         <EntityType Name="Quest">
           <Key>
             <PropertyRef Name="QuestNumber" />
@@ -1832,14 +1852,14 @@
           <Property Name="QuestTypes" Type="Int32" Nullable="false" />
           <Property Name="QuestTitle" Type="String" Nullable="false" MaxLength="300" FixedLength="false" Unicode="true" />
           <Property Name="QuestDescription" Type="String" Nullable="false" MaxLength="300" FixedLength="false" Unicode="true" />
-          <Property Name="QuestWhiteIcon" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="QuestColoredIcon" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="QuestOffIcon" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="QuestHighScore" Type="Int32" Nullable="false" />
-          <Property Name="ParentID" Type="Int32" />
           <Property Name="Mean_Score" Type="Int32" Nullable="false" />
           <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="UpdateDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="QuestWhiteIcon" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="QuestColoredIcon" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="QuestOffIcon" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="ParentID" Type="Int32" />
+          <Property Name="QuestHighScore" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Levels" Relationship="Falcon.DbModel.FK_Level_Quest" FromRole="Quest" ToRole="Level" />
           <NavigationProperty Name="Quest1" Relationship="Falcon.DbModel.FK_Quest_Quest" FromRole="Quest" ToRole="Quest1" />
           <NavigationProperty Name="Quest2" Relationship="Falcon.DbModel.FK_Quest_Quest" FromRole="Quest1" ToRole="Quest" />
@@ -1865,7 +1885,6 @@
           <Property Name="Dislike_Count" Type="Int32" Nullable="false" />
           <Property Name="ActionID" Type="Int32" />
           <Property Name="Weight" Type="Double" Nullable="false" />
-          <Property Name="AnswerCount" Type="Int32" Nullable="false" />
           <Property Name="CommentCount" Type="Int32" Nullable="false" />
           <Property Name="ReportCount" Type="Int32" Nullable="false" />
           <Property Name="Banned" Type="Boolean" Nullable="false" />
@@ -1874,6 +1893,7 @@
           <Property Name="IsOurAuthor" Type="Boolean" Nullable="false" />
           <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="UpdateDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="AnswerCount" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Answers" Relationship="Falcon.DbModel.FK_Answer_Question" FromRole="Question" ToRole="Answer" />
           <NavigationProperty Name="HashTag" Relationship="Falcon.DbModel.FK_Question_HashTag" FromRole="Question" ToRole="HashTag" />
           <NavigationProperty Name="QuestionAction" Relationship="Falcon.DbModel.FK_Question_QuestionAction" FromRole="Question" ToRole="QuestionAction" />
@@ -2001,6 +2021,8 @@
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="true" />
           <Property Name="Description" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="BanUser" Type="Boolean" Nullable="false" />
+          <Property Name="ReportCountToFilter" Type="Int32" Nullable="false" />
           <NavigationProperty Name="ReportedQuestions" Relationship="Falcon.DbModel.FK_ReportedQuestions_ReportType" FromRole="ReportType" ToRole="ReportedQuestion" />
         </EntityType>
         <EntityType Name="Sent">
@@ -2922,11 +2944,11 @@
           <EntitySetMapping Name="GameConfigs">
             <EntityTypeMapping TypeName="Falcon.DbModel.GameConfig">
               <MappingFragment StoreEntitySet="GameConfig">
+                <ScalarProperty Name="NewCreatedQuestionsPercent" ColumnName="NewCreatedQuestionsPercent" />
                 <ScalarProperty Name="MaxReportCount" ColumnName="MaxReportCount" />
                 <ScalarProperty Name="DefaultUserLevelProgress" ColumnName="DefaultUserLevelProgress" />
                 <ScalarProperty Name="DefaultUserLevelNumber" ColumnName="DefaultUserLevelNumber" />
                 <ScalarProperty Name="DefaultUserCoinAmount" ColumnName="DefaultUserCoinAmount" />
-                <ScalarProperty Name="NewCreatedQuestionsPercent" ColumnName="NewCreatedQuestionsPercent" />
                 <ScalarProperty Name="FunQuestionsPercent" ColumnName="FunQuestionsPercent" />
                 <ScalarProperty Name="HighQualityQuestionsPercent" ColumnName="HighQualityQuestionsPercent" />
                 <ScalarProperty Name="TotalNumberOfQuestions" ColumnName="TotalNumberOfQuestions" />
@@ -3035,17 +3057,26 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="ProfanityWords">
+            <EntityTypeMapping TypeName="Falcon.DbModel.ProfanityWord">
+              <MappingFragment StoreEntitySet="ProfanityWords">
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="Expression" ColumnName="Expression" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Quests">
             <EntityTypeMapping TypeName="Falcon.DbModel.Quest">
               <MappingFragment StoreEntitySet="Quest">
-                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
-                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-                <ScalarProperty Name="Mean_Score" ColumnName="Mean_Score" />
-                <ScalarProperty Name="ParentID" ColumnName="ParentID" />
                 <ScalarProperty Name="QuestHighScore" ColumnName="QuestHighScore" />
+                <ScalarProperty Name="ParentID" ColumnName="ParentID" />
                 <ScalarProperty Name="QuestOffIcon" ColumnName="QuestOffIcon" />
                 <ScalarProperty Name="QuestColoredIcon" ColumnName="QuestColoredIcon" />
                 <ScalarProperty Name="QuestWhiteIcon" ColumnName="QuestWhiteIcon" />
+                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="Mean_Score" ColumnName="Mean_Score" />
                 <ScalarProperty Name="QuestDescription" ColumnName="QuestDescription" />
                 <ScalarProperty Name="QuestTitle" ColumnName="QuestTitle" />
                 <ScalarProperty Name="QuestTypes" ColumnName="QuestTypes" />
@@ -3056,6 +3087,7 @@
           <EntitySetMapping Name="Questions">
             <EntityTypeMapping TypeName="Falcon.DbModel.Question">
               <MappingFragment StoreEntitySet="Question">
+                <ScalarProperty Name="AnswerCount" ColumnName="AnswerCount" />
                 <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
                 <ScalarProperty Name="IsOurAuthor" ColumnName="IsOurAuthor" />
@@ -3064,7 +3096,6 @@
                 <ScalarProperty Name="Banned" ColumnName="Banned" />
                 <ScalarProperty Name="ReportCount" ColumnName="ReportCount" />
                 <ScalarProperty Name="CommentCount" ColumnName="CommentCount" />
-                <ScalarProperty Name="AnswerCount" ColumnName="AnswerCount" />
                 <ScalarProperty Name="Weight" ColumnName="Weight" />
                 <ScalarProperty Name="ActionID" ColumnName="ActionID" />
                 <ScalarProperty Name="Dislike_Count" ColumnName="Dislike_Count" />
@@ -3183,6 +3214,8 @@
           <EntitySetMapping Name="ReportTypes">
             <EntityTypeMapping TypeName="Falcon.DbModel.ReportType">
               <MappingFragment StoreEntitySet="ReportType">
+                <ScalarProperty Name="ReportCountToFilter" ColumnName="ReportCountToFilter" />
+                <ScalarProperty Name="BanUser" ColumnName="BanUser" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="ID" ColumnName="ID" />

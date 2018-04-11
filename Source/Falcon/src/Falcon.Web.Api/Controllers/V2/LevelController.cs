@@ -13,7 +13,6 @@ namespace Falcon.Web.Api.Controllers.V2
         public LevelController(ILevelInquiryProcessor LevelInquiry)
         {
             mLevelInquiry = LevelInquiry;
-        }
-      
+        } 
     }
 }

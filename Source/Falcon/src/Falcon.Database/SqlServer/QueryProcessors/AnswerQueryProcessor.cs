@@ -122,8 +122,7 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             }
             catch
             {
-                throw new BusinessRuleViolationException("Answer is Already Exits");
-             
+                return null;
             }
 
         }
