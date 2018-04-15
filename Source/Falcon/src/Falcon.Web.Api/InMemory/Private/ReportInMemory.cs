@@ -3,7 +3,7 @@ using Falcon.EFCommonContext.DbModel;
 using Falcon.Web.Api.InMemory.Public;
 using Falcon.Web.Common;
 using Falcon.Web.Models.Api;
-using System.Collections.Generic;
+using System.Collections.Concurrent;
 using System.Linq;
 
 namespace Falcon.Web.Api.InMemory.Private
@@ -18,9 +18,9 @@ namespace Falcon.Web.Api.InMemory.Private
             }
         }
 
-        private Dictionary<int, SReportType> mReportTypes = new Dictionary<int, SReportType>();
+        private ConcurrentDictionary<int, SReportType> mReportTypes = new ConcurrentDictionary<int, SReportType>();
 
-        public Dictionary<int, SReportType> GetState()
+        public ConcurrentDictionary<int, SReportType> GetState() 
         {
             return mReportTypes;
         }
@@ -33,12 +33,22 @@ namespace Falcon.Web.Api.InMemory.Private
 
             for(int i = 0; i < items.Count(); ++i)
             {
-                   
-            }
 
+                var reportType = new SReportType
+                {
+                    ID = items[i].ID,
+                    Description = items[i].Description,
+                    Name = items[i].Name,
+                    ReportCountToFilter = items[i].ReportCountToFilter,
+                    ShouldBanUser = items[i].BanUser
+                };
+
+
+                mReportTypes.TryAdd(items[i].ID, reportType);
+            }
         }
 
-        public bool SetState(Dictionary<int, SReportType> NewState)
+        public bool SetState(ConcurrentDictionary<int, SReportType> NewState)
         {
             if(NewState != null)
             {

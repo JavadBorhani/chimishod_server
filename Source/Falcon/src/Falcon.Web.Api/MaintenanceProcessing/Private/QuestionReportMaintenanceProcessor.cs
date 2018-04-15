@@ -1,4 +1,5 @@
 ﻿using Falcon.Data.QueryProcessors;
+using Falcon.Web.Api.InMemory.Public;
 using Falcon.Web.Api.InquiryProcessing.Public;
 using Falcon.Web.Api.MaintenanceProcessing.Public;
 using Falcon.Web.Models.Api.Config;
@@ -13,17 +14,20 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
         private readonly IQuestionsQueryProcessor mQuestionsQuery;
         private readonly IAnswerMaintenanceProcessor mAnswerMaintenanceProcessor;
         private readonly SGameConfig mGameConfig;
+        private readonly IReportInMemory mReportInMemory;
 
         public QuestionReportMaintenanceProcessor(
             IQuestionReportQueryProcessor QuestionReportQuery , 
             IGameConfig GameConfig , 
             IQuestionsQueryProcessor QuestionQuery,
-            IAnswerMaintenanceProcessor AnswerMaintenance)
+            IAnswerMaintenanceProcessor AnswerMaintenance , 
+            IReportInMemory ReportInMemory)
         {
             mQuestionReportQuery = QuestionReportQuery;
             mGameConfig = GameConfig.GetState();
             mQuestionsQuery = QuestionQuery;
             mAnswerMaintenanceProcessor = AnswerMaintenance;
+            mReportInMemory = ReportInMemory;
         }
         
         public async Task<bool> ReportQuestion(SReportedQuestion Reported)
