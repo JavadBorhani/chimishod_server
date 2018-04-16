@@ -10,6 +10,7 @@ namespace Falcon.Web.Models.Api.Notification.Client
         FriendResponse = 3,
         InboxQuestion = 4,
         SentQuestion = 5,
+        BanQuestion = 6,
     }
 
     public class SClientNotificationData
@@ -18,6 +19,7 @@ namespace Falcon.Web.Models.Api.Notification.Client
         public List<SFriendResponse>    FriendResponse { get; set; }
         public List<SSentQuestion>      SentQuestion { get; set; }
         public List<SInboxQuestion>     InboxQuestion{ get; set; }
+        public List<int>                BanQuestion { get; set; }
         public NotificationType         Type { get; set; }
         public DateTime                 ServerDate { get; set; }
     }

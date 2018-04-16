@@ -8,5 +8,6 @@ namespace Falcon.Data.QueryProcessors
     {
         Task<ReportType[]> GetReportTypeList();
         Task<bool> ReportQuestion(SReportedQuestion ReportedQuestion);
+        Task<bool> HasReportedByUser(int UserID , int QuestoinID);
     }
 }

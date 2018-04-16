@@ -31,6 +31,10 @@ namespace Falcon.Database.SqlServer.QueryProcessors
 
         public async Task<bool> ReportQuestion(SReportedQuestion Question)
         {
+            var exits = await HasReportedByUser(mUserSession.ID, Question.QuestionID);
+            if (exits)
+                return false;
+
             var newReport = new ReportedQuestion
             {
                 QuestionID = Question.QuestionID,
@@ -44,6 +48,15 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             await mDb.SaveChangesAsync();
 
             return true;
+        }
+
+        public async Task<bool> HasReportedByUser(int UserID, int QuestoinID)
+        {
+            var response = await mDb.Set<ReportedQuestion>()
+                .AsNoTracking()
+                .AnyAsync(u => u.UserID == UserID && u.QuestionID == QuestoinID);
+
+            return response;
         }
     }
 }

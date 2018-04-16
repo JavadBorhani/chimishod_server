@@ -10,5 +10,6 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Public
         Task<string> CreateNewUser(SUserRegistrationForm RegistrationForm);
         Task<bool> SaveImageUrl(string ImageRelativePath);
         Task<bool> UpdateNotificationID(SNotificationID notificationID);
+        Task<bool> BanUserByQuestionID(int QuestionID);
     }
 }

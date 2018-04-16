@@ -168,5 +168,10 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
 
             return true;
         }
+
+        public async Task<bool> BanQuestionToAllClients(int[] QuestionID)
+        {
+            
+        }
     }
 }

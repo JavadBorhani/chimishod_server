@@ -2,7 +2,6 @@
 using Falcon.Web.Api.InMemory.Public;
 using Falcon.Web.Api.InquiryProcessing.Public;
 using Falcon.Web.Api.MaintenanceProcessing.Public;
-using Falcon.Web.Models.Api.Config;
 using Falcon.Web.Models.Api.Report;
 using System.Threading.Tasks;
 
@@ -13,36 +12,58 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
         private readonly IQuestionReportQueryProcessor mQuestionReportQuery;
         private readonly IQuestionsQueryProcessor mQuestionsQuery;
         private readonly IAnswerMaintenanceProcessor mAnswerMaintenanceProcessor;
-        private readonly SGameConfig mGameConfig;
         private readonly IReportInMemory mReportInMemory;
+        private readonly INotificationMaintenanceProcessor mNotificationMaintenance;
+        private readonly IUsersMaintenanceProcessor mUsersMaintenance;
 
         public QuestionReportMaintenanceProcessor(
             IQuestionReportQueryProcessor QuestionReportQuery , 
             IGameConfig GameConfig , 
             IQuestionsQueryProcessor QuestionQuery,
             IAnswerMaintenanceProcessor AnswerMaintenance , 
-            IReportInMemory ReportInMemory)
+            IReportInMemory ReportInMemory , 
+            INotificationMaintenanceProcessor NotificationMaintenance , 
+            IUsersMaintenanceProcessor UserMaintenance)
         {
             mQuestionReportQuery = QuestionReportQuery;
-            mGameConfig = GameConfig.GetState();
             mQuestionsQuery = QuestionQuery;
             mAnswerMaintenanceProcessor = AnswerMaintenance;
             mReportInMemory = ReportInMemory;
+            mNotificationMaintenance = NotificationMaintenance;
+            mUsersMaintenance = UserMaintenance;
         }
         
         public async Task<bool> ReportQuestion(SReportedQuestion Reported)
         {
             var reportCount = await mQuestionsQuery.GetQuestionReportCount(Reported.QuestionID);
 
-            if(reportCount >= mGameConfig.MaxReportCount)
+            var reportInfo = mReportInMemory.GetReportByID(Reported.ReportID);
+
+            if(reportInfo != null)
             {
-                await mQuestionsQuery.BanQuestion(Reported.QuestionID);
+                if (reportCount + 1 >= reportInfo.ReportCountToFilter)
+                {
+                    var response = await mQuestionsQuery.BanQuestion(Reported.QuestionID);
+                    if (response)
+                    {
+                        var notifysent = await mNotificationMaintenance.BanQuestionToAllClients(new int[] { Reported.QuestionID });
+                        var result = await mQuestionReportQuery.ReportQuestion(Reported);
+
+                        if (result)
+                        {
+                            var answer = await mAnswerMaintenanceProcessor.SaveReportedAnswer(Reported.QuestionID);
+                        }
+                                                    
+                        return true;
+                    }
+                    if(reportInfo.ShouldBanUser)
+                    {
+                        //var banUser = 
+                    }
+                }
+
             }
-
-            var result  = await mQuestionReportQuery.ReportQuestion(Reported);
-            var answer = await mAnswerMaintenanceProcessor.SaveReportedAnswer(Reported.QuestionID);
-
-            return result;
+            return false;
         }
 
 

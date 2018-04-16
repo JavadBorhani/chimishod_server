@@ -10,5 +10,6 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Public
         Task<bool> SendFriendResponseNotification(int FriendID, SFriendResponse FriendResponse);
         Task<bool> SentQuestionToFriends(int[] FriendID, SQuestion QuestionInfo);
         Task<bool> InboxQuestionToFriends(int[] FriendID, SQuestion QuestionInfo);
+        Task<bool> BanQuestionToAllClients(int[] QuestionID);
     }
 }

@@ -23,6 +23,8 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
         private readonly IUsersInMemory mUserInMemory;
         private readonly IQuestInMemoryProcessor mQuestInMemory;
         private readonly IUserSession mUserSession;
+        private readonly IQuestionsQueryProcessor mQuestionQuery;
+
         public UsersMaintenanceProcessor
             (
             IUserInfoQueryProcessor UserInfoQuery,
@@ -121,6 +123,12 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
         {
             var response = await mUserQuery.UpdateUserNotificationID(mUserSession.ID, Notification.UUID.ToString());
             return response;
+        }
+
+        public async Task<bool> BanUserByQuestionID(int QuestionID)
+        {
+            var question = await 
+            var response = await mUserQuery.GetUserByID()
         }
     }
 }

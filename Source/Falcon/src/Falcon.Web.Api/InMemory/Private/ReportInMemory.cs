@@ -22,6 +22,7 @@ namespace Falcon.Web.Api.InMemory.Private
 
         public ConcurrentDictionary<int, SReportType> GetState() 
         {
+            CheckAvailability();
             return mReportTypes;
         }
 
@@ -48,6 +49,12 @@ namespace Falcon.Web.Api.InMemory.Private
             }
         }
 
+        public SReportType GetReportByID(int ID)
+        {
+            CheckAvailability();
+            return mReportTypes[ID];  
+        }
+
         public bool SetState(ConcurrentDictionary<int, SReportType> NewState)
         {
             if(NewState != null)
@@ -56,5 +63,14 @@ namespace Falcon.Web.Api.InMemory.Private
             }
             return false;
         }
+
+        public void CheckAvailability()
+        {
+            if(mReportTypes.Count <= 0)
+            {
+                ReadStateFromDatabase();
+            }
+        }
     }
 }
+ 
