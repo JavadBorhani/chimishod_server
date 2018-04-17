@@ -33,6 +33,11 @@ namespace Falcon.Common
             public const int SpinWheelAnotherFortune = 1; 
         }
 
+        public static class CommonStrings
+        {
+            public const string Default = "Default";
+        }
+
         public static class ServerVariables
         {
             public const string ImageUploadLocation = "/Images/Users/";

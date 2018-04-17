@@ -8,6 +8,7 @@ using Falcon.Web.Models.Api;
 using Falcon.Web.Models.Api.Friend;
 using Falcon.Web.Models.Api.Notification;
 using Falcon.Web.Models.Api.Notification.Client;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Falcon.Web.Api.MaintenanceProcessing.Private
@@ -66,7 +67,7 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
               ImageUrl = mNotificationConfig.FriendRequest_Image,
             };
 
-            mJobManager.Enqueue(() => mNotificationSystem.SendRequest(new string[] { friendNotificationID }, notification, Info));
+            mJobManager.Enqueue(() => mNotificationSystem.SendRequest(notification, Info , new string[] { friendNotificationID } , null));
 
             return true;
         }
@@ -97,7 +98,7 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
                 ImageUrl = mNotificationConfig.FriendResponse_Image,
             };
 
-            mJobManager.Enqueue(() => mNotificationSystem.SendRequest(new string[] { friendNotificationID }, notification , Info));
+            mJobManager.Enqueue(() => mNotificationSystem.SendRequest( notification , Info , new string[] { friendNotificationID } , null));
 
             return true;
         }
@@ -124,7 +125,7 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
                 ImageUrl = mNotificationConfig.SentRequest_Image,
             };
 
-            mJobManager.Enqueue(() => mNotificationSystem.SendRequest(friendNotificationID , notification, Info));
+            mJobManager.Enqueue(() => mNotificationSystem.SendRequest(notification, Info , friendNotificationID , null));
 
             return true;
         }
@@ -164,14 +165,36 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
                 ImageUrl = mNotificationConfig.InboxRequest_Image,
             };
 
-            mJobManager.Enqueue(() => mNotificationSystem.SendRequest(friendNotificationIDs, notification, Info));
+            mJobManager.Enqueue(() => mNotificationSystem.SendRequest(notification, Info , friendNotificationIDs , null));
 
             return true;
         }
 
-        public async Task<bool> BanQuestionToAllClients(int[] QuestionID)
+        public Task<bool> BanQuestionToAllClients(List<int> QuestionID)
         {
-            
+            var notification = new SClientNotificationData()
+            {
+                BanQuestion = QuestionID,
+                ServerDate = mDateTime.Now,
+                Type = NotificationType.BanQuestion
+            };
+
+            RequestCommonInfo Info = new RequestCommonInfo
+            {
+                Title = Constants.CommonStrings.Default,
+                Descrption = Constants.CommonStrings.Default,
+                ImageUrl = Constants.CommonStrings.Default,
+            };
+
+
+            var includeSegments = new string[]
+            {
+                NotificationSegments.All,  
+            };
+
+            mJobManager.Enqueue(() => mNotificationSystem.SendRequest( notification, Info , null , includeSegments));
+
+            return Task.FromResult(true);
         }
     }
 }

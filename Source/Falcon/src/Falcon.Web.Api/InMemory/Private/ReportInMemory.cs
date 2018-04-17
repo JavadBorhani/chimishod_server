@@ -59,7 +59,7 @@ namespace Falcon.Web.Api.InMemory.Private
         {
             if(NewState != null)
             {
-
+                
             }
             return false;
         }

@@ -27,17 +27,18 @@ namespace Falcon.Web.Api.Notification.Private
             mRestClientEngine = RestClient;
         }
 
-        public async Task<ResponseToken> SendRequest(string[] FriendNotificationIDs , SClientNotificationData Notification , RequestCommonInfo RequestInfo)
+        public async Task<ResponseToken> SendRequest(SClientNotificationData Notification , RequestCommonInfo RequestInfo , string[] FriendNotificationIDs, string[] Segments)
         {
             var requestToken = new RequestToken
             {
                 include_player_ids = FriendNotificationIDs,
                 app_id = mNotificationConfig.ApplicationID,
                 small_icon = RequestInfo.ImageUrl,
+                included_segments = Segments,
                 contents = new System.Collections.Generic.Dictionary<string, string>
                 {
                     {Constants.MediaTypeNames.en , RequestInfo.Descrption }
-                } ,
+                },
                 data = new System.Collections.Generic.Dictionary<string, object>()
                 {
                     {Constants.MediaTypeNames.NotificationClientKey , Notification }

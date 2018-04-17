@@ -21,7 +21,7 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
             IGameConfig GameConfig , 
             IQuestInMemoryProcessor QuestsInMemoryProcessor , 
             INotificationData Notification , 
-            IUsersInMemory UserInMemory , 
+            IUsersInMemory UserInMemory,
             IReportInMemory ReportInMemory)
         {
             mNotificationData = Notification;

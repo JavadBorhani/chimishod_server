@@ -405,5 +405,12 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             return user;
         }
 
+        public async Task<bool> BanUser(int ID)
+        {
+            var user = mDb.Set<User>().Find(ID);
+            user.Activated = false;
+            await mDb.SaveChangesAsync();
+            return true;
+        }
     }
 }   

@@ -13,6 +13,12 @@ namespace Falcon.Web.Models.Api.Notification.Client
         BanQuestion = 6,
     }
 
+    public sealed class NotificationSegments
+    {
+        public const string All = "All";
+        public const string ActiveUsers = "Active Users";
+
+    }
     public class SClientNotificationData
     {
         public List<SFriendRequest>     FriendRequest { get; set; }

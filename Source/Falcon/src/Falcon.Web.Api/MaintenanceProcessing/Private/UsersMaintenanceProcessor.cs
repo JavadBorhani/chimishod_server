@@ -79,7 +79,7 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
             } while (info.LevelUpMode == LevelUpMode.LeveledUpAndNeedAnother);
 
             return totalCoin;
-        }        
+        }
 
         
 
@@ -127,8 +127,9 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
 
         public async Task<bool> BanUserByQuestionID(int QuestionID)
         {
-            var question = await 
-            var response = await mUserQuery.GetUserByID()
+            var userID = await mQuestionQuery.GetQuestionCreatorByID(QuestionID);
+            var userBanned = await mUserQuery.BanUser(userID);
+            return userBanned;
         }
     }
 }

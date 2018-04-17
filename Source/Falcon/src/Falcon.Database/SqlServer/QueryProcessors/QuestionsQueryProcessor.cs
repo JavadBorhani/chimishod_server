@@ -267,5 +267,17 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             var question = await mDb.Set<Question>().FindAsync(ID);
             return question;
         }
+
+        public async Task<int> GetQuestionCreatorByID(int ID)
+        {
+            var userID = await mDb.Set<Question>()
+                .AsNoTracking()
+                .Where(u => u.ID == ID)
+                .Select( u => u.UserID)
+                .SingleOrDefaultAsync();
+
+            return userID ?? 0;
+        }
+
     }
 }

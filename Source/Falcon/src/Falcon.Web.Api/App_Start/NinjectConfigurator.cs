@@ -9,6 +9,8 @@ using Falcon.Data.QueryProcessors;
 using Falcon.Database.SqlServer.QueryProcessors;
 using Falcon.EFCommonContext;
 using Falcon.Web.Api.App_Start;
+using Falcon.Web.Api.InMemory.Private;
+using Falcon.Web.Api.InMemory.Public;
 using Falcon.Web.Api.InquiryProcessing.Private;
 using Falcon.Web.Api.InquiryProcessing.Public;
 using Falcon.Web.Api.JobSystem.Private;
@@ -219,6 +221,9 @@ namespace Falcon.Web.Api
 
             //Quest Data in Memory -> should update whenever data is changed in database 
             container.Bind<IQuestInMemoryProcessor>().To<QuestInMemoryProcessor>().InSingletonScope();
+
+            //Report In Memory
+            container.Bind<IReportInMemory>().To<ReportInMemory>().InSingletonScope();
 
             //UsersCommonData
             container.Bind<IUsersInMemory>().To<UsersInMemory>().InSingletonScope();

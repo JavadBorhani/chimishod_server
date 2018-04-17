@@ -7,6 +7,12 @@ namespace Falcon.Web.Api.Notification.Public
 {
     public interface INotificationSystem
     {
-        Task<ResponseToken> SendRequest(string[] FriendNotificationIDs ,SClientNotificationData NotificationData , RequestCommonInfo RequestInfo); // intentionally passing RequestInfo
+        Task<ResponseToken> SendRequest(
+            SClientNotificationData NotificationData , 
+            RequestCommonInfo RequestInfo , 
+            string[] FriendNotificationIDs = null, 
+            string[] Segments = null); // intentionally passing RequestInfo
+
     }
+
 }
