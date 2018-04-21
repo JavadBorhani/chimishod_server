@@ -45,7 +45,7 @@ namespace Falcon.Web.Api.Telegram.Private
 
             Api.StartReceiving();
 
-            SendMessage(new long[] { 103256963 , 110186174 }, "دوست داشتی ممه بودی؟ اما غذای همه بودی؟" , "http://localhost:7895/v2/TestController/15").Wait();
+            SendMessage(new long[] { 110186174 }, "دوست داشتی ممه بودی؟ اما غذای همه بودی؟" , "http://localhost:7895/v2/TestController/15").Wait();
 
         }
         private  async void BotOnCallbackQueryReceived(object sender, CallbackQueryEventArgs callbackQueryEventArgs)
@@ -54,7 +54,11 @@ namespace Falcon.Web.Api.Telegram.Private
             var data = callbackQuery.Data.Split(' ');
 
             var path = mConfiguration.GetState().ServerCallbackPath;
-            var request = RestClient.CreateRequest(data[1], RestSharp.Method.POST, null);
+            HttpParam[] item = new HttpParam[]
+            {
+                new HttpParam { Key = "Authorization" , Value = "Basic "}
+            };
+            var request = RestClient.CreateRequest(data[1], RestSharp.Method.POST, null , item);
             var answer  = await RestClient.ExecuteTaskAsync(data[1], request);
 
             var items = mConfiguration.GetState().TelegramIDs;            
