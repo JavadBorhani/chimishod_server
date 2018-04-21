@@ -3,6 +3,7 @@ using Falcon.Web.Api.InquiryProcessing.Public;
 using Falcon.Web.Api.JobSystem.Public;
 using Falcon.Web.Api.Security.Private;
 using Falcon.Web.Api.Security.Public;
+using Falcon.Web.Api.Telegram.Public;
 using Falcon.Web.Common;
 using Microsoft.AspNet.WebApi.Extensions.Compression.Server;
 using System.Net.Http.Extensions.Compression.Core.Compressors;
@@ -17,7 +18,6 @@ namespace Falcon.Web.Api
         protected void Application_Start()
         {
             GlobalConfiguration.Configure(WebApiConfig.Register);
-
             RegisterHandlers();
             RegisterJobs();
             InitializeSystems();
@@ -40,9 +40,9 @@ namespace Falcon.Web.Api
         
         private void InitializeSystems()
         {
-
             WebContainerManager.Get<IServerInquiryProcessor>().ReadConfigurationFilesFromServer();
             WebContainerManager.Get<IActionTransactionHelper>().CloseSession();
+            WebContainerManager.Get<ITelegramService>();
         }
         private void RegisterJobs()
         {

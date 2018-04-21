@@ -185,14 +185,6 @@
           <Property Name="Price" Type="int" Nullable="false" />
           <Property Name="InsertDate" Type="datetime" Nullable="false" />
         </EntityType>
-        <EntityType Name="ProfanityWords">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="int" Nullable="false" />
-          <Property Name="Expression" Type="nvarchar" MaxLength="100" Nullable="false" />
-          <Property Name="Active" Type="bit" Nullable="false" />
-        </EntityType>
         <EntityType Name="Quest">
           <Key>
             <PropertyRef Name="QuestNumber" />
@@ -423,6 +415,15 @@
           <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="version" Type="int" />
           <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="TelegramBot">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="Token" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="TelegramChatIDs" Type="varchar" MaxLength="500" Nullable="false" />
+          <Property Name="ServerCallbackPath" Type="varchar" MaxLength="100" Nullable="false" />
         </EntityType>
         <EntityType Name="Tutorial">
           <Key>
@@ -1154,7 +1155,6 @@
           <EntitySet Name="Order" EntityType="Self.Order" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PlatformTypes" EntityType="Self.PlatformTypes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PriceHistory" EntityType="Self.PriceHistory" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="ProfanityWords" EntityType="Self.ProfanityWords" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Quest" EntityType="Self.Quest" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Question" EntityType="Self.Question" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="QuestionAction" EntityType="Self.QuestionAction" Schema="dbo" store:Type="Tables" />
@@ -1172,6 +1172,7 @@
           <EntitySet Name="ServerApplicationState" EntityType="Self.ServerApplicationState" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Store" EntityType="Self.Store" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TelegramBot" EntityType="Self.TelegramBot" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Tutorial" EntityType="Self.Tutorial" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserInfo" EntityType="Self.UserInfo" Schema="dbo" store:Type="Tables" />
@@ -1417,7 +1418,6 @@
           <EntitySet Name="Orders" EntityType="Falcon.DbModel.Order" />
           <EntitySet Name="PlatformTypes" EntityType="Falcon.DbModel.PlatformType" />
           <EntitySet Name="PriceHistories" EntityType="Falcon.DbModel.PriceHistory" />
-          <EntitySet Name="ProfanityWords" EntityType="Falcon.DbModel.ProfanityWord" />
           <EntitySet Name="Quests" EntityType="Falcon.DbModel.Quest" />
           <EntitySet Name="Questions" EntityType="Falcon.DbModel.Question" />
           <EntitySet Name="QuestionActions" EntityType="Falcon.DbModel.QuestionAction" />
@@ -1435,6 +1435,7 @@
           <EntitySet Name="ServerApplicationStates" EntityType="Falcon.DbModel.ServerApplicationState" />
           <EntitySet Name="Stores" EntityType="Falcon.DbModel.Store" />
           <EntitySet Name="sysdiagrams" EntityType="Falcon.DbModel.sysdiagram" />
+          <EntitySet Name="TelegramBots" EntityType="Falcon.DbModel.TelegramBot" />
           <EntitySet Name="Tutorials" EntityType="Falcon.DbModel.Tutorial" />
           <EntitySet Name="Users" EntityType="Falcon.DbModel.User" />
           <EntitySet Name="UserInfoes" EntityType="Falcon.DbModel.UserInfo" />
@@ -1836,14 +1837,6 @@
           <Property Name="InsertDate" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="Store" Relationship="Falcon.DbModel.FK_PriceList_Store" FromRole="PriceHistory" ToRole="Store" />
         </EntityType>
-        <EntityType Name="ProfanityWord">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" />
-          <Property Name="Expression" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="Active" Type="Boolean" Nullable="false" />
-        </EntityType>
         <EntityType Name="Quest">
           <Key>
             <PropertyRef Name="QuestNumber" />
@@ -2120,6 +2113,15 @@
           <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="version" Type="Int32" />
           <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="TelegramBot">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="Token" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="TelegramChatIDs" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="ServerCallbackPath" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="Tutorial">
           <Key>
@@ -3057,15 +3059,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="ProfanityWords">
-            <EntityTypeMapping TypeName="Falcon.DbModel.ProfanityWord">
-              <MappingFragment StoreEntitySet="ProfanityWords">
-                <ScalarProperty Name="Active" ColumnName="Active" />
-                <ScalarProperty Name="Expression" ColumnName="Expression" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Quests">
             <EntityTypeMapping TypeName="Falcon.DbModel.Quest">
               <MappingFragment StoreEntitySet="Quest">
@@ -3311,6 +3304,16 @@
                 <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
                 <ScalarProperty Name="principal_id" ColumnName="principal_id" />
                 <ScalarProperty Name="name" ColumnName="name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TelegramBots">
+            <EntityTypeMapping TypeName="Falcon.DbModel.TelegramBot">
+              <MappingFragment StoreEntitySet="TelegramBot">
+                <ScalarProperty Name="ServerCallbackPath" ColumnName="ServerCallbackPath" />
+                <ScalarProperty Name="TelegramChatIDs" ColumnName="TelegramChatIDs" />
+                <ScalarProperty Name="Token" ColumnName="Token" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

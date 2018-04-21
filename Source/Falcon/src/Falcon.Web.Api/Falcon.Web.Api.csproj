@@ -157,6 +157,9 @@
     <Reference Include="System.Configuration" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.EnterpriseServices" />
+    <Reference Include="Telegram.Bot">
+      <HintPath>..\..\lib\Telegram.Bot.13.4.0\lib\net45\Telegram.Bot.dll</HintPath>
+    </Reference>
     <Reference Include="WebActivatorEx, Version=2.0.0.0, Culture=neutral, PublicKeyToken=7b26dc2a43f6a0d4, processorArchitecture=MSIL">
       <HintPath>..\..\lib\WebActivatorEx.2.2.0\lib\net40\WebActivatorEx.dll</HintPath>
       <Private>True</Private>
@@ -240,7 +243,9 @@
     <Compile Include="Controllers\V2\UserInfoController.cs" />
     <Compile Include="Controllers\V2\UsersController.cs" />
     <Compile Include="InMemory\Private\ReportInMemory.cs" />
+    <Compile Include="InMemory\Private\TelegramConfigurationInMemory.cs" />
     <Compile Include="InMemory\Public\IReportInMemory.cs" />
+    <Compile Include="InMemory\Public\ITelegramConfigurationInMemory.cs" />
     <Compile Include="InquiryProcessing\Private\AchievementInquiryProcessor.cs" />
     <Compile Include="InquiryProcessing\Private\AnswerInquiryProcessor.cs" />
     <Compile Include="InquiryProcessing\Private\AppAdvertsInquiryProcessor.cs" />
@@ -378,6 +383,10 @@
     <Compile Include="Security\Private\SpinItem.cs" />
     <Compile Include="Security\Public\IEncryptor.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="Telegram\Private\TelegramManager.cs" />
+    <Compile Include="Telegram\Private\TelegramService.cs" />
+    <Compile Include="Telegram\Public\ITelegramService.cs" />
+    <Compile Include="Telegram\Public\ITelegramManager.cs" />
     <Compile Include="Utilities\IInMemory.cs" />
     <Compile Include="Utilities\INetworkUtils.cs" />
     <Compile Include="Utilities\ImageStreamProvider.cs" />

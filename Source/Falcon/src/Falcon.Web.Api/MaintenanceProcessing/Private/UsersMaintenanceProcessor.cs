@@ -35,7 +35,8 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
             IMemoryStore Memory , 
             IUsersInMemory UserInMemory , 
             IQuestInMemoryProcessor QuestInMemory , 
-            IUserSession UserSession)
+            IUserSession UserSession , 
+            IQuestionsQueryProcessor QuestionQuery)
         {
             mUserQuery = UserQueryProcessor;
             mUserInfoQuery = UserInfoQuery;
@@ -46,6 +47,7 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
             mUserInMemory = UserInMemory;
             mQuestInMemory = QuestInMemory;
             mUserSession = UserSession;
+            mQuestionQuery = QuestionQuery; 
         }
 
         public async Task<int> LevelUp(int Prize)

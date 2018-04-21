@@ -114,6 +114,7 @@
     <Compile Include="RandomGeneratorAdapter.cs" />
     <Compile Include="Security\IUserSession.cs" />
     <Compile Include="Security\IWebUserSession.cs" />
+    <Compile Include="Utils\Utils.cs" />
     <Compile Include="UUIDGenerator.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -9,6 +9,12 @@ namespace Falcon.Web.Api
 {
     public class Startup
     {
+
+        public Startup()
+        {
+            
+        }
+
         public void Configuration(IAppBuilder app)
         {
 
@@ -33,6 +39,7 @@ namespace Falcon.Web.Api
             });
 
             app.UseHangfireServer();
+
         }
     }
 }

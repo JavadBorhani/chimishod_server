@@ -23,6 +23,8 @@ using Falcon.Web.Api.PurchaseAuthorizer.Private;
 using Falcon.Web.Api.PurchaseAuthorizer.Public;
 using Falcon.Web.Api.Security.Private;
 using Falcon.Web.Api.Security.Public;
+using Falcon.Web.Api.Telegram.Private;
+using Falcon.Web.Api.Telegram.Public;
 using Falcon.Web.Api.Utilities;
 using Falcon.Web.Api.Utilities.Mail;
 using Falcon.Web.Api.Utilities.RestClient.Engine;
@@ -60,6 +62,7 @@ namespace Falcon.Web.Api
             AddQueryProcessors(container);
             AddInquiryProcessors(container);
             AddMaintenanceProcessors(container);
+            InMemory(container);
             AddAdHoc(container);
 
         }
@@ -76,7 +79,7 @@ namespace Falcon.Web.Api
             var logManager = new LogManagerAdapter();
 
             container.Bind<ILogManager>().ToConstant(logManager);
-            
+
         }
 
         private void ConfigureUserSession(IKernel container)
@@ -169,9 +172,10 @@ namespace Falcon.Web.Api
             container.Bind<IFeedbackInquiryProcessor>().To<FeedbackInquiryProcessor>().InRequestScope();
             container.Bind<IServerInquiryProcessor>().To<ServerInquiryProcessor>().InRequestScope();
 
+
         }
 
-        private void  AddMaintenanceProcessors(IKernel container)
+        private void AddMaintenanceProcessors(IKernel container)
         {
             // add maintenance part separately
             container.Bind<ICodeGiftsMaintenanceProcessor>().To<CodeGiftsMaintenanceProcessor>().InRequestScope();
@@ -197,8 +201,23 @@ namespace Falcon.Web.Api
             container.Bind<INotificationMaintenanceProcessor>().To<NotificationMaintenanceProcessor>().InRequestScope();
             container.Bind<ISentMaintenanceProcessor>().To<SentMaintenanceProcessor>().InRequestScope();
             container.Bind<IFeedbackMaintenanceProcessor>().To<FeedbackMaintenanceProcessor>().InRequestScope();
-            
 
+
+        }
+
+        private void InMemory(IKernel container)
+        {
+            //Quest Data in Memory -> should update whenever data is changed in database 
+            container.Bind<IQuestInMemoryProcessor>().To<QuestInMemoryProcessor>().InSingletonScope();
+
+            //Report In Memory
+            container.Bind<IReportInMemory>().To<ReportInMemory>().InSingletonScope();
+
+            //UsersCommonData
+            container.Bind<IUsersInMemory>().To<UsersInMemory>().InSingletonScope();
+
+            //Telegram Data From Database
+            container.Bind<ITelegramConfigurationInMemory>().To<TelegramConfigurationInMemory>().InSingletonScope();
         }
 
         private void AddAdHoc(IKernel container)
@@ -206,6 +225,10 @@ namespace Falcon.Web.Api
             container.Bind<IMarketVerificationProcessor>().To<MarketVerificationProcessor>().InRequestScope();
             container.Bind<IMarketManager>().To<MarketManager>().InRequestScope();
             container.Bind<IWatchAdValidator>().To<WatchAdValidator>().InRequestScope();
+
+
+            //telegram manager
+            container.Bind<ITelegramManager>().To<TelegramManager>().InRequestScope();
 
             container.Bind<IDateTime>().To<DateTimeAdapter>().InSingletonScope();
             container.Bind<IJsonManager>().To<JsonManager>().InSingletonScope();
@@ -216,17 +239,9 @@ namespace Falcon.Web.Api
             //Global Application State
             container.Bind<IGlobalApplicationState>().To<GlobalApplicationState>().InSingletonScope();
             container.Bind<IClientApplicationState>().To<ClientApplicationState>().InSingletonScope();
+
             //Game Configuration 
             container.Bind<IGameConfig>().To<GameConfig>().InSingletonScope();
-
-            //Quest Data in Memory -> should update whenever data is changed in database 
-            container.Bind<IQuestInMemoryProcessor>().To<QuestInMemoryProcessor>().InSingletonScope();
-
-            //Report In Memory
-            container.Bind<IReportInMemory>().To<ReportInMemory>().InSingletonScope();
-
-            //UsersCommonData
-            container.Bind<IUsersInMemory>().To<UsersInMemory>().InSingletonScope();
 
             //
             container.Bind<IItemPurchaseManager>().To<ItemPurchaseManager>().InRequestScope();
@@ -258,8 +273,7 @@ namespace Falcon.Web.Api
             //Notification Data
             container.Bind<INotificationData>().To<NotificationData>().InSingletonScope();
 
-
-            
+            container.Bind<ITelegramService>().To<TelegramService>().InSingletonScope();
 
             //Rest Client
             //var rest = new RestClient();

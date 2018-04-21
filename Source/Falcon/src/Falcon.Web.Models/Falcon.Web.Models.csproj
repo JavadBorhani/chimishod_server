@@ -163,6 +163,7 @@
     <Compile Include="Api\SUserStatistics.cs" />
     <Compile Include="Api\SWatchedAd.cs" />
     <Compile Include="Api\SWatchAdValidation.cs" />
+    <Compile Include="Api\Telegram\STelegramConfiguration.cs" />
     <Compile Include="Api\User\SInputSearchExpression.cs" />
     <Compile Include="Api\User\SNewUserInfo.cs" />
     <Compile Include="Api\User\SUserCount.cs" />

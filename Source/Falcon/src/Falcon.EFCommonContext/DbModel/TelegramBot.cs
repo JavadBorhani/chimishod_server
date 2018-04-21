@@ -12,10 +12,11 @@ namespace Falcon.EFCommonContext.DbModel
     using System;
     using System.Collections.Generic;
     
-    public partial class ProfanityWord
+    public partial class TelegramBot
     {
         public int ID { get; set; }
-        public string Expression { get; set; }
-        public bool Active { get; set; }
+        public string Token { get; set; }
+        public string TelegramChatIDs { get; set; }
+        public string ServerCallbackPath { get; set; }
     }
 }
