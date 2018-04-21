@@ -67,7 +67,7 @@ namespace Falcon.Database.SqlServer.QueryProcessors
         {
             var answers = mDb.Set<Answer>().AsNoTracking().Where(u => u.UserID == mUserSession.ID);
 
-            var questionQuery = mDb.Set<Question>().AsNoTracking().Where(s => s.Banned == false);
+            var questionQuery = mDb.Set<Question>().AsNoTracking();
 
             var sentGroupQuery = mDb.Set<SentGroup>()
                 .AsNoTracking()
@@ -128,7 +128,7 @@ namespace Falcon.Database.SqlServer.QueryProcessors
         {
             var answers = mDb.Set<Answer>().AsNoTracking().Where(u => u.UserID == mUserSession.ID);
 
-            var questionQuery = mDb.Set<Question>().AsNoTracking().Where(s => s.Banned == false);
+            var questionQuery = mDb.Set<Question>().AsNoTracking();
 
             var sentGroupQuery = mDb.Set<Sent>()
                 .AsNoTracking().Where(m => m.UserID == mUserSession.ID)
@@ -184,7 +184,7 @@ namespace Falcon.Database.SqlServer.QueryProcessors
         {
             var answers = mDb.Set<Answer>().AsNoTracking().Where(u => u.UserID == mUserSession.ID);
 
-            var questionQuery = mDb.Set<Question>().AsNoTracking().Where(s => s.Banned == false);
+            var questionQuery = mDb.Set<Question>().AsNoTracking();
 
             var sentGroupQuery = mDb.Set<SentGroup>()
                 .AsNoTracking()
