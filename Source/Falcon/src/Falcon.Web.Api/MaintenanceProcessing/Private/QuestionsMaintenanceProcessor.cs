@@ -3,6 +3,7 @@ using Falcon.Common;
 using Falcon.Common.Security;
 using Falcon.Data.QueryProcessors;
 using Falcon.Web.Api.InquiryProcessing.Public;
+using Falcon.Web.Api.JobSystem.Public;
 using Falcon.Web.Api.MaintenanceProcessing.Public;
 using Falcon.Web.Api.Telegram.Public;
 using Falcon.Web.Models.Api;
@@ -23,6 +24,7 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
         private readonly SClientAppState mClientAppState;
         private readonly IMapper mMapper;
         private readonly ITelegramManager mTelManager;
+        private readonly IJobManager mJobManager;
 
 
         public QuestionsMaintenanceProcessor(
@@ -34,7 +36,8 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
             IClientApplicationState ClientAppState,
             IUserSession UserSession,
             IMapper Mapper , 
-            ITelegramManager TelManager)
+            ITelegramManager TelManager , 
+            IJobManager JobManager)
         {
             mFriendInquiry = FriendInquiry;
             mQuestionQuery = QuestionQuery;
@@ -45,6 +48,7 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
             mClientAppState = ClientAppState.State();
             mUserQuery = UserQuery;
             mTelManager = TelManager;
+            mJobManager = JobManager;
         }
 
         public async Task<int> CreateQuestion(SCreatedQuestion CreateQuestion)
@@ -55,6 +59,9 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
 
             if (totalCoin < 0)
                 throw new BusinessRuleViolationException("UserID : " + mUserSession.ID + " , Cheat in Question Creation userID , money is not enough");
+
+            if (CreateQuestion.IsPublic)
+                CreateQuestion.Active = false;
 
             var createdQuestion = await mQuestionQuery.CreateQuestion(CreateQuestion);
 
@@ -78,8 +85,11 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
                 }
             }
 
-            if (createdQuestion != null)
-                await mTelManager.SendQuestionVerifier(createdQuestion.ID, createdQuestion.What_if, createdQuestion.But);
+            if (createdQuestion != null && createdQuestion.IsPublic)
+            {
+                mJobManager.Enqueue(() => mTelManager.SendQuestionVerifier(createdQuestion.ID, createdQuestion.What_if, createdQuestion.But));
+            }
+                
 
             return totalCoin;
 
@@ -97,7 +107,7 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
 
             var question = await mQuestionQuery.GetQuestionByID(ForwardQuestion.QuestionID);
 
-            if (question != null && question.Banned == false && question.HashTagID != (int)HashTagID.Quest)
+            if (question != null && question.Active == true && question.HashTagID != (int)HashTagID.Quest)
             {
 
                 var friendIdsExists = await mFriendInquiry.HasFriends(ForwardQuestion.FriendIDs);
@@ -114,11 +124,11 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
 
         }
 
-        public async Task<bool> BanQuestion(int QuestionID, int State)
+        public async Task<bool> ActivateQuestion(int QuestionID, int State)
         {
             var booleanState = (State == 1) ? true : false;
 
-            var response = await mQuestionQuery.BanQuestion(QuestionID, booleanState);
+            var response = await mQuestionQuery.ActivateQuestion(QuestionID, booleanState);
 
             return response;
         }

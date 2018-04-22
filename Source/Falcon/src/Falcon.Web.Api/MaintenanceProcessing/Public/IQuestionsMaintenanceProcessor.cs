@@ -8,6 +8,6 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Public
     {
         Task<int> CreateQuestion(SCreatedQuestion CreateQuestion);
         Task<int> ForwardQuestionToFriends(SForwardQuestion ForwardQuestion);
-        Task<bool> BanQuestion(int QuestionID, int State);
+        Task<bool> ActivateQuestion(int QuestionID, int State);
     }
 }

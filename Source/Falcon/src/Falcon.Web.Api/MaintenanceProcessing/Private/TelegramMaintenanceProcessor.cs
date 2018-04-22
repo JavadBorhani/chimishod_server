@@ -24,14 +24,14 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
         }
 
 
-        public async Task<bool> BanQuestion(int QuestionID, int State)
+        public async Task<bool> ActivateQuestion(int QuestionID, int State)
         {
             var ipIsLocal = mNetworkUtils.IsIpInternal();
             var validState = (QuestionID > 0 && (State == 1 || State == 0)) ? true : false;
 
             if (ipIsLocal && validState)
             {
-                var happened = await mQuestionMaintenance.BanQuestion(QuestionID, State);
+                var happened = await mQuestionMaintenance.ActivateQuestion(QuestionID, State);
                 return happened;
             }
 

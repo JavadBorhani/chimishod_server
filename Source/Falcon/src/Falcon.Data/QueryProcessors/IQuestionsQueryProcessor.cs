@@ -23,7 +23,7 @@ namespace Falcon.Data.QueryProcessors
         Task<bool> LogicallyRemoveByCreator(int QuestionID);
         Task<bool> IsDeletable(int QuestionID);
         Task<int> GetQuestionReportCount(int QuestionID);
-        Task<bool> BanQuestion(int QuestionID , bool State);
+        Task<bool> ActivateQuestion(int QuestionID , bool State);
         Task<Question> CreateQuestion(SCreatedQuestion NewQuestion); 
         Task<Question[]> GetQuestionList(bool IsPublic , int HashtagID, int Amount, OrderBy OrderBy = OrderBy.None,  List<int> Excepts = null);
         Task<QueryResult<SQuestionWithAnswerState>> GetUserPublicQuestions(PagedDataRequest RequestInfo, int UserID);

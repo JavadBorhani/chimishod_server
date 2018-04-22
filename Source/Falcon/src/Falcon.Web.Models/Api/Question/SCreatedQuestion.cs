@@ -19,6 +19,8 @@ namespace Falcon.Web.Models.Api
        
         [Required]
         public int[] FriendForwardList { get; set; }
+
+        public bool Active { get; set; } // Check if Serialize
         
     }
 }

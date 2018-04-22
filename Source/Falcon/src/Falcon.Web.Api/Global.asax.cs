@@ -22,6 +22,10 @@ namespace Falcon.Web.Api
             RegisterJobs();
             InitializeSystems();
         }
+        protected void Application_End()
+        {
+            WebContainerManager.Get<ITelegramService>().Dispose();
+        }
 
         private void RegisterHandlers()
         {

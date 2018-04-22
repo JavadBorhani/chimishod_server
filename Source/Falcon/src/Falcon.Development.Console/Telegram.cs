@@ -13,7 +13,7 @@ namespace Falcon.Development.Console
     {
         private static readonly TelegramBotClient Bot = new TelegramBotClient("532891770:AAFQIFjeQotd5CamnOY5DS77CZelLhmplpc");
 
-        public static void RunApplication(string[] args)
+        public static void Main(string[] args)
         {
             var me = Bot.GetMeAsync().Result;
             System.Console.Title = me.Username;
@@ -49,11 +49,6 @@ namespace Falcon.Development.Console
                         {
                             InlineKeyboardButton.WithUrl("1.1" , "http://Chimishod.ir/mine/1/"),
                             InlineKeyboardButton.WithCallbackData("1.2"),
-                        },
-                        new [] // second row
-                        {
-                            InlineKeyboardButton.WithCallbackData("2.1"),
-                            InlineKeyboardButton.WithCallbackData("2.2"),
                         }
                     });
 

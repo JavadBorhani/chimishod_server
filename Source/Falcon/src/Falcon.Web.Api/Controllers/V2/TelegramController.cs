@@ -21,7 +21,7 @@ namespace Falcon.Web.Api.Controllers.V2
         [HttpPost]
         public async Task<bool> BanQuestion(int QuestionID, int State)
         {
-            var response = await mTelegMaintenance.BanQuestion(QuestionID, State);
+            var response = await mTelegMaintenance.ActivateQuestion(QuestionID, State);
             return response;
         }
 

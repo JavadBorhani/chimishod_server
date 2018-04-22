@@ -71,7 +71,7 @@ namespace Falcon.Database.SqlServer.QueryProcessors
                    .AsNoTracking()
                    .Include(q => q.QuestionAction)
                    .Include(q => q.User)
-                   .Where(q => q.IsPublic == IsPublic && q.Banned == false && q.HashTagID == HashtagID && !Excepts.Contains(q.ID))
+                   .Where(q => q.IsPublic == IsPublic && q.Active == true && q.HashTagID == HashtagID && !Excepts.Contains(q.ID))
                    .OrderByDescending(q => q.CreatedDate)
                    .ThenBy(q => q.AnswerCount)
                    .Take(Amount); 
@@ -84,7 +84,7 @@ namespace Falcon.Database.SqlServer.QueryProcessors
                     .AsNoTracking()
                     .Include(q => q.QuestionAction)
                     .Include(q => q.User)
-                    .Where(q => q.IsPublic == IsPublic && q.Banned == false &&  q.HashTagID == HashtagID && !Excepts.Contains(q.ID))
+                    .Where(q => q.IsPublic == IsPublic && q.Active == true &&  q.HashTagID == HashtagID && !Excepts.Contains(q.ID))
                     .OrderByDescending(q => q.Like_Count)
                     .Take(Amount);
 
@@ -95,7 +95,7 @@ namespace Falcon.Database.SqlServer.QueryProcessors
                     .AsNoTracking()
                     .Include(q => q.QuestionAction)
                     .Include(q => q.User)
-                    .Where(q => q.IsPublic == IsPublic && q.Banned == false && q.HashTagID == HashtagID && !Excepts.Contains(q.ID))
+                    .Where(q => q.IsPublic == IsPublic && q.Active == true && q.HashTagID == HashtagID && !Excepts.Contains(q.ID))
                     .OrderByDescending(q => q.Weight)
                     .Take(Amount);
 
@@ -118,13 +118,13 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             return reportCount;
         }
 
-        public async Task<bool> BanQuestion(int QuestionID , bool State)
+        public async Task<bool> ActivateQuestion(int QuestionID , bool State)
         {
             var question = await mDb.Set<Question>().FindAsync(QuestionID);
 
             if(question != null)
             {
-                question.Banned = State;
+                question.Active = State;
 
                 await mDb.SaveChangesAsync();
 
@@ -138,6 +138,7 @@ namespace Falcon.Database.SqlServer.QueryProcessors
         {
             var newQuestion = mDb.Set<Question>().Add(new Question
             {
+                Active = NewQuestion.Active,
                 What_if = NewQuestion.What,
                 But = NewQuestion.But,
                 IsPublic = NewQuestion.IsPublic,
@@ -159,7 +160,7 @@ namespace Falcon.Database.SqlServer.QueryProcessors
 
             var questionQuery = mDb.Set<Question>()
                 .AsNoTracking()
-                .Where(q => q.UserID == UserID && q.IsPublic == true && q.Banned == false)
+                .Where(q => q.UserID == UserID && q.IsPublic == true && q.Active == true)
                 .OrderBy(q => q.ID);
 
 
@@ -201,7 +202,7 @@ namespace Falcon.Database.SqlServer.QueryProcessors
 
             var answers = mDb.Set<Answer>().AsNoTracking().Where(u => u.UserID == mUserSession.ID);
 
-            var questionQuery = mDb.Set<Question>().AsNoTracking().Where( s => s.Banned == false);
+            var questionQuery = mDb.Set<Question>().AsNoTracking().Where( s => s.Active == true);
 
             var sentGroupQuery = mDb.Set<SentGroup>()
                 .AsNoTracking()

@@ -37,7 +37,7 @@ namespace Falcon.EFCommonContext.DbModel
         public double Weight { get; set; }
         public int CommentCount { get; set; }
         public int ReportCount { get; set; }
-        public bool Banned { get; set; }
+        public bool Active { get; set; }
         public bool RemovedByCreator { get; set; }
         public bool IsPublic { get; set; }
         public bool IsOurAuthor { get; set; }

@@ -6,7 +6,7 @@ namespace Falcon.Development.Console
     {
        
 
-        public static void Main(string[] args)
+        public static void Sample(string[] args)
         {
             var item = Dns.GetHostEntry(Dns.GetHostName()).AddressList[1].ToString();
 

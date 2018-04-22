@@ -49,6 +49,7 @@ namespace Falcon.Web.Api.Telegram.Private
             Api.StartReceiving();
 
         }
+
         private static void BotOnReceiveError(object sender, ReceiveErrorEventArgs receiveErrorEventArgs)
         {
             System.Console.WriteLine("Received error: {0} — {1}",
@@ -71,9 +72,9 @@ namespace Falcon.Web.Api.Telegram.Private
             {
                 new HttpParam { Key = "Authorization" , Value = "Basic " + mConfiguration.GetState().AuthorizationKey}
             };
-
-            var request = RestClient.CreateRequest(data[1], RestSharp.Method.POST, null , item);
-            var answer  = await RestClient.ExecuteTaskAsync(data[1], request);
+            var path = mConfiguration.GetState().ServerCallbackPath + data[1];
+            var request = RestClient.CreateRequest(path, RestSharp.Method.POST, null , item);
+            var answer  = await RestClient.ExecuteTaskAsync(path, request);
 
             var items = mConfiguration.GetState().TelegramIDs;            
 
@@ -82,10 +83,9 @@ namespace Falcon.Web.Api.Telegram.Private
                 try
                 {
                     await Api.AnswerCallbackQueryAsync(callbackQuery.Id, $"'{data[0]}' شد داداش!!!");
-                    await Api.SendTextMessageAsync( items[i], $"'{data[0]}' شد داش!!!");
+                    await Api.SendTextMessageAsync( items[i], $"'{data[0]}' شد داش!!! \n Status: {answer.StatusCode}");
                 }
                 catch { }
-
 
             }
         }
@@ -106,12 +106,12 @@ namespace Falcon.Web.Api.Telegram.Private
 
                     var inlineKeyboard = new InlineKeyboardMarkup(new[]
                     {
-                        new [] // first row
+                        new [] 
                         {
                             InlineKeyboardButton.WithCallbackData("1.1"),
                             InlineKeyboardButton.WithCallbackData("1.2"),
                         },
-                        new [] // second row
+                        new []
                         {
                             InlineKeyboardButton.WithCallbackData("2.1"),
                             InlineKeyboardButton.WithCallbackData("2.2"),
@@ -171,25 +171,29 @@ Usage:
 
             var serverPath = mConfiguration.GetState().ServerCallbackPath;
 
-            var buttonOk = ok + " " + serverPath + ControllerCallbackPath + "/0"; //TODO : Convert to Json Class
+            var buttonOk = ok + " " + ControllerCallbackPath + "/1"; //TODO : Convert to Json Class
 
-            var buttonBan = ban + " " + serverPath + ControllerCallbackPath + "/1"; //TODO : Convert to Json Class
+            var buttonBan = ban + " " + ControllerCallbackPath + "/0"; //TODO : Convert to Json Class
 
             var inlineKeyboard = new InlineKeyboardMarkup(new[]
             {
-                        new [] // first row
-                        {
-                            InlineKeyboardButton.WithCallbackData(ok, buttonOk),
-                            InlineKeyboardButton.WithCallbackData(ban, buttonBan),
-                        },
+                new [] // first row
+                {
+                    InlineKeyboardButton.WithCallbackData(ok, buttonOk),
+                    InlineKeyboardButton.WithCallbackData(ban, buttonBan),
+                }
             });
 
             for (int i = 0; i < ChatIds.Length; ++i)
-            {
-                await Api.SendTextMessageAsync(
-                      ChatIds[i],
-                      Message,
-                      replyMarkup: inlineKeyboard);
+            {   
+                try
+                {
+                    await Api.SendTextMessageAsync( ChatIds[i], Message, replyMarkup: inlineKeyboard);
+                }
+                catch
+                {
+
+                }
             }
 
             return true;
@@ -197,6 +201,11 @@ Usage:
 
         public void Dispose()
         {
+            Api.OnMessage -= BotOnMessageReceived;
+            Api.OnMessageEdited -= BotOnMessageReceived;
+            Api.OnCallbackQuery -= BotOnCallbackQueryReceived;
+            Api.OnReceiveError -= BotOnReceiveError;
+            Api.OnReceiveGeneralError -= BotOnReceiveGeneralError;
             Api.StopReceiving();
         }
     }

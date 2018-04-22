@@ -219,7 +219,7 @@
           <Property Name="Weight" Type="float" Nullable="false" />
           <Property Name="CommentCount" Type="int" Nullable="false" />
           <Property Name="ReportCount" Type="int" Nullable="false" />
-          <Property Name="Banned" Type="bit" Nullable="false" />
+          <Property Name="Active" Type="bit" Nullable="false" />
           <Property Name="RemovedByCreator" Type="bit" Nullable="false" />
           <Property Name="IsPublic" Type="bit" Nullable="false" />
           <Property Name="IsOurAuthor" Type="bit" Nullable="false" />
@@ -1881,7 +1881,7 @@
           <Property Name="Weight" Type="Double" Nullable="false" />
           <Property Name="CommentCount" Type="Int32" Nullable="false" />
           <Property Name="ReportCount" Type="Int32" Nullable="false" />
-          <Property Name="Banned" Type="Boolean" Nullable="false" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
           <Property Name="RemovedByCreator" Type="Boolean" Nullable="false" />
           <Property Name="IsPublic" Type="Boolean" Nullable="false" />
           <Property Name="IsOurAuthor" Type="Boolean" Nullable="false" />
@@ -3088,7 +3088,7 @@
                 <ScalarProperty Name="IsOurAuthor" ColumnName="IsOurAuthor" />
                 <ScalarProperty Name="IsPublic" ColumnName="IsPublic" />
                 <ScalarProperty Name="RemovedByCreator" ColumnName="RemovedByCreator" />
-                <ScalarProperty Name="Banned" ColumnName="Banned" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
                 <ScalarProperty Name="ReportCount" ColumnName="ReportCount" />
                 <ScalarProperty Name="CommentCount" ColumnName="CommentCount" />
                 <ScalarProperty Name="Weight" ColumnName="Weight" />
