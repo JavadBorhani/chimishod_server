@@ -1,8 +1,6 @@
-﻿using Falcon.Common.Logging;
-using Falcon.EFCommonContext;
+﻿using Falcon.Web.Api.Utilities;
 using Falcon.Web.Api.Utilities.Base;
 using Falcon.Web.Common;
-using log4net;
 using System.Web.Http;
 
 namespace Falcon.Web.Api.Controllers.V1
@@ -10,21 +8,19 @@ namespace Falcon.Web.Api.Controllers.V1
     [UnitOfWorkActionFilter]
     public class TestController : FalconApiController
     {
-        private readonly IDbContext mContext;
-        private readonly ILog mLogger;
+        private readonly INetworkUtils mNetUtils;
         
-        public TestController(IDbContext Context , ILogManager Logger)
+        public TestController(INetworkUtils NetworkUtil)
         {
-            mContext = Context;
-            mLogger = Logger.GetLog(typeof(TestController));
+            mNetUtils = NetworkUtil;
         }
 
-        [Route("v2/TestController/{QuestionID}/{State}")]
+        [Route("v2/TestController/")]
         [HttpPost]
-        public IHttpActionResult GetInfo(int QuestionID , int State)
+        public IHttpActionResult GetInfo()
         {
-            mLogger.Warn("I Have got information about" + QuestionID + " State : " + State);
-            return Ok(WebContextModelFactory.ConnectionCount);
+            var item = mNetUtils.IsIpInternal();
+            return Ok();
         }
 
     }

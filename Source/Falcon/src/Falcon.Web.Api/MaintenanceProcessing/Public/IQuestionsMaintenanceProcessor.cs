@@ -7,6 +7,7 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Public
     public interface IQuestionsMaintenanceProcessor
     {
         Task<int> CreateQuestion(SCreatedQuestion CreateQuestion);
-        Task<int> ForwardQuestionToFriends(SForwardQuestion ForwardQuestion); 
+        Task<int> ForwardQuestionToFriends(SForwardQuestion ForwardQuestion);
+        Task<bool> BanQuestion(int QuestionID, int State);
     }
 }

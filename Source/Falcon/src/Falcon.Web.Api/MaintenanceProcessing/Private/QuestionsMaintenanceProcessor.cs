@@ -106,5 +106,14 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
             return -1;
 
         }
+
+        public async Task<bool> BanQuestion(int QuestionID, int State)
+        {
+            var booleanState = (State == 1) ? true : false;
+
+            var response = await mQuestionQuery.BanQuestion(QuestionID, booleanState);
+
+            return response;
+        }
     }
 }

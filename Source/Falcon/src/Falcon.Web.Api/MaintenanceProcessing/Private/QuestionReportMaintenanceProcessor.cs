@@ -44,7 +44,7 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
             {
                 if (reportCount + 1 >= reportInfo.ReportCountToFilter)
                 {
-                    var response = await mQuestionsQuery.BanQuestion(Reported.QuestionID);
+                    var response = await mQuestionsQuery.BanQuestion(Reported.QuestionID , true);
 
                     if (response)
                     {

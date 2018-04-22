@@ -240,6 +240,7 @@
     <Compile Include="Controllers\V2\QuestsController.cs" />
     <Compile Include="Controllers\V2\ReportController.cs" />
     <Compile Include="Controllers\V2\SentInboxController.cs" />
+    <Compile Include="Controllers\V2\TelegramController.cs" />
     <Compile Include="Controllers\V2\UserInfoController.cs" />
     <Compile Include="Controllers\V2\UsersController.cs" />
     <Compile Include="InMemory\Private\ReportInMemory.cs" />

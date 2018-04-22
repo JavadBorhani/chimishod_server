@@ -21,5 +21,11 @@ namespace Falcon.Web.Api.Utilities
             return ip;
         }
 
+        public bool IsIpInternal()
+        {
+            var ip = GetRequestNetworkIP();
+            var address = IPAddress.Parse(ip);
+            return IPAddress.IsLoopback(address);
+        }
     }
 }

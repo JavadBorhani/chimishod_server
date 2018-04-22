@@ -6,6 +6,7 @@ namespace Falcon.Web.Api.Utilities
     {
         string GetRequestNetworkIP();
         HttpStatusCode Response { set; }
-        
+
+        bool IsIpInternal();
     }
 }

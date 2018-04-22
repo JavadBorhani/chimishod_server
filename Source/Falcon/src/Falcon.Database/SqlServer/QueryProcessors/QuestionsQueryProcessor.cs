@@ -118,13 +118,13 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             return reportCount;
         }
 
-        public async Task<bool> BanQuestion(int QuestionID)
+        public async Task<bool> BanQuestion(int QuestionID , bool State)
         {
             var question = await mDb.Set<Question>().FindAsync(QuestionID);
 
             if(question != null)
             {
-                question.Banned = true;
+                question.Banned = State;
 
                 await mDb.SaveChangesAsync();
 

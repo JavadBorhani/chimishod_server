@@ -17,6 +17,7 @@ namespace Falcon.Web.Api.Telegram.Private
     {
         public readonly TelegramBotClient Api;
 
+        
         public ITelegramConfigurationInMemory mConfiguration
         {
             get
@@ -42,11 +43,26 @@ namespace Falcon.Web.Api.Telegram.Private
             Api.OnMessage += BotOnMessageReceived;
             Api.OnMessageEdited += BotOnMessageReceived;
             Api.OnCallbackQuery += BotOnCallbackQueryReceived;
+            Api.OnReceiveError += BotOnReceiveError;
+            Api.OnReceiveGeneralError += BotOnReceiveGeneralError;
 
             Api.StartReceiving();
 
-            SendMessage(new long[] { 110186174 }, "دوست داشتی ممه بودی؟ اما غذای همه بودی؟" , "http://localhost:7895/v2/TestController/15").Wait();
+            //SendMessage(new long[] { 110186174 }, "دوست داشتی ممه بودی؟ اما غذای همه بودی؟" , "/v2/TestController/15").Wait();
 
+        }
+        private static void BotOnReceiveError(object sender, ReceiveErrorEventArgs receiveErrorEventArgs)
+        {
+            System.Console.WriteLine("Received error: {0} — {1}",
+                receiveErrorEventArgs.ApiRequestException.ErrorCode,
+                receiveErrorEventArgs.ApiRequestException.Message);
+        }
+
+        private static void BotOnReceiveGeneralError(object sender, ReceiveGeneralErrorEventArgs ReceiveGeneralErrorEventArgs)
+        {
+            System.Console.WriteLine("Received error: {0} — {1}",
+                ReceiveGeneralErrorEventArgs.Exception.Source,
+                ReceiveGeneralErrorEventArgs.Exception.Message);
         }
         private  async void BotOnCallbackQueryReceived(object sender, CallbackQueryEventArgs callbackQueryEventArgs)
         {
@@ -74,6 +90,7 @@ namespace Falcon.Web.Api.Telegram.Private
                     $"'{data[0]}' شد داش!!!");
             }
         }
+
 
         private async void BotOnMessageReceived(object sender, MessageEventArgs messageEventArgs)
         {
@@ -145,12 +162,7 @@ Usage:
             }
         }
 
-        public void Dispose()
-        {
-            Api.StopReceiving();
-        }
-
-        public async Task<bool> SendMessage(long[] ChatIds, string Message , string RequestCallback)
+        public async Task<bool> SendMessage(long[] ChatIds, string Message , string ControllerCallbackPath)
         {
             if (ChatIds == null)
                 return false;
@@ -158,12 +170,18 @@ Usage:
             const string ok = "اوکی";
             const string ban = "بن";
 
+            var serverPath = mConfiguration.GetState().ServerCallbackPath;
+
+            var buttonOk = ok + " " + serverPath + ControllerCallbackPath + "/1"; //TODO : Convert to Json Class
+
+            var buttonBan = ban + " " + serverPath + ControllerCallbackPath + "/0"; //TODO : Convert to Json Class
+
             var inlineKeyboard = new InlineKeyboardMarkup(new[]
             {
                         new [] // first row
                         {
-                            InlineKeyboardButton.WithCallbackData(ok, ok + " " + RequestCallback + "/1"),
-                            InlineKeyboardButton.WithCallbackData(ban, ban + " " + RequestCallback + "/0"),
+                            InlineKeyboardButton.WithCallbackData(ok, buttonOk),
+                            InlineKeyboardButton.WithCallbackData(ban, buttonBan),
                         },
             });
 
@@ -174,7 +192,13 @@ Usage:
                       Message,
                       replyMarkup: inlineKeyboard);
             }
+
             return true;
+        }
+
+        public void Dispose()
+        {
+            Api.StopReceiving();
         }
     }
 }
