@@ -4,6 +4,6 @@ namespace Falcon.Web.Api.Telegram.Public
 {
     public interface ITelegramManager
     {
-        Task<bool> SendQuestionVerifier(string QuestionID, string Question);
+        Task<bool> SendQuestionVerifier(int QuestionID, string What , string But);
     }
 }

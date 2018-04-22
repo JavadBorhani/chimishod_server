@@ -39,10 +39,10 @@ namespace Falcon.Web.Api.InMemory.Private
                 Configuration.Token = item.Token;
                 Configuration.TelegramIDs = Utils.StringToLongArray(item.TelegramChatIDs, ' ');
                 Configuration.ServerCallbackPath = item.ServerCallbackPath;
+                Configuration.AuthorizationKey = item.AuthorizationKey;
             }
 
         }
-
 
 
         private void CheckAvailability()
@@ -53,8 +53,6 @@ namespace Falcon.Web.Api.InMemory.Private
             }
 
         }
-
-
         public bool SetState(STelegramConfiguration NewState)
         {
             if (NewState != null)
@@ -62,6 +60,7 @@ namespace Falcon.Web.Api.InMemory.Private
                 Configuration.Token = NewState.Token;
                 Configuration.TelegramIDs = NewState.TelegramIDs;
                 Configuration.ServerCallbackPath = NewState.ServerCallbackPath;
+                Configuration.AuthorizationKey = NewState.AuthorizationKey;
                 return true;
             }
             return false;

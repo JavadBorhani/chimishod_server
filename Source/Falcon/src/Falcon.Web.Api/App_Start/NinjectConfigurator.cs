@@ -201,6 +201,7 @@ namespace Falcon.Web.Api
             container.Bind<INotificationMaintenanceProcessor>().To<NotificationMaintenanceProcessor>().InRequestScope();
             container.Bind<ISentMaintenanceProcessor>().To<SentMaintenanceProcessor>().InRequestScope();
             container.Bind<IFeedbackMaintenanceProcessor>().To<FeedbackMaintenanceProcessor>().InRequestScope();
+            container.Bind<ITelegramMaintenanceProcessor>().To<TelegramMaintenanceProcessor>().InRequestScope();
 
 
         }

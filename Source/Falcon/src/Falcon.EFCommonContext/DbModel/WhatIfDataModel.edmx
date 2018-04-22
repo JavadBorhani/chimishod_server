@@ -424,6 +424,7 @@
           <Property Name="Token" Type="nvarchar" MaxLength="150" Nullable="false" />
           <Property Name="TelegramChatIDs" Type="varchar" MaxLength="500" Nullable="false" />
           <Property Name="ServerCallbackPath" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="AuthorizationKey" Type="nvarchar" MaxLength="100" Nullable="false" />
         </EntityType>
         <EntityType Name="Tutorial">
           <Key>
@@ -2122,6 +2123,7 @@
           <Property Name="Token" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
           <Property Name="TelegramChatIDs" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="ServerCallbackPath" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="AuthorizationKey" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="Tutorial">
           <Key>
@@ -3310,6 +3312,7 @@
           <EntitySetMapping Name="TelegramBots">
             <EntityTypeMapping TypeName="Falcon.DbModel.TelegramBot">
               <MappingFragment StoreEntitySet="TelegramBot">
+                <ScalarProperty Name="AuthorizationKey" ColumnName="AuthorizationKey" />
                 <ScalarProperty Name="ServerCallbackPath" ColumnName="ServerCallbackPath" />
                 <ScalarProperty Name="TelegramChatIDs" ColumnName="TelegramChatIDs" />
                 <ScalarProperty Name="Token" ColumnName="Token" />

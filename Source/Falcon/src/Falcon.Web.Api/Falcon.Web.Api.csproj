@@ -338,6 +338,7 @@
     <Compile Include="MaintenanceProcessing\Private\SentMaintenanceProcessor.cs" />
     <Compile Include="MaintenanceProcessing\Private\SpinWheelMaintenanceProcessor.cs" />
     <Compile Include="MaintenanceProcessing\Private\StoresMaintenanceProcessor.cs" />
+    <Compile Include="MaintenanceProcessing\Private\TelegramMaintenanceProcessor.cs" />
     <Compile Include="MaintenanceProcessing\Private\ThemesMaintenanceProcessor.cs" />
     <Compile Include="MaintenanceProcessing\Private\UserInfoMaintenanceProcessor.cs" />
     <Compile Include="MaintenanceProcessing\Private\UsersInMemory.cs" />
@@ -366,6 +367,7 @@
     <Compile Include="MaintenanceProcessing\Public\ISentMaintenanceProcessor.cs" />
     <Compile Include="MaintenanceProcessing\Public\ISpinWheelMaintenanceProcessor.cs" />
     <Compile Include="MaintenanceProcessing\Public\IStoresMaintenanceProcessor.cs" />
+    <Compile Include="MaintenanceProcessing\Public\ITelegramMaintenanceProcessor.cs" />
     <Compile Include="MaintenanceProcessing\Public\IThemesMaintenanceProcessor.cs" />
     <Compile Include="MaintenanceProcessing\Public\IUserInfoMaintenanceProcessor.cs" />
     <Compile Include="MaintenanceProcessing\Public\IUsersInMemory.cs" />

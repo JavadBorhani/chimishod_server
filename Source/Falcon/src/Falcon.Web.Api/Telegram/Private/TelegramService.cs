@@ -48,8 +48,6 @@ namespace Falcon.Web.Api.Telegram.Private
 
             Api.StartReceiving();
 
-            //SendMessage(new long[] { 110186174 }, "دوست داشتی ممه بودی؟ اما غذای همه بودی؟" , "/v2/TestController/15").Wait();
-
         }
         private static void BotOnReceiveError(object sender, ReceiveErrorEventArgs receiveErrorEventArgs)
         {
@@ -69,11 +67,11 @@ namespace Falcon.Web.Api.Telegram.Private
             var callbackQuery = callbackQueryEventArgs.CallbackQuery;
             var data = callbackQuery.Data.Split(' ');
 
-            var path = mConfiguration.GetState().ServerCallbackPath;
             HttpParam[] item = new HttpParam[]
             {
-                new HttpParam { Key = "Authorization" , Value = "Basic "}
+                new HttpParam { Key = "Authorization" , Value = "Basic " + mConfiguration.GetState().AuthorizationKey}
             };
+
             var request = RestClient.CreateRequest(data[1], RestSharp.Method.POST, null , item);
             var answer  = await RestClient.ExecuteTaskAsync(data[1], request);
 
@@ -81,13 +79,14 @@ namespace Falcon.Web.Api.Telegram.Private
 
             for (int i = 0; i < items.Length; ++i)
             {
-                await Api.AnswerCallbackQueryAsync(
-                callbackQuery.Id,
-                $"'{data[0]}' شد داداش!!!");
+                try
+                {
+                    await Api.AnswerCallbackQueryAsync(callbackQuery.Id, $"'{data[0]}' شد داداش!!!");
+                    await Api.SendTextMessageAsync( items[i], $"'{data[0]}' شد داش!!!");
+                }
+                catch { }
 
-                await Api.SendTextMessageAsync(
-                    items[i],
-                    $"'{data[0]}' شد داش!!!");
+
             }
         }
 
@@ -172,9 +171,9 @@ Usage:
 
             var serverPath = mConfiguration.GetState().ServerCallbackPath;
 
-            var buttonOk = ok + " " + serverPath + ControllerCallbackPath + "/1"; //TODO : Convert to Json Class
+            var buttonOk = ok + " " + serverPath + ControllerCallbackPath + "/0"; //TODO : Convert to Json Class
 
-            var buttonBan = ban + " " + serverPath + ControllerCallbackPath + "/0"; //TODO : Convert to Json Class
+            var buttonBan = ban + " " + serverPath + ControllerCallbackPath + "/1"; //TODO : Convert to Json Class
 
             var inlineKeyboard = new InlineKeyboardMarkup(new[]
             {

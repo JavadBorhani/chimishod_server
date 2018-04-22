@@ -18,5 +18,6 @@ namespace Falcon.EFCommonContext.DbModel
         public string Token { get; set; }
         public string TelegramChatIDs { get; set; }
         public string ServerCallbackPath { get; set; }
+        public string AuthorizationKey { get; set; }
     }
 }

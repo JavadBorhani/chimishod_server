@@ -4,6 +4,7 @@ using Falcon.Common.Security;
 using Falcon.Data.QueryProcessors;
 using Falcon.Web.Api.InquiryProcessing.Public;
 using Falcon.Web.Api.MaintenanceProcessing.Public;
+using Falcon.Web.Api.Telegram.Public;
 using Falcon.Web.Models.Api;
 using Falcon.Web.Models.Api.Config;
 using Falcon.Web.Models.Api.Question;
@@ -21,6 +22,7 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
         private readonly IUserQueryProcessor mUserQuery;
         private readonly SClientAppState mClientAppState;
         private readonly IMapper mMapper;
+        private readonly ITelegramManager mTelManager;
 
 
         public QuestionsMaintenanceProcessor(
@@ -31,7 +33,8 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
             IUserQueryProcessor UserQuery,
             IClientApplicationState ClientAppState,
             IUserSession UserSession,
-            IMapper Mapper)
+            IMapper Mapper , 
+            ITelegramManager TelManager)
         {
             mFriendInquiry = FriendInquiry;
             mQuestionQuery = QuestionQuery;
@@ -41,6 +44,7 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
             mMapper = Mapper;
             mClientAppState = ClientAppState.State();
             mUserQuery = UserQuery;
+            mTelManager = TelManager;
         }
 
         public async Task<int> CreateQuestion(SCreatedQuestion CreateQuestion)
@@ -73,6 +77,9 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
                     throw new BusinessRuleViolationException("Cheat in Question Creation" + mUserSession.ID);
                 }
             }
+
+            if (createdQuestion != null)
+                await mTelManager.SendQuestionVerifier(createdQuestion.ID, createdQuestion.What_if, createdQuestion.But);
 
             return totalCoin;
 
