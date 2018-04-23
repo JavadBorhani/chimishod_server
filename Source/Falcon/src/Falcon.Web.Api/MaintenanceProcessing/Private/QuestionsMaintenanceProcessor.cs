@@ -53,6 +53,8 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
 
         public async Task<int> CreateQuestion(SCreatedQuestion CreateQuestion)
         {
+            if ((!CreateQuestion.IsPublic && CreateQuestion.FriendForwardList.Length <= 0))
+                throw new BusinessRuleViolationException("UserID : " + mUserSession.ID + " , Cheat in Question Creation , not public nor friendlist");
 
             var checkout = mClientAppState.CreateQuestionPrice + (CreateQuestion.FriendForwardList.Length * mClientAppState.ForwardPricePerFriend);
             var totalCoin = await mUserQuery.DecreaseCoin(checkout);

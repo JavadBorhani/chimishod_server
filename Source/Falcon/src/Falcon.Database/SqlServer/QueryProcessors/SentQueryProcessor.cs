@@ -131,8 +131,11 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             var questionQuery = mDb.Set<Question>().AsNoTracking();
 
             var sentGroupQuery = mDb.Set<Sent>()
-                .AsNoTracking().Where(m => m.UserID == mUserSession.ID)
-                .OrderByDescending( m => m.CreatedDate);
+                .AsNoTracking()
+                .Where(m => m.UserID == mUserSession.ID)
+                .GroupBy(s => s.QuestionID)
+                .Select(s => s.FirstOrDefault())
+                .OrderByDescending(m => m.CreatedDate);
 
 
             var totalItemCount = await sentGroupQuery.CountAsync();

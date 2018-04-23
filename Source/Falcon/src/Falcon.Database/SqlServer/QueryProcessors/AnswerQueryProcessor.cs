@@ -55,8 +55,17 @@ namespace Falcon.Database.SqlServer.QueryProcessors
                 CreatedDate = mDateTime.Now
             });
 
-            await mDb.SaveChangesAsync();
-            return true;
+
+            try
+            {
+                await mDb.SaveChangesAsync();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+           
         }
 
         public async Task<bool> SaveLikeDislikeAnswer(SLikeDislikeAnswer Response)
