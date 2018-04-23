@@ -29,10 +29,17 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
             var ipIsLocal = mNetworkUtils.IsIpInternal();
             var validState = (QuestionID > 0 && (State == 1 || State == 0)) ? true : false;
 
-            if (ipIsLocal && validState)
+
+            var item = mNetworkUtils.GetRequestNetworkIP() == "192.168.182.21";
+
+            if ((ipIsLocal && validState) || (item && validState))
             {
                 var happened = await mQuestionMaintenance.ActivateQuestion(QuestionID, State);
                 return happened;
+            }
+            else
+            {
+                mLogger.Error("could not ban question + network Ip : " + mNetworkUtils.GetRequestNetworkIP() +  "\n" + " valid ip : " + ipIsLocal);
             }
 
             return false;

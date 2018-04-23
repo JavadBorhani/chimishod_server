@@ -38,7 +38,7 @@ namespace Falcon.Web.Api.Telegram.Private
         {
             Api = new TelegramBotClient(mConfiguration.GetState().Token);
 
-            var me = Api.GetMeAsync().Result;            
+            var me = Api.GetMeAsync().Result;
 
             Api.OnMessage += BotOnMessageReceived;
             Api.OnMessageEdited += BotOnMessageReceived;
