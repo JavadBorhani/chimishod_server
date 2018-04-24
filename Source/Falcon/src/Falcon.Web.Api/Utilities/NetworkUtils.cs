@@ -1,4 +1,6 @@
-﻿using System.Net;
+﻿using System;
+using System.Linq;
+using System.Net;
 using System.Web;
 
 namespace Falcon.Web.Api.Utilities
@@ -11,7 +13,7 @@ namespace Falcon.Web.Api.Utilities
         {
             set
             {
-                HttpContext.Current.Response.StatusCode = (int) value;
+                HttpContext.Current.Response.StatusCode = (int)value;
             }
         }
 
@@ -23,9 +25,20 @@ namespace Falcon.Web.Api.Utilities
 
         public bool IsIpInternal()
         {
-            var ip = GetRequestNetworkIP();
-            var address = IPAddress.Parse(ip);
-            return IPAddress.IsLoopback(address);
+            var ipAddress = GetRequestNetworkIP();
+
+            int[] ipParts = ipAddress.Split(new String[] { "." }, StringSplitOptions.RemoveEmptyEntries)
+                         .Select(s => int.Parse(s)).ToArray();
+            
+            if (ipParts[0] == 10 ||
+                (ipParts[0] == 192 && ipParts[1] == 168) ||
+                (ipParts[0] == 172 && (ipParts[1] >= 16 && ipParts[1] <= 31)))
+            {
+                return true;
+            }
+
+            return false;
         }
     }
+
 }

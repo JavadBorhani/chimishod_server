@@ -18,9 +18,22 @@ namespace Falcon.Web.Models.Api.User
     {
         public string UUID { get; set;}
 
+
+        private string mUserName;
+
         [Required]
         [StringLength(maximumLength: 40, MinimumLength = 3)]
-        public string UserName { get; set; }
+        public string UserName
+        {
+            get
+            {
+                return mUserName;   
+            }
+            set
+            {
+                mUserName = value.Trim();
+            }
+        }
 
         [Required]
         public Gender Gender { get; set; }
@@ -38,7 +51,7 @@ namespace Falcon.Web.Models.Api.User
         public PlatformType Platform { get; set; }
 
         public Guid NotificationID { get; set; }
-
+        
         public string IPAddress { get; set; }
     }
 

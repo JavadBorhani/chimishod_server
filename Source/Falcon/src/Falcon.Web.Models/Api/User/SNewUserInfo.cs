@@ -8,9 +8,20 @@ namespace Falcon.Web.Models.Api.User
         [StringLength(maximumLength: 200, MinimumLength = 5)]
         public string Email { get; set; }
 
+        private string mUserName;
         [Required(AllowEmptyStrings = false)]
         [StringLength(maximumLength: 40, MinimumLength = 3)]
-        public string UserName { get; set; }
+        public string UserName
+        {
+            get
+            {
+                return mUserName;
+            }
+            set
+            {
+                mUserName = value.Trim();
+            }
+        }
 
         public bool IsEditable { get; set; }
 

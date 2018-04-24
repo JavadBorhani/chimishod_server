@@ -29,10 +29,7 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
             var ipIsLocal = mNetworkUtils.IsIpInternal();
             var validState = (QuestionID > 0 && (State == 1 || State == 0)) ? true : false;
 
-
-            var item = mNetworkUtils.GetRequestNetworkIP() == "192.168.182.21";
-
-            if ((ipIsLocal && validState) || (item && validState))
+            if ((ipIsLocal && validState))
             {
                 var happened = await mQuestionMaintenance.ActivateQuestion(QuestionID, State);
                 return happened;
