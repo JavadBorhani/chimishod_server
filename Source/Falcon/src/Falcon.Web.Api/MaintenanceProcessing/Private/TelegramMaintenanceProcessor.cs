@@ -38,7 +38,6 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
             {
                 mLogger.Error("could not ban question + network Ip : " + mNetworkUtils.GetRequestNetworkIP() +  "\n" + " valid ip : " + ipIsLocal);
             }
-
             return false;
         }
     }
