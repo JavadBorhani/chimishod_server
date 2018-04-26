@@ -49,7 +49,6 @@ namespace Falcon.Database.SqlServer.QueryProcessors
                     QuestWhiteIcon = query[i].QuestWhiteIcon,
                     QuestColoredIcon = query[i].QuestColoredIcon,
                     QuestOffIcon = query[i].QuestOffIcon,
-                    MeanScore = query[i].Mean_Score,
                     ChildQuestNumbers = new List<int>(),
                 };
 
@@ -70,7 +69,10 @@ namespace Falcon.Database.SqlServer.QueryProcessors
 
         public async Task<Quest> GetQuestByID(int ID)
         {
-            var data = await mDb.Set<Quest>().AsNoTracking().SingleOrDefaultAsync(q => q.QuestNumber == ID);
+            var data = await mDb.Set<Quest>()
+                .AsNoTracking()
+                .SingleOrDefaultAsync(q => q.QuestNumber == ID);
+
             return data;
         }
 

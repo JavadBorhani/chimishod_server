@@ -21,6 +21,7 @@ namespace Falcon.EFCommonContext.DbModel
             this.Answers = new HashSet<Answer>();
             this.Feedbacks = new HashSet<Feedback>();
             this.Orders = new HashSet<Order>();
+            this.PurchasedQuests = new HashSet<PurchasedQuest>();
             this.Questions = new HashSet<Question>();
             this.QuestScores = new HashSet<QuestScore>();
             this.QuestScoreSnapshots = new HashSet<QuestScoreSnapshot>();
@@ -41,6 +42,8 @@ namespace Falcon.EFCommonContext.DbModel
         public Nullable<int> UserTypeID { get; set; }
         public int LevelProgress { get; set; }
         public int LevelNumber { get; set; }
+        public Nullable<int> QuestNumber { get; set; }
+        public int QuestProgress { get; set; }
         public int TotalCoin { get; set; }
         public bool IsMale { get; set; }
         public string UUID { get; set; }
@@ -64,6 +67,9 @@ namespace Falcon.EFCommonContext.DbModel
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Order> Orders { get; set; }
         public virtual PlatformType PlatformType { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<PurchasedQuest> PurchasedQuests { get; set; }
+        public virtual Quest Quest { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Question> Questions { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

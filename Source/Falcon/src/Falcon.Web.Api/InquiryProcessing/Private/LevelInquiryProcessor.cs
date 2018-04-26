@@ -21,11 +21,5 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
             var levels = await mLevelQuery.GetAll();
             return levels;  
         }
-
-        public async Task<int> GetLevelQuestNumber(int LevelNumber)
-        {
-            var questID = await mLevelQuery.GetLevelQuest(LevelNumber);
-            return questID;
-        }
     }
 }

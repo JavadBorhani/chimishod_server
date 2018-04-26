@@ -13,7 +13,7 @@ namespace Falcon.Development.Console
     {
         private static readonly TelegramBotClient Bot = new TelegramBotClient("532891770:AAFQIFjeQotd5CamnOY5DS77CZelLhmplpc");
 
-        public static void Main(string[] args)
+        public static void Sample(string[] args)
         {
             var me = Bot.GetMeAsync().Result;
             System.Console.Title = me.Username;

@@ -3,6 +3,8 @@ using Falcon.Common;
 using Falcon.Web.Api.InquiryProcessing.Public;
 using Falcon.Web.Api.MaintenanceProcessing.Public;
 using Falcon.Web.Api.Notification.Public;
+using Falcon.Web.Models.Api.Config;
+using Falcon.Web.Models.Api.Initialize;
 using Falcon.Web.Models.Api.User;
 using System.Threading.Tasks;
 
@@ -12,10 +14,11 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
     {
         private readonly IUsersInquiryProcessor mUsersQuery;
         private readonly ILevelInquiryProcessor mLevelInquiry;
-        private readonly IClientApplicationState mClientAppState;
+        private readonly SClientAppState mClientAppState;
         private readonly IServerInquiryProcessor mServerInquiry;
         private readonly IMapper mMapper;
         private readonly IDateTime mDateTime;
+        private readonly IQuestInMemoryProcessor mQuestInMemroy;
 
         public InitializationInquiryProcessor
             (
@@ -25,31 +28,38 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
             IServerInquiryProcessor ServerInquiry,
             INotificationData Notification,
             IMapper Mapper , 
-            IDateTime DateTime
+            IDateTime DateTime, 
+            IQuestInMemoryProcessor QuestInMemory
             )
         {
             mUsersQuery = UsersQuery;
             mLevelInquiry = LevelInquiry;
-            mClientAppState = ClientAppState;
+            mClientAppState = ClientAppState.State();
             mServerInquiry = ServerInquiry;
             mMapper = Mapper;
             mDateTime = DateTime;
+            mQuestInMemroy = QuestInMemory;
         }
 
-        public async Task<SUserInitializationData> LoadUserData(int LevelVersion)
+        public async Task<SUserInitializationData> LoadUserData(SInitializeInquiry Inquiry)
         {
 
             var initializationInfo = new SUserInitializationData();
 
-            initializationInfo.ClientAppState = mClientAppState.State();
+            initializationInfo.ClientAppState = mClientAppState;
             initializationInfo.ClientAppState.ServerTime = mDateTime.Now;
 
-
-            if (LevelVersion < mClientAppState.State().LevelVersionCode)
+            if (Inquiry.LevelVersionCode < mClientAppState.LevelVersionCode)
             {
                 var levels = await mLevelInquiry.GetLevelList();
 
                 initializationInfo.Levels = levels;
+            }
+
+            if(Inquiry.QuestVersionCode < mClientAppState.QuestVersionCode)
+            {
+
+                var quests = mQuestInMemroy.GetState();
             }
 
             var user = await mUsersQuery.GetUserInfo();

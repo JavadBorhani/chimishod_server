@@ -23,10 +23,7 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
         }
         public async Task<SQuest[]> GetQuestList()
         {
-            var query = await mQuestQuery.GetAllQuests();
-
-            var data = mMapper.Map<SQuest[]>(query);
-
+            var data = await mQuestQuery.GetAllQuests();
             return data;
         }
 
@@ -75,7 +72,7 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
             }
 
 
-            var questDetails = await mQuestQuery.GetQuestDetailWithPeopleStatus(Inquiry.LevelNumber, questNumbers);
+            var questDetails = await mQuestQuery.GetQuestDetailWithPeopleStatus(Inquiry.QuestNumber, questNumbers);
 
             if (questDetails.Count > 0)
             {
@@ -87,7 +84,7 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
 
                 for (int i = 0; i < questNumbers.Count - 1; ++i)
                 {
-                    var questTitle = mQuestInMemory.GetQuestByLevelNumber(questDetails[i].QuestNumber).QuestTitle;
+                    var questTitle = mQuestInMemory.GetQuestByQuestNumber(questDetails[i].QuestNumber).QuestTitle;
 
                     response[i] = new SQuestDetail
                     {
@@ -126,7 +123,7 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
                 parentQuestNumber = quest.ParentID ?? 0;
             }
 
-            var questDetails = await mQuestQuery.GetLiveQuestDetailWithPeopleStatus(Inquiry.LevelNumber, questNumbers);
+            var questDetails = await mQuestQuery.GetLiveQuestDetailWithPeopleStatus(Inquiry.QuestNumber , questNumbers); //TODO : Checkout the logic
 
             if (questDetails.Count > 0)
             {
@@ -138,7 +135,7 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
 
                 for (int i = 0; i < questNumbers.Count - 1; ++i)
                 {
-                    var questTitle = mQuestInMemory.GetQuestByLevelNumber(questDetails[i].QuestNumber).QuestTitle;
+                    var questTitle = mQuestInMemory.GetQuestByQuestNumber(questDetails[i].QuestNumber).QuestTitle;
 
                     response[i] = new SQuestDetail
                     {
@@ -180,7 +177,7 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
             }
 
 
-            var friendQuestDetail = await mQuestQuery.GetFriendQuestDetail(Inquiry.FriendID , Inquiry.LevelNumber , questNumbers);
+            var friendQuestDetail = await mQuestQuery.GetFriendQuestDetail(Inquiry.FriendID , Inquiry.QuestNumber, questNumbers);
 
             if(friendQuestDetail.Count > 0 )
             {
@@ -192,7 +189,7 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
 
                 for (int i = 0; i < questNumbers.Count - 1; ++i)
                 {
-                    var questTitle = mQuestInMemory.GetQuestByLevelNumber(friendQuestDetail[i].QuestNumber).QuestTitle;
+                    var questTitle = mQuestInMemory.GetQuestByQuestNumber(friendQuestDetail[i].QuestNumber).QuestTitle;
 
                     response[i] = new SFriendQuestDetail
                     {

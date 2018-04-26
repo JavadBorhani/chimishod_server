@@ -6,6 +6,5 @@ namespace Falcon.Data.QueryProcessors
     public interface ILevelQueryProcessor
     {
         Task<SLevel[]> GetAll();
-        Task<int> GetLevelQuest(int LevelID);
     }
 }

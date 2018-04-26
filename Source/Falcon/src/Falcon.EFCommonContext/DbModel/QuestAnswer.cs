@@ -12,20 +12,15 @@ namespace Falcon.EFCommonContext.DbModel
     using System;
     using System.Collections.Generic;
     
-    public partial class QuestQuestion
+    public partial class QuestAnswer
     {
         public int ID { get; set; }
+        public int UserID { get; set; }
         public int QuestionID { get; set; }
-        public int QuestNumber { get; set; }
-        public int Priority { get; set; }
-        public int YesQuestNumber { get; set; }
-        public int NoQuestNumber { get; set; }
-        public int YesScore { get; set; }
-        public int NoScore { get; set; }
+        public Nullable<bool> Liked { get; set; }
+        public Nullable<bool> Dislike { get; set; }
+        public bool YesState { get; set; }
+        public bool NoState { get; set; }
         public System.DateTime CreatedDate { get; set; }
-        public System.DateTime UpdatedDate { get; set; }
-    
-        public virtual Quest Quest { get; set; }
-        public virtual Question Question { get; set; }
     }
 }

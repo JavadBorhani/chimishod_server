@@ -31,40 +31,28 @@ namespace Falcon.Web.Api.Controllers.V2
             mDateTime = DateTime;
         }
 
-        [ResponseType(typeof(DataWithServerTime<PagedDataInquiryResponse<SQuestionWithAnswerState>>))]
+        [ResponseType(typeof(PagedDataInquiryResponse<SQuestionWithAnswerState>))]
         [Route("v2/Message/Sent/{PageNumber}")]
         [HttpPost]
-        public async Task<DataWithServerTime<PagedDataInquiryResponse<SQuestionWithAnswerState>>> GetSentList(int PageNumber)
+        public async Task<PagedDataInquiryResponse<SQuestionWithAnswerState>> GetSentList(int PageNumber)
         {
 
             var pages = mPageDataRequest.Create(PageNumber, mApplicationState.Paging_DefaultPageSize);
             var questions = await mSentInquiry.GetUserSentMessageList(pages);
 
-            var data = new DataWithServerTime<PagedDataInquiryResponse<SQuestionWithAnswerState>>()
-            {
-                Data = questions,
-                ServerTime = mDateTime.Now,
-            };
-
-            return data;
+            return questions;
 
         }
 
-        [ResponseType(typeof(DataWithServerTime<PagedDataInquiryResponse<SQuestionWithAnswerState>>))]
+        [ResponseType(typeof(PagedDataInquiryResponse<SQuestionWithAnswerState>))]
         [Route("v2/Message/Inbox/{PageNumber}")]
         [HttpPost]
-        public async Task<DataWithServerTime<PagedDataInquiryResponse<SQuestionWithAnswerState>>> GetInboxList(int PageNumber)
+        public async Task<PagedDataInquiryResponse<SQuestionWithAnswerState>> GetInboxList(int PageNumber)
         {
             var pages = mPageDataRequest.Create(PageNumber, mApplicationState.Paging_DefaultPageSize);
             var questions = await mSentInquiry.GetUserInboxMessageList(pages);
 
-            var data = new DataWithServerTime<PagedDataInquiryResponse<SQuestionWithAnswerState>>()
-            {
-                Data = questions,
-                ServerTime = mDateTime.Now,
-            };
-
-            return data;
+            return questions;
         }
 
     }

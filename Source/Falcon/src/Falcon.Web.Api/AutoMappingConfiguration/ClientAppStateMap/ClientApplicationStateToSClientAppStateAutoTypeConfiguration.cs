@@ -15,6 +15,7 @@ namespace Falcon.Web.Api.AutoMappingConfiguration.ClientAppStateMap
                 .ForMember(s => s.CreateQuestionPrice , m => m.MapFrom( c => c.CreateQuestionPrice))
                 .ForMember(s => s.WatchAdCoin , m => m.MapFrom(c => c.WatchAdCoin))
                 .ForMember(s => s.LevelVersionCode , m => m.MapFrom(c => c.LevelVersionCode))
+                .ForMember(s => s.QuestVersionCode , m => m.MapFrom(c => c.QuestVersionCode))
                 .ForMember(s => s.PollingIntervalTimeInSeconds, m => m.MapFrom(c => c.PollingIntervalTimeInSeconds))
                 .ForMember(s => s.XPLevelFactor, m => m.MapFrom(c => c.XPLevelFactor))
                 .ForMember(s => s.ForwardPricePerFriend , m => m.MapFrom(c => c.ForwardPricePerFriend))

@@ -100,11 +100,12 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
 
         public async Task<bool> TakeSnapshot()
         {
-            int levelNumber  = mMemory.LoadState<int>(GlobalVariables.LevelToTakeSnapshot);
+            int questNumber  = mMemory.LoadState<int>(GlobalVariables.QuestToTakeSnapshot);
+            var quest = mQuestInMemory.GetQuestByQuestNumber(questNumber);
 
-            if(levelNumber != 0)
+            if ((questNumber != 0 && quest != null))
             {
-                var quest = mQuestInMemory.GetQuestByLevelNumber(levelNumber);
+                
                 var questFatherNumber = quest.ParentID ?? quest.QuestNumber;
 
                 if(questFatherNumber != 0)
@@ -118,7 +119,7 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
 
                     var questsToTakeSnapshot = await mQuestsQueryProcessor.GetUserQuestScoresByIds(questIdsToTakeSnapshot);
 
-                    var snapshot = await mQuestSnapshot.SaveUserCheckPoint(questsToTakeSnapshot, levelNumber);
+                    var snapshot = await mQuestSnapshot.SaveUserCheckPoint(questsToTakeSnapshot, questNumber);
 
                     return true;
                     //take snapshot 

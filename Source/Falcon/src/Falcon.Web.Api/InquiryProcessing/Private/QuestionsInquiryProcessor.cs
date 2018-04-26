@@ -1,11 +1,8 @@
 ﻿using Falcon.Common.Security;
-using Falcon.Data;
 using Falcon.Data.QueryProcessors;
 using Falcon.Web.Api.InquiryProcessing.Public;
 using Falcon.Web.Models.Api;
 using Falcon.Web.Models.Api.Config;
-using Falcon.Web.Models.Api.Friend;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -86,27 +83,6 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
             config.HighQualityQuestionsPercent = (int)(((float)Config.HighQualityQuestionsPercent / 100) * Config.TotalNumberOfQuestions);
 
             return config;
-        }
-
-        public async Task<SQuestion[]> FetchLevelQuestions(int LevelNumber)
-        {
-            var questNumber = await mLevelInquiry.GetLevelQuestNumber(LevelNumber);
-
-            if(questNumber != 0 )
-            {
-                //has quest
-                var questions =  await mQuestInquiry.GetQuestQuestions(questNumber);
-                return questions;
-
-            }
-
-            return null;
-
-        }
-
-        public Task<QueryResult<SQuestionWithAnswerState>> GetUserPublicQuestions(PagedDataRequest RequestInfo, int UserID)
-        {
-            throw new NotImplementedException();
         }
     }
 }

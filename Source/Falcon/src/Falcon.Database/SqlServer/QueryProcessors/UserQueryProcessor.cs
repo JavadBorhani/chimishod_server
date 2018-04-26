@@ -381,11 +381,10 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             var currentUserQuest = await mDb.Set<User>()
                 .AsNoTracking()
                 .Where(u => u.ID == mUserSession.ID)
-                .Include(u => u.Level)
-                .Select(u => u.Level.QuestID)
+                .Select(u => u.QuestNumber)
                 .SingleOrDefaultAsync();
 
-            return currentUserQuest;    
+            return currentUserQuest ?? 0 ;    
         }
 
         public async Task<bool> SaveUserImageUrl(string ImageRelativePath)

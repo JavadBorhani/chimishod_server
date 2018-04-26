@@ -1,6 +1,7 @@
 ﻿using Falcon.Web.Api.InquiryProcessing.Public;
 using Falcon.Web.Api.Utilities.Base;
 using Falcon.Web.Common;
+using Falcon.Web.Models.Api.Initialize;
 using Falcon.Web.Models.Api.User;
 using System.Threading.Tasks;
 using System.Web.Http;
@@ -9,7 +10,6 @@ using System.Web.Http.Description;
 namespace Falcon.Web.Api.Controllers.V2
 {
     [UnitOfWorkActionFilter]
-
     public class InitializationController : FalconApiController
     {
         private readonly IInitializationInquiryProcessor mInitInquiry;
@@ -22,9 +22,12 @@ namespace Falcon.Web.Api.Controllers.V2
         [ResponseType(typeof(SUserInitializationData))]
         [Route("v2/Initialize/{LevelVersionCode}")]
         [HttpPost]
-        public async Task<SUserInitializationData> LoadingUserData(int LevelVersionCode)
+        public async Task<SUserInitializationData> LoadingUserData(SInitializeInquiry Inquiry)
         {
-            var data = await mInitInquiry.LoadUserData(LevelVersionCode);
+            if (!ModelState.IsValid)
+                return null;
+
+            var data = await mInitInquiry.LoadUserData(Inquiry);
             return data;
         }
 
