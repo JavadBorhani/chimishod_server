@@ -6,5 +6,7 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Public
     {
         Task<bool> AddScore(int QuestionID , bool IsYes);
         Task<bool> TakeSnapshot();
+        Task<bool> SaveQuestAnswer();
+        Task<bool> PurchaseQuest(int QuestNumber);
     }
 }

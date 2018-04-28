@@ -11,6 +11,5 @@
         public int DefaultUserCoinAmount { get; set; }    
         public int DefaultUserLevelNumber { get; set; }
         public int DefaultUserLevelProgress { get; set; }
-        public int MaxReportCount { get; set; }
     }
 }

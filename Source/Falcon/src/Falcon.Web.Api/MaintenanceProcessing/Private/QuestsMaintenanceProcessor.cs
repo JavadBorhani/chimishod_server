@@ -5,6 +5,7 @@ using Falcon.Web.Api.InquiryProcessing.Public;
 using Falcon.Web.Api.MaintenanceProcessing.Public;
 using Falcon.Web.Common.Memmory;
 using Falcon.Web.Models.Api.Quest;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -35,7 +36,6 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
             mUserQuery = UserQuery;
             mMemory = Memory;
             mQuestSnapshot = QuestSnapshot;
-
         }
         public async Task<bool> AddScore(int QuestionID , bool IsYes)
         {
@@ -44,10 +44,10 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
 
             if(questQuestion != null)
             {
-                var yesQuestNumber = questQuestion.YesQuestNumber;
+                var yesQuestNumber = questQuestion.YesQuestNumber ?? 0 ;
                 var yesPoint = questQuestion.YesScore;
 
-                var noQuestNumber = questQuestion.NoQuestNumber;
+                var noQuestNumber = questQuestion.NoQuestNumber ?? 0;
                 var noPoint = questQuestion.NoScore;
 
                 var questDetail = mQuestInMemory.GetQuestByQuestNumber(questQuestion.QuestNumber);
@@ -55,6 +55,9 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
 
                 if (questFather == 0)
                     throw new BusinessRuleViolationException("parent id should not be incremented , check design database");
+
+                if(noQuestNumber == 0 || yesQuestNumber == 0)
+                    throw new BusinessRuleViolationException("quest number can not be null , game design issue");
 
                 if (IsYes)
                 {
@@ -125,9 +128,18 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
                     //take snapshot 
                 }
             }
-
             return false;
             
+        }
+
+        public async Task<bool> SaveQuestAnswer()
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<bool> PurchaseQuest(int QuestNumber)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -203,5 +203,10 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
 
             return null;
         }
+
+        public Task<bool> GetFinalQuestDescription()
+        {
+            return Task.FromResult(false);   
+        }
     }
 }

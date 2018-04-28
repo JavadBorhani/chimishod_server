@@ -19,6 +19,7 @@ namespace Falcon.Web.Api.Controllers.V1
         [HttpPost]
         public IHttpActionResult GetInfo()
         {
+            System.Threading.Thread.Sleep(1000);
             var item = mNetUtils.IsIpInternal();
             return Ok();
         }

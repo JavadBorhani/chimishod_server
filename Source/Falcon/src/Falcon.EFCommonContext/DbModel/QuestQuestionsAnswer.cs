@@ -12,7 +12,7 @@ namespace Falcon.EFCommonContext.DbModel
     using System;
     using System.Collections.Generic;
     
-    public partial class QuestAnswer
+    public partial class QuestQuestionsAnswer
     {
         public int ID { get; set; }
         public int UserID { get; set; }
@@ -22,5 +22,8 @@ namespace Falcon.EFCommonContext.DbModel
         public bool YesState { get; set; }
         public bool NoState { get; set; }
         public System.DateTime CreatedDate { get; set; }
+    
+        public virtual Question Question { get; set; }
+        public virtual User User { get; set; }
     }
 }

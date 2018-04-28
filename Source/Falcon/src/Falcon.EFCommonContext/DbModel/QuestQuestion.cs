@@ -16,10 +16,11 @@ namespace Falcon.EFCommonContext.DbModel
     {
         public int ID { get; set; }
         public int QuestionID { get; set; }
+        public int QuestionType { get; set; }
         public int QuestNumber { get; set; }
         public int Priority { get; set; }
-        public int YesQuestNumber { get; set; }
-        public int NoQuestNumber { get; set; }
+        public Nullable<int> YesQuestNumber { get; set; }
+        public Nullable<int> NoQuestNumber { get; set; }
         public int YesScore { get; set; }
         public int NoScore { get; set; }
         public System.DateTime CreatedDate { get; set; }
@@ -27,5 +28,6 @@ namespace Falcon.EFCommonContext.DbModel
     
         public virtual Quest Quest { get; set; }
         public virtual Question Question { get; set; }
+        public virtual QuestQuestionType QuestQuestionType { get; set; }
     }
 }

@@ -17,6 +17,8 @@ namespace Falcon.Web.Api.AutoMappingConfiguration.GameConfig
                 .ForMember(sqs => sqs.DefaultUserLevelNumber, m => m.MapFrom(qs => qs.DefaultUserLevelNumber))
                 .ForMember(sqs => sqs.DefaultUserLevelProgress, m => m.MapFrom(qs => qs.DefaultUserLevelProgress))
                 .ReverseMap();
-        }
+
+        
+    }
     }
 }

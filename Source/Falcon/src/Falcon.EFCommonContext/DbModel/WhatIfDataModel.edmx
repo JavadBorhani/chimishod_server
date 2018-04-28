@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="Falcon.DbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="Falcon.DbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="AchievedCodeGift">
           <Key>
             <PropertyRef Name="ID" />
@@ -209,19 +209,6 @@
           <Property Name="CreatedDate" Type="datetime" Nullable="false" />
           <Property Name="UpdateDate" Type="datetime" Nullable="false" />
         </EntityType>
-        <EntityType Name="QuestAnswer">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="UserID" Type="int" Nullable="false" />
-          <Property Name="QuestionID" Type="int" Nullable="false" />
-          <Property Name="Liked" Type="bit" />
-          <Property Name="Dislike" Type="bit" />
-          <Property Name="YesState" Type="bit" Nullable="false" />
-          <Property Name="NoState" Type="bit" Nullable="false" />
-          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
-        </EntityType>
         <EntityType Name="Question">
           <Key>
             <PropertyRef Name="ID" />
@@ -276,14 +263,36 @@
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="QuestionID" Type="int" Nullable="false" />
+          <Property Name="QuestionType" Type="int" Nullable="false" />
           <Property Name="QuestNumber" Type="int" Nullable="false" />
           <Property Name="Priority" Type="int" Nullable="false" />
-          <Property Name="YesQuestNumber" Type="int" Nullable="false" />
-          <Property Name="NoQuestNumber" Type="int" Nullable="false" />
+          <Property Name="YesQuestNumber" Type="int" />
+          <Property Name="NoQuestNumber" Type="int" />
           <Property Name="YesScore" Type="int" Nullable="false" />
           <Property Name="NoScore" Type="int" Nullable="false" />
           <Property Name="CreatedDate" Type="datetime" Nullable="false" />
           <Property Name="UpdatedDate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="QuestQuestionsAnswer">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="QuestionID" Type="int" Nullable="false" />
+          <Property Name="Liked" Type="bit" />
+          <Property Name="Dislike" Type="bit" />
+          <Property Name="YesState" Type="bit" Nullable="false" />
+          <Property Name="NoState" Type="bit" Nullable="false" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="QuestQuestionTypes">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Description" Type="nvarchar" MaxLength="100" Nullable="false" />
         </EntityType>
         <EntityType Name="QuestScore">
           <Key>
@@ -794,6 +803,42 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_QuestQuestions_QuestQuestionTypes">
+          <End Role="QuestQuestionTypes" Type="Self.QuestQuestionTypes" Multiplicity="1" />
+          <End Role="QuestQuestions" Type="Self.QuestQuestions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="QuestQuestionTypes">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="QuestQuestions">
+              <PropertyRef Name="QuestionType" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_QuestQuestionsAnswer_Question">
+          <End Role="Question" Type="Self.Question" Multiplicity="1" />
+          <End Role="QuestQuestionsAnswer" Type="Self.QuestQuestionsAnswer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Question">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="QuestQuestionsAnswer">
+              <PropertyRef Name="QuestionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_QuestQuestionsAnswer_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="QuestQuestionsAnswer" Type="Self.QuestQuestionsAnswer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="QuestQuestionsAnswer">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_QuestScore_Quest">
           <End Role="Quest" Type="Self.Quest" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -1211,11 +1256,12 @@
           <EntitySet Name="PriceHistory" EntityType="Self.PriceHistory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PurchasedQuest" EntityType="Self.PurchasedQuest" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Quest" EntityType="Self.Quest" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="QuestAnswer" EntityType="Self.QuestAnswer" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Question" EntityType="Self.Question" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="QuestionAction" EntityType="Self.QuestionAction" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="QuestPeopleScore" EntityType="Self.QuestPeopleScore" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="QuestQuestions" EntityType="Self.QuestQuestions" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="QuestQuestionsAnswer" EntityType="Self.QuestQuestionsAnswer" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="QuestQuestionTypes" EntityType="Self.QuestQuestionTypes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="QuestScore" EntityType="Self.QuestScore" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="QuestScoreSnapshot" EntityType="Self.QuestScoreSnapshot" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="QuestTypes" EntityType="Self.QuestTypes" Schema="dbo" store:Type="Tables" />
@@ -1315,6 +1361,18 @@
           <AssociationSet Name="FK_QuestQuestions_Question" Association="Self.FK_QuestQuestions_Question">
             <End Role="Question" EntitySet="Question" />
             <End Role="QuestQuestions" EntitySet="QuestQuestions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_QuestQuestions_QuestQuestionTypes" Association="Self.FK_QuestQuestions_QuestQuestionTypes">
+            <End Role="QuestQuestionTypes" EntitySet="QuestQuestionTypes" />
+            <End Role="QuestQuestions" EntitySet="QuestQuestions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_QuestQuestionsAnswer_Question" Association="Self.FK_QuestQuestionsAnswer_Question">
+            <End Role="Question" EntitySet="Question" />
+            <End Role="QuestQuestionsAnswer" EntitySet="QuestQuestionsAnswer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_QuestQuestionsAnswer_User" Association="Self.FK_QuestQuestionsAnswer_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="QuestQuestionsAnswer" EntitySet="QuestQuestionsAnswer" />
           </AssociationSet>
           <AssociationSet Name="FK_QuestScore_Quest" Association="Self.FK_QuestScore_Quest">
             <End Role="Quest" EntitySet="Quest" />
@@ -1429,8 +1487,7 @@
             <End Role="WatchedAd" EntitySet="WatchedAd" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="Falcon.DbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -1484,11 +1541,12 @@
           <EntitySet Name="PriceHistories" EntityType="Falcon.DbModel.PriceHistory" />
           <EntitySet Name="PurchasedQuests" EntityType="Falcon.DbModel.PurchasedQuest" />
           <EntitySet Name="Quests" EntityType="Falcon.DbModel.Quest" />
-          <EntitySet Name="QuestAnswers" EntityType="Falcon.DbModel.QuestAnswer" />
           <EntitySet Name="Questions" EntityType="Falcon.DbModel.Question" />
           <EntitySet Name="QuestionActions" EntityType="Falcon.DbModel.QuestionAction" />
           <EntitySet Name="QuestPeopleScores" EntityType="Falcon.DbModel.QuestPeopleScore" />
           <EntitySet Name="QuestQuestions" EntityType="Falcon.DbModel.QuestQuestion" />
+          <EntitySet Name="QuestQuestionsAnswers" EntityType="Falcon.DbModel.QuestQuestionsAnswer" />
+          <EntitySet Name="QuestQuestionTypes" EntityType="Falcon.DbModel.QuestQuestionType" />
           <EntitySet Name="QuestScores" EntityType="Falcon.DbModel.QuestScore" />
           <EntitySet Name="QuestScoreSnapshots" EntityType="Falcon.DbModel.QuestScoreSnapshot" />
           <EntitySet Name="QuestTypes" EntityType="Falcon.DbModel.QuestType" />
@@ -1621,6 +1679,10 @@
             <End Role="Question" EntitySet="Questions" />
             <End Role="QuestQuestion" EntitySet="QuestQuestions" />
           </AssociationSet>
+          <AssociationSet Name="FK_QuestQuestionsAnswer_Question" Association="Falcon.DbModel.FK_QuestQuestionsAnswer_Question">
+            <End Role="Question" EntitySet="Questions" />
+            <End Role="QuestQuestionsAnswer" EntitySet="QuestQuestionsAnswers" />
+          </AssociationSet>
           <AssociationSet Name="FK_ReportedQuestions_Question" Association="Falcon.DbModel.FK_ReportedQuestions_Question">
             <End Role="Question" EntitySet="Questions" />
             <End Role="ReportedQuestion" EntitySet="ReportedQuestions" />
@@ -1632,6 +1694,14 @@
           <AssociationSet Name="FK_Tutorial_Question" Association="Falcon.DbModel.FK_Tutorial_Question">
             <End Role="Question" EntitySet="Questions" />
             <End Role="Tutorial" EntitySet="Tutorials" />
+          </AssociationSet>
+          <AssociationSet Name="FK_QuestQuestions_QuestQuestionTypes" Association="Falcon.DbModel.FK_QuestQuestions_QuestQuestionTypes">
+            <End Role="QuestQuestionType" EntitySet="QuestQuestionTypes" />
+            <End Role="QuestQuestion" EntitySet="QuestQuestions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_QuestQuestionsAnswer_User" Association="Falcon.DbModel.FK_QuestQuestionsAnswer_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="QuestQuestionsAnswer" EntitySet="QuestQuestionsAnswers" />
           </AssociationSet>
           <AssociationSet Name="FK_QuestScore_User" Association="Falcon.DbModel.FK_QuestScore_User">
             <End Role="User" EntitySet="Users" />
@@ -1701,7 +1771,7 @@
             <End Role="WatchAdProvider" EntitySet="WatchAdProviders" />
             <End Role="WatchedAd" EntitySet="WatchedAds" />
           </AssociationSet>
-        </EntityContainer>
+          </EntityContainer>
         <ComplexType Name="sp_helpdiagramdefinition_Result">
           <Property Type="Int32" Name="version" Nullable="true" />
           <Property Type="Binary" Name="definition" Nullable="true" />
@@ -1946,19 +2016,6 @@
           <NavigationProperty Name="Users" Relationship="Falcon.DbModel.FK_User_Quest" FromRole="Quest" ToRole="User" />
           <NavigationProperty Name="UserQuestAnswers" Relationship="Falcon.DbModel.FK_UserQuestAnswers_Quest" FromRole="Quest" ToRole="UserQuestAnswer" />
         </EntityType>
-        <EntityType Name="QuestAnswer">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="UserID" Type="Int32" Nullable="false" />
-          <Property Name="QuestionID" Type="Int32" Nullable="false" />
-          <Property Name="Liked" Type="Boolean" />
-          <Property Name="Dislike" Type="Boolean" />
-          <Property Name="YesState" Type="Boolean" Nullable="false" />
-          <Property Name="NoState" Type="Boolean" Nullable="false" />
-          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
-        </EntityType>
         <EntityType Name="Question">
           <Key>
             <PropertyRef Name="ID" />
@@ -1988,6 +2045,7 @@
           <NavigationProperty Name="QuestionAction" Relationship="Falcon.DbModel.FK_Question_QuestionAction" FromRole="Question" ToRole="QuestionAction" />
           <NavigationProperty Name="User" Relationship="Falcon.DbModel.FK_Question_User" FromRole="Question" ToRole="User" />
           <NavigationProperty Name="QuestQuestions" Relationship="Falcon.DbModel.FK_QuestQuestions_Question" FromRole="Question" ToRole="QuestQuestion" />
+          <NavigationProperty Name="QuestQuestionsAnswers" Relationship="Falcon.DbModel.FK_QuestQuestionsAnswer_Question" FromRole="Question" ToRole="QuestQuestionsAnswer" />
           <NavigationProperty Name="ReportedQuestions" Relationship="Falcon.DbModel.FK_ReportedQuestions_Question" FromRole="Question" ToRole="ReportedQuestion" />
           <NavigationProperty Name="Sents" Relationship="Falcon.DbModel.FK_Sent_Question" FromRole="Question" ToRole="Sent" />
           <NavigationProperty Name="Tutorials" Relationship="Falcon.DbModel.FK_Tutorial_Question" FromRole="Question" ToRole="Tutorial" />
@@ -2024,16 +2082,42 @@
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="QuestionID" Type="Int32" Nullable="false" />
+          <Property Name="QuestionType" Type="Int32" Nullable="false" />
           <Property Name="QuestNumber" Type="Int32" Nullable="false" />
           <Property Name="Priority" Type="Int32" Nullable="false" />
-          <Property Name="YesQuestNumber" Type="Int32" Nullable="false" />
-          <Property Name="NoQuestNumber" Type="Int32" Nullable="false" />
+          <Property Name="YesQuestNumber" Type="Int32" />
+          <Property Name="NoQuestNumber" Type="Int32" />
           <Property Name="YesScore" Type="Int32" Nullable="false" />
           <Property Name="NoScore" Type="Int32" Nullable="false" />
           <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="UpdatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="Quest" Relationship="Falcon.DbModel.FK_QuestQuestions_Quest" FromRole="QuestQuestion" ToRole="Quest" />
           <NavigationProperty Name="Question" Relationship="Falcon.DbModel.FK_QuestQuestions_Question" FromRole="QuestQuestion" ToRole="Question" />
+          <NavigationProperty Name="QuestQuestionType" Relationship="Falcon.DbModel.FK_QuestQuestions_QuestQuestionTypes" FromRole="QuestQuestion" ToRole="QuestQuestionType" />
+        </EntityType>
+        <EntityType Name="QuestQuestionsAnswer">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="QuestionID" Type="Int32" Nullable="false" />
+          <Property Name="Liked" Type="Boolean" />
+          <Property Name="Dislike" Type="Boolean" />
+          <Property Name="YesState" Type="Boolean" Nullable="false" />
+          <Property Name="NoState" Type="Boolean" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Question" Relationship="Falcon.DbModel.FK_QuestQuestionsAnswer_Question" FromRole="QuestQuestionsAnswer" ToRole="Question" />
+          <NavigationProperty Name="User" Relationship="Falcon.DbModel.FK_QuestQuestionsAnswer_User" FromRole="QuestQuestionsAnswer" ToRole="User" />
+        </EntityType>
+        <EntityType Name="QuestQuestionType">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="QuestQuestions" Relationship="Falcon.DbModel.FK_QuestQuestions_QuestQuestionTypes" FromRole="QuestQuestionType" ToRole="QuestQuestion" />
         </EntityType>
         <EntityType Name="QuestScore">
           <Key>
@@ -2251,7 +2335,7 @@
           <Property Name="APILevel" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Device" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Model" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="RowVersion" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" ConcurrencyMode="Fixed" />
+          <Property Name="RowVersion" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
           <Property Name="IPAddress" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="AvatarImagePath" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="Activated" Type="Boolean" Nullable="false" />
@@ -2264,6 +2348,7 @@
           <NavigationProperty Name="PurchasedQuests" Relationship="Falcon.DbModel.FK_PurchasedQuest_User" FromRole="User" ToRole="PurchasedQuest" />
           <NavigationProperty Name="Quest" Relationship="Falcon.DbModel.FK_User_Quest" FromRole="User" ToRole="Quest" />
           <NavigationProperty Name="Questions" Relationship="Falcon.DbModel.FK_Question_User" FromRole="User" ToRole="Question" />
+          <NavigationProperty Name="QuestQuestionsAnswers" Relationship="Falcon.DbModel.FK_QuestQuestionsAnswer_User" FromRole="User" ToRole="QuestQuestionsAnswer" />
           <NavigationProperty Name="QuestScores" Relationship="Falcon.DbModel.FK_QuestScore_User" FromRole="User" ToRole="QuestScore" />
           <NavigationProperty Name="QuestScoreSnapshots" Relationship="Falcon.DbModel.FK_QuestScoreSnapshot_User" FromRole="User" ToRole="QuestScoreSnapshot" />
           <NavigationProperty Name="Relationships" Relationship="Falcon.DbModel.FK_Relationship_User" FromRole="User" ToRole="Relationship" />
@@ -2700,6 +2785,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_QuestQuestionsAnswer_Question">
+          <End Type="Falcon.DbModel.Question" Role="Question" Multiplicity="1" />
+          <End Type="Falcon.DbModel.QuestQuestionsAnswer" Role="QuestQuestionsAnswer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Question">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="QuestQuestionsAnswer">
+              <PropertyRef Name="QuestionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_ReportedQuestions_Question">
           <End Type="Falcon.DbModel.Question" Role="Question" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -2739,6 +2836,30 @@
             </Principal>
             <Dependent Role="Tutorial">
               <PropertyRef Name="QuestionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_QuestQuestions_QuestQuestionTypes">
+          <End Type="Falcon.DbModel.QuestQuestionType" Role="QuestQuestionType" Multiplicity="1" />
+          <End Type="Falcon.DbModel.QuestQuestion" Role="QuestQuestion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="QuestQuestionType">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="QuestQuestion">
+              <PropertyRef Name="QuestionType" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_QuestQuestionsAnswer_User">
+          <End Type="Falcon.DbModel.User" Role="User" Multiplicity="1" />
+          <End Type="Falcon.DbModel.QuestQuestionsAnswer" Role="QuestQuestionsAnswer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="QuestQuestionsAnswer">
+              <PropertyRef Name="UserID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2966,7 +3087,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-      </Schema>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -3217,20 +3338,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="QuestAnswers">
-            <EntityTypeMapping TypeName="Falcon.DbModel.QuestAnswer">
-              <MappingFragment StoreEntitySet="QuestAnswer">
-                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-                <ScalarProperty Name="NoState" ColumnName="NoState" />
-                <ScalarProperty Name="YesState" ColumnName="YesState" />
-                <ScalarProperty Name="Dislike" ColumnName="Dislike" />
-                <ScalarProperty Name="Liked" ColumnName="Liked" />
-                <ScalarProperty Name="QuestionID" ColumnName="QuestionID" />
-                <ScalarProperty Name="UserID" ColumnName="UserID" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Questions">
             <EntityTypeMapping TypeName="Falcon.DbModel.Question">
               <MappingFragment StoreEntitySet="Question">
@@ -3293,7 +3400,31 @@
                 <ScalarProperty Name="YesQuestNumber" ColumnName="YesQuestNumber" />
                 <ScalarProperty Name="Priority" ColumnName="Priority" />
                 <ScalarProperty Name="QuestNumber" ColumnName="QuestNumber" />
+                <ScalarProperty Name="QuestionType" ColumnName="QuestionType" />
                 <ScalarProperty Name="QuestionID" ColumnName="QuestionID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="QuestQuestionsAnswers">
+            <EntityTypeMapping TypeName="Falcon.DbModel.QuestQuestionsAnswer">
+              <MappingFragment StoreEntitySet="QuestQuestionsAnswer">
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="NoState" ColumnName="NoState" />
+                <ScalarProperty Name="YesState" ColumnName="YesState" />
+                <ScalarProperty Name="Dislike" ColumnName="Dislike" />
+                <ScalarProperty Name="Liked" ColumnName="Liked" />
+                <ScalarProperty Name="QuestionID" ColumnName="QuestionID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="QuestQuestionTypes">
+            <EntityTypeMapping TypeName="Falcon.DbModel.QuestQuestionType">
+              <MappingFragment StoreEntitySet="QuestQuestionTypes">
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -3565,7 +3696,7 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-        </EntityContainerMapping>
+          </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
   </edmx:Runtime>

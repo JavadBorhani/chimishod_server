@@ -59,5 +59,31 @@ namespace Falcon.Web.Api.Controllers.V2
             return data;
         }
 
+        [ResponseType(typeof(IHttpActionResult))]
+        [Route("v2/Quests/Purchase/{QuestNumber}")]
+        [HttpPost]
+        public async Task<IHttpActionResult> PurchaseQuest(int QuestNumber)
+        {
+            var item = await mQuestMaintenace.PurchaseQuest(QuestNumber);
+
+            return null;
+        }
+
+        [ResponseType(typeof(IHttpActionResult))]
+        [Route("v2/Quests/Answer/")]
+        [HttpPost]
+        public async Task<IHttpActionResult> SendQuestAnswer(int QuestNumber)
+        {
+            return null;
+        }
+
+        [ResponseType(typeof(IHttpActionResult))]
+        [Route("v2/Quests/Final/")]
+        [HttpPost]
+        public async Task<IHttpActionResult> GetFinalQuestDescription(int QuestNumber)
+        {
+            return null;
+        }
+
     }
 }
