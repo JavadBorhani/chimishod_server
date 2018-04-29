@@ -1,7 +1,10 @@
-﻿using Falcon.Web.Api.InMemory.Public;
+﻿using Falcon.Common.Logging;
+using Falcon.Web.Api.InMemory.Public;
 using Falcon.Web.Api.Telegram.Public;
 using Falcon.Web.Api.Utilities.RestClient.Engine;
 using Falcon.Web.Common;
+using log4net;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Telegram.Bot;
@@ -33,12 +36,17 @@ namespace Falcon.Web.Api.Telegram.Private
                 return WebContainerManager.Get<IRestClientEngine>();
             }
         }
+        public ILog Logger
+        {
+            get
+            {
+                return WebContainerManager.Get<ILogManager>().GetLog(typeof(TelegramService));
+            }
+        }
 
         public TelegramService()
         {
             Api = new TelegramBotClient(mConfiguration.GetState().Token);
-
-            var me = Api.GetMeAsync().Result;
 
             Api.OnMessage += BotOnMessageReceived;
             Api.OnMessageEdited += BotOnMessageReceived;
@@ -47,6 +55,16 @@ namespace Falcon.Web.Api.Telegram.Private
             Api.OnReceiveGeneralError += BotOnReceiveGeneralError;
 
             Api.StartReceiving();
+
+            try
+            {
+                var me = Api.GetMeAsync().Result;
+            }
+            catch (Exception e)
+            {
+                var error = "Telegram Service is Unavailable on start up : " + e.StackTrace;
+                Logger.Error(error);
+            }
 
         }
 
