@@ -11,17 +11,20 @@ namespace Falcon.EFCommonContext.DbModel
 {
     using System;
     using System.Data.Entity;
-    using System.Data.Entity.Infrastructure;
     using System.Data.Entity.Core.Objects;
-    using System.Linq;
-    
+    using System.Data.Entity.Infrastructure;
+
     public partial class DbEntity : DbContext
     {
         public DbEntity()
             : base("name=DbEntity")
         {
+
         }
-    
+        public DbEntity(string NameOrConnectionString) : base(NameOrConnectionString)
+        {
+        }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             throw new UnintentionalCodeFirstException();

@@ -152,9 +152,6 @@
     <Compile Include="DbModel\Quest.cs">
       <DependentUpon>WhatIfDataModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="DbModel\QuestAnswer.cs">
-      <DependentUpon>WhatIfDataModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="DbModel\Question.cs">
       <DependentUpon>WhatIfDataModel.tt</DependentUpon>
     </Compile>
@@ -165,6 +162,12 @@
       <DependentUpon>WhatIfDataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="DbModel\QuestQuestion.cs">
+      <DependentUpon>WhatIfDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DbModel\QuestQuestionsAnswer.cs">
+      <DependentUpon>WhatIfDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DbModel\QuestQuestionType.cs">
       <DependentUpon>WhatIfDataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="DbModel\QuestScore.cs">
