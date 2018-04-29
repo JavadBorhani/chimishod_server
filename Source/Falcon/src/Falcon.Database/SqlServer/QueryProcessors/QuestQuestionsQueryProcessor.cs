@@ -2,6 +2,7 @@
 using Falcon.Common.Security;
 using Falcon.Data.QueryProcessors;
 using Falcon.EFCommonContext;
+using Falcon.Web.Models.Api.Quest;
 using System;
 using System.Threading.Tasks;
 
@@ -19,7 +20,7 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             mDateTime = DateTime;
         }
 
-        public async Task<bool> SaveQuestQuestionAnswer()
+        public async Task<bool> SaveQuestQuestionAnswer(SQuestAnswer QuestAnswer)
         {
             throw new NotImplementedException();
         }
