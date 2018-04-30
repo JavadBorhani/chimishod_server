@@ -527,5 +527,15 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             }
             return info;
         }
+
+        public async Task<int> GetCurrentUserQuestNumber()
+        {
+            var questNumber = await mDb.Set<User>()
+                .AsNoTracking()
+                .Where(u => u.ID == mUserSession.ID)
+                .Select(u => u.QuestNumber).SingleOrDefaultAsync();
+
+            return questNumber ?? -1; 
+        }
     }
 }   

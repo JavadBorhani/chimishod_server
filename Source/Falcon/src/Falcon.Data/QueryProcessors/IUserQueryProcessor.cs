@@ -41,7 +41,7 @@ namespace Falcon.Data.QueryProcessors
         Task<bool> SaveUserImageUrl(string ImageRelativePath);
         Task<bool> BanUser(int ID);
         Task<bool> CanPurchaseQuest(int QuestNumber , int LastQuestNumber);
-        
+        Task<int> GetCurrentUserQuestNumber();
 
     }
 }

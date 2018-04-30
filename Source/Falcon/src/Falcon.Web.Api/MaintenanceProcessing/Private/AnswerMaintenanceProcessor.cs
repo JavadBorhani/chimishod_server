@@ -70,7 +70,7 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
 
             var question = await mQuestionQuery.GetQuestionByID(Answer.QuestionID);
 
-            if (question.IsPublic && (HashTagID)question.HashTagID == HashTagID.Quest)
+            if (question.IsPublic && (HashTagID)question.HashTagID != HashTagID.Quest)
             {
                 var exists = await mAnswerQuery.Exists(Answer.QuestionID);
 

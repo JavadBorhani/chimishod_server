@@ -150,9 +150,15 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
             if (answered)
                 return true;
 
+            var userQuestNumber = await mUserQuery.GetUserCurrentQuestNumber();
+
+            if (userQuestNumber != Answer.QuestNumber)
+                return false;
+
             var question = await mQuestsQueryProcessor.GetQuestQuestion(Answer.QuestNumber, Answer.QuestionID);
 
-            if (question != null && (HashTagID)question.HashTagID == HashTagID.Quest)
+
+            if (question != null && (HashTagID) question.HashTagID == HashTagID.Quest)
             {
                 var stored = await mQuestQuestion.SaveQuestQuestionAnswer(Answer);
 
