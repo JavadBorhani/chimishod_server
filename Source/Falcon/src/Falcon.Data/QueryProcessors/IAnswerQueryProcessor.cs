@@ -10,7 +10,7 @@ namespace Falcon.Data.QueryProcessors
     public interface IAnswerQueryProcessor
     {
         Task<List<int>> GetUserAnsweredQuestionIds(int UserID);
-        Task<SFriendAnswer[]> GetAnswerOfUsers(int QuestionID , int[] UserIDs , int NumberToTake);
+        Task<SFriendAnswer[]> GetAnswerOfUsers(int QuestionID , int[] UserIDs , int NumberToTake , bool QuestQuestion = false);
         Task<Answer[]> GetUserAnswers(int[] QuestionIds);
         Task<bool> SaveYesNoAnswer(SYesNoAnswer Response);
         Task<bool> SaveLikeDislikeAnswer(SLikeDislikeAnswer Response);

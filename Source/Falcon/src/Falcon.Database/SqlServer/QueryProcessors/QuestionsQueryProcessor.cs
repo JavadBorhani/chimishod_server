@@ -280,5 +280,15 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             return userID ?? 0;
         }
 
+        public async Task<HashTagID?> GetQuestionType(int questionID)
+        {
+            var questionType = await mDb.Set<Question>()
+                .AsNoTracking()
+                .Where(u => u.ID == questionID)
+                .Select(u => u.HashTagID)
+                .SingleOrDefaultAsync();
+
+            return (HashTagID?)questionType;
+        }
     }
 }

@@ -79,7 +79,7 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             return false;   
         }
 
-        public async Task<SFriendAnswer[]> GetAnswerOfUsers(int QuestionID, int[] UserIDs , int NumberToTake)
+        public async Task<SFriendAnswer[]> GetAnswerOfUsers(int QuestionID, int[] UserIDs , int NumberToTake , bool QuestQuestion = false)
         {
             var answer = await mDb.Set<Answer>()
                 .Where(a => UserIDs.Contains(a.UserID) && a.QuestionID == QuestionID)

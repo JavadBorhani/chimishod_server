@@ -101,10 +101,20 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
 
         public async Task<SFriendAnswer[]> GetFriendAnswers(SFriendAnswerInquiry FriendAnswerInquiry)
         {
-            var friendResponses = await mAnswerQuery
-                .GetAnswerOfUsers(FriendAnswerInquiry.QuestionID, FriendAnswerInquiry.FriendIDs, mServerAppState.Friend_FriendResponsesAmount);
+            var questionType = await mQuestionQuery.GetQuestionType(FriendAnswerInquiry.QuestionID);
+            if(questionType != null)
+            {
+                var isQuestQuestion = (questionType == HashTagID.Quest);
 
-            return friendResponses;
+                var friendResponses = await mAnswerQuery.GetAnswerOfUsers(
+                    FriendAnswerInquiry.QuestionID, 
+                    FriendAnswerInquiry.FriendIDs, 
+                    mServerAppState.Friend_FriendResponsesAmount, 
+                    isQuestQuestion);
+
+                return friendResponses;
+            }
+            return null;
         }
 
         public async Task<SFriendStatus> GetFriendListFromDateUpToNow(DateTime FriendRequestDate, DateTime FriendResponseDate)

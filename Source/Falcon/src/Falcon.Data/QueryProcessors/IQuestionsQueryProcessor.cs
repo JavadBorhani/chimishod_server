@@ -30,5 +30,6 @@ namespace Falcon.Data.QueryProcessors
         Task<QueryResult<SQuestionWithAnswerState>> GetUserMutualQuestions(PagedDataRequest RequestInfo, int UserID);
         Task<Question> GetQuestionByID(int ID);
         Task<int> GetQuestionCreatorByID(int ID);
+        Task<HashTagID?> GetQuestionType(int questionID);
     }
 }
