@@ -116,6 +116,8 @@
     <Compile Include="Api\Notification\SNotificationID.cs" />
     <Compile Include="Api\Polling\SClientPollingData.cs" />
     <Compile Include="Api\Polling\SPollingInquiry.cs" />
+    <Compile Include="Api\Purchase\IPurchase.cs" />
+    <Compile Include="Api\Purchase\SQuestPurchase.cs" />
     <Compile Include="Api\Question\SForwardQuestion.cs" />
     <Compile Include="Api\Quest\SFriendQuestDetail.cs" />
     <Compile Include="Api\Quest\SQuest.cs" />
@@ -123,6 +125,7 @@
     <Compile Include="Api\Quest\SQuestDetail.cs" />
     <Compile Include="Api\Quest\SQuestInquiry.cs" />
     <Compile Include="Api\Quest\SQuestScoreSnapshot.cs" />
+    <Compile Include="Api\Quest\SQuestUpInfo.cs" />
     <Compile Include="Api\Quest\SUserQuestAnswer.cs" />
     <Compile Include="Api\Report\SReportedQuestion.cs" />
     <Compile Include="Api\SCharacteristic.cs" />
@@ -153,9 +156,9 @@
     <Compile Include="Api\SLeaderBoard.cs" />
     <Compile Include="Api\Level\SLevel.cs" />
     <Compile Include="Api\SMarketInfo.cs" />
-    <Compile Include="Api\SNewCreatedQuestions.cs" />
+    <Compile Include="Api\Question\SNewCreatedQuestions.cs" />
     <Compile Include="Api\SNotify.cs" />
-    <Compile Include="Api\SQuestionBoost.cs" />
+    <Compile Include="Api\Question\SQuestionBoost.cs" />
     <Compile Include="Api\SReportType.cs" />
     <Compile Include="Api\SSpinWheel.cs" />
     <Compile Include="Api\SStore.cs" />
@@ -174,7 +177,7 @@
     <Compile Include="IPageContaining.cs" />
     <Compile Include="PagedDataInquiryResponse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Api\SQuestion.cs" />
+    <Compile Include="Api\Question\SQuestion.cs" />
     <Compile Include="Api\SUser.cs" />
   </ItemGroup>
   <ItemGroup>

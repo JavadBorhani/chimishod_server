@@ -16,7 +16,8 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
     {
         private ConcurrentDictionary<int, SQuest> mQuests = new ConcurrentDictionary<int, SQuest>();
         private ConcurrentDictionary<int, SLevel> mLevels = new ConcurrentDictionary<int, SLevel>();
-        private int lastLevel; 
+        private int mLastLevel;
+        private int mLastQuest;
 
         public virtual IDbContext mDB
         {
@@ -71,10 +72,12 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
                 .ToArray();
 
             mQuests.Clear();
-            
+            mLastQuest = -1;
 
             for (int i = 0; i < query.Length; ++i)
             {
+
+              
                 SQuest quest = new SQuest
                 {
                     QuestNumber = query[i].QuestNumber,
@@ -102,6 +105,14 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
                     mQuests[parentID].ChildQuestNumbers.Add(query[i].QuestNumber);
                 }
 
+                var questNumber = query[i].QuestNumber;
+
+                if (questNumber > mLastQuest)
+                {
+                    mLastQuest = questNumber;
+                }
+
+
             }
         }
         private void ReadLevelsFromDatabase()
@@ -113,7 +124,7 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
 
 
             mLevels.Clear();
-            lastLevel = -1;
+            mLastLevel = -1;
 
 
             for(int i = 0; i < levels.Length;  ++i)
@@ -127,8 +138,8 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
 
                 var levelNumber = levels[i].LevelNumber;
 
-                if (levelNumber > lastLevel)
-                    lastLevel = levelNumber;
+                if (levelNumber > mLastLevel)
+                    mLastLevel = levelNumber;
 
                 mLevels.TryAdd(levelNumber, level);
 
@@ -137,7 +148,11 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
 
         public int GetLastLevel()
         {
-            return lastLevel;
+            return mLastLevel;
+        }
+        public int GetLastQuest()
+        {
+            return mLastQuest;
         }
 
         public bool SetState(ConcurrentDictionary<int, SQuest> NewState)
@@ -145,10 +160,6 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
             throw new NotImplementedException();
         }
 
-        public SQuest[] GetQuestList()
-        {
-            //
-            throw new NotImplementedException();
-        }
+
     }
 }

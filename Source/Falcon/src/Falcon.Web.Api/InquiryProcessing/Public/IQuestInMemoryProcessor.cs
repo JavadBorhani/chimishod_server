@@ -6,9 +6,8 @@ namespace Falcon.Web.Api.InquiryProcessing.Public
 {
     public interface IQuestInMemoryProcessor : IInMemory<ConcurrentDictionary<int , SQuest>>
     {
-        SQuest GetQuestByQuestNumber(int ID);
-        //SQuest GetQuestByLevelNumber(int LevelNumber);
+        SQuest GetQuestByQuestNumber(int QuestNumber);
         int GetLastLevel();
-        SQuest[] GetQuestList();
+        int GetLastQuest();
     }
 }

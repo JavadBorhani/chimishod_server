@@ -16,7 +16,6 @@ namespace Falcon.Data.QueryProcessors
         Task<bool> SaveLikeDislikeAnswer(SLikeDislikeAnswer Response);
         Task<Answer> SaveRawAnswer(SAnswer Response); //return stored  answer 
         Task<bool> SaveReportedAnswer(int QuestionID);
-
-
+        Task<bool> Exists(int QuestionID);
     }
 }

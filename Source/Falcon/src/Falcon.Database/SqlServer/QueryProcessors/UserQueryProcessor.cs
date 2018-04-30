@@ -8,6 +8,7 @@ using Falcon.EFCommonContext.DbModel;
 using Falcon.Web.Models.Api;
 using Falcon.Web.Models.Api.Config;
 using Falcon.Web.Models.Api.Level;
+using Falcon.Web.Models.Api.Quest;
 using Falcon.Web.Models.Api.User;
 using log4net;
 using System;
@@ -162,12 +163,65 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             return level;
         }
 
+        public async Task<SQuestUpInfo> UpdateQuest(int Prize, int LastQuestNumber)
+        {
+            var player = await mDb.Set<User>().Where(m => m.ID == mUserSession.ID).Include(u => u.Level).SingleOrDefaultAsync();
+
+
+            SQuestUpInfo quest;
+            bool SaveFailed = false;
+
+
+            int playerQuestNumber;
+
+
+            do
+            {
+                playerQuestNumber = player.QuestNumber ?? -1;
+
+                if (playerQuestNumber == -1)
+                    return null;
+
+                SaveFailed = false;
+
+                quest = QuestUpChecking(ref player, player.Quest.NumberOfQuestionsInQuest, Prize, playerQuestNumber + 1, LastQuestNumber);
+
+                try
+                {
+                    await mDb.SaveChangesAsync();
+
+                    var need = CheckIfNeedAnotherQuest(ref player);
+
+                    if (need)
+                    {
+                        quest.QuestUpMode = QuestUpMode.QuestUppedAndNeedAnother;
+                    }
+                }
+                catch (DbUpdateConcurrencyException ex)
+                {
+                    SaveFailed = true;
+                    ex.Entries.Single().Reload();
+                }
+
+            } while (SaveFailed);
+
+            return quest;
+        }
+
         private bool CheckIfNeedAnotherLevelUp(ref User User)
         {
             if (User.LevelProgress >= User.Level.ScoreCeil)
                 return true;
 
             return false;
+        }
+
+        private bool CheckIfNeedAnotherQuest(ref User User)
+        {
+            if(User.QuestProgress >= User.Quest.NumberOfQuestionsInQuest)
+                return true;
+
+            return false;   
         }
 
         private SLevelUpInfo LevelUpChecking(ref User User, int LevelCeil, int Prize, int NextLevelNumber , int LastLevel)
@@ -410,6 +464,68 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             user.Activated = false;
             await mDb.SaveChangesAsync();
             return true;
+        }
+
+        public async Task<bool> CanPurchaseQuest(int QuestNumber , int LastQuestNumber)
+        {
+            var userStat = await mDb.Set<User>()
+                .AsNoTracking()
+                .Where(u => u.ID == mUserSession.ID)
+                .Select(u => new
+                {
+                    u.QuestNumber,
+                    u.QuestProgress
+                }).SingleOrDefaultAsync();
+
+            var userQuestNumber = userStat.QuestNumber ?? -1;
+            var questProgress = userStat.QuestProgress;
+
+            //don't let to purchase the last quest  , because already is in the last 
+            if (userQuestNumber == LastQuestNumber)
+                return false;
+
+            int itemToPurchase = -1;
+
+            if (userQuestNumber == -1)
+                itemToPurchase = 1;
+            else
+            {
+                if (questProgress == 0)
+                    itemToPurchase = userQuestNumber;
+            }
+
+
+            if (itemToPurchase == QuestNumber)
+                return true;
+           else
+                return false;
+
+        }
+
+        public SQuestUpInfo QuestUpChecking(ref User User, int Prize, int CurrentQuestMax , int NextQuestNumber , int LastQuestNumber )
+        {
+            SQuestUpInfo info = new SQuestUpInfo();
+
+            if ((User.QuestProgress + Prize >= CurrentQuestMax))
+            {
+                if (NextQuestNumber > LastQuestNumber)
+                    return info;
+
+                User.QuestNumber = NextQuestNumber;
+                int remained = (User.LevelProgress + Prize) - CurrentQuestMax;
+                User.QuestProgress = remained;
+
+                info.QuestUpMode = QuestUpMode.QuestUpped;
+                info.QuestUpNumber = NextQuestNumber;
+            }
+            else
+            {
+                User.LevelProgress += Prize;
+
+                info.QuestUpMode = QuestUpMode.NotQuestUpped;
+                info.QuestUpNumber = Constants.DefaultValues.NotQuestUpped;
+            }
+            return info;
         }
     }
 }   

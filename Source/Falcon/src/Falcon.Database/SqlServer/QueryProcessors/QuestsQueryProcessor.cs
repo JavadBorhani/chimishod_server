@@ -1,9 +1,12 @@
 ﻿using Falcon.Common;
+using Falcon.Common.Logging;
 using Falcon.Common.Security;
 using Falcon.Data.QueryProcessors;
 using Falcon.EFCommonContext;
 using Falcon.EFCommonContext.DbModel;
 using Falcon.Web.Models.Api.Quest;
+using log4net;
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
@@ -17,13 +20,15 @@ namespace Falcon.Database.SqlServer.QueryProcessors
         private readonly IDateTime mDateTime;
         private readonly IUserSession mUserSession;
         private readonly IUserQueryProcessor mUserQuery;
+        private readonly ILog mLogger;
 
-        public QuestsQueryProcessor(IDbContext Database , IDateTime DateTime , IUserSession UserSession , IUserQueryProcessor UserQuery)
+        public QuestsQueryProcessor(IDbContext Database , IDateTime DateTime , IUserSession UserSession , IUserQueryProcessor UserQuery , ILogManager LogManager)
         {
             mDb = Database;
             mDateTime = DateTime;
             mUserSession = UserSession;
             mUserQuery = UserQuery;
+            mLogger = LogManager.GetLog(typeof(QuestsQueryProcessor));
         }
 
         public async Task<SQuest[]> GetAllQuests()
@@ -81,8 +86,10 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             var questions = await mDb.Set<QuestQuestion>()
                 .AsNoTracking()
                 .Where(q => q.QuestNumber == QuestNumber)
+                .OrderBy(q => q.Priority)
                 .Select(q => q.QuestionID)
                 .Join(mDb.Set<Question>(), QuestionID => QuestionID, Question => Question.ID, (QuestionID, Question) => Question)
+                .Include(s => s.QuestionAction)
                 .ToArrayAsync();
 
             return questions;
@@ -163,6 +170,48 @@ namespace Falcon.Database.SqlServer.QueryProcessors
                 .ToListAsync();
 
             return userScores;
+        }
+
+        public async Task<bool> IsPurchased(int QuestNumber)
+        {
+            var purchsed = await mDb.Set<PurchasedQuest>()
+                .AsNoTracking()
+                .Where(u => u.UserID == mUserSession.ID && u.QuestNumber == QuestNumber)
+                .AnyAsync();
+
+            return purchsed;
+        }
+
+        public async Task<bool> Purchase(int questNumber)
+        {
+            var purchase = new PurchasedQuest
+            {
+                QuestNumber = questNumber,
+                UserID = mUserSession.ID,
+            };
+
+            try
+            {
+                mDb.Set<PurchasedQuest>().Add(purchase);
+                await mDb.SaveChangesAsync();
+                return true;
+
+            }catch(Exception e)
+            {
+                mLogger.Error($"asked for second purchase : , userID : {mUserSession.ID} error : {e.Message}" );
+                return true;
+            }
+        }
+
+        public async Task<Question> GetQuestQuestion(int QuestNumber, int QuestionID)
+        {
+            var question = await mDb.Set<QuestQuestion>()
+                .AsNoTracking()
+                .Where(u => u.QuestNumber == QuestNumber && u.QuestionID == QuestionID)
+                .Select(s => s.Question)
+                .SingleOrDefaultAsync();
+
+            return question;
         }
     }
 }

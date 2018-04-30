@@ -29,9 +29,13 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
 
         public async Task<SQuestion[]> GetQuestQuestions(int QuestNumber)
         {
-            var questions = await mQuestQuery.GetQuestQuestions(QuestNumber);
+            if(mQuestInMemory.GetQuestByQuestNumber(QuestNumber) != null)
+            {
+                var questions = await mQuestQuery.GetQuestQuestions(QuestNumber);
 
-            return mMapper.Map<SQuestion[]>(questions);
+                return mMapper.Map<SQuestion[]>(questions);
+            }
+            return null;
         }
 
         public async Task<SQuestDetail[]> GetQuestDetail(SQuestInquiry Inquiry)

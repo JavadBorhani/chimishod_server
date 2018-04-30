@@ -55,16 +55,9 @@ namespace Falcon.Database.SqlServer.QueryProcessors
                 CreatedDate = mDateTime.Now
             });
 
+            await mDb.SaveChangesAsync();
 
-            try
-            {
-                await mDb.SaveChangesAsync();
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
+            return true;
            
         }
 
@@ -124,16 +117,8 @@ namespace Falcon.Database.SqlServer.QueryProcessors
 
             mDb.Set<Answer>().Add(item);
 
-            try
-            {
-                await mDb.SaveChangesAsync();
-                return item;
-            }
-            catch
-            {
-                return null;
-            }
-
+            await mDb.SaveChangesAsync();
+            return item;
         }
 
         public async Task<bool> SaveReportedAnswer(int QuestionID)
@@ -151,6 +136,16 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             await mDb.SaveChangesAsync();
 
             return true;
+        }
+
+        public async Task<bool> Exists(int QuestionID)
+        {
+            var exists = await mDb.Set<Answer>()
+                .AsNoTracking()
+                .Where(a => a.UserID == mUserSession.ID && a.QuestionID == QuestionID)
+                .AnyAsync();
+
+            return exists;   
         }
     }
 }

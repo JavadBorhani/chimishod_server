@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using Falcon.Web.Models.Api.Quest;
+using System.Threading.Tasks;
 
 namespace Falcon.Web.Api.MaintenanceProcessing.Public
 {
@@ -6,7 +7,7 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Public
     {
         Task<bool> AddScore(int QuestionID , bool IsYes);
         Task<bool> TakeSnapshot();
-        Task<bool> SaveQuestAnswer();
+        Task<bool> SaveQuestQuestionAnswer(SQuestAnswer Answer);
         Task<bool> PurchaseQuest(int QuestNumber);
     }
 }

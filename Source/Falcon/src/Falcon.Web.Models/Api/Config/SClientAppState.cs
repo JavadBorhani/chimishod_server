@@ -11,6 +11,7 @@ namespace Falcon.Web.Models.Api.Config
         public int LevelVersionCode { get; set; }
         public int QuestVersionCode { get; set; }
         public int XPLevelFactor { get; set; }
+        public int XPQuestFactor { get; set; }
         public int PollingIntervalTimeInSeconds { get; set; }
         public DateTime ServerTime { get; set; }
         public int ForwardPricePerFriend { get; set; }

@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="Falcon.DbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="Falcon.DbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="AchievedCodeGift">
           <Key>
             <PropertyRef Name="ID" />
@@ -40,6 +40,7 @@
           <Property Name="LevelVersionCode" Type="int" Nullable="false" />
           <Property Name="QuestVersionCode" Type="int" Nullable="false" />
           <Property Name="XPLevelFactor" Type="int" Nullable="false" />
+          <Property Name="XPQuestFactor" Type="int" Nullable="false" />
           <Property Name="PollingIntervalTimeInSeconds" Type="int" Nullable="false" />
           <Property Name="ForwardPricePerFriend" Type="int" Nullable="false" />
         </EntityType>
@@ -1487,7 +1488,8 @@
             <End Role="WatchedAd" EntitySet="WatchedAd" />
           </AssociationSet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="Falcon.DbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -1525,6 +1527,8 @@
           <FunctionImport Name="UpdateCharacterRank" />
           <FunctionImport Name="UpdateUserGlobalRank" />
           <FunctionImport Name="UpdatePeopleNormalQuest" />
+          <EntitySet Name="QuestQuestionsAnswers" EntityType="Falcon.DbModel.QuestQuestionsAnswer" />
+          <EntitySet Name="QuestQuestionTypes" EntityType="Falcon.DbModel.QuestQuestionType" />
           <EntitySet Name="AchievedCodeGifts" EntityType="Falcon.DbModel.AchievedCodeGift" />
           <EntitySet Name="Answers" EntityType="Falcon.DbModel.Answer" />
           <EntitySet Name="ClientApplicationStates" EntityType="Falcon.DbModel.ClientApplicationState" />
@@ -1545,8 +1549,6 @@
           <EntitySet Name="QuestionActions" EntityType="Falcon.DbModel.QuestionAction" />
           <EntitySet Name="QuestPeopleScores" EntityType="Falcon.DbModel.QuestPeopleScore" />
           <EntitySet Name="QuestQuestions" EntityType="Falcon.DbModel.QuestQuestion" />
-          <EntitySet Name="QuestQuestionsAnswers" EntityType="Falcon.DbModel.QuestQuestionsAnswer" />
-          <EntitySet Name="QuestQuestionTypes" EntityType="Falcon.DbModel.QuestQuestionType" />
           <EntitySet Name="QuestScores" EntityType="Falcon.DbModel.QuestScore" />
           <EntitySet Name="QuestScoreSnapshots" EntityType="Falcon.DbModel.QuestScoreSnapshot" />
           <EntitySet Name="QuestTypes" EntityType="Falcon.DbModel.QuestType" />
@@ -1771,7 +1773,7 @@
             <End Role="WatchAdProvider" EntitySet="WatchAdProviders" />
             <End Role="WatchedAd" EntitySet="WatchedAds" />
           </AssociationSet>
-          </EntityContainer>
+        </EntityContainer>
         <ComplexType Name="sp_helpdiagramdefinition_Result">
           <Property Type="Int32" Name="version" Nullable="true" />
           <Property Type="Binary" Name="definition" Nullable="true" />
@@ -1783,6 +1785,30 @@
           <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
           <Property Type="Int32" Name="OwnerID" Nullable="false" />
         </ComplexType>
+        <EntityType Name="QuestQuestionsAnswer">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="QuestionID" Type="Int32" Nullable="false" />
+          <Property Name="Liked" Type="Boolean" />
+          <Property Name="Dislike" Type="Boolean" />
+          <Property Name="YesState" Type="Boolean" Nullable="false" />
+          <Property Name="NoState" Type="Boolean" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Question" Relationship="Falcon.DbModel.FK_QuestQuestionsAnswer_Question" FromRole="QuestQuestionsAnswer" ToRole="Question" />
+          <NavigationProperty Name="User" Relationship="Falcon.DbModel.FK_QuestQuestionsAnswer_User" FromRole="QuestQuestionsAnswer" ToRole="User" />
+        </EntityType>
+        <EntityType Name="QuestQuestionType">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="QuestQuestions" Relationship="Falcon.DbModel.FK_QuestQuestions_QuestQuestionTypes" FromRole="QuestQuestionType" ToRole="QuestQuestion" />
+        </EntityType>
         <EntityType Name="AchievedCodeGift">
           <Key>
             <PropertyRef Name="ID" />
@@ -1822,6 +1848,7 @@
           <Property Name="LevelVersionCode" Type="Int32" Nullable="false" />
           <Property Name="QuestVersionCode" Type="Int32" Nullable="false" />
           <Property Name="XPLevelFactor" Type="Int32" Nullable="false" />
+          <Property Name="XPQuestFactor" Type="Int32" Nullable="false" />
           <Property Name="PollingIntervalTimeInSeconds" Type="Int32" Nullable="false" />
           <Property Name="ForwardPricePerFriend" Type="Int32" Nullable="false" />
         </EntityType>
@@ -2095,30 +2122,6 @@
           <NavigationProperty Name="Question" Relationship="Falcon.DbModel.FK_QuestQuestions_Question" FromRole="QuestQuestion" ToRole="Question" />
           <NavigationProperty Name="QuestQuestionType" Relationship="Falcon.DbModel.FK_QuestQuestions_QuestQuestionTypes" FromRole="QuestQuestion" ToRole="QuestQuestionType" />
         </EntityType>
-        <EntityType Name="QuestQuestionsAnswer">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="UserID" Type="Int32" Nullable="false" />
-          <Property Name="QuestionID" Type="Int32" Nullable="false" />
-          <Property Name="Liked" Type="Boolean" />
-          <Property Name="Dislike" Type="Boolean" />
-          <Property Name="YesState" Type="Boolean" Nullable="false" />
-          <Property Name="NoState" Type="Boolean" Nullable="false" />
-          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
-          <NavigationProperty Name="Question" Relationship="Falcon.DbModel.FK_QuestQuestionsAnswer_Question" FromRole="QuestQuestionsAnswer" ToRole="Question" />
-          <NavigationProperty Name="User" Relationship="Falcon.DbModel.FK_QuestQuestionsAnswer_User" FromRole="QuestQuestionsAnswer" ToRole="User" />
-        </EntityType>
-        <EntityType Name="QuestQuestionType">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Description" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="QuestQuestions" Relationship="Falcon.DbModel.FK_QuestQuestions_QuestQuestionTypes" FromRole="QuestQuestionType" ToRole="QuestQuestion" />
-        </EntityType>
         <EntityType Name="QuestScore">
           <Key>
             <PropertyRef Name="ID" />
@@ -2335,7 +2338,7 @@
           <Property Name="APILevel" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Device" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Model" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="RowVersion" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="RowVersion" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" ConcurrencyMode="Fixed" />
           <Property Name="IPAddress" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="AvatarImagePath" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="Activated" Type="Boolean" Nullable="false" />
@@ -3087,7 +3090,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        </Schema>
+      </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -3118,6 +3121,29 @@
           <FunctionImportMapping FunctionImportName="sp_renamediagram" FunctionName="Falcon.DbModel.Store.sp_renamediagram" />
           <FunctionImportMapping FunctionImportName="sp_upgraddiagrams" FunctionName="Falcon.DbModel.Store.sp_upgraddiagrams" />
           <FunctionImportMapping FunctionImportName="UpdatePeopleNormalQuest" FunctionName="Falcon.DbModel.Store.UpdatePeopleNormalQuest" />
+          <EntitySetMapping Name="QuestQuestionsAnswers">
+            <EntityTypeMapping TypeName="Falcon.DbModel.QuestQuestionsAnswer">
+              <MappingFragment StoreEntitySet="QuestQuestionsAnswer">
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="NoState" ColumnName="NoState" />
+                <ScalarProperty Name="YesState" ColumnName="YesState" />
+                <ScalarProperty Name="Dislike" ColumnName="Dislike" />
+                <ScalarProperty Name="Liked" ColumnName="Liked" />
+                <ScalarProperty Name="QuestionID" ColumnName="QuestionID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="QuestQuestionTypes">
+            <EntityTypeMapping TypeName="Falcon.DbModel.QuestQuestionType">
+              <MappingFragment StoreEntitySet="QuestQuestionTypes">
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="AchievedCodeGifts">
             <EntityTypeMapping TypeName="Falcon.DbModel.AchievedCodeGift">
               <MappingFragment StoreEntitySet="AchievedCodeGift">
@@ -3148,6 +3174,7 @@
               <MappingFragment StoreEntitySet="ClientApplicationState">
                 <ScalarProperty Name="ForwardPricePerFriend" ColumnName="ForwardPricePerFriend" />
                 <ScalarProperty Name="PollingIntervalTimeInSeconds" ColumnName="PollingIntervalTimeInSeconds" />
+                <ScalarProperty Name="XPQuestFactor" ColumnName="XPQuestFactor" />
                 <ScalarProperty Name="XPLevelFactor" ColumnName="XPLevelFactor" />
                 <ScalarProperty Name="QuestVersionCode" ColumnName="QuestVersionCode" />
                 <ScalarProperty Name="LevelVersionCode" ColumnName="LevelVersionCode" />
@@ -3402,29 +3429,6 @@
                 <ScalarProperty Name="QuestNumber" ColumnName="QuestNumber" />
                 <ScalarProperty Name="QuestionType" ColumnName="QuestionType" />
                 <ScalarProperty Name="QuestionID" ColumnName="QuestionID" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="QuestQuestionsAnswers">
-            <EntityTypeMapping TypeName="Falcon.DbModel.QuestQuestionsAnswer">
-              <MappingFragment StoreEntitySet="QuestQuestionsAnswer">
-                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-                <ScalarProperty Name="NoState" ColumnName="NoState" />
-                <ScalarProperty Name="YesState" ColumnName="YesState" />
-                <ScalarProperty Name="Dislike" ColumnName="Dislike" />
-                <ScalarProperty Name="Liked" ColumnName="Liked" />
-                <ScalarProperty Name="QuestionID" ColumnName="QuestionID" />
-                <ScalarProperty Name="UserID" ColumnName="UserID" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="QuestQuestionTypes">
-            <EntityTypeMapping TypeName="Falcon.DbModel.QuestQuestionType">
-              <MappingFragment StoreEntitySet="QuestQuestionTypes">
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -3696,7 +3700,7 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          </EntityContainerMapping>
+        </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
   </edmx:Runtime>

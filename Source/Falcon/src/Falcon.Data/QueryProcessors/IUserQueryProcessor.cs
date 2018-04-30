@@ -2,6 +2,7 @@
 using Falcon.Web.Models.Api;
 using Falcon.Web.Models.Api.Config;
 using Falcon.Web.Models.Api.Level;
+using Falcon.Web.Models.Api.Quest;
 using Falcon.Web.Models.Api.User;
 using System.Threading.Tasks;
 
@@ -20,15 +21,14 @@ namespace Falcon.Data.QueryProcessors
         //Task<bool> UpdateLastSeenDateTime();
         //Task<bool> UpdateLastSeenDateTimeToNow();
         Task<SLevelUpInfo> UpdateLevel(int Prize , int LastLevel);
+        Task<SQuestUpInfo> UpdateQuest(int Prize, int LastQuestNumber);
         Task<bool> LevelExits(int LevelNumber);
         Task<int> GetLevelPrize(int LevelNumber);
         //Task<SUserCount> GetUserCountInfo(int UserID);
 
         //v2 Create User
         Task<User> CreateNewUser(SUserRegistrationForm UserRegisterationData , SGameConfig GameConfig);
-
         Task<User> GetUserByUUIDAsNoTracking(string UUID);
-
         Task<User> ReteriveUserByUserPass(SUserInfo userInfo);
         Task<bool> UpdateUserNotificationID(int UserID, string UUID);
         Task<bool> Exists(string UserName);
@@ -40,5 +40,8 @@ namespace Falcon.Data.QueryProcessors
         Task<int> GetUserCurrentQuestNumber();
         Task<bool> SaveUserImageUrl(string ImageRelativePath);
         Task<bool> BanUser(int ID);
+        Task<bool> CanPurchaseQuest(int QuestNumber , int LastQuestNumber);
+        
+
     }
 }

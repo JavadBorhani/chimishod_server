@@ -6,10 +6,21 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Public
 {
     public interface IUsersMaintenanceProcessor
     {
-        Task<int> LevelUp(int Prize); // will return new amount of coin if the user has leveled up 
+        /// <summary>
+        /// will return new amount of coin if the user has leveled up 
+        /// </summary>
+        /// <param name="Prize"></param>
+        /// <returns></returns>
+        Task<int> LevelUp(int Prize); 
+
         Task<string> CreateNewUser(SUserRegistrationForm RegistrationForm);
+
         Task<bool> SaveImageUrl(string ImageRelativePath);
+
         Task<bool> UpdateNotificationID(SNotificationID notificationID);
+
         Task<bool> BanUserByQuestionID(int QuestionID);
+
+        Task<int> QuestUp(int Prize);
     }
 }

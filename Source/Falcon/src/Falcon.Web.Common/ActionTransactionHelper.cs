@@ -12,7 +12,6 @@ namespace Falcon.Web.Common
         public ActionTransactionHelper(IWebContextFactory ContextFactory , IMemoryStore Store)
         {
             mContextFactory = ContextFactory;
-
         }
 
         public bool TransactionHandled

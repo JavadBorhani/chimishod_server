@@ -7,6 +7,7 @@ using Falcon.Web.Api.Utilities;
 using Falcon.Web.Common.Memmory;
 using Falcon.Web.Models.Api.Level;
 using Falcon.Web.Models.Api.Notification;
+using Falcon.Web.Models.Api.Quest;
 using Falcon.Web.Models.Api.User;
 using System.Threading.Tasks;
 
@@ -80,8 +81,6 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
             return totalCoin;
         }
 
-        
-
         public async Task<string> CreateNewUser(SUserRegistrationForm RegistrationForm)
         {
             var exists = await mUserQuery.Exists(RegistrationForm.UserName);
@@ -129,6 +128,21 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
             var userID = await mQuestionQuery.GetQuestionCreatorByID(QuestionID);
             var userBanned = await mUserQuery.BanUser(userID);
             return userBanned;
+        }
+
+        public async Task<int> QuestUp(int Prize)
+        {
+            if (Prize == 0)
+                return -1;
+
+            SQuestUpInfo info;
+            do
+            {
+                info = await mUserQuery.UpdateQuest(Prize, mQuestInMemory.GetLastQuest());
+
+            } while (info.QuestUpMode == QuestUpMode.QuestUppedAndNeedAnother);
+
+            return -1; 
         }
     }
 }

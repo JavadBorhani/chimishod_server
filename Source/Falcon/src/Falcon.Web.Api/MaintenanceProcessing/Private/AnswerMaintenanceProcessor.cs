@@ -1,5 +1,4 @@
-﻿using Falcon.Common;
-using Falcon.Common.Security;
+﻿using Falcon.Common.Security;
 using Falcon.Data.QueryProcessors;
 using Falcon.Web.Api.MaintenanceProcessing.Public;
 using Falcon.Web.Models.Api;
@@ -51,6 +50,10 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
 
         public async Task<bool> SaveYesNoAnswer(SYesNoAnswer Response)
         {
+            var exists = await mAnswerQuery.Exists(Response.QuestionID);
+            if (exists)
+                return true;
+
             var result = await mAnswerQuery.SaveYesNoAnswer(Response);
             return result;
 
@@ -67,48 +70,34 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
 
             var question = await mQuestionQuery.GetQuestionByID(Answer.QuestionID);
 
-            if(question.IsPublic)
+            if (question.IsPublic && (HashTagID)question.HashTagID == HashTagID.Quest)
             {
-                var stored = await mAnswerQuery.SaveRawAnswer(Answer);
+                var exists = await mAnswerQuery.Exists(Answer.QuestionID);
 
-
-                if (stored != null)
+                if(!exists)
                 {
+                    var stored = await mAnswerQuery.SaveRawAnswer(Answer);
 
-                    if (question.ActionID != null)
-                    {
-                        var actionCoin = question.QuestionAction?.Coin ?? 0;
-
-                        await mUserQuery.IncreaseCoin(actionCoin);
-                    }
-
-                    switch ((HashTagID)question.HashTagID)
+                    if (stored != null)
                     {
 
-                        case HashTagID.Quest:
+                        if (question.ActionID != null)
+                        {
+                            var actionCoin = question.QuestionAction?.Coin ?? 0;
 
-                            await mQuestsMaintenance.AddScore(question.ID, Answer.YesNoState);
+                            await mUserQuery.IncreaseCoin(actionCoin);
+                        }
 
-                            break;
+                        var coin = await mUserMaintenance.LevelUp(mClientAppState.XPLevelFactor);
+
+                        return true;
                     }
-
-                    var coin = await mUserMaintenance.LevelUp(mClientAppState.XPLevelFactor);
-
-                    if (coin != Constants.DefaultValues.NoNewCoin)
-                    {
-                        await mQuestsMaintenance.TakeSnapshot();
-                    }
-
+                }
+                else
+                {
                     return true;
                 }
-                else if( stored == null)
-                {
-                    return true; // means the answer is already exists
-                }
-
-                return false;
             }
-
             return false;
         }
 

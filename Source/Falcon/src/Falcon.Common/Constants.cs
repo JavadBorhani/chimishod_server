@@ -145,6 +145,7 @@ namespace Falcon.Common
             public const int LatencyNumber = 3000;
             public const int FirstPageNumer = 1;
             public const int NoLevelUp = -1;
+            public const int NotQuestUpped = -1;
             public const int NoNewCoin = -1;
             public const int QuestionSelectorConfigID = 1; 
              

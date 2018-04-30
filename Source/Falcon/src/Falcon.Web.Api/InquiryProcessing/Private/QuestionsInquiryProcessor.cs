@@ -84,5 +84,6 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
 
             return config;
         }
+
     }
 }

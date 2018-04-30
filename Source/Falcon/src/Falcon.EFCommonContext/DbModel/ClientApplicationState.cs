@@ -9,9 +9,7 @@
 
 namespace Falcon.EFCommonContext.DbModel
 {
-    using System;
-    using System.Collections.Generic;
-    
+
     public partial class ClientApplicationState
     {
         public int ID { get; set; }
@@ -22,6 +20,7 @@ namespace Falcon.EFCommonContext.DbModel
         public int LevelVersionCode { get; set; }
         public int QuestVersionCode { get; set; }
         public int XPLevelFactor { get; set; }
+        public int XPQuestFactor { get; set; }
         public int PollingIntervalTimeInSeconds { get; set; }
         public int ForwardPricePerFriend { get; set; }
     }

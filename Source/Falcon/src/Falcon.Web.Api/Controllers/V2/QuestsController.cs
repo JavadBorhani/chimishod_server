@@ -2,6 +2,7 @@
 using Falcon.Web.Api.MaintenanceProcessing.Public;
 using Falcon.Web.Api.Utilities.Base;
 using Falcon.Web.Common;
+using Falcon.Web.Models.Api.Purchase;
 using Falcon.Web.Models.Api.Quest;
 using System.Threading.Tasks;
 using System.Web.Http;
@@ -15,11 +16,16 @@ namespace Falcon.Web.Api.Controllers.V2
 
         private readonly IQuestsInquiryProcessor mQuestInqiury;
         private readonly IQuestsMaintenanceProcessor mQuestMaintenace;
+        private readonly IQuestionsInquiryProcessor mQuestionInquiry;
 
-        public QuestsController( IQuestsInquiryProcessor QuestsInquirProcessor , IQuestsMaintenanceProcessor QuestsMaintenanceProcessor )
+        public QuestsController(
+            IQuestsInquiryProcessor QuestsInquirProcessor ,
+            IQuestsMaintenanceProcessor QuestsMaintenanceProcessor , 
+            IQuestionsInquiryProcessor QuestionInquiry)
         {
             mQuestInqiury = QuestsInquirProcessor;
             mQuestMaintenace = QuestsMaintenanceProcessor;
+            mQuestionInquiry = QuestionInquiry;
         }
 
 
@@ -59,22 +65,39 @@ namespace Falcon.Web.Api.Controllers.V2
             return data;
         }
 
-        [ResponseType(typeof(IHttpActionResult))]
+        [ResponseType(typeof(SQuestPurchase))]
         [Route("v2/Quests/Purchase/{QuestNumber}")]
         [HttpPost]
-        public async Task<IHttpActionResult> PurchaseQuest(int QuestNumber)
+        public async Task<SQuestPurchase> PurchaseQuest(int QuestNumber)
         {
-            var item = await mQuestMaintenace.PurchaseQuest(QuestNumber);
+            var purchased = await mQuestMaintenace.PurchaseQuest(QuestNumber);
 
+            if(purchased)
+            {
+                var questions = await mQuestInqiury.GetQuestQuestions(QuestNumber);
+
+                var response = new SQuestPurchase()
+                {
+                    Contents = questions,
+                    Purchased = purchased
+                };
+
+                return response;
+            }
             return null;
         }
 
         [ResponseType(typeof(IHttpActionResult))]
         [Route("v2/Quests/Answer/")]
         [HttpPost]
-        public async Task<IHttpActionResult> SendQuestAnswer(int QuestNumber)
+        public async Task<IHttpActionResult> SendQuestAnswer(SQuestAnswer Answer) 
         {
-            return null;
+            if (!ModelState.IsValid)
+                return BadRequest();
+            
+            var response = await mQuestMaintenace.SaveQuestQuestionAnswer(Answer); 
+
+            return Ok(response);
         }
 
         [ResponseType(typeof(IHttpActionResult))]

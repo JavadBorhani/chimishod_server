@@ -4,8 +4,9 @@ using Falcon.Data.QueryProcessors;
 using Falcon.Web.Api.InquiryProcessing.Public;
 using Falcon.Web.Api.MaintenanceProcessing.Public;
 using Falcon.Web.Common.Memmory;
+using Falcon.Web.Models.Api;
+using Falcon.Web.Models.Api.Config;
 using Falcon.Web.Models.Api.Quest;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -20,6 +21,8 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
         private readonly IUserQueryProcessor mUserQuery;
         private readonly IMemoryStore mMemory;
         private readonly IQuestSnapshotQueryProcessor mQuestSnapshot;
+        private readonly IQuestQuestionsQueryProcessor mQuestQuestion;
+        private readonly SClientAppState mAppSate;
 
         public QuestsMaintenanceProcessor(IQuestsQueryProcessor QuestsQueryProcessor , 
             IUserQuestAnswerQueryProcessor UserQuestAnswer , 
@@ -27,7 +30,9 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
             IQuestInMemoryProcessor QuestInMemory , 
             IUserQueryProcessor UserQuery , 
             IQuestSnapshotQueryProcessor QuestSnapshot,
-            IMemoryStore Memory)
+            IMemoryStore Memory , 
+            IQuestQuestionsQueryProcessor QuestQuestion , 
+            IClientApplicationState AppState)
         {
             mQuestsQueryProcessor = QuestsQueryProcessor;
             mUserQuestAnswer = UserQuestAnswer;
@@ -36,7 +41,10 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
             mUserQuery = UserQuery;
             mMemory = Memory;
             mQuestSnapshot = QuestSnapshot;
+            mQuestQuestion = QuestQuestion;
+            mAppSate = AppState.State();
         }
+
         public async Task<bool> AddScore(int QuestionID , bool IsYes)
         {
             var questQuestion = await mQuestsQueryProcessor.GetQuestQuestionLimitedByCurrentUserQuest(QuestionID);
@@ -103,7 +111,8 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
 
         public async Task<bool> TakeSnapshot()
         {
-            int questNumber  = mMemory.LoadState<int>(GlobalVariables.QuestToTakeSnapshot);
+            int questNumber = mMemory.LoadState<int>(GlobalVariables.QuestToTakeSnapshot);
+
             var quest = mQuestInMemory.GetQuestByQuestNumber(questNumber);
 
             if ((questNumber != 0 && quest != null))
@@ -132,14 +141,69 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
             
         }
 
-        public async Task<bool> SaveQuestAnswer()
+        public async Task<bool> SaveQuestQuestionAnswer(SQuestAnswer Answer)
         {
-            throw new NotImplementedException();
+            Answer.UserID = mUserSession.ID;
+               
+            var answered = await mQuestQuestion.Exists(Answer.UserID, Answer.QuestionID);
+
+            if (answered)
+                return true;
+
+            var question = await mQuestsQueryProcessor.GetQuestQuestion(Answer.QuestNumber, Answer.QuestionID);
+
+            if (question != null && (HashTagID)question.HashTagID == HashTagID.Quest)
+            {
+                var stored = await mQuestQuestion.SaveQuestQuestionAnswer(Answer);
+
+                if(stored)
+                {
+                    var status = await mUserQuery.UpdateQuest(mAppSate.XPQuestFactor, mQuestInMemory.GetLastQuest());
+
+                    await AddScore(question.ID, Answer.YesNoState);
+
+                    if (status.QuestUpMode == QuestUpMode.QuestUpped)
+                    {
+                        await TakeSnapshot();
+                    }
+                }
+
+                return true;
+            }
+
+            return false;
         }
 
         public async Task<bool> PurchaseQuest(int QuestNumber)
         {
-            throw new NotImplementedException();
+            var quest = mQuestInMemory.GetQuestByQuestNumber(QuestNumber);
+            if(quest != null)
+            {
+                var purchased = await mQuestsQueryProcessor.IsPurchased(QuestNumber);
+
+                if (!purchased)
+                {
+                    var canPurchaseQuest = await mUserQuery.CanPurchaseQuest(QuestNumber , mQuestInMemory.GetLastQuest());
+
+                    if (canPurchaseQuest)
+                    {
+                        var totalCoin = await mUserQuery.DecreaseCoin(quest.Price);
+
+                        if (totalCoin < 0)
+                            throw new BusinessRuleViolationException($"there is not enough moeny : userID {mUserSession.ID},");
+
+                        await mQuestsQueryProcessor.Purchase(QuestNumber);
+
+                        return true;
+                    }
+                    else
+                    {
+                        return false;   
+                    }    
+                }
+                return true;
+            }
+            return false;
         }
     }
 }
