@@ -16,6 +16,7 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
     {
         private ConcurrentDictionary<int, SQuest> mQuests = new ConcurrentDictionary<int, SQuest>();
         private ConcurrentDictionary<int, SLevel> mLevels = new ConcurrentDictionary<int, SLevel>();
+        private int mFinaleQuest;
         private int mLastLevel;
         private int mLastQuest;
 
@@ -73,6 +74,7 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
 
             mQuests.Clear();
             mLastQuest = -1;
+            mFinaleQuest = -1;
 
             for (int i = 0; i < query.Length; ++i)
             {
@@ -92,6 +94,9 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
                     NumberOfQuestionsInQuest = query[i].NumberOfQuestionsInQuest,
                     ChildQuestNumbers = new List<int>(),
                 };
+
+                if (quest.QuestTypes == QuestTypes.Finale)
+                    mFinaleQuest = quest.QuestNumber;
 
                 //add quest list
                 mQuests.TryAdd(query[i].QuestNumber, quest);
@@ -160,6 +165,9 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
             throw new NotImplementedException();
         }
 
-
+        public SQuest GetFinaleQuest()
+        {
+            return mQuests[mFinaleQuest];
+        }
     }
 }

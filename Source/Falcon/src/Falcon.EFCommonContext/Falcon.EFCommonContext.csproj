@@ -110,6 +110,9 @@
     <Compile Include="DbModel\Answer.cs">
       <DependentUpon>WhatIfDataModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="DbModel\BarrettType.cs">
+      <DependentUpon>WhatIfDataModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="DbModel\ClientApplicationState.cs">
       <DependentUpon>WhatIfDataModel.tt</DependentUpon>
     </Compile>

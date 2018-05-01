@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="Falcon.DbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="Falcon.DbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="AchievedCodeGift">
           <Key>
             <PropertyRef Name="ID" />
@@ -27,6 +27,15 @@
           <Property Name="NoState" Type="bit" />
           <Property Name="IsReported" Type="bit" Nullable="false" />
           <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="BarrettTypes">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Separator" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="ClientApplicationState">
           <Key>
@@ -200,6 +209,7 @@
           <Property Name="QuestNumber" Type="int" Nullable="false" />
           <Property Name="ParentID" Type="int" />
           <Property Name="QuestTypes" Type="int" Nullable="false" />
+          <Property Name="BarrettType" Type="int" />
           <Property Name="Price" Type="int" Nullable="false" />
           <Property Name="NumberOfQuestionsInQuest" Type="int" Nullable="false" />
           <Property Name="QuestTitle" Type="nvarchar" MaxLength="300" Nullable="false" />
@@ -691,6 +701,18 @@
             </Principal>
             <Dependent Role="PurchasedQuest">
               <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Quest_BarrettTypes">
+          <End Role="BarrettTypes" Type="Self.BarrettTypes" Multiplicity="0..1" />
+          <End Role="Quest" Type="Self.Quest" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="BarrettTypes">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Quest">
+              <PropertyRef Name="BarrettType" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1243,6 +1265,7 @@
         <EntityContainer Name="FalconDbModelStoreContainer">
           <EntitySet Name="AchievedCodeGift" EntityType="Self.AchievedCodeGift" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Answer" EntityType="Self.Answer" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="BarrettTypes" EntityType="Self.BarrettTypes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ClientApplicationState" EntityType="Self.ClientApplicationState" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CodeGift" EntityType="Self.CodeGift" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Feedback" EntityType="Self.Feedback" Schema="dbo" store:Type="Tables" />
@@ -1326,6 +1349,10 @@
           <AssociationSet Name="FK_PurchasedQuest_User" Association="Self.FK_PurchasedQuest_User">
             <End Role="User" EntitySet="User" />
             <End Role="PurchasedQuest" EntitySet="PurchasedQuest" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Quest_BarrettTypes" Association="Self.FK_Quest_BarrettTypes">
+            <End Role="BarrettTypes" EntitySet="BarrettTypes" />
+            <End Role="Quest" EntitySet="Quest" />
           </AssociationSet>
           <AssociationSet Name="FK_Quest_Quest" Association="Self.FK_Quest_Quest">
             <End Role="Quest" EntitySet="Quest" />
@@ -1488,8 +1515,7 @@
             <End Role="WatchedAd" EntitySet="WatchedAd" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="Falcon.DbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -1531,6 +1557,7 @@
           <EntitySet Name="QuestQuestionTypes" EntityType="Falcon.DbModel.QuestQuestionType" />
           <EntitySet Name="AchievedCodeGifts" EntityType="Falcon.DbModel.AchievedCodeGift" />
           <EntitySet Name="Answers" EntityType="Falcon.DbModel.Answer" />
+          <EntitySet Name="BarrettTypes" EntityType="Falcon.DbModel.BarrettType" />
           <EntitySet Name="ClientApplicationStates" EntityType="Falcon.DbModel.ClientApplicationState" />
           <EntitySet Name="CodeGifts" EntityType="Falcon.DbModel.CodeGift" />
           <EntitySet Name="Feedbacks" EntityType="Falcon.DbModel.Feedback" />
@@ -1584,6 +1611,10 @@
           <AssociationSet Name="FK_Answer_User" Association="Falcon.DbModel.FK_Answer_User">
             <End Role="User" EntitySet="Users" />
             <End Role="Answer" EntitySet="Answers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Quest_BarrettTypes" Association="Falcon.DbModel.FK_Quest_BarrettTypes">
+            <End Role="BarrettType" EntitySet="BarrettTypes" />
+            <End Role="Quest" EntitySet="Quests" />
           </AssociationSet>
           <AssociationSet Name="FK_Feedback_FeedbackTypes" Association="Falcon.DbModel.FK_Feedback_FeedbackTypes">
             <End Role="FeedbackType" EntitySet="FeedbackTypes" />
@@ -1773,7 +1804,7 @@
             <End Role="WatchAdProvider" EntitySet="WatchAdProviders" />
             <End Role="WatchedAd" EntitySet="WatchedAds" />
           </AssociationSet>
-        </EntityContainer>
+          </EntityContainer>
         <ComplexType Name="sp_helpdiagramdefinition_Result">
           <Property Type="Int32" Name="version" Nullable="true" />
           <Property Type="Binary" Name="definition" Nullable="true" />
@@ -1799,7 +1830,7 @@
           <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="Question" Relationship="Falcon.DbModel.FK_QuestQuestionsAnswer_Question" FromRole="QuestQuestionsAnswer" ToRole="Question" />
           <NavigationProperty Name="User" Relationship="Falcon.DbModel.FK_QuestQuestionsAnswer_User" FromRole="QuestQuestionsAnswer" ToRole="User" />
-        </EntityType>
+          </EntityType>
         <EntityType Name="QuestQuestionType">
           <Key>
             <PropertyRef Name="ID" />
@@ -1835,6 +1866,16 @@
           <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="Question" Relationship="Falcon.DbModel.FK_Answer_Question" FromRole="Answer" ToRole="Question" />
           <NavigationProperty Name="User" Relationship="Falcon.DbModel.FK_Answer_User" FromRole="Answer" ToRole="User" />
+        </EntityType>
+        <EntityType Name="BarrettType">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Separator" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Quests" Relationship="Falcon.DbModel.FK_Quest_BarrettTypes" FromRole="BarrettType" ToRole="Quest" />
         </EntityType>
         <EntityType Name="ClientApplicationState">
           <Key>
@@ -2023,6 +2064,7 @@
           <Property Name="QuestNumber" Type="Int32" Nullable="false" />
           <Property Name="ParentID" Type="Int32" />
           <Property Name="QuestTypes" Type="Int32" Nullable="false" />
+          <Property Name="BarrettType" Type="Int32" />
           <Property Name="Price" Type="Int32" Nullable="false" />
           <Property Name="NumberOfQuestionsInQuest" Type="Int32" Nullable="false" />
           <Property Name="QuestTitle" Type="String" Nullable="false" MaxLength="300" FixedLength="false" Unicode="true" />
@@ -2032,6 +2074,7 @@
           <Property Name="QuestOffIcon" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="UpdateDate" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="BarrettType1" Relationship="Falcon.DbModel.FK_Quest_BarrettTypes" FromRole="Quest" ToRole="BarrettType" />
           <NavigationProperty Name="PurchasedQuests" Relationship="Falcon.DbModel.FK_PurchasedQuest_Quest" FromRole="Quest" ToRole="PurchasedQuest" />
           <NavigationProperty Name="Quest1" Relationship="Falcon.DbModel.FK_Quest_Quest" FromRole="Quest" ToRole="Quest1" />
           <NavigationProperty Name="Quest2" Relationship="Falcon.DbModel.FK_Quest_Quest" FromRole="Quest1" ToRole="Quest" />
@@ -2338,7 +2381,7 @@
           <Property Name="APILevel" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Device" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Model" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="RowVersion" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" ConcurrencyMode="Fixed" />
+          <Property Name="RowVersion" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
           <Property Name="IPAddress" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="AvatarImagePath" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="Activated" Type="Boolean" Nullable="false" />
@@ -2477,6 +2520,18 @@
             </Principal>
             <Dependent Role="Answer">
               <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Quest_BarrettTypes">
+          <End Type="Falcon.DbModel.BarrettType" Role="BarrettType" Multiplicity="0..1" />
+          <End Type="Falcon.DbModel.Quest" Role="Quest" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="BarrettType">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Quest">
+              <PropertyRef Name="BarrettType" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -3090,7 +3145,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-      </Schema>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -3165,6 +3220,16 @@
                 <ScalarProperty Name="Liked" ColumnName="Liked" />
                 <ScalarProperty Name="QuestionID" ColumnName="QuestionID" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BarrettTypes">
+            <EntityTypeMapping TypeName="Falcon.DbModel.BarrettType">
+              <MappingFragment StoreEntitySet="BarrettTypes">
+                <ScalarProperty Name="Separator" ColumnName="Separator" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -3359,6 +3424,7 @@
                 <ScalarProperty Name="QuestTitle" ColumnName="QuestTitle" />
                 <ScalarProperty Name="NumberOfQuestionsInQuest" ColumnName="NumberOfQuestionsInQuest" />
                 <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="BarrettType" ColumnName="BarrettType" />
                 <ScalarProperty Name="QuestTypes" ColumnName="QuestTypes" />
                 <ScalarProperty Name="ParentID" ColumnName="ParentID" />
                 <ScalarProperty Name="QuestNumber" ColumnName="QuestNumber" />
@@ -3700,7 +3766,7 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-        </EntityContainerMapping>
+          </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
   </edmx:Runtime>

@@ -11,5 +11,6 @@ namespace Falcon.Web.Api.InquiryProcessing.Public
         Task<SQuestDetail[]> GetQuestDetail(SQuestInquiry Inquiry);
         Task<SFriendQuestDetail[]> GetFriendQuestDetail(SQuestInquiry Inquiry);
         Task<bool> GetFinalQuestDescription();
+        Task<SQuestDetail[]> GetFinaleQuestDetail();
     }
 }

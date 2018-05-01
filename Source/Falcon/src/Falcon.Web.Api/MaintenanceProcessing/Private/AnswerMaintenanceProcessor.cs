@@ -43,6 +43,10 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
 
         public async Task<bool> SaveReportedAnswer(int QuestionID)
         {
+            var exists = await mAnswerQuery.Exists(QuestionID);
+            if (exists)
+                return true;
+
             var response = await mAnswerQuery.SaveReportedAnswer(QuestionID);
             return response;
             

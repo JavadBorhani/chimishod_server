@@ -1,4 +1,5 @@
 ﻿using Falcon.Common;
+using Falcon.Common.Extentions;
 using Falcon.Common.Logging;
 using Falcon.Common.Security;
 using Falcon.Data.QueryProcessors;
@@ -214,5 +215,36 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             return question;
         }
 
+        public async Task<SFinaleQuest> GetFinaleQuestDescription(int FinaleItemID)
+        {
+
+            var item = await mDb.Set<BarrettType>()
+                .AsNoTracking()
+                .Where(u => u.ID == FinaleItemID)
+                .SingleOrDefaultAsync();
+
+            var splitter = item.Description.Lines(item.Separator);
+
+
+            FinaleDescription[] description = new FinaleDescription[splitter.Length / 2];
+            
+            for(int i=  0; i < description.Length; ++i)
+            {
+                description[i] = new FinaleDescription
+                {
+                    Title = splitter[i].Trim(),
+                    Description = splitter[i + 1].Trim()
+                };
+            }
+
+            SFinaleQuest quest = new SFinaleQuest
+            {
+                ID = item.ID,
+                Title = item.Name,
+                Description = description
+            };
+
+            return quest;
+        }
     }
 }

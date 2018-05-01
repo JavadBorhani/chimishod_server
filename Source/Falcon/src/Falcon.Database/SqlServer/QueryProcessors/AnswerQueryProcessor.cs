@@ -18,12 +18,14 @@ namespace Falcon.Database.SqlServer.QueryProcessors
         private readonly IDbContext mDb;
         private readonly IUserSession mUserSession;
         private readonly IDateTime mDateTime;
+
         public AnswerQueryProcessor(IDbContext Database , IUserSession UserSession , IDateTime DateTime)
         {
             mDb = Database;
             mUserSession = UserSession;
             mDateTime = DateTime;
         }
+
         public async Task<List<int>> GetUserAnsweredQuestionIds(int UserID)
         {
             var data = await mDb.Set<Answer>()
@@ -81,24 +83,47 @@ namespace Falcon.Database.SqlServer.QueryProcessors
 
         public async Task<SFriendAnswer[]> GetAnswerOfUsers(int QuestionID, int[] UserIDs , int NumberToTake , bool QuestQuestion = false)
         {
-            var answer = await mDb.Set<Answer>()
-                .Where(a => UserIDs.Contains(a.UserID) && a.QuestionID == QuestionID)
-                .Include(a => a.User)
-                .Select(a => new SFriendAnswer
-                {
-                    UserID = a.UserID,
-                    UserName = a.User.UserName,
-                    QuestionID = a.QuestionID,
-                    AnsweredDisliked = a.Dislike ?? false,
-                    AnsweredLiked = a.Liked ?? false,
-                    AnsweredYes = a.YesState ?? false,
-                    AnsweredNo = a.NoState ?? false,
-                    PictureUrl = a.User.AvatarImagePath
-                })
-                .Take(NumberToTake)
-                .ToArrayAsync();
+            SFriendAnswer[] userAnswers = null;
+            if(!QuestQuestion)
+            {
+                userAnswers = await mDb.Set<Answer>()
+                    .Where(a => UserIDs.Contains(a.UserID) && a.QuestionID == QuestionID)
+                    .Include(a => a.User)
+                    .Select(a => new SFriendAnswer
+                    {
+                        UserID = a.UserID,
+                        UserName = a.User.UserName,
+                        QuestionID = a.QuestionID,
+                        AnsweredDisliked = a.Dislike ?? false,
+                        AnsweredLiked = a.Liked ?? false,
+                        AnsweredYes = a.YesState ?? false,
+                        AnsweredNo = a.NoState ?? false,
+                        PictureUrl = a.User.AvatarImagePath
+                    })
+                    .Take(NumberToTake)
+                    .ToArrayAsync();
+            }
+            else
+            {
+                userAnswers = await mDb.Set<QuestQuestionsAnswer>()
+                   .Where(a => UserIDs.Contains(a.UserID) && a.QuestionID == QuestionID)
+                   .Include(a => a.User)
+                   .Select(a => new SFriendAnswer
+                   {
+                       UserID = a.UserID,
+                       UserName = a.User.UserName,
+                       QuestionID = a.QuestionID,
+                       AnsweredDisliked = a.Dislike ?? false,
+                       AnsweredLiked = a.Liked ?? false,
+                       AnsweredYes = a.YesState,
+                       AnsweredNo = a.NoState,
+                       PictureUrl = a.User.AvatarImagePath
+                   })
+                   .Take(NumberToTake)
+                   .ToArrayAsync();
+            }        
 
-            return answer;
+            return userAnswers;
         }
 
         public async Task<Answer> SaveRawAnswer(SAnswer Response)

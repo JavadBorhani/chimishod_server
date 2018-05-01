@@ -30,6 +30,7 @@ namespace Falcon.EFCommonContext.DbModel
         public int QuestNumber { get; set; }
         public Nullable<int> ParentID { get; set; }
         public int QuestTypes { get; set; }
+        public Nullable<int> BarrettType { get; set; }
         public int Price { get; set; }
         public int NumberOfQuestionsInQuest { get; set; }
         public string QuestTitle { get; set; }
@@ -40,6 +41,7 @@ namespace Falcon.EFCommonContext.DbModel
         public System.DateTime CreatedDate { get; set; }
         public System.DateTime UpdateDate { get; set; }
     
+        public virtual BarrettType BarrettType1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PurchasedQuest> PurchasedQuests { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

@@ -3,6 +3,7 @@ using Falcon.Data.QueryProcessors;
 using Falcon.Web.Api.InquiryProcessing.Public;
 using Falcon.Web.Models.Api;
 using Falcon.Web.Models.Api.Quest;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -40,6 +41,15 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
 
         public async Task<SQuestDetail[]> GetQuestDetail(SQuestInquiry Inquiry)
         {
+
+            var quest = mQuestInMemory.GetQuestByQuestNumber(Inquiry.QuestNumber);
+
+            if(quest.QuestTypes == QuestTypes.Finale)
+            {
+                return await GetFinaleQuestDetail();
+            }
+            
+
             // find quest 
              if(Inquiry.Alive)
             {
@@ -110,6 +120,9 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
 
             var quest = mQuestInMemory.GetQuestByQuestNumber(Inquiry.QuestNumber);
 
+            if (quest.QuestTypes == QuestTypes.Finale)
+                return null;
+
             var questNumbers = new List<int>();
 
             int parentQuestNumber;
@@ -163,6 +176,9 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
             
             var quest = mQuestInMemory.GetQuestByQuestNumber(Inquiry.QuestNumber);
 
+            if (quest.QuestTypes == QuestTypes.Finale)
+                return null;
+
             var questNumbers = new List<int>();
 
             int parentQuestNumber; 
@@ -208,9 +224,15 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
             return null;
         }
 
-        public Task<bool> GetFinalQuestDescription()
+        public async Task<bool> GetFinalQuestDescription()
         {
-            return Task.FromResult(false);   
+            return false;
+        }
+
+
+        public async Task<SQuestDetail[]> GetFinaleQuestDetail()
+        {
+            throw new NotImplementedException();
         }
     }
 }

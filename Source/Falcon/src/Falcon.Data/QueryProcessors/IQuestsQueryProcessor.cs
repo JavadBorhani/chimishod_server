@@ -34,5 +34,7 @@ namespace Falcon.Data.QueryProcessors
         /// <param name="QuetionID"></param>
         /// <returns></returns>
         Task<Question> GetQuestQuestion(int QuestNumber, int QuetionID);
+
+        Task<SFinaleQuest> GetFinaleQuestDescription(int FinaleItemID);
     }
 }

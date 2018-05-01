@@ -187,6 +187,7 @@
     <Compile Include="AutoMappingConfiguration\AchievementMap\AchievementStatisticToSAchievementStatistic.cs" />
     <Compile Include="AutoMappingConfiguration\AchievementMap\UserAchievementRecordToSAchievementAutoTypeConfiguration.cs" />
     <Compile Include="AutoMappingConfiguration\AppAdvertisementsMap\AppAdvertisementsToSAppAdvertAutoTypeConfiguration.cs" />
+    <Compile Include="AutoMappingConfiguration\BarretType\BarretTypeToSFinaleQuestAutoTypeConfiguration.cs" />
     <Compile Include="AutoMappingConfiguration\ClientAppStateMap\ClientApplicationStateToSClientAppStateAutoTypeConfiguration.cs" />
     <Compile Include="AutoMappingConfiguration\ClientAppStateMap\SClientAppStateToClientVersionInfoAutoTypeConfiguration.cs" />
     <Compile Include="AutoMappingConfiguration\Feedback\FeedbackTypeToSFeedbackTypeAutoTypeConfiguration.cs" />

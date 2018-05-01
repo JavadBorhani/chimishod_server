@@ -103,8 +103,10 @@ namespace Falcon.Web.Api.Controllers.V2
         [ResponseType(typeof(IHttpActionResult))]
         [Route("v2/Quests/Final/")]
         [HttpPost]
-        public async Task<IHttpActionResult> GetFinalQuestDescription(int QuestNumber)
+        public async Task<IHttpActionResult> GetFinalQuestDescription()
         {
+
+            var response = await mQuestInqiury.GetFinalQuestDescription();
             return null;
         }
 

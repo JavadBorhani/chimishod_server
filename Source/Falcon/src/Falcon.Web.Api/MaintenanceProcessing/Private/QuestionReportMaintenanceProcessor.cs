@@ -49,6 +49,7 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
                     if (response)
                     {
                         var notifysent = await mNotificationMaintenance.BanQuestionToAllClients(new List<int>{ Reported.QuestionID });
+
                         var result = await mQuestionReportQuery.ReportQuestion(Reported);
 
                         if (result)

@@ -9,5 +9,6 @@ namespace Falcon.Web.Api.InquiryProcessing.Public
         SQuest GetQuestByQuestNumber(int QuestNumber);
         int GetLastLevel();
         int GetLastQuest();
+        SQuest GetFinaleQuest();
     }
 }
