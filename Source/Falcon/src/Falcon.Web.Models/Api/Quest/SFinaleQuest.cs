@@ -15,7 +15,7 @@ namespace Falcon.Web.Models.Api.Quest
         public int ID { get; set; }
 
         [DataMember]
-        public int Title { get; set; }
+        public string Title { get; set; }
 
         [DataMember]
         public FinaleDescription[] Description { get; set;}

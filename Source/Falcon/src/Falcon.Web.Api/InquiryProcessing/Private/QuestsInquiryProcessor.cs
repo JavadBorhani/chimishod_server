@@ -170,7 +170,6 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
 
         }
 
-
         public async Task<SFriendQuestDetail[]> GetFriendQuestDetail(SQuestInquiry Inquiry)
         {
             
@@ -224,14 +223,30 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
             return null;
         }
 
-        public async Task<bool> GetFinalQuestDescription()
+        public async Task<SFinaleQuest> GetFinalQuestDescription()
         {
-            return false;
-        }
+            var result = await GetFinaleQuestDetail();
 
+            int itemID = -1; 
+            for(int i = 0;  i < result.Length; ++i)
+            {
+                if (result[i].UserScore > itemID)
+                    itemID = (int)result[i].UserScore;
+            }
+           
+            var item = await mQuestQuery.GetFinaleQuestDescription(itemID);
+            return item;
+        }
 
         public async Task<SQuestDetail[]> GetFinaleQuestDetail()
         {
+            // check if user data has been calculated
+            // and return
+
+            // calculate user data 
+            // store in table 
+            // return 
+            
             throw new NotImplementedException();
         }
     }
