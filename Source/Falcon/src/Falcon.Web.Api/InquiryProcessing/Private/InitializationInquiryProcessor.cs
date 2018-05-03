@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Falcon.Common;
+using Falcon.Web.Api.InMemory.Public;
 using Falcon.Web.Api.InquiryProcessing.Public;
 using Falcon.Web.Api.MaintenanceProcessing.Public;
 using Falcon.Web.Api.Notification.Public;
@@ -18,7 +19,7 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
         private readonly IServerInquiryProcessor mServerInquiry;
         private readonly IMapper mMapper;
         private readonly IDateTime mDateTime;
-        private readonly IQuestInMemoryProcessor mQuestInMemroy;
+        private readonly IQuestInMemory mQuestInMemroy;
 
         public InitializationInquiryProcessor
             (
@@ -29,7 +30,7 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
             INotificationData Notification,
             IMapper Mapper , 
             IDateTime DateTime, 
-            IQuestInMemoryProcessor QuestInMemory
+            IQuestInMemory QuestInMemory
             )
         {
             mUsersQuery = UsersQuery;

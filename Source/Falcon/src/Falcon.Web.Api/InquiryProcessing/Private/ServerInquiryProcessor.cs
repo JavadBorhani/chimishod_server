@@ -10,7 +10,7 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
         private readonly IClientApplicationState mClientAppState;
         private readonly IGlobalApplicationState mGlobalAppState;
         private readonly IGameConfig mGameConfig;
-        private readonly IQuestInMemoryProcessor mQuestProcessor;
+        private readonly IQuestInMemory mQuestProcessor;
         private readonly INotificationData mNotificationData;
         private readonly IUsersInMemory mUserInMemory;
         private readonly IReportInMemory mReportInMemory;
@@ -20,7 +20,7 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
             IClientApplicationState ClientAppState ,
             IGlobalApplicationState GlobalAppState , 
             IGameConfig GameConfig , 
-            IQuestInMemoryProcessor QuestsInMemoryProcessor , 
+            IQuestInMemory QuestsInMemoryProcessor , 
             INotificationData Notification , 
             IUsersInMemory UserInMemory,
             IReportInMemory ReportInMemory , 

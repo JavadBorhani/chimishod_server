@@ -187,6 +187,7 @@
     <Compile Include="AutoMappingConfiguration\AchievementMap\AchievementStatisticToSAchievementStatistic.cs" />
     <Compile Include="AutoMappingConfiguration\AchievementMap\UserAchievementRecordToSAchievementAutoTypeConfiguration.cs" />
     <Compile Include="AutoMappingConfiguration\AppAdvertisementsMap\AppAdvertisementsToSAppAdvertAutoTypeConfiguration.cs" />
+    <Compile Include="AutoMappingConfiguration\BarretType\BarrettTypeToSBarrettTypeAutoTypeConfiguration.cs" />
     <Compile Include="AutoMappingConfiguration\BarretType\BarretTypeToSFinaleQuestAutoTypeConfiguration.cs" />
     <Compile Include="AutoMappingConfiguration\ClientAppStateMap\ClientApplicationStateToSClientAppStateAutoTypeConfiguration.cs" />
     <Compile Include="AutoMappingConfiguration\ClientAppStateMap\SClientAppStateToClientVersionInfoAutoTypeConfiguration.cs" />
@@ -246,6 +247,7 @@
     <Compile Include="Controllers\V2\UsersController.cs" />
     <Compile Include="InMemory\Private\ReportInMemory.cs" />
     <Compile Include="InMemory\Private\TelegramConfigurationInMemory.cs" />
+    <Compile Include="InMemory\Public\IQuestInMemory.cs" />
     <Compile Include="InMemory\Public\IReportInMemory.cs" />
     <Compile Include="InMemory\Public\ITelegramConfigurationInMemory.cs" />
     <Compile Include="InquiryProcessing\Private\AchievementInquiryProcessor.cs" />
@@ -264,7 +266,7 @@
     <Compile Include="InquiryProcessing\Private\LevelInMemoryProcessor.cs" />
     <Compile Include="InquiryProcessing\Private\LevelInquiryProcessor.cs" />
     <Compile Include="InquiryProcessing\Private\PollingInquiryProcessor.cs" />
-    <Compile Include="InquiryProcessing\Private\QuestInMemoryProcessor.cs" />
+    <Compile Include="InMemory\Private\QuestInMemory.cs" />
     <Compile Include="InquiryProcessing\Private\QuestionReportInquiryProcessor.cs" />
     <Compile Include="InquiryProcessing\Private\QuestionsInquiryProcessor.cs" />
     <Compile Include="InquiryProcessing\Private\QuestsInquiryProcessor.cs" />
@@ -296,7 +298,6 @@
     <Compile Include="InquiryProcessing\Private\PagedDataRequestFactory.cs" />
     <Compile Include="InquiryProcessing\Public\INotificationInquiryProcessor.cs" />
     <Compile Include="InquiryProcessing\Public\IPollingInquiryProcessor.cs" />
-    <Compile Include="InquiryProcessing\Public\IQuestInMemoryProcessor.cs" />
     <Compile Include="InquiryProcessing\Public\IQuestionReportInquiryProcessor.cs" />
     <Compile Include="InquiryProcessing\Public\IQuestionsInquiryProcessor.cs" />
     <Compile Include="InquiryProcessing\Public\IQuestsInquiryProcessor.cs" />

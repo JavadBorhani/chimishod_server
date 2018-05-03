@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Falcon.Data.QueryProcessors;
+using Falcon.Web.Api.InMemory.Public;
 using Falcon.Web.Api.InquiryProcessing.Public;
 using Falcon.Web.Models.Api;
 using Falcon.Web.Models.Api.Quest;
@@ -14,10 +15,17 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
     {
         private readonly IQuestsQueryProcessor mQuestQuery;
         private readonly IMapper mMapper;
-        private readonly IQuestInMemoryProcessor mQuestInMemory;
+        private readonly IQuestInMemory mQuestInMemory;
+        private readonly IUserQueryProcessor mUserQuery;
 
-        public QuestsInquiryProcessor(IQuestsQueryProcessor QuestQueryProcessor , IMapper Mapper , IQuestInMemoryProcessor QuestInMemory)
+
+        public QuestsInquiryProcessor(
+            IQuestsQueryProcessor QuestQueryProcessor , 
+            IMapper Mapper , 
+            IQuestInMemory QuestInMemory , 
+            IUserQueryProcessor UserQueryProcessor)
         {
+            mUserQuery = UserQueryProcessor;
             mQuestQuery = QuestQueryProcessor;
             mMapper = Mapper;
             mQuestInMemory = QuestInMemory;
@@ -240,6 +248,13 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
 
         public async Task<SQuestDetail[]> GetFinaleQuestDetail()
         {
+            var finale = mQuestInMemory.GetFinaleQuest();
+            var userQuest = await mUserQuery.GetUserCurrentQuestNumber();
+
+            if (userQuest == finale.QuestNumber)
+            {
+
+            }
             // check if user data has been calculated
             // and return
 

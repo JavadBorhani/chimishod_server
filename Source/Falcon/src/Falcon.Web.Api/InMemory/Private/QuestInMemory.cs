@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Falcon.EFCommonContext;
 using Falcon.EFCommonContext.DbModel;
-using Falcon.Web.Api.InquiryProcessing.Public;
+using Falcon.Web.Api.InMemory.Public;
 using Falcon.Web.Common;
 using Falcon.Web.Models.Api.Level;
 using Falcon.Web.Models.Api.Quest;
@@ -10,12 +10,14 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Falcon.Web.Api.InquiryProcessing.Private
+namespace Falcon.Web.Api.InMemory.Private
 {
-    public class QuestInMemoryProcessor : IQuestInMemoryProcessor
+    public class QuestInMemory : IQuestInMemory
     {
         private ConcurrentDictionary<int, SQuest> mQuests = new ConcurrentDictionary<int, SQuest>();
         private ConcurrentDictionary<int, SLevel> mLevels = new ConcurrentDictionary<int, SLevel>();
+        private ConcurrentDictionary<int, Tuple<SFinaleQuest, List<int>>> mBarretts = new ConcurrentDictionary<int, Tuple<SFinaleQuest, List<int>>>();
+
         private int mFinaleQuest;
         private int mLastLevel;
         private int mLastQuest;
@@ -62,8 +64,22 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
 
         public void ReadStateFromDatabase()
         {
+            ReadBarrettsFromDatabase();
             ReadQuestsFromDatabase();
             ReadLevelsFromDatabase();
+        }
+        public void ReadBarrettsFromDatabase()
+        {
+            mBarretts.Clear();
+
+            var barretts = mDB.Set<BarrettType>().AsNoTracking().ToArray();
+            var sBarrets = mMapper.Map<List<SFinaleQuest>>(barretts);
+
+            for(int i = 0; i < barretts.Length;++i)
+            {
+                mBarretts.TryAdd(barretts[i].ID, new Tuple<SFinaleQuest, List<int>>(sBarrets[i], new List<int>()));
+            }
+
         }
         private void ReadQuestsFromDatabase()
         {
@@ -89,6 +105,7 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
                     QuestWhiteIcon = query[i].QuestWhiteIcon,
                     QuestColoredIcon = query[i].QuestColoredIcon,
                     QuestOffIcon = query[i].QuestOffIcon,
+                    BarretTypeID = query[i].BarrettType,
                     ParentID = query[i].ParentID,
                     Price = query[i].Price,
                     NumberOfQuestionsInQuest = query[i].NumberOfQuestionsInQuest,
@@ -117,9 +134,26 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
                     mLastQuest = questNumber;
                 }
 
-
+                AddBarrettType(quest);
             }
         }
+
+        private void AddBarrettType(SQuest Quest)
+        {
+            var barrettID = Quest.BarretTypeID ?? -1 ;
+
+            if (barrettID != -1)
+            {
+                Tuple<SFinaleQuest, List<int>> tuple; 
+                mBarretts.TryGetValue(barrettID,out tuple);
+
+                if (tuple != null)
+                {
+                    tuple.Item2.Add(barrettID);
+                }
+            }
+        }
+
         private void ReadLevelsFromDatabase()
         {
             var levels = mDB.Set<Level>()
@@ -155,6 +189,7 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
         {
             return mLastLevel;
         }
+
         public int GetLastQuest()
         {
             return mLastQuest;
@@ -168,6 +203,11 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
         public SQuest GetFinaleQuest()
         {
             return mQuests[mFinaleQuest];
+        }
+
+        public SFinaleQuest GetBarrettType(int BarrettType)
+        {
+            throw new NotImplementedException();
         }
     }
 }

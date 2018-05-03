@@ -1,5 +1,5 @@
-﻿using Falcon.Common;
-using Falcon.Common.Extentions;
+﻿using AutoMapper;
+using Falcon.Common;
 using Falcon.Common.Logging;
 using Falcon.Common.Security;
 using Falcon.Data.QueryProcessors;
@@ -22,14 +22,21 @@ namespace Falcon.Database.SqlServer.QueryProcessors
         private readonly IUserSession mUserSession;
         private readonly IUserQueryProcessor mUserQuery;
         private readonly ILog mLogger;
+        private readonly IMapper mMapper;
 
-        public QuestsQueryProcessor(IDbContext Database , IDateTime DateTime , IUserSession UserSession , IUserQueryProcessor UserQuery , ILogManager LogManager)
+        public QuestsQueryProcessor(IDbContext Database , 
+            IDateTime DateTime , 
+            IUserSession UserSession , 
+            IUserQueryProcessor UserQuery , 
+            ILogManager LogManager ,
+            IMapper Mapper)
         {
             mDb = Database;
             mDateTime = DateTime;
             mUserSession = UserSession;
             mUserQuery = UserQuery;
             mLogger = LogManager.GetLog(typeof(QuestsQueryProcessor));
+            mMapper = Mapper;   
         }
 
         public async Task<SQuest[]> GetAllQuests()
@@ -223,26 +230,7 @@ namespace Falcon.Database.SqlServer.QueryProcessors
                 .Where(u => u.ID == FinaleItemID)
                 .SingleOrDefaultAsync();
 
-            var splitter = item.Description.Lines(item.Separator);
-
-
-            FinaleDescription[] description = new FinaleDescription[splitter.Length / 2];
-            
-            for(int i=  0; i < description.Length; ++i)
-            {
-                description[i] = new FinaleDescription
-                {
-                    Title = splitter[i].Trim(),
-                    Description = splitter[i + 1].Trim()
-                };
-            }
-
-            SFinaleQuest quest = new SFinaleQuest
-            {
-                ID = item.ID,
-                Title = item.Name,
-                Description = description
-            };
+            var quest = mMapper.Map<SFinaleQuest>(item);
 
             return quest;
         }

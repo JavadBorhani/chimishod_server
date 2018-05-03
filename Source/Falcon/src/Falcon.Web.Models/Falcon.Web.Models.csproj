@@ -90,6 +90,7 @@
     <Compile Include="Api\Answer\SFriendAnswerInquiry.cs" />
     <Compile Include="Api\Answer\SLikeDislikeAnswer.cs" />
     <Compile Include="Api\Answer\SYesNoAnswer.cs" />
+    <Compile Include="Api\Barrett\SBarrettType.cs" />
     <Compile Include="Api\Cache\SLevelCache.cs" />
     <Compile Include="Api\Config\SClientAppState.cs" />
     <Compile Include="Api\Config\SGameConfig.cs" />

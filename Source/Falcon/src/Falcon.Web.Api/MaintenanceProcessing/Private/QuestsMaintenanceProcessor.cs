@@ -1,7 +1,7 @@
 ﻿using Falcon.Common;
 using Falcon.Common.Security;
 using Falcon.Data.QueryProcessors;
-using Falcon.Web.Api.InquiryProcessing.Public;
+using Falcon.Web.Api.InMemory.Public;
 using Falcon.Web.Api.MaintenanceProcessing.Public;
 using Falcon.Web.Common.Memmory;
 using Falcon.Web.Models.Api;
@@ -17,7 +17,7 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
         private readonly IQuestsQueryProcessor mQuestsQueryProcessor;
         private readonly IUserQuestAnswerQueryProcessor mUserQuestAnswer;
         private readonly IUserSession mUserSession;
-        private readonly IQuestInMemoryProcessor mQuestInMemory;
+        private readonly IQuestInMemory mQuestInMemory;
         private readonly IUserQueryProcessor mUserQuery;
         private readonly IMemoryStore mMemory;
         private readonly IQuestSnapshotQueryProcessor mQuestSnapshot;
@@ -27,7 +27,7 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
         public QuestsMaintenanceProcessor(IQuestsQueryProcessor QuestsQueryProcessor , 
             IUserQuestAnswerQueryProcessor UserQuestAnswer , 
             IUserSession UserSession , 
-            IQuestInMemoryProcessor QuestInMemory , 
+            IQuestInMemory QuestInMemory , 
             IUserQueryProcessor UserQuery , 
             IQuestSnapshotQueryProcessor QuestSnapshot,
             IMemoryStore Memory , 
