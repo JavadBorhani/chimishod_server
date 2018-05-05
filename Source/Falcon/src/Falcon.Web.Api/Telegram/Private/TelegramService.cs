@@ -77,7 +77,7 @@ namespace Falcon.Web.Api.Telegram.Private
 
         private static void BotOnReceiveGeneralError(object sender, ReceiveGeneralErrorEventArgs ReceiveGeneralErrorEventArgs)
         {
-            System.Console.WriteLine("Received error: {0} — {1}",
+            System.Console.WriteLine("Received error: {0} — {1}",   
                 ReceiveGeneralErrorEventArgs.Exception.Source,
                 ReceiveGeneralErrorEventArgs.Exception.Message);
         }
@@ -90,6 +90,7 @@ namespace Falcon.Web.Api.Telegram.Private
             {
                 new HttpParam { Key = "Authorization" , Value = "Basic " + mConfiguration.GetState().AuthorizationKey}
             };
+
             var path = mConfiguration.GetState().ServerCallbackPath + data[1];
             var request = RestClient.CreateRequest(path, RestSharp.Method.POST, null , item);
             var answer  = await RestClient.ExecuteTaskAsync(path, request);

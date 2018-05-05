@@ -249,11 +249,12 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
         public async Task<SQuestDetail[]> GetFinaleQuestDetail()
         {
             var finale = mQuestInMemory.GetFinaleQuest();
+            
             var userQuest = await mUserQuery.GetUserCurrentQuestNumber();
 
             if (userQuest == finale.QuestNumber)
             {
-
+                
             }
             // check if user data has been calculated
             // and return

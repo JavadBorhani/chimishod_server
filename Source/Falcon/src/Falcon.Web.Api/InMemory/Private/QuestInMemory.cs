@@ -209,5 +209,21 @@ namespace Falcon.Web.Api.InMemory.Private
         {
             throw new NotImplementedException();
         }
+
+        public HashSet<int> GetParrentQuestNumbers(List<int> QuestNumbers)
+        {
+            HashSet<int> parentQuestNumbers = new HashSet<int>();
+
+            for(int i = 0; i < QuestNumbers.Count; ++i)
+            {
+                var parentID = mQuests[QuestNumbers[i]].ParentID ?? -1;
+                if(parentID != -1)
+                {
+                    parentQuestNumbers.Add(parentID);
+                }
+            }
+
+            return parentQuestNumbers;
+        }
     }
 }

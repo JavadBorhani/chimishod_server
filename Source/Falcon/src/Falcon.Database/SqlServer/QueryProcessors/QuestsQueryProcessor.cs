@@ -234,5 +234,46 @@ namespace Falcon.Database.SqlServer.QueryProcessors
 
             return quest;
         }
+
+        public async Task<SQuestScoreSnapshot[]> GetUserQuestScoreSnapshots(List<int> QuestNumbers , List<int> ParentIDs)
+        {
+            var items = await mDb.Set<QuestScoreSnapshot>()
+                .AsNoTracking()
+                .Where(u => u.UserID == mUserSession.ID && QuestNumbers.Contains(u.QuestNumber) && QuestNumbers.Contains(u.UserLevelNumber))
+                .Where(u => u.UserLevelNumber == u.QuestNumber || ParentIDs.Contains(u.QuestNumber))
+                .Select( u => new SQuestScoreSnapshot
+                {
+                    UserID = u.UserID, 
+                    QuestNumber = u.QuestNumber,
+                    UserLevelNumber = u.UserLevelNumber,
+                    ScorePoint = u.ScorePoint
+                })
+                .ToArrayAsync();
+
+            return items;
+        }
+
+        public async Task<SQuestScoreSnapshot[]> GetUserQuestScoreSnapshot(int QuestNumber , int ParentQuestNumber)
+        {
+            int[] quests = new int[2];
+
+            quests[0] = QuestNumber;
+            quests[1] = ParentQuestNumber;
+
+            var items = await mDb.Set<QuestScoreSnapshot>()
+                .AsNoTracking()
+                .Where( u => u.UserID == mUserSession.ID && quests.Contains(u.QuestNumber) && quests.Contains(u.UserLevelNumber))
+                .Select(u => new SQuestScoreSnapshot
+                {
+                    UserID = u.UserID,
+                    QuestNumber = u.QuestNumber,
+                    UserLevelNumber = u.UserLevelNumber,
+                    ScorePoint = u.ScorePoint
+                })
+                .ToArrayAsync();
+
+
+            return items;
+        }
     }
 }

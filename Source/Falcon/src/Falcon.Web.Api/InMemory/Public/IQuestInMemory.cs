@@ -1,6 +1,7 @@
 ﻿using Falcon.Web.Api.Utilities;
 using Falcon.Web.Models.Api.Quest;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 
 namespace Falcon.Web.Api.InMemory.Public
 {
@@ -10,7 +11,7 @@ namespace Falcon.Web.Api.InMemory.Public
         int GetLastLevel();
         int GetLastQuest();
         SQuest GetFinaleQuest();
-
         SFinaleQuest GetBarrettType(int BarrettType);
+        HashSet<int> GetParrentQuestNumbers(List<int> QuestNumbers);
     }
 }

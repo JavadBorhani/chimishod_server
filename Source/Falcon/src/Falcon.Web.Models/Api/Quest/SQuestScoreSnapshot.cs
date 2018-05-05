@@ -5,6 +5,7 @@
         public int UserID { get; set; }
         public int UserLevelNumber { get; set; }
         public int QuestNumber { get; set; }
-        public int ScorePoint { get; set; }        
+        public int ScorePoint { get; set; }
+            
     }
 }

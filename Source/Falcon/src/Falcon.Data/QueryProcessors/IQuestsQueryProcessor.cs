@@ -36,5 +36,14 @@ namespace Falcon.Data.QueryProcessors
         Task<Question> GetQuestQuestion(int QuestNumber, int QuetionID);
 
         Task<SFinaleQuest> GetFinaleQuestDescription(int FinaleItemID);
+
+        /// <summary>
+        /// it will bring data of user from the first quest to the FinaleQuestNumber
+        /// </summary>
+        /// <param name="FinaleQuestNumber">Maximum Quest Number to bring data from</param>
+        /// <returns></returns>
+        Task<SQuestScoreSnapshot[]> GetUserQuestScoreSnapshots(List<int> QuestNumbers, List<int> ParentIDs);
+        Task<SQuestScoreSnapshot[]> GetUserQuestScoreSnapshot(int QuestNumber, int ParentQuestNumber);
+
     }
 }
