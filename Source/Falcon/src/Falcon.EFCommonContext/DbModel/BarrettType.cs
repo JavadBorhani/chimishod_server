@@ -17,6 +17,7 @@ namespace Falcon.EFCommonContext.DbModel
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public BarrettType()
         {
+            this.BarrettUserScores = new HashSet<BarrettUserScore>();
             this.Quests = new HashSet<Quest>();
         }
     
@@ -25,6 +26,8 @@ namespace Falcon.EFCommonContext.DbModel
         public string Description { get; set; }
         public string Separator { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<BarrettUserScore> BarrettUserScores { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Quest> Quests { get; set; }
     }

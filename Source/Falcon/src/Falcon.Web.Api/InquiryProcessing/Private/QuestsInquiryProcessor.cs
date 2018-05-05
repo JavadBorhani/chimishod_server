@@ -1,10 +1,11 @@
 ﻿using AutoMapper;
+using Falcon.Common.Security;
 using Falcon.Data.QueryProcessors;
 using Falcon.Web.Api.InMemory.Public;
 using Falcon.Web.Api.InquiryProcessing.Public;
 using Falcon.Web.Models.Api;
+using Falcon.Web.Models.Api.Barrett;
 using Falcon.Web.Models.Api.Quest;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -17,19 +18,23 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
         private readonly IMapper mMapper;
         private readonly IQuestInMemory mQuestInMemory;
         private readonly IUserQueryProcessor mUserQuery;
+        private readonly IUserSession mUserSession; 
 
 
         public QuestsInquiryProcessor(
             IQuestsQueryProcessor QuestQueryProcessor , 
             IMapper Mapper , 
             IQuestInMemory QuestInMemory , 
-            IUserQueryProcessor UserQueryProcessor)
+            IUserQueryProcessor UserQueryProcessor ,
+            IUserSession UserSession)
         {
             mUserQuery = UserQueryProcessor;
             mQuestQuery = QuestQueryProcessor;
             mMapper = Mapper;
             mQuestInMemory = QuestInMemory;
+            mUserSession = UserSession;
         }
+
         public async Task<SQuest[]> GetQuestList()
         {
             var data = await mQuestQuery.GetAllQuests();
@@ -43,6 +48,7 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
                 var questions = await mQuestQuery.GetQuestQuestions(QuestNumber);
 
                 return mMapper.Map<SQuestion[]>(questions);
+
             }
             return null;
         }
@@ -54,7 +60,8 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
 
             if(quest.QuestTypes == QuestTypes.Finale)
             {
-                return await GetFinaleQuestDetail();
+                var result = await GetFinaleQuestDetail();
+                return null;
             }
             
 
@@ -222,7 +229,7 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
                     {
                         QuestNumber = friendQuestDetail[i].QuestNumber,
                         QuestTitle = questTitle,
-                        UserScore = friendQuestDetail[i].ScorePoint / (float)parentQuest.ScorePoint,
+                        UserScore = friendQuestDetail[i].ScorePoint / (float) parentQuest.ScorePoint,
                     };
                 }
                 return response.Length > 0 ? response : null;
@@ -238,32 +245,51 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
             int itemID = -1; 
             for(int i = 0;  i < result.Length; ++i)
             {
-                if (result[i].UserScore > itemID)
-                    itemID = (int)result[i].UserScore;
+                if (result[i].Score > itemID)
+                    itemID = (int)result[i].Score;
             }
            
             var item = await mQuestQuery.GetFinaleQuestDescription(itemID);
             return item;
         }
 
-        public async Task<SQuestDetail[]> GetFinaleQuestDetail()
+        public async Task<SBarrettUserScore[]> GetFinaleQuestDetail()
         {
             var finale = mQuestInMemory.GetFinaleQuest();
             
             var userQuest = await mUserQuery.GetUserCurrentQuestNumber();
+            var allBarrets = mQuestInMemory.GetAllBarretTypes();
 
             if (userQuest == finale.QuestNumber)
             {
-                
+
+                var userFinaleScores = await mQuestQuery.RetrieveUserBarrettSnapshot(mUserSession.ID, allBarrets);
+
+                if(userFinaleScores != null)
+                    return userFinaleScores;
+                   
+                var quests = new List<int>();
+
+                for (int i = 0; i < userQuest; ++i)
+                {
+                    quests.Add(i + 1);
+                }
+
+                var parentIds = mQuestInMemory.GetParentQuestNumbers(quests);
+
+                var userSnapshotTable = mQuestQuery.GetUserQuestScoreSnapshots(quests, parentIds.ToList());
+
             }
-            // check if user data has been calculated
-            // and return
 
             // calculate user data 
             // store in table 
             // return 
-            
-            throw new NotImplementedException();
+
+            return null;
         }
+
+
+
+
     }
 }

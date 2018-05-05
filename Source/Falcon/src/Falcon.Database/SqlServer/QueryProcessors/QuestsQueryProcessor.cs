@@ -5,6 +5,7 @@ using Falcon.Common.Security;
 using Falcon.Data.QueryProcessors;
 using Falcon.EFCommonContext;
 using Falcon.EFCommonContext.DbModel;
+using Falcon.Web.Models.Api.Barrett;
 using Falcon.Web.Models.Api.Quest;
 using log4net;
 using System;
@@ -274,6 +275,46 @@ namespace Falcon.Database.SqlServer.QueryProcessors
 
 
             return items;
+        }
+
+        public async Task<SBarrettUserScore[]> RetrieveUserBarrettSnapshot(int UserID , List<int> BarrettTypes)
+        {
+            var items = await mDb.Set<BarrettUserScore>()
+                .AsNoTracking()
+                .Where(u => u.UserID == UserID && BarrettTypes.Contains(u.BarrettID))
+                .Select( u => new SBarrettUserScore
+                {
+                    BarrettID = u.BarrettID,
+                    UserID = u.UserID,
+                    Score  =u.Score
+                })
+                .ToArrayAsync();
+
+            return items;
+        }
+
+        public async Task<bool> SaveUserBarrettScores(List<SBarrettUserScore> Items)
+        {
+            var userScores = new BarrettUserScore[Items.Count];
+
+            for(int i = 0; i < Items.Count;++i)
+            {
+                userScores[i] = new BarrettUserScore
+                {
+                    BarrettID = Items[i].BarrettID,
+                    UserID = Items[i].UserID,
+                    Score = Items[i].Score
+                };
+            }
+
+            if (userScores.Count() > 0)
+            {
+                mDb.Set<BarrettUserScore>().AddRange(userScores);
+                await mDb.SaveChangesAsync();
+                return true;
+            }
+
+            return false;   
         }
     }
 }

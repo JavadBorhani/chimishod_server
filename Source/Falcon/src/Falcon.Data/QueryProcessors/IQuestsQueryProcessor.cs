@@ -1,4 +1,5 @@
 ﻿using Falcon.EFCommonContext.DbModel;
+using Falcon.Web.Models.Api.Barrett;
 using Falcon.Web.Models.Api.Quest;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -43,7 +44,12 @@ namespace Falcon.Data.QueryProcessors
         /// <param name="FinaleQuestNumber">Maximum Quest Number to bring data from</param>
         /// <returns></returns>
         Task<SQuestScoreSnapshot[]> GetUserQuestScoreSnapshots(List<int> QuestNumbers, List<int> ParentIDs);
+
         Task<SQuestScoreSnapshot[]> GetUserQuestScoreSnapshot(int QuestNumber, int ParentQuestNumber);
+
+        Task<SBarrettUserScore[]> RetrieveUserBarrettSnapshot(int UserID , List<int> BarrettTypes);
+
+        Task<bool> SaveUserBarrettScores(List<SBarrettUserScore> Items);
 
     }
 }

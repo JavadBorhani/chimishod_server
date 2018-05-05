@@ -195,6 +195,7 @@
     <Compile Include="AutoMappingConfiguration\Notification\NotificationSystemConfigurationToSNotificationConfigAutoTypeConfiguration.cs" />
     <Compile Include="AutoMappingConfiguration\QuestionMap\ActionQuestion\QuestionActionToSQuestionActionAuthoTypeConfiguration.cs" />
     <Compile Include="AutoMappingConfiguration\QuestionMap\QuestionToSQuestionAutoTypeConfiguration.cs" />
+    <Compile Include="AutoMappingConfiguration\QuestMap\QuestScore\QuestScoreSnapshotToSQuestScoreSnapshotAutoTypeConfiguration.cs" />
     <Compile Include="AutoMappingConfiguration\QuestMap\QuestToSQuestAutoTypeConfiguration.cs" />
     <Compile Include="AutoMappingConfiguration\Relation\RelationshipToSFriendAutoTypeConfiguration.cs" />
     <Compile Include="AutoMappingConfiguration\ServerAppStateMap\ApplicationStateToClientAppStateAutoTypeConfiguration.cs" />

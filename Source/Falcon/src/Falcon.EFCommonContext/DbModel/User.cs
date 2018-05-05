@@ -19,6 +19,7 @@ namespace Falcon.EFCommonContext.DbModel
         {
             this.AchievedCodeGifts = new HashSet<AchievedCodeGift>();
             this.Answers = new HashSet<Answer>();
+            this.BarrettUserScores = new HashSet<BarrettUserScore>();
             this.Feedbacks = new HashSet<Feedback>();
             this.Orders = new HashSet<Order>();
             this.PurchasedQuests = new HashSet<PurchasedQuest>();
@@ -62,6 +63,8 @@ namespace Falcon.EFCommonContext.DbModel
         public virtual ICollection<AchievedCodeGift> AchievedCodeGifts { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Answer> Answers { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<BarrettUserScore> BarrettUserScores { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Feedback> Feedbacks { get; set; }
         public virtual Level Level { get; set; }

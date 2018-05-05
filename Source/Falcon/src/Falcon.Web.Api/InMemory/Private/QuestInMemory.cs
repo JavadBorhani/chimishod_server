@@ -68,6 +68,7 @@ namespace Falcon.Web.Api.InMemory.Private
             ReadQuestsFromDatabase();
             ReadLevelsFromDatabase();
         }
+
         public void ReadBarrettsFromDatabase()
         {
             mBarretts.Clear();
@@ -81,6 +82,7 @@ namespace Falcon.Web.Api.InMemory.Private
             }
 
         }
+
         private void ReadQuestsFromDatabase()
         {
             var query = mDB.Set<Quest>()
@@ -210,7 +212,7 @@ namespace Falcon.Web.Api.InMemory.Private
             throw new NotImplementedException();
         }
 
-        public HashSet<int> GetParrentQuestNumbers(List<int> QuestNumbers)
+        public HashSet<int> GetParentQuestNumbers(List<int> QuestNumbers)
         {
             HashSet<int> parentQuestNumbers = new HashSet<int>();
 
@@ -224,6 +226,19 @@ namespace Falcon.Web.Api.InMemory.Private
             }
 
             return parentQuestNumbers;
+        }
+
+        public List<int> GetAllBarretTypes()
+        {
+            return mBarretts.Keys.ToList();
+        }
+
+        public ConcurrentDictionary<int, Tuple<SFinaleQuest, List<int>>> Barretts
+        {
+            get
+            {
+                return mBarretts;
+            }
         }
     }
 }

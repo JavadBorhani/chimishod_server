@@ -33,6 +33,7 @@ namespace Falcon.EFCommonContext.DbModel
         public virtual DbSet<AchievedCodeGift> AchievedCodeGifts { get; set; }
         public virtual DbSet<Answer> Answers { get; set; }
         public virtual DbSet<BarrettType> BarrettTypes { get; set; }
+        public virtual DbSet<BarrettUserScore> BarrettUserScores { get; set; }
         public virtual DbSet<ClientApplicationState> ClientApplicationStates { get; set; }
         public virtual DbSet<CodeGift> CodeGifts { get; set; }
         public virtual DbSet<Feedback> Feedbacks { get; set; }
