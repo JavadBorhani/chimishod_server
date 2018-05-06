@@ -6,6 +6,7 @@ using Falcon.Web.Api.InquiryProcessing.Public;
 using Falcon.Web.Models.Api;
 using Falcon.Web.Models.Api.Barrett;
 using Falcon.Web.Models.Api.Quest;
+using Falcon.Web.Models.Api.User;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -61,7 +62,6 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
 
             if(quest.QuestTypes == QuestTypes.Finale)
             {
-                var result = await GetFinaleQuestDetail();
                 return null;
             }
             
@@ -239,7 +239,7 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
             return null;
         }
 
-        public async Task<SFinaleQuest> GetFinalQuestDescription()
+        public async Task<SFinaleQuest> GetFinaleQuestDescription()
         {
             var result = await GetFinaleQuestDetail();
 
@@ -290,6 +290,18 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
             return null;
         }
 
+        public async Task<SFinaleQuest> GetFinaleQuestDescription(List<SBarrettUserScore> Items)
+        {
+            int itemID = -1;
+            for (int i = 0; i < Items.Count; ++i)
+            {
+                if (Items[i].Score > itemID)
+                    itemID = (int)Items[i].Score;
+            }
+            var item = await mQuestQuery.GetFinaleQuestDescription(itemID);
+            return item;
+        }
+
         private List<SBarrettUserScore> CalculateBarrettScore(Dictionary<Tuple<int, int>, SQuestScoreSnapshot> UserScores, List<int> BarrettTypes)
         {
             var scores = new List<SBarrettUserScore>(BarrettTypes.Count);
@@ -318,25 +330,37 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
                     SQuestScoreSnapshot userScoreSnapshot = null;
                     SQuestScoreSnapshot usertotalScoreSnapshot = null;
 
-                    UserScores.TryGetValue(new Tuple<int, int>(questInfo.QuestNumber, questInfo.QuestNumber) , out userScoreSnapshot);
+                    UserScores.TryGetValue(new Tuple<int, int>(questInfo.QuestNumber, questInfo.QuestNumber), out userScoreSnapshot);
                     UserScores.TryGetValue(new Tuple<int, int>(questInfo.QuestNumber, questInfo.ParentID ?? 0), out usertotalScoreSnapshot);
 
-                    if(userScoreSnapshot != null && usertotalScoreSnapshot != null)
+                    if (userScoreSnapshot != null && usertotalScoreSnapshot != null)
                     {
                         scores[i].Score += ((float)userScoreSnapshot.ScorePoint / usertotalScoreSnapshot.ScorePoint);
                     }
                 }
 
-                if(length > 0)
+                if (length > 0)
                 {
                     scores[i].Score = scores[i].Score / length;
                 }
-                
+
             }
 
             return scores;
         }
 
-        
+        public async Task<SUserFinaleQuestDetailWithDescription> GetFinaleQuestDetailWithDescription()
+        {
+            var finale = await GetFinaleQuestDetail();
+            var description = await GetFinaleQuestDescription(finale);
+
+            var response = new SUserFinaleQuestDetailWithDescription
+            {
+                UserBarrettScore = finale,
+                FinaleQuestDescription = description,
+            };
+
+            return response;
+        }
     }
 }

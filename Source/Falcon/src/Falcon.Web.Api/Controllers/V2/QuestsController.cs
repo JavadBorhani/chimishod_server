@@ -4,6 +4,7 @@ using Falcon.Web.Api.Utilities.Base;
 using Falcon.Web.Common;
 using Falcon.Web.Models.Api.Purchase;
 using Falcon.Web.Models.Api.Quest;
+using Falcon.Web.Models.Api.User;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
@@ -103,11 +104,17 @@ namespace Falcon.Web.Api.Controllers.V2
         [ResponseType(typeof(SFinaleQuest))]
         [Route("v2/Quests/Final/")]
         [HttpPost]
-        public async Task<SFinaleQuest> GetFinalQuestDescription()
+        public async Task<SUserFinaleQuestDetailWithDescription> GetFinalQuestScoreWithDescription()
         {
 
-            var response = await mQuestInqiury.GetFinalQuestDescription();
-            return response;
+            var response = await mQuestInqiury.GetFinaleQuestDetailWithDescription();
+
+            if(response != null)
+            {
+                return response;
+            }
+
+            return null;    
         }
 
     }
