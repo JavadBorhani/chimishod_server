@@ -175,6 +175,7 @@
     <Compile Include="Api\User\SInputSearchExpression.cs" />
     <Compile Include="Api\User\SNewUserInfo.cs" />
     <Compile Include="Api\User\SUserCount.cs" />
+    <Compile Include="Api\User\SUserFinaleQuestDetailWithDescription.cs" />
     <Compile Include="Api\User\SUserInitializationData.cs" />
     <Compile Include="Api\User\SUserRegistrationForm.cs" />
     <Compile Include="IPageContaining.cs" />
