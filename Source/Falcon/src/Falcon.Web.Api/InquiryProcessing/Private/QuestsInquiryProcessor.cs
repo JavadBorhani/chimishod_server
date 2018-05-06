@@ -6,6 +6,7 @@ using Falcon.Web.Api.InquiryProcessing.Public;
 using Falcon.Web.Models.Api;
 using Falcon.Web.Models.Api.Barrett;
 using Falcon.Web.Models.Api.Quest;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -243,7 +244,7 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
             var result = await GetFinaleQuestDetail();
 
             int itemID = -1; 
-            for(int i = 0;  i < result.Length; ++i)
+            for(int i = 0;  i < result.Count; ++i)
             {
                 if (result[i].Score > itemID)
                     itemID = (int)result[i].Score;
@@ -253,11 +254,11 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
             return item;
         }
 
-        public async Task<SBarrettUserScore[]> GetFinaleQuestDetail()
+        public async Task<List<SBarrettUserScore>> GetFinaleQuestDetail()
         {
             var finale = mQuestInMemory.GetFinaleQuest();
-            
-            var userQuest = await mUserQuery.GetUserCurrentQuestNumber();
+
+            var userQuest = (await mUserQuery.GetUserCurrentQuestNumber()) + 1;
             var allBarrets = mQuestInMemory.GetAllBarretTypes();
 
             if (userQuest == finale.QuestNumber)
@@ -265,9 +266,9 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
 
                 var userFinaleScores = await mQuestQuery.RetrieveUserBarrettSnapshot(mUserSession.ID, allBarrets);
 
-                if(userFinaleScores != null)
+                if (userFinaleScores != null && userFinaleScores.Count > 0)
                     return userFinaleScores;
-                   
+
                 var quests = new List<int>();
 
                 for (int i = 0; i < userQuest; ++i)
@@ -277,19 +278,64 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
 
                 var parentIds = mQuestInMemory.GetParentQuestNumbers(quests);
 
-                var userSnapshotTable = mQuestQuery.GetUserQuestScoreSnapshots(quests, parentIds.ToList());
+                var userSnapshotTable = await mQuestQuery.GetUserQuestScoreSnapshots(quests, parentIds.ToList());
 
+                var result = CalculateBarrettScore(userSnapshotTable, allBarrets);
+
+                var store = await mQuestQuery.SaveUserBarrettScores(result);
+
+                return result;
             }
-
-            // calculate user data 
-            // store in table 
-            // return 
 
             return null;
         }
 
+        private List<SBarrettUserScore> CalculateBarrettScore(Dictionary<Tuple<int, int>, SQuestScoreSnapshot> UserScores, List<int> BarrettTypes)
+        {
+            var scores = new List<SBarrettUserScore>(BarrettTypes.Count);
 
+            for (int i = 0; i < BarrettTypes.Count; ++i)
+            {
+                var barrett = mQuestInMemory.Barretts[BarrettTypes[i]];
 
+                scores.Add(new SBarrettUserScore
+                {
+                    BarrettID = barrett.Item1.ID,
+                    UserID = mUserSession.ID,
+                    Score = 0
+                });
 
+                var barretChilds = barrett.Item2;   // item 2 means child list 
+                var length = barretChilds.Count;
+
+                if (length == 0)
+                    continue;
+
+                //if ((length * 2) != UserScores.Keys.Count)
+                //    throw new BusinessRuleViolationException("logical error in finale quest calculation");
+
+                for (int j = 0; j < length; ++j)
+                {
+                    var questInfo = mQuestInMemory.GetQuestByQuestNumber(barretChilds[j]);
+
+                    SQuestScoreSnapshot userScoreSnapshot = null;
+                    SQuestScoreSnapshot usertotalScoreSnapshot = null;
+
+                    UserScores.TryGetValue(new Tuple<int, int>(questInfo.QuestNumber, questInfo.QuestNumber) , out userScoreSnapshot);
+                    UserScores.TryGetValue(new Tuple<int, int>(questInfo.QuestNumber, questInfo.ParentID ?? 0), out usertotalScoreSnapshot);
+
+                    if(userScoreSnapshot != null && usertotalScoreSnapshot != null)
+                    {
+                        scores[i].Score += ((float)userScoreSnapshot.ScorePoint / usertotalScoreSnapshot.ScorePoint);
+                    }
+                }
+                
+                scores[i].Score = scores[i].Score / length;
+            }
+
+            return scores;
+        }
+
+        
     }
 }

@@ -140,8 +140,7 @@ namespace Falcon.Web.Api.Security.Private
 
             if (controllerBaseRoute[2] == Constants.RoutesToIgnoreAuthentication.UserAuthenticator ||
                 controllerBaseRoute[2] == Constants.RoutesToIgnoreAuthentication.UserInfo || 
-                controllerBaseRoute[2] == Constants.RoutesToIgnoreAuthentication.AppStates ||
-                controllerBaseRoute[2] == Constants.RoutesToIgnoreAuthentication.TestController)
+                controllerBaseRoute[2] == Constants.RoutesToIgnoreAuthentication.AppStates)
                 return true;
 
             return false;   

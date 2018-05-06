@@ -44,7 +44,7 @@
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="UserID" Type="int" Nullable="false" />
           <Property Name="BarrettID" Type="int" Nullable="false" />
-          <Property Name="Score" Type="int" Nullable="false" />
+          <Property Name="Score" Type="float" Nullable="false" />
         </EntityType>
         <EntityType Name="ClientApplicationState">
           <Key>
@@ -1937,7 +1937,7 @@
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="UserID" Type="Int32" Nullable="false" />
           <Property Name="BarrettID" Type="Int32" Nullable="false" />
-          <Property Name="Score" Type="Int32" Nullable="false" />
+          <Property Name="Score" Type="Double" Nullable="false" />
           <NavigationProperty Name="BarrettType" Relationship="Falcon.DbModel.FK_BarrettUserScore_BarrettTypes" FromRole="BarrettUserScore" ToRole="BarrettType" />
           <NavigationProperty Name="User" Relationship="Falcon.DbModel.FK_BarrettUserScore_User" FromRole="BarrettUserScore" ToRole="User" />
         </EntityType>

@@ -5,9 +5,9 @@ namespace Falcon.Web.Models.Api.Quest
 {
     public enum QuestTypes
     {
-        Sub,
-        Main,
-        Finale
+        Sub = 1 ,
+        Main = 2 ,
+        Finale =3 
     }
     [DataContract]
     public class SQuest

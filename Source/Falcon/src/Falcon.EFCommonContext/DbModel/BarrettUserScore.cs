@@ -9,13 +9,15 @@
 
 namespace Falcon.EFCommonContext.DbModel
 {
-
+    using System;
+    using System.Collections.Generic;
+    
     public partial class BarrettUserScore
     {
         public int ID { get; set; }
         public int UserID { get; set; }
         public int BarrettID { get; set; }
-        public float Score { get; set; }
+        public double Score { get; set; }
     
         public virtual BarrettType BarrettType { get; set; }
         public virtual User User { get; set; }

@@ -4,6 +4,6 @@
     {
         public int UserID { get; set; }
         public int BarrettID { get; set; }
-        public float Score { get; set; }
+        public double Score { get; set; }
     }
 }

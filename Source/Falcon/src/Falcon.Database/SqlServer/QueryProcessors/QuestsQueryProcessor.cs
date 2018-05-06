@@ -236,7 +236,7 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             return quest;
         }
 
-        public async Task<SQuestScoreSnapshot[]> GetUserQuestScoreSnapshots(List<int> QuestNumbers , List<int> ParentIDs)
+        public async Task<Dictionary<Tuple<int, int>, SQuestScoreSnapshot>> GetUserQuestScoreSnapshots(List<int> QuestNumbers , List<int> ParentIDs)
         {
             var items = await mDb.Set<QuestScoreSnapshot>()
                 .AsNoTracking()
@@ -251,10 +251,17 @@ namespace Falcon.Database.SqlServer.QueryProcessors
                 })
                 .ToArrayAsync();
 
-            return items;
+            var response = new Dictionary<Tuple<int, int>,SQuestScoreSnapshot>();
+            
+            for(int i = 0; i < items.Length; ++i)
+            {
+                response.Add(new Tuple<int, int>(items[i].UserLevelNumber, items[i].QuestNumber), items[i]);
+            }
+
+            return response;
         }
 
-        public async Task<SQuestScoreSnapshot[]> GetUserQuestScoreSnapshot(int QuestNumber , int ParentQuestNumber)
+        public async Task<List<SQuestScoreSnapshot>> GetUserQuestScoreSnapshot(int QuestNumber , int ParentQuestNumber)
         {
             int[] quests = new int[2];
 
@@ -271,13 +278,13 @@ namespace Falcon.Database.SqlServer.QueryProcessors
                     UserLevelNumber = u.UserLevelNumber,
                     ScorePoint = u.ScorePoint
                 })
-                .ToArrayAsync();
+                .ToListAsync();
 
 
             return items;
         }
 
-        public async Task<SBarrettUserScore[]> RetrieveUserBarrettSnapshot(int UserID , List<int> BarrettTypes)
+        public async Task<List<SBarrettUserScore>> RetrieveUserBarrettSnapshot(int UserID , List<int> BarrettTypes)
         {
             var items = await mDb.Set<BarrettUserScore>()
                 .AsNoTracking()
@@ -288,7 +295,7 @@ namespace Falcon.Database.SqlServer.QueryProcessors
                     UserID = u.UserID,
                     Score  =u.Score
                 })
-                .ToArrayAsync();
+                .ToListAsync();
 
             return items;
         }

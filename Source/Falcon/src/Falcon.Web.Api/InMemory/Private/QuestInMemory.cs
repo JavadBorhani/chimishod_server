@@ -151,7 +151,7 @@ namespace Falcon.Web.Api.InMemory.Private
 
                 if (tuple != null)
                 {
-                    tuple.Item2.Add(barrettID);
+                    tuple.Item2.Add(Quest.QuestNumber);
                 }
             }
         }
