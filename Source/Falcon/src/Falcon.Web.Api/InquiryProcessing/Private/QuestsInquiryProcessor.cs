@@ -308,9 +308,6 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
                 var barretChilds = barrett.Item2;   // item 2 means child list 
                 var length = barretChilds.Count;
 
-                if (length == 0)
-                    continue;
-
                 //if ((length * 2) != UserScores.Keys.Count)
                 //    throw new BusinessRuleViolationException("logical error in finale quest calculation");
 
@@ -329,8 +326,12 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
                         scores[i].Score += ((float)userScoreSnapshot.ScorePoint / usertotalScoreSnapshot.ScorePoint);
                     }
                 }
+
+                if(length > 0)
+                {
+                    scores[i].Score = scores[i].Score / length;
+                }
                 
-                scores[i].Score = scores[i].Score / length;
             }
 
             return scores;
