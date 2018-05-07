@@ -109,6 +109,8 @@
           <Property Name="DefaultUserLevelNumber" Type="int" Nullable="false" />
           <Property Name="DefaultUserLevelProgress" Type="int" Nullable="false" />
           <Property Name="NewCreatedQuestionsPercent" Type="int" Nullable="false" />
+          <Property Name="DefaultUserQuestNumber" Type="int" />
+          <Property Name="DefaultUserQuestProgress" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="HashTag">
           <Key>
@@ -2008,6 +2010,8 @@
           <Property Name="DefaultUserLevelNumber" Type="Int32" Nullable="false" />
           <Property Name="DefaultUserLevelProgress" Type="Int32" Nullable="false" />
           <Property Name="NewCreatedQuestionsPercent" Type="Int32" Nullable="false" />
+          <Property Name="DefaultUserQuestNumber" Type="Int32" />
+          <Property Name="DefaultUserQuestProgress" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="HashTag">
           <Key>
@@ -3391,6 +3395,8 @@
           <EntitySetMapping Name="GameConfigs">
             <EntityTypeMapping TypeName="Falcon.DbModel.GameConfig">
               <MappingFragment StoreEntitySet="GameConfig">
+                <ScalarProperty Name="DefaultUserQuestProgress" ColumnName="DefaultUserQuestProgress" />
+                <ScalarProperty Name="DefaultUserQuestNumber" ColumnName="DefaultUserQuestNumber" />
                 <ScalarProperty Name="NewCreatedQuestionsPercent" ColumnName="NewCreatedQuestionsPercent" />
                 <ScalarProperty Name="DefaultUserLevelProgress" ColumnName="DefaultUserLevelProgress" />
                 <ScalarProperty Name="DefaultUserLevelNumber" ColumnName="DefaultUserLevelNumber" />

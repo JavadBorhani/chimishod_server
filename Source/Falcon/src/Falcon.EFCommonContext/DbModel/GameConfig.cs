@@ -22,5 +22,7 @@ namespace Falcon.EFCommonContext.DbModel
         public int DefaultUserLevelNumber { get; set; }
         public int DefaultUserLevelProgress { get; set; }
         public int NewCreatedQuestionsPercent { get; set; }
+        public Nullable<int> DefaultUserQuestNumber { get; set; }
+        public int DefaultUserQuestProgress { get; set; }
     }
 }

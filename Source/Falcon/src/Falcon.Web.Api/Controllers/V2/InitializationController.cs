@@ -20,7 +20,7 @@ namespace Falcon.Web.Api.Controllers.V2
         }
 
         [ResponseType(typeof(SUserInitializationData))]
-        [Route("v2/Initialize/{LevelVersionCode}")]
+        [Route("v2/Initialize/")]
         [HttpPost]
         public async Task<SUserInitializationData> LoadingUserData(SInitializeInquiry Inquiry)
         {

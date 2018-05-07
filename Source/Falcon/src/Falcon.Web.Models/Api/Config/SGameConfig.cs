@@ -11,5 +11,7 @@
         public int DefaultUserCoinAmount { get; set; }    
         public int DefaultUserLevelNumber { get; set; }
         public int DefaultUserLevelProgress { get; set; }
+        public int DefaultUserQuestNumber { get; set; }
+        public int DefaultUserQuestProgress { get; set; }
     }
 }

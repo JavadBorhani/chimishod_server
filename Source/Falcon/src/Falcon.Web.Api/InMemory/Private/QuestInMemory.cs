@@ -233,6 +233,11 @@ namespace Falcon.Web.Api.InMemory.Private
             return mBarretts.Keys.ToList();
         }
 
+        public List<SQuest> GetAllQuestItems()
+        {
+            return mQuests.Values.ToList();
+        }
+
         public ConcurrentDictionary<int, Tuple<SFinaleQuest, List<int>>> Barretts
         {
             get

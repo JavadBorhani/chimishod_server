@@ -60,7 +60,8 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
             if(Inquiry.QuestVersionCode < mClientAppState.QuestVersionCode)
             {
 
-                var quests = mQuestInMemroy.GetState();
+                var quests = mQuestInMemroy.GetAllQuestItems();
+                initializationInfo.Quests = quests;
             }
 
             var user = await mUsersQuery.GetUserInfo();

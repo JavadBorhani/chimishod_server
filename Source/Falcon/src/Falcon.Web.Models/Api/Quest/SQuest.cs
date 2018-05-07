@@ -9,6 +9,13 @@ namespace Falcon.Web.Models.Api.Quest
         Main = 2 ,
         Finale =3 
     }
+    public enum QuestState
+    {
+        NotPurchased = 0,
+        InProgress = 1,
+        Done = 2
+    }
+
     [DataContract]
     public class SQuest
     {

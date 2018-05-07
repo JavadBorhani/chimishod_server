@@ -299,6 +299,8 @@ namespace Falcon.Database.SqlServer.QueryProcessors
                 Platform = (int)UserRegisterationData.Platform,
                 LevelNumber = GameConfig.DefaultUserLevelNumber,
                 LevelProgress = GameConfig.DefaultUserLevelProgress ,
+                QuestNumber = GameConfig.DefaultUserQuestNumber,
+                QuestProgress = GameConfig.DefaultUserQuestProgress,
                 TotalCoin = GameConfig.DefaultUserCoinAmount,
                 APILevel = UserRegisterationData.APILevel,
                 Device = UserRegisterationData.Device,
