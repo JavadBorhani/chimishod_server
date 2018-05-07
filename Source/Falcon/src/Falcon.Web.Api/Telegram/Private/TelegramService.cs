@@ -18,9 +18,8 @@ namespace Falcon.Web.Api.Telegram.Private
 {
     public class TelegramService : ITelegramService
     {
-        public readonly TelegramBotClient Api;
+        public TelegramBotClient Api;
 
-        
         public ITelegramConfigurationInMemory mConfiguration
         {
             get
@@ -36,6 +35,7 @@ namespace Falcon.Web.Api.Telegram.Private
                 return WebContainerManager.Get<IRestClientEngine>();
             }
         }
+
         public ILog Logger
         {
             get
@@ -44,7 +44,15 @@ namespace Falcon.Web.Api.Telegram.Private
             }
         }
 
+        private bool ServiceAvailable;
+
         public TelegramService()
+        {
+            //Initialize();
+            ServiceAvailable = false;   
+        }
+
+        public void Initialize()
         {
             Api = new TelegramBotClient(mConfiguration.GetState().Token);
 
@@ -65,7 +73,6 @@ namespace Falcon.Web.Api.Telegram.Private
                 var error = "Telegram Service is Unavailable on start up : " + e.StackTrace;
                 Logger.Error(error);
             }
-
         }
 
         private static void BotOnReceiveError(object sender, ReceiveErrorEventArgs receiveErrorEventArgs)
@@ -108,7 +115,6 @@ namespace Falcon.Web.Api.Telegram.Private
 
             }
         }
-
 
         private async void BotOnMessageReceived(object sender, MessageEventArgs messageEventArgs)
         {
@@ -182,6 +188,8 @@ Usage:
 
         public async Task<bool> SendMessage(long[] ChatIds, string Message , string ControllerCallbackPath)
         {
+            if (!ServiceAvailable)
+                return false;
             if (ChatIds == null)
                 return false;
 

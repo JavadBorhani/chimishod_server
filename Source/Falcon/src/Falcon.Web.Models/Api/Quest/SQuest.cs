@@ -19,20 +19,30 @@ namespace Falcon.Web.Models.Api.Quest
     [DataContract]
     public class SQuest
     {
-
+        [DataMember]
         public int QuestNumber { get; set; }
+        [DataMember]
         public QuestTypes QuestTypes { get; set; }
+        [DataMember]
         public string QuestTitle { get; set; }
+        [DataMember]
         public string QuestDescription { get; set; }
+        [DataMember]
         public string QuestWhiteIcon { get; set; }
+        [DataMember]
         public string QuestColoredIcon { get; set; }
+        [DataMember]
         public string QuestOffIcon { get; set; }
 
         [IgnoreDataMember]
         public int? ParentID { get; set; }
+        [DataMember]
         public List<int> ChildQuestNumbers { get; set; }
+        [DataMember]
         public int Price { get; set; }
+        [DataMember]
         public int NumberOfQuestionsInQuest { get; set; }
+        [DataMember]
         public int? BarretTypeID { get; set;}
     }
 }
