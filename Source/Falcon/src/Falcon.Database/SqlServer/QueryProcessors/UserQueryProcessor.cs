@@ -514,7 +514,7 @@ namespace Falcon.Database.SqlServer.QueryProcessors
                     return info;
 
                 User.QuestNumber = NextQuestNumber;
-                int remained = (User.LevelProgress + Prize) - CurrentQuestMax;
+                int remained = (User.QuestProgress + Prize) - CurrentQuestMax;
                 User.QuestProgress = remained;
                 User.QuestPurchased = false;    
 
