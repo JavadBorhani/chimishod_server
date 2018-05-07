@@ -11,7 +11,7 @@ namespace Falcon.Web.Models.Api
         public string UserName { get; set; }
         public int LevelProgress { get; set; }
         public int LevelNumber { get; set; }
-        public int QuestNumber { get; set; }
+        public int? QuestNumber { get; set; }
         public QuestState QuestState { get; set; }
         public int TotalCoin { get; set; }
         public string UUID { get; set; }

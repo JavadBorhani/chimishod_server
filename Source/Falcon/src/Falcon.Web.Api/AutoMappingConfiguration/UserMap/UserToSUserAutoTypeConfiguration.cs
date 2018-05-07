@@ -36,7 +36,10 @@ namespace Falcon.Web.Api.AutoMappingConfiguration.UserMap
 
                     var item = QuestInMemory.GetQuestByQuestNumber(questNumber);
 
-                    if(x.QuestProgress < item.NumberOfQuestionsInQuest)
+                    if (x.QuestProgress == 0 && x.QuestPurchased == false)
+                        return QuestState.NotPurchased;
+
+                    if(x.QuestProgress > 0 &&  x.QuestProgress < item.NumberOfQuestionsInQuest)
                         return QuestState.InProgress;
 
                     return QuestState.Done;

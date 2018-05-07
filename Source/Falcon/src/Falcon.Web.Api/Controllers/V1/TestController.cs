@@ -1,4 +1,4 @@
-﻿using Falcon.Web.Api.InquiryProcessing.Public;
+﻿using Falcon.EFCommonContext;
 using Falcon.Web.Api.Utilities.Base;
 using Falcon.Web.Common;
 using System.Threading.Tasks;
@@ -9,21 +9,17 @@ namespace Falcon.Web.Api.Controllers.V1
     [UnitOfWorkActionFilter]
     public class TestController : FalconApiController
     {
-        //private readonly IQuestsInquiryProcessor mQuesktsInquiryProcessor;
-        
-        public TestController(IQuestsInquiryProcessor QuestsInquiry)
+    
+        public TestController(IDbContext Context)
         {
-            //mQuestsInquiryProcessor = QuestsInquiry;
+
         }
 
         [Route("v2/TestController/")]
         [HttpPost]
         public async Task<IHttpActionResult> GetInfo()
         {
-            //var items = await mQuestsInquiryProcessor.GetFinaleQuestDetail();
-            //return Ok(items);
-
-            return null;
+            return null;    
         }
 
     }

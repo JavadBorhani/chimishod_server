@@ -46,6 +46,7 @@ namespace Falcon.EFCommonContext.DbModel
         public int LevelNumber { get; set; }
         public Nullable<int> QuestNumber { get; set; }
         public int QuestProgress { get; set; }
+        public bool QuestPurchased { get; set; }
         public int TotalCoin { get; set; }
         public bool IsMale { get; set; }
         public string UUID { get; set; }

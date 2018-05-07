@@ -516,6 +516,7 @@ namespace Falcon.Database.SqlServer.QueryProcessors
                 User.QuestNumber = NextQuestNumber;
                 int remained = (User.LevelProgress + Prize) - CurrentQuestMax;
                 User.QuestProgress = remained;
+                User.QuestPurchased = false;    
 
                 info.QuestUpMode = QuestUpMode.QuestUpped;
                 info.QuestUpNumber = NextQuestNumber;
@@ -538,6 +539,20 @@ namespace Falcon.Database.SqlServer.QueryProcessors
                 .Select(u => u.QuestNumber).SingleOrDefaultAsync();
 
             return questNumber ?? -1; 
+        }
+
+        public async Task<int> SetQuest(int QuestNumber , bool Purchased)
+        {
+            var user = await mDb.Set<User>().FindAsync(mUserSession.ID);
+            if(user != null)
+            {
+                user.QuestNumber = QuestNumber;
+                user.QuestProgress = 0;
+                user.QuestPurchased = Purchased;
+                await mDb.SaveChangesAsync();
+                return QuestNumber;
+            }
+            return -1;   
         }
     }
 }   

@@ -199,6 +199,7 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
                             throw new BusinessRuleViolationException($"there is not enough moeny : userID {mUserSession.ID},");
 
                         await mQuestsQueryProcessor.Purchase(QuestNumber);
+                        await mUserQuery.SetQuest(QuestNumber , true);
 
                         return true;
                     }

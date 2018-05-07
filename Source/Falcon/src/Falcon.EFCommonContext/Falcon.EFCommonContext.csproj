@@ -131,6 +131,9 @@
     <Compile Include="DbModel\GameConfig.cs">
       <DependentUpon>WhatIfDataModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="DbModel\Gap.cs">
+      <DependentUpon>WhatIfDataModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="DbModel\HashTag.cs">
       <DependentUpon>WhatIfDataModel.tt</DependentUpon>
     </Compile>

@@ -42,6 +42,6 @@ namespace Falcon.Data.QueryProcessors
         Task<bool> BanUser(int ID);
         Task<bool> CanPurchaseQuest(int QuestNumber , int LastQuestNumber);
         Task<int> GetCurrentUserQuestNumber();
-
+        Task<int> SetQuest(int QuestNumber , bool Purchased);
     }
 }
