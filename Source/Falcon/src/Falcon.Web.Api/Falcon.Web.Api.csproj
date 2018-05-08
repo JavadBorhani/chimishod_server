@@ -314,6 +314,7 @@
     <Compile Include="JobSystem\Private\Jobs\CalculateQuestPeopleNormal.cs" />
     <Compile Include="JobSystem\Private\Jobs\CharacterRankUpdate.cs" />
     <Compile Include="JobSystem\Private\Jobs\GlobalRankUpdate.cs" />
+    <Compile Include="JobSystem\Private\Jobs\QuestionCounterNotification.cs" />
     <Compile Include="JobSystem\Private\Jobs\QuestionQualification.cs" />
     <Compile Include="JobSystem\Public\IJob.cs" />
     <Compile Include="JobSystem\Public\JobBase.cs" />

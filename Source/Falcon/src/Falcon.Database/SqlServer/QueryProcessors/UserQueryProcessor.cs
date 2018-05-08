@@ -165,7 +165,7 @@ namespace Falcon.Database.SqlServer.QueryProcessors
 
         public async Task<SQuestUpInfo> UpdateQuest(int Prize, int LastQuestNumber)
         {
-            var player = await mDb.Set<User>().Where(m => m.ID == mUserSession.ID).Include(u => u.Level).SingleOrDefaultAsync();
+            var player = await mDb.Set<User>().Where(m => m.ID == mUserSession.ID).Include(u => u.Quest).SingleOrDefaultAsync();
 
 
             SQuestUpInfo quest;
@@ -184,7 +184,7 @@ namespace Falcon.Database.SqlServer.QueryProcessors
 
                 SaveFailed = false;
 
-                quest = QuestUpChecking(ref player, player.Quest.NumberOfQuestionsInQuest, Prize, playerQuestNumber + 1, LastQuestNumber);
+                quest = QuestUpChecking(ref player, Prize, player.Quest.NumberOfQuestionsInQuest, playerQuestNumber + 1, LastQuestNumber);
 
                 try
                 {
@@ -523,7 +523,7 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             }
             else
             {
-                User.LevelProgress += Prize;
+                User.QuestProgress += Prize;
 
                 info.QuestUpMode = QuestUpMode.NotQuestUpped;
                 info.QuestUpNumber = Constants.DefaultValues.NotQuestUpped;

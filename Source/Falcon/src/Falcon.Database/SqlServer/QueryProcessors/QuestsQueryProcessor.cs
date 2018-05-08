@@ -104,13 +104,13 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             return questions;
         }
 
-        public async Task<QuestQuestion> GetQuestQuestionLimitedByCurrentUserQuest(int QuestionID)
+        public async Task<QuestQuestion> GetQuestQuestionLimitedByCurrentUserQuest(int QuestionID , int CurrentUserQuest)
         {
-            var currentUserQuest = await mUserQuery.GetUserCurrentQuestNumber(); //TODO Optimize this 
+            //var currentUserQuest = await mUserQuery.GetUserCurrentQuestNumber(); //TODO Optimize this 
 
             var item = await mDb.Set<QuestQuestion>()
                 .AsNoTracking()
-                .Where(qq => qq.QuestNumber == currentUserQuest && qq.QuestionID == QuestionID)
+                .Where(qq => qq.QuestNumber == CurrentUserQuest && qq.QuestionID == QuestionID)
                 .SingleOrDefaultAsync();
 
             return item;

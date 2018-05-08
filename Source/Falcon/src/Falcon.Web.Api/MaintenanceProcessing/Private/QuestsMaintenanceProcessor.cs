@@ -45,9 +45,9 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
             mAppSate = AppState.State();
         }
 
-        public async Task<bool> AddScore(int QuestionID , bool IsYes)
+        public async Task<bool> AddScore(int QuestionID , int CurrentUserQuestNumber, bool IsYes)
         {
-            var questQuestion = await mQuestsQueryProcessor.GetQuestQuestionLimitedByCurrentUserQuest(QuestionID);
+            var questQuestion = await mQuestsQueryProcessor.GetQuestQuestionLimitedByCurrentUserQuest(QuestionID , CurrentUserQuestNumber);
             
 
             if(questQuestion != null)
@@ -166,7 +166,7 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
                 {
                     var status = await mUserQuery.UpdateQuest(mAppSate.XPQuestFactor, mQuestInMemory.GetLastQuest());
 
-                    await AddScore(question.ID, Answer.YesNoState);
+                    await AddScore(question.ID, userQuestNumber , Answer.YesNoState);
 
                     if (status.QuestUpMode == QuestUpMode.QuestUpped)
                     {

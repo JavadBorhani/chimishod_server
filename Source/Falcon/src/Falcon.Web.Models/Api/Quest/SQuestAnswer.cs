@@ -7,7 +7,6 @@ namespace Falcon.Web.Models.Api.Quest
     {
         public int UserID { get; set; }
 
-
         [Required]
         [Range(0 , int.MaxValue)]
         public int QuestNumber { get; set; }
