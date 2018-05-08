@@ -18,7 +18,7 @@ namespace Falcon.Web.Api.Controllers.V2
         }
 
         [Route("v2/TelegramController/{QuestionID}/{State}")]
-        [HttpPost]
+        [HttpGet]
         public async Task<bool> BanQuestion(int QuestionID, int State)
         {
             var response = await mTelegMaintenance.ActivateQuestion(QuestionID, State);

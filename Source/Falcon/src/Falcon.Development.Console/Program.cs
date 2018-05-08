@@ -2,12 +2,12 @@
 {
     class Program
     {
+       
 
-        public static void Sample(string[] args)
+        public static void Main(string[] args)
         {
-
+            return;
         }
-    }
 
-    
+    }
 }

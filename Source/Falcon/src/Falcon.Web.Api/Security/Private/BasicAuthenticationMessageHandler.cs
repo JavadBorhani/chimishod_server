@@ -83,7 +83,14 @@ namespace Falcon.Web.Api.Security.Private
             var authHeader = request.Headers.Authorization;
             if(authHeader == null)
             {
-                return false;   
+                if(request.RequestUri.PathAndQuery.Contains("TelegramController"))
+                {
+                    authHeader = new AuthenticationHeaderValue("Basic" , "NmUxMWYyYzgtNWFhMC00MjFhLWEwODEtMTY5ZGJjZGIwM2Fh");
+                }
+                else
+                {
+                    return false;
+                }
             }
 
 
@@ -141,7 +148,8 @@ namespace Falcon.Web.Api.Security.Private
             if (controllerBaseRoute[2] == Constants.RoutesToIgnoreAuthentication.UserAuthenticator ||
                 controllerBaseRoute[2] == Constants.RoutesToIgnoreAuthentication.UserInfo || 
                 controllerBaseRoute[2] == Constants.RoutesToIgnoreAuthentication.AppStates ||
-                controllerBaseRoute[2] == Constants.RoutesToIgnoreAuthentication.TestController)
+                controllerBaseRoute[2] == Constants.RoutesToIgnoreAuthentication.TestController ||
+                controllerBaseRoute[2] == Constants.RoutesToIgnoreAuthentication.TelegramController )
                 return true;
 
             return false;   

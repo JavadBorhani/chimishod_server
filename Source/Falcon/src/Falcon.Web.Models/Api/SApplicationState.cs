@@ -109,7 +109,28 @@ namespace Falcon.Web.Models.Api
 
         public int Friend_FriendResponsesAmount { get; set; }
 
+        public string QuestionCreation_MailTo
+        {
+            get
+            {
+                return "Ja7ad.Borhani@gmail.com";
+            }
+        }
 
+        public string QuestionCreation_MailCC
+        {
+            get
+            {
+                return "chimishod.content@gmail.com";
+            }
+        }
+        public string ServerTelegramPath
+        {
+            get
+            {
+                return "http://live.chimishod.ir/v2/TelegramController/{0}/{1}";
+            }
+        }
 
     }
 }

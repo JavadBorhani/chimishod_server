@@ -5,7 +5,7 @@ using Falcon.Data.QueryProcessors;
 using Falcon.Web.Api.InquiryProcessing.Public;
 using Falcon.Web.Api.JobSystem.Public;
 using Falcon.Web.Api.MaintenanceProcessing.Public;
-using Falcon.Web.Api.Telegram.Public;
+using Falcon.Web.Api.Utilities.Mail;
 using Falcon.Web.Models.Api;
 using Falcon.Web.Models.Api.Config;
 using Falcon.Web.Models.Api.Question;
@@ -23,8 +23,8 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
         private readonly IUserQueryProcessor mUserQuery;
         private readonly SClientAppState mClientAppState;
         private readonly IMapper mMapper;
-        private readonly ITelegramManager mTelManager;
         private readonly IJobManager mJobManager;
+        private readonly IMailManager mMailManager;
 
 
         public QuestionsMaintenanceProcessor(
@@ -36,8 +36,8 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
             IClientApplicationState ClientAppState,
             IUserSession UserSession,
             IMapper Mapper , 
-            ITelegramManager TelManager , 
-            IJobManager JobManager)
+            IJobManager JobManager , 
+            IMailManager MailManager)
         {
             mFriendInquiry = FriendInquiry;
             mQuestionQuery = QuestionQuery;
@@ -47,8 +47,8 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
             mMapper = Mapper;
             mClientAppState = ClientAppState.State();
             mUserQuery = UserQuery;
-            mTelManager = TelManager;
             mJobManager = JobManager;
+            mMailManager = MailManager;
         }
 
         public async Task<int> CreateQuestion(SCreatedQuestion CreateQuestion)
@@ -89,9 +89,10 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
 
             if (createdQuestion != null && createdQuestion.IsPublic)
             {
-                mJobManager.Enqueue(() => mTelManager.SendQuestionVerifier(createdQuestion.ID, createdQuestion.What_if, createdQuestion.But));
+                //mJobManager.Enqueue(() => mTelManager.SendQuestionVerifier(createdQuestion.ID, createdQuestion.What_if, createdQuestion.But)); //telegram service
+                mJobManager.Enqueue(() => mMailManager.SendQuestionCreationRequest("بررسی سوال" , createdQuestion.What_if , createdQuestion.But , createdQuestion.ID));
             }
-                
+
 
             return totalCoin;
 
