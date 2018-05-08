@@ -70,7 +70,45 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
 
             var user = mMapper.Map<SUser>(userdata);
 
-            return user;    
+            QuestStateCalculator(ref user);
+
+            return user;
+        }
+
+        private void QuestStateCalculator(ref SUser User)
+        {
+            
+        }
+
+        private int CurrentQuestNumber(int QuestNumber, int QuestState)
+        {
+            //if (QuestNumber == null)
+            //    return -1;
+
+            //if (QuestState == Global.QuestState.NOT_PURCHASE)
+            //    return QuestNumber - 1;
+            //else
+            //    return QuestNumber;
+            return 1;
+        }
+
+        private void Mine()
+        {
+            //checkout the whole
+            //var questNumber = x.QuestNumber ?? -1;
+
+            //if (questNumber == -1)
+            //    return QuestState.NotPurchased;
+
+            //var item = QuestInMemory.GetQuestByQuestNumber(questNumber);
+
+            //if (x.QuestProgress == 0 && x.QuestPurchased == false)
+            //    return QuestState.NotPurchased;
+
+            //if (x.QuestProgress > 0 && x.QuestProgress < item.NumberOfQuestionsInQuest)
+            //    return QuestState.InProgress;
+
+            //return QuestState.Done;
         }
 
         public async Task<PagedDataInquiryResponse<SFriend>> SearchUsersByExpression(PagedDataRequest RequestInfo, string Expression)
