@@ -2,6 +2,8 @@
 using Falcon.Common.Security;
 using Falcon.Data;
 using Falcon.Data.QueryProcessors;
+using Falcon.EFCommonContext.DbModel;
+using Falcon.Web.Api.InMemory.Public;
 using Falcon.Web.Api.InquiryProcessing.Public;
 using Falcon.Web.Models;
 using Falcon.Web.Models.Api;
@@ -19,14 +21,19 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
         private readonly IMapper mMapper;
         private readonly IWebUserSession mUserSession;
         private readonly IFriendsInquiryProcessor mFriendsInquiry;
+        private readonly IQuestInMemory mQuestInMemory;
 
-
-        public UsersInquiryProcessor(IUserQueryProcessor UserQueryProcessor , IMapper Mapper ,  IWebUserSession UserSession , IFriendsInquiryProcessor FriendsInquiry)
+        public UsersInquiryProcessor(IUserQueryProcessor UserQueryProcessor ,
+            IMapper Mapper ,
+            IWebUserSession UserSession , 
+            IFriendsInquiryProcessor FriendsInquiry , 
+            IQuestInMemory QuestInMemory)
         {
             mUserSession = UserSession;
             mUserQueryProcessor = UserQueryProcessor;
             mMapper = Mapper;
             mFriendsInquiry = FriendsInquiry;
+            mQuestInMemory = QuestInMemory;
         }
         public async Task<int> GetTotalCoin()
         {
@@ -70,47 +77,42 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
 
             var user = mMapper.Map<SUser>(userdata);
 
-            QuestStateCalculator(ref user);
+            QuestStateCalculator(ref userdata , ref user);
 
             return user;
         }
 
-        private void QuestStateCalculator(ref SUser User)
+        private void QuestStateCalculator(ref User Input , ref SUser Output)
         {
-            
+            //move this to quest update 
+
+            var questNumber = Input.QuestNumber ?? -1;
+            var quest = mQuestInMemory.GetQuestByQuestNumber(questNumber);
+
+            if (questNumber == -1)
+            {
+                Output.QuestNumber = -1;
+                Output.QuestState = Models.Api.Quest.QuestState.NotPurchased;
+            }
+            else if (questNumber > 0 && Input.QuestProgress == 0 && Input.QuestPurchased == true)
+            {
+                Output.QuestState = Models.Api.Quest.QuestState.InProgress;
+            }
+            else if (questNumber > 1 && Input.QuestProgress == 0 && Input.QuestPurchased == false)
+            {
+                Output.QuestNumber--;
+                Output.QuestState = Models.Api.Quest.QuestState.Done;
+            }
+            else if (questNumber > 0 && Input.QuestProgress > 0 && Input.QuestProgress < quest.NumberOfQuestionsInQuest)
+            {
+                Output.QuestState = Models.Api.Quest.QuestState.InProgress;
+            }
+            else if (questNumber > 0 && Input.QuestProgress == quest.NumberOfQuestionsInQuest)
+            {
+                Output.QuestState = Models.Api.Quest.QuestState.Done;
+            }
+
         }
-
-        private int CurrentQuestNumber(int QuestNumber, int QuestState)
-        {
-            //if (QuestNumber == null)
-            //    return -1;
-
-            //if (QuestState == Global.QuestState.NOT_PURCHASE)
-            //    return QuestNumber - 1;
-            //else
-            //    return QuestNumber;
-            return 1;
-        }
-
-        private void Mine()
-        {
-            //checkout the whole
-            //var questNumber = x.QuestNumber ?? -1;
-
-            //if (questNumber == -1)
-            //    return QuestState.NotPurchased;
-
-            //var item = QuestInMemory.GetQuestByQuestNumber(questNumber);
-
-            //if (x.QuestProgress == 0 && x.QuestPurchased == false)
-            //    return QuestState.NotPurchased;
-
-            //if (x.QuestProgress > 0 && x.QuestProgress < item.NumberOfQuestionsInQuest)
-            //    return QuestState.InProgress;
-
-            //return QuestState.Done;
-        }
-
         public async Task<PagedDataInquiryResponse<SFriend>> SearchUsersByExpression(PagedDataRequest RequestInfo, string Expression)
         {
 

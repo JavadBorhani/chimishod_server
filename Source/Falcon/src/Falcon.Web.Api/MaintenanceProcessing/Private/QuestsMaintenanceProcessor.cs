@@ -50,7 +50,7 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
             var questQuestion = await mQuestsQueryProcessor.GetQuestQuestionLimitedByCurrentUserQuest(QuestionID , CurrentUserQuestNumber);
             
 
-            if(questQuestion != null)
+            if(questQuestion != null && (SQuestQuestionType)questQuestion.QuestionType == SQuestQuestionType.Score)
             {
                 var yesQuestNumber = questQuestion.YesQuestNumber ?? 0 ;
                 var yesPoint = questQuestion.YesScore;

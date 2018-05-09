@@ -127,6 +127,7 @@
     <Compile Include="Api\Quest\SFinaleQuest.cs" />
     <Compile Include="Api\Quest\SQuestDetail.cs" />
     <Compile Include="Api\Quest\SQuestInquiry.cs" />
+    <Compile Include="Api\Quest\SQuestQuestion.cs" />
     <Compile Include="Api\Quest\SQuestScoreSnapshot.cs" />
     <Compile Include="Api\Quest\SQuestUpInfo.cs" />
     <Compile Include="Api\Quest\SUserQuestAnswer.cs" />
