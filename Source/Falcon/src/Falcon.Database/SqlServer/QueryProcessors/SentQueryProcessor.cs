@@ -25,6 +25,7 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             mDb = Database;
             mUserSession = UserSession;
         }
+
         public async Task<int> SaveMessage(int UserID, int QuestionID)
         {
             var item = mDb.Set<Sent>().Add(new Sent
@@ -170,7 +171,7 @@ namespace Falcon.Database.SqlServer.QueryProcessors
                     No_Count = question.No_Count,
                     Like_Count = question.Like_Count,
                     Dislike_Count = question.Dislike_Count,
-                    CreatedDate = question.CreatedDate,
+                    CreatedDate = data.UpdatedDate,
                     AnsweredLiked = data.Liked ?? false,
                     AnsweredDisliked = data.Disliked ?? false,
                     AnsweredNo = data.NoState ?? false,
@@ -223,7 +224,7 @@ namespace Falcon.Database.SqlServer.QueryProcessors
                     No_Count = question.No_Count,
                     Like_Count = question.Like_Count,
                     Dislike_Count = question.Dislike_Count,
-                    CreatedDate = question.CreatedDate,
+                    CreatedDate = data.UpdatedDate,
                     AnsweredLiked = data.Liked ?? false,
                     AnsweredDisliked = data.Disliked ?? false,
                     AnsweredNo = data.NoState ?? false,
