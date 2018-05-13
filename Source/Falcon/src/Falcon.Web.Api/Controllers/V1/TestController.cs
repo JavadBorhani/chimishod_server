@@ -16,7 +16,7 @@ namespace Falcon.Web.Api.Controllers.V1
 
         [Route("v2/TestController/{QuestNumber}/{QuestProgress}/{State}")]
         [HttpPost]
-        public async Task<IHttpActionResult> GetInfo(int QuestNumber , int QuestProgress , int State)
+        public Task<IHttpActionResult> GetInfo(int QuestNumber , int QuestProgress , int State)
         {
             return null;    
         }

@@ -55,7 +55,10 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
                             UserID = mUserSession.ID,
                             WatchAdId = WatchAdValidation.WatchAdId,
                             WatchAdProviderId = (int)WatchAdProvider.TapSell,
-                            InsertDate = mDateTime.Now
+                            IsLevel = false,
+                            LevelNumber = 0,
+                            InsertDate = mDateTime.Now,
+                            UpdatedDate = mDateTime.Now
                         });
 
                         var totalCoin = await mUserQueryProcessor.IncreaseCoin(mAppState.State().WatchAdCoin);
@@ -67,6 +70,41 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
 
             var currentTotalCoin = await mUserQueryProcessor.GetTotalCoin();
             return currentTotalCoin;
+        }
+
+        public async Task<bool> ValidateLevelUpWatchAd(SWatchAdValidation WatchAdValidation)
+        {
+            var exists = await mWatchAdQueryProcessor.IsExists(WatchAdValidation.WatchAdId , WatchAdValidation.LevelNumber);
+
+            if (!exists)
+            {
+                if (WatchAdValidation.ProviderID == WatchAdProvider.TapSell) //TODO: If new provider added , change the logic 
+                {
+                    var result = await mWatchAdValidator.ValidateWatchAd(Constants.WatchAdVerfierAddress.TapSellLink,
+                        new WatchAd.Private.RequestToken
+                        {
+                            suggestionId = WatchAdValidation.WatchAdId,
+                        });
+
+                    if (!result.valid)
+                    {
+                        await mWatchAdQueryProcessor.AddWatchedInfo(new SWatchedAd
+                        {
+                            UserID = mUserSession.ID,
+                            WatchAdId = WatchAdValidation.WatchAdId,
+                            WatchAdProviderId = (int)WatchAdProvider.TapSell,
+                            IsLevel = WatchAdValidation.IsLevel ,
+                            LevelNumber = WatchAdValidation.LevelNumber,
+                            Consumed = true,
+                            InsertDate = mDateTime.Now,
+                            UpdatedDate = mDateTime.Now,
+                        });
+                        return true;
+                    }
+                }
+            }
+
+            return false;
         }
     }
 }

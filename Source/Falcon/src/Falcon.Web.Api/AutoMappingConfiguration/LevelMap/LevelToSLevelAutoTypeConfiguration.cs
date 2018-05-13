@@ -11,7 +11,8 @@ namespace Falcon.Web.Api.AutoMappingConfiguration.LevelMap
             CreateMap<Level, SLevel>()
                 .ForMember(s => s.LevelNumber, m => m.MapFrom(l => l.LevelNumber))
                 .ForMember(s => s.CoinPrize, m => m.MapFrom(l => l.CoinPrize))
-                .ForMember(s => s.ScoreCeil, m => m.MapFrom(l => l.ScoreCeil));
+                .ForMember(s => s.ScoreCeil, m => m.MapFrom(l => l.ScoreCeil))
+                .ForMember(s => s.LevelWatchVideoMultiplier, m => m.MapFrom(l => l.LevelWatchVideoMultiplier));
         }
     }
 }

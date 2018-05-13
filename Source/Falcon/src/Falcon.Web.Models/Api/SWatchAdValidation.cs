@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Falcon.Web.Models.Api
 {
@@ -19,5 +14,7 @@ namespace Falcon.Web.Models.Api
 
         [Required(AllowEmptyStrings =false)]
         public string WatchAdId { get; set; }
+        public bool IsLevel { get; set; }
+        public int LevelNumber { get; set; }
     }
 }

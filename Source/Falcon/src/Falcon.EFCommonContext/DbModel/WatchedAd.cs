@@ -18,7 +18,11 @@ namespace Falcon.EFCommonContext.DbModel
         public int UserID { get; set; }
         public Nullable<int> WatchAdProviderId { get; set; }
         public string WatchAdId { get; set; }
+        public bool IsLevel { get; set; }
+        public int LevelNumber { get; set; }
+        public bool Consumed { get; set; }
         public System.DateTime InsertDate { get; set; }
+        public System.DateTime UpdatedDate { get; set; }
     
         public virtual User User { get; set; }
         public virtual WatchAdProvider WatchAdProvider { get; set; }

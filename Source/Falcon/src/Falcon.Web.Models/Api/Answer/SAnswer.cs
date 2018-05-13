@@ -26,5 +26,7 @@ namespace Falcon.Web.Models.Api
         [Required]
         public bool SendQuestion { get; set; }
 
+        public SWatchAdValidation  WatchedAd { get; set; }
+            
     }
 }

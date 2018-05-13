@@ -8,6 +8,10 @@ namespace Falcon.Web.Models.Api
         public int UserID { get; set; }
         public int? WatchAdProviderId { get; set; }
         public string WatchAdId { get; set; }
+        public bool IsLevel { get; set; }
+        public int LevelNumber { get; set; }
+        public bool Consumed { get; set; }
         public DateTime InsertDate { get; set; }
+        public DateTime UpdatedDate { get; set; }
     }
 }

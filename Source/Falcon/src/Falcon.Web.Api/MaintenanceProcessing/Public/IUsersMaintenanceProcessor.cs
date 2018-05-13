@@ -11,7 +11,7 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Public
         /// </summary>
         /// <param name="Prize"></param>
         /// <returns></returns>
-        Task<int> LevelUp(int Prize); 
+        Task<int> LevelUp(int Prize , int WatchedAdMultiplier); 
 
         Task<string> CreateNewUser(SUserRegistrationForm RegistrationForm);
 

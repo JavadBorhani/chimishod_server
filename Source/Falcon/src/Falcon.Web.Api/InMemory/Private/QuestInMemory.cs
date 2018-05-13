@@ -238,6 +238,15 @@ namespace Falcon.Web.Api.InMemory.Private
             return mQuests.Values.ToList();
         }
 
+        public int GetLevelWatchVideoMultiplier(int LevelNumber)
+        {
+            if (mLevels.ContainsKey(LevelNumber))
+            {
+                return mLevels[LevelNumber].LevelWatchVideoMultiplier;
+            }
+            return -1;
+        }
+
         public ConcurrentDictionary<int, Tuple<SFinaleQuest, List<int>>> Barretts
         {
             get

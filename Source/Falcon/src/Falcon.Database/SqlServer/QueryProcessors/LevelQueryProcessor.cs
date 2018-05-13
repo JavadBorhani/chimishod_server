@@ -25,6 +25,7 @@ namespace Falcon.Database.SqlServer.QueryProcessors
                     CoinPrize = s.CoinPrize,
                     LevelNumber = s.LevelNumber,
                     ScoreCeil = s.ScoreCeil,
+                    LevelWatchVideoMultiplier = s.LevelWatchVideoMultiplier
                 })
                 .ToArrayAsync();
 

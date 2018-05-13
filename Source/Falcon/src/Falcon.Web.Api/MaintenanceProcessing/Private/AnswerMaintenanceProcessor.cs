@@ -1,5 +1,6 @@
 ﻿using Falcon.Common.Security;
 using Falcon.Data.QueryProcessors;
+using Falcon.Web.Api.InMemory.Public;
 using Falcon.Web.Api.MaintenanceProcessing.Public;
 using Falcon.Web.Models.Api;
 using Falcon.Web.Models.Api.Answer;
@@ -18,6 +19,8 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
         private readonly SClientAppState mClientAppState;
         private readonly IUserQuestAnswerQueryProcessor mUserQuestAnswer;
         private readonly IQuestsMaintenanceProcessor mQuestsMaintenance;
+        private readonly IWatchAdMaintenanceProcessor mWatchAdMaintenanceProcessor;
+        private readonly IQuestInMemory mQuestInMemory;
 
         public AnswerMaintenanceProcessor
             (
@@ -28,7 +31,9 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
             IUserQueryProcessor UserQuery,
             IClientApplicationState ClientAppState,
             IUserQuestAnswerQueryProcessor UserQuestAnswer,
-            IQuestsMaintenanceProcessor QuestsMaintenance
+            IQuestsMaintenanceProcessor QuestsMaintenance,
+            IWatchAdMaintenanceProcessor WatchAdMaintenanceProcessor,
+            IQuestInMemory QuestInMemory
             )
         {
             mUserSession = UserSession;
@@ -39,6 +44,8 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
             mClientAppState = ClientAppState.State();
             mUserQuestAnswer = UserQuestAnswer;
             mQuestsMaintenance = QuestsMaintenance;
+            mWatchAdMaintenanceProcessor = WatchAdMaintenanceProcessor;
+            mQuestInMemory = QuestInMemory;
         }
 
         public async Task<bool> SaveReportedAnswer(int QuestionID)
@@ -92,7 +99,19 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
                             await mUserQuery.IncreaseCoin(actionCoin);
                         }
 
-                        var coin = await mUserMaintenance.LevelUp(mClientAppState.XPLevelFactor);
+                        int watchedAdMultiplier = 1;
+
+                        if(Answer.WatchedAd != null)
+                        {
+                            var validateVideo = await mWatchAdMaintenanceProcessor.ValidateLevelUpWatchAd(Answer.WatchedAd); 
+
+                            if(validateVideo)
+                            {
+                                watchedAdMultiplier = mQuestInMemory.GetLevelWatchVideoMultiplier(Answer.WatchedAd.LevelNumber);
+                            }
+                        }
+
+                        var coin = await mUserMaintenance.LevelUp(mClientAppState.XPLevelFactor , watchedAdMultiplier);
 
                         return true;
                     }

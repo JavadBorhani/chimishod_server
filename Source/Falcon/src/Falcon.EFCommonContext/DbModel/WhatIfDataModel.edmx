@@ -112,15 +112,6 @@
           <Property Name="DefaultUserQuestNumber" Type="int" />
           <Property Name="DefaultUserQuestProgress" Type="int" Nullable="false" />
         </EntityType>
-        <EntityType Name="Gap">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="chat_id" Type="int" />
-          <Property Name="type" Type="nvarchar" MaxLength="500" />
-          <Property Name="data" Type="text" />
-        </EntityType>
         <EntityType Name="HashTag">
           <Key>
             <PropertyRef Name="ID" />
@@ -135,6 +126,7 @@
           <Property Name="LevelNumber" Type="int" Nullable="false" />
           <Property Name="CoinPrize" Type="int" Nullable="false" />
           <Property Name="ScoreCeil" Type="int" Nullable="false" />
+          <Property Name="LevelWatchVideoMultiplier" Type="int" Nullable="false" />
           <Property Name="CreatedDate" Type="datetime" Nullable="false" />
           <Property Name="UpdatedDate" Type="datetime" Nullable="false" />
         </EntityType>
@@ -571,7 +563,11 @@
           <Property Name="UserID" Type="int" Nullable="false" />
           <Property Name="WatchAdProviderId" Type="int" />
           <Property Name="WatchAdId" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="IsLevel" Type="bit" Nullable="false" />
+          <Property Name="LevelNumber" Type="int" Nullable="false" />
+          <Property Name="Consumed" Type="bit" Nullable="false" />
           <Property Name="InsertDate" Type="datetime" Nullable="false" />
+          <Property Name="UpdatedDate" Type="datetime" Nullable="false" />
         </EntityType>
         <Association Name="FK_AchievedCodeGift_CodeGift">
           <End Role="CodeGift" Type="Self.CodeGift" Multiplicity="1">
@@ -1286,7 +1282,6 @@
           <EntitySet Name="Feedback" EntityType="Self.Feedback" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="FeedbackTypes" EntityType="Self.FeedbackTypes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="GameConfig" EntityType="Self.GameConfig" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Gap" EntityType="Self.Gap" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="HashTag" EntityType="Self.HashTag" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Level" EntityType="Self.Level" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MarketInfo" EntityType="Self.MarketInfo" Schema="dbo" store:Type="Tables" />
@@ -1588,7 +1583,6 @@
           <EntitySet Name="Feedbacks" EntityType="Falcon.DbModel.Feedback" />
           <EntitySet Name="FeedbackTypes" EntityType="Falcon.DbModel.FeedbackType" />
           <EntitySet Name="GameConfigs" EntityType="Falcon.DbModel.GameConfig" />
-          <EntitySet Name="Gaps" EntityType="Falcon.DbModel.Gap" />
           <EntitySet Name="HashTags" EntityType="Falcon.DbModel.HashTag" />
           <EntitySet Name="Levels" EntityType="Falcon.DbModel.Level" />
           <EntitySet Name="MarketInfoes" EntityType="Falcon.DbModel.MarketInfo" />
@@ -1993,15 +1987,6 @@
           <Property Name="DefaultUserQuestNumber" Type="Int32" />
           <Property Name="DefaultUserQuestProgress" Type="Int32" Nullable="false" />
         </EntityType>
-        <EntityType Name="Gap">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="chat_id" Type="Int32" />
-          <Property Name="type" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="data" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-        </EntityType>
         <EntityType Name="HashTag">
           <Key>
             <PropertyRef Name="ID" />
@@ -2017,6 +2002,7 @@
           <Property Name="LevelNumber" Type="Int32" Nullable="false" />
           <Property Name="CoinPrize" Type="Int32" Nullable="false" />
           <Property Name="ScoreCeil" Type="Int32" Nullable="false" />
+          <Property Name="LevelWatchVideoMultiplier" Type="Int32" Nullable="false" />
           <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="UpdatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="QuestPeopleScores" Relationship="Falcon.DbModel.FK_QuestPeopleScore_Level" FromRole="Level" ToRole="QuestPeopleScore" />
@@ -2522,7 +2508,11 @@
           <Property Name="UserID" Type="Int32" Nullable="false" />
           <Property Name="WatchAdProviderId" Type="Int32" />
           <Property Name="WatchAdId" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="IsLevel" Type="Boolean" Nullable="false" />
+          <Property Name="LevelNumber" Type="Int32" Nullable="false" />
+          <Property Name="Consumed" Type="Boolean" Nullable="false" />
           <Property Name="InsertDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UpdatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="User" Relationship="Falcon.DbModel.FK_WatchedAd_User" FromRole="WatchedAd" ToRole="User" />
           <NavigationProperty Name="WatchAdProvider" Relationship="Falcon.DbModel.FK_WatchedAd_WatchAdProvider" FromRole="WatchedAd" ToRole="WatchAdProvider" />
         </EntityType>
@@ -3374,16 +3364,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Gaps">
-            <EntityTypeMapping TypeName="Falcon.DbModel.Gap">
-              <MappingFragment StoreEntitySet="Gap">
-                <ScalarProperty Name="data" ColumnName="data" />
-                <ScalarProperty Name="type" ColumnName="type" />
-                <ScalarProperty Name="chat_id" ColumnName="chat_id" />
-                <ScalarProperty Name="id" ColumnName="id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="HashTags">
             <EntityTypeMapping TypeName="Falcon.DbModel.HashTag">
               <MappingFragment StoreEntitySet="HashTag">
@@ -3397,6 +3377,7 @@
               <MappingFragment StoreEntitySet="Level">
                 <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="LevelWatchVideoMultiplier" ColumnName="LevelWatchVideoMultiplier" />
                 <ScalarProperty Name="ScoreCeil" ColumnName="ScoreCeil" />
                 <ScalarProperty Name="CoinPrize" ColumnName="CoinPrize" />
                 <ScalarProperty Name="LevelNumber" ColumnName="LevelNumber" />
@@ -3840,7 +3821,11 @@
           <EntitySetMapping Name="WatchedAds">
             <EntityTypeMapping TypeName="Falcon.DbModel.WatchedAd">
               <MappingFragment StoreEntitySet="WatchedAd">
+                <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
                 <ScalarProperty Name="InsertDate" ColumnName="InsertDate" />
+                <ScalarProperty Name="Consumed" ColumnName="Consumed" />
+                <ScalarProperty Name="LevelNumber" ColumnName="LevelNumber" />
+                <ScalarProperty Name="IsLevel" ColumnName="IsLevel" />
                 <ScalarProperty Name="WatchAdId" ColumnName="WatchAdId" />
                 <ScalarProperty Name="WatchAdProviderId" ColumnName="WatchAdProviderId" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />

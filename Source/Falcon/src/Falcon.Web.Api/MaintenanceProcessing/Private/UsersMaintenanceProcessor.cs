@@ -52,7 +52,7 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
             mQuestionQuery = QuestionQuery; 
         }
 
-        public async Task<int> LevelUp(int Prize)
+        public async Task<int> LevelUp(int Prize , int WatchedAdMultiplier)
         {
             var totalCoin = Constants.DefaultValues.NoNewCoin;
 
@@ -71,7 +71,7 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
 
                     if (levelPrize >= 0)
                     {
-                        totalCoin = await mUserQuery.IncreaseCoin(levelPrize);
+                        totalCoin = await mUserQuery.IncreaseCoin(levelPrize  * WatchedAdMultiplier);
                     }
                 }
 

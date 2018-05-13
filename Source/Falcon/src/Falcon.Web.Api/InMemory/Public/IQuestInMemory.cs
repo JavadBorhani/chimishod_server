@@ -18,5 +18,6 @@ namespace Falcon.Web.Api.InMemory.Public
         ConcurrentDictionary<int, Tuple<SFinaleQuest, List<int>>> Barretts { get; }
         List<int> GetAllBarretTypes();
         List<SQuest> GetAllQuestItems();
+        int GetLevelWatchVideoMultiplier(int LevelNumber);
     }
 }

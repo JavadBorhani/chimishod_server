@@ -1,14 +1,12 @@
-﻿using Falcon.Data.QueryProcessors;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Falcon.EFCommonContext.DbModel;
+﻿using Falcon.Common;
+using Falcon.Common.Security;
+using Falcon.Data.QueryProcessors;
 using Falcon.EFCommonContext;
-using Falcon.Common;
-using System.Data.Entity;
+using Falcon.EFCommonContext.DbModel;
 using Falcon.Web.Models.Api;
+using System.Data.Entity;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Falcon.Database.SqlServer.QueryProcessors
 {
@@ -17,21 +15,28 @@ namespace Falcon.Database.SqlServer.QueryProcessors
 
         private readonly IDbContext mDb;
         private readonly IDateTime mDateTime;
+        private readonly IUserSession mUserSession;
 
-        public WatchAdQueryProcessor(IDbContext Database , IDateTime DateTime)
+        public WatchAdQueryProcessor(IDbContext Database , IDateTime DateTime , IUserSession UserSession)
         {
             mDb = Database;
             mDateTime = DateTime;
+            mUserSession = UserSession;
         }
+
         public async Task<bool> AddWatchedInfo(SWatchedAd newWatchedAd)
         {
 
             mDb.Set<WatchedAd>().Add(new WatchedAd
             {
+                UserID = newWatchedAd.UserID , 
                 WatchAdId = newWatchedAd.WatchAdId,
-                InsertDate = newWatchedAd.InsertDate,
                 WatchAdProviderId = newWatchedAd.WatchAdProviderId,
-                UserID = newWatchedAd.UserID
+                IsLevel = newWatchedAd.IsLevel,
+                LevelNumber = newWatchedAd.LevelNumber,
+                Consumed = newWatchedAd.Consumed,
+                InsertDate = newWatchedAd.InsertDate,
+                UpdatedDate = newWatchedAd.UpdatedDate,
             });
 
             await mDb.SaveChangesAsync();
@@ -40,7 +45,30 @@ namespace Falcon.Database.SqlServer.QueryProcessors
 
         public async Task<bool> IsExists(string WatchAdId)
         {
-            return await mDb.Set<WatchedAd>().CountAsync(wa => wa.WatchAdId == WatchAdId) > 0 ;
+            var response = await mDb.Set<WatchedAd>()
+                .AsNoTracking()
+                .AnyAsync(wa => wa.WatchAdId == WatchAdId);
+
+            return response;
+        }
+
+        public async Task<WatchedAd> GetByWatchAdID(string WatchAdID)
+        {
+            var response = await mDb.Set<WatchedAd>()
+                .AsNoTracking()
+                .Where(u => u.WatchAdId == WatchAdID)
+                .SingleOrDefaultAsync();
+
+            return response;
+        }
+
+        public async Task<bool> IsExists(string WatchAdId, int LevelNumber)
+        {
+            var response = await mDb.Set<WatchedAd>()
+             .AsNoTracking()
+             .AnyAsync(wa => wa.WatchAdId == WatchAdId || (wa.LevelNumber == LevelNumber && wa.UserID == mUserSession.ID));
+
+            return response;
         }
     }
 }
