@@ -247,7 +247,7 @@
     <Compile Include="Controllers\V2\TelegramController.cs" />
     <Compile Include="Controllers\V2\UserInfoController.cs" />
     <Compile Include="Controllers\V2\UsersController.cs" />
-    <Compile Include="InMemory\Private\NotificationConfigurationInMemory.cs" />
+    <Compile Include="InMemory\Private\QuestionNotifyConfigInMemory.cs" />
     <Compile Include="InMemory\Private\ReportInMemory.cs" />
     <Compile Include="InMemory\Private\TelegramConfigurationInMemory.cs" />
     <Compile Include="InMemory\Public\IQuestionNotifyConfigInMemory.cs" />

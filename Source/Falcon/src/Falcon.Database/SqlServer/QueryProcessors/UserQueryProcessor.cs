@@ -513,13 +513,15 @@ namespace Falcon.Database.SqlServer.QueryProcessors
                 if (NextQuestNumber > LastQuestNumber)
                     return info;
 
+                var currentQuestNumber = User.QuestNumber;
+
                 User.QuestNumber = NextQuestNumber;
                 int remained = (User.QuestProgress + Prize) - CurrentQuestMax;
                 User.QuestProgress = remained;
                 User.QuestPurchased = false;    
 
                 info.QuestUpMode = QuestUpMode.QuestUpped;
-                info.QuestUpNumber = NextQuestNumber;
+                info.QuestUpNumber = currentQuestNumber ?? -1;
             }
             else
             {

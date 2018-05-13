@@ -1,7 +1,8 @@
-﻿using Falcon.Web.Api.InMemory.Public;
+﻿using Falcon.EFCommonContext.DbModel;
+using Falcon.Web.Api.InMemory.Public;
 using Falcon.Web.Api.JobSystem.Public;
 using Falcon.Web.Common;
-using Hangfire;
+using System.Collections.Generic;
 
 namespace Falcon.Web.Api.JobSystem.Private.Jobs
 {
@@ -9,7 +10,7 @@ namespace Falcon.Web.Api.JobSystem.Private.Jobs
     {
         public override void ActivateMode()
         {
-            mJobManager.AddOrUpdate(() => StartJob(), Cron.HourInterval(3));
+            //mJobManager.AddOrUpdate(() => StartJob(), Cron.HourInterval(3));
         }
 
         public override string StartJob()
@@ -42,10 +43,17 @@ namespace Falcon.Web.Api.JobSystem.Private.Jobs
 
         private int CalculateSystem()
         {
-            
-            return 1; 
+
+            return 1;
         }
 
+
+        private bool SaveNotifications(List<QuestionNotification> Questions)
+        {
+            mDb.Set<QuestionNotification>().AddRange(Questions);
+            mDb.SaveChanges();
+            return false;
+        }
 
     }
 }

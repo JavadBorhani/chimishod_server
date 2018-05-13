@@ -109,9 +109,9 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
             return false;   
         }
 
-        public async Task<bool> TakeSnapshot()
+        public async Task<bool> TakeSnapshot(int QuestNumber)
         {
-            int questNumber = mMemory.LoadState<int>(GlobalVariables.QuestToTakeSnapshot);
+            int questNumber = QuestNumber;
 
             var quest = mQuestInMemory.GetQuestByQuestNumber(questNumber);
 
@@ -170,7 +170,7 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
 
                     if (status.QuestUpMode == QuestUpMode.QuestUpped)
                     {
-                        await TakeSnapshot();
+                        await TakeSnapshot(status.QuestUpNumber);
                     }
                 }
 
