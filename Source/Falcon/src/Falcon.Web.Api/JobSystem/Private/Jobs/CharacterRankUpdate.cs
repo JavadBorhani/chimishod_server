@@ -17,6 +17,13 @@ namespace Falcon.Web.Api.JobSystem.Private.Jobs
             EndTransaction();
 
             return "Message : " + value;
+
+         
         }
+        private void CalculateQuestion()
+        {
+
+        }
+
     }
 }

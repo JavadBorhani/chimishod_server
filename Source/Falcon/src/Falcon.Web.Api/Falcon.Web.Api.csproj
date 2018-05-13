@@ -193,6 +193,7 @@
     <Compile Include="AutoMappingConfiguration\ClientAppStateMap\SClientAppStateToClientVersionInfoAutoTypeConfiguration.cs" />
     <Compile Include="AutoMappingConfiguration\Feedback\FeedbackTypeToSFeedbackTypeAutoTypeConfiguration.cs" />
     <Compile Include="AutoMappingConfiguration\Notification\NotificationSystemConfigurationToSNotificationConfigAutoTypeConfiguration.cs" />
+    <Compile Include="AutoMappingConfiguration\Notification\Question\QuestionNotifyConfigToSQuestionNotifyConfigAutoTypeConfiguration.cs" />
     <Compile Include="AutoMappingConfiguration\QuestionMap\ActionQuestion\QuestionActionToSQuestionActionAuthoTypeConfiguration.cs" />
     <Compile Include="AutoMappingConfiguration\QuestionMap\QuestionToSQuestionAutoTypeConfiguration.cs" />
     <Compile Include="AutoMappingConfiguration\QuestMap\QuestScore\QuestScoreSnapshotToSQuestScoreSnapshotAutoTypeConfiguration.cs" />
@@ -246,8 +247,10 @@
     <Compile Include="Controllers\V2\TelegramController.cs" />
     <Compile Include="Controllers\V2\UserInfoController.cs" />
     <Compile Include="Controllers\V2\UsersController.cs" />
+    <Compile Include="InMemory\Private\NotificationConfigurationInMemory.cs" />
     <Compile Include="InMemory\Private\ReportInMemory.cs" />
     <Compile Include="InMemory\Private\TelegramConfigurationInMemory.cs" />
+    <Compile Include="InMemory\Public\IQuestionNotifyConfigInMemory.cs" />
     <Compile Include="InMemory\Public\IQuestInMemory.cs" />
     <Compile Include="InMemory\Public\IReportInMemory.cs" />
     <Compile Include="InMemory\Public\ITelegramConfigurationInMemory.cs" />

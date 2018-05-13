@@ -15,6 +15,7 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
         private readonly IUsersInMemory mUserInMemory;
         private readonly IReportInMemory mReportInMemory;
         private readonly ITelegramConfigurationInMemory mTelegramConfiguration;
+        private readonly IQuestionNotifyConfigInMemory mQuestionNotifyConfig;
 
         public ServerInquiryProcessor(
             IClientApplicationState ClientAppState ,
@@ -24,7 +25,8 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
             INotificationData Notification , 
             IUsersInMemory UserInMemory,
             IReportInMemory ReportInMemory , 
-            ITelegramConfigurationInMemory TelegramConfiguration)
+            ITelegramConfigurationInMemory TelegramConfiguration , 
+            IQuestionNotifyConfigInMemory QuestionNotifyConfig)
         {
             mNotificationData = Notification;
             mClientAppState = ClientAppState;
@@ -34,6 +36,7 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
             mUserInMemory = UserInMemory;
             mReportInMemory = ReportInMemory;
             mTelegramConfiguration = TelegramConfiguration;
+            mQuestionNotifyConfig = QuestionNotifyConfig;
         }
         public bool ReadConfigurationFilesFromServer()
         {
@@ -45,6 +48,7 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
             mUserInMemory.ReadStateFromDatabase();
             mReportInMemory.ReadStateFromDatabase();
             mTelegramConfiguration.ReadStateFromDatabase();
+            mQuestionNotifyConfig.ReadStateFromDatabase();
 
             return true;
         }

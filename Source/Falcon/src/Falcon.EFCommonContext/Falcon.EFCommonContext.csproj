@@ -164,6 +164,12 @@
     <Compile Include="DbModel\QuestionAction.cs">
       <DependentUpon>WhatIfDataModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="DbModel\QuestionNotification.cs">
+      <DependentUpon>WhatIfDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DbModel\QuestionNotificationConfiguration.cs">
+      <DependentUpon>WhatIfDataModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="DbModel\QuestPeopleScore.cs">
       <DependentUpon>WhatIfDataModel.tt</DependentUpon>
     </Compile>

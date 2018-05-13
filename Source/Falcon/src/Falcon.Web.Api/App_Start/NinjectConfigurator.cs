@@ -220,6 +220,11 @@ namespace Falcon.Web.Api
 
             //Telegram Data From Database
             container.Bind<ITelegramConfigurationInMemory>().To<TelegramConfigurationInMemory>().InSingletonScope();
+
+            //Question Notification Configuration
+            container.Bind<IQuestionNotifyConfigInMemory>().To<QuestionNotifyConfigInMemory>().InSingletonScope();
+
+
         }
 
         private void AddAdHoc(IKernel container)

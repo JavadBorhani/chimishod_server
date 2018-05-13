@@ -112,10 +112,12 @@
     <Compile Include="Api\Notification\Client\SFriendResponse.cs" />
     <Compile Include="Api\Notification\Client\SInboxQuestion.cs" />
     <Compile Include="Api\Notification\Client\SFriendStatus.cs" />
+    <Compile Include="Api\Notification\Client\SQuestionStateNotification.cs" />
     <Compile Include="Api\Notification\Client\SSentQuestion.cs" />
     <Compile Include="Api\Notification\RequestCommonInfo.cs" />
     <Compile Include="Api\Notification\SNotificationConfig.cs" />
     <Compile Include="Api\Notification\SNotificationID.cs" />
+    <Compile Include="Api\Notification\SQuestionNotificationConfiguration.cs" />
     <Compile Include="Api\Polling\SClientPollingData.cs" />
     <Compile Include="Api\Polling\SPollingInquiry.cs" />
     <Compile Include="Api\Purchase\IPurchase.cs" />

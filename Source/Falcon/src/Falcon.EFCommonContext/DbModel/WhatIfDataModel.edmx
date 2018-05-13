@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="Falcon.DbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="Falcon.DbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="AchievedCodeGift">
           <Key>
             <PropertyRef Name="ID" />
@@ -270,6 +270,28 @@
           <Property Name="MarketPackageName" Type="varchar" MaxLength="100" />
           <Property Name="MarketIntentString" Type="varchar" MaxLength="100" />
           <Property Name="AppStoreUri" Type="varchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="QuestionNotification">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="QuestionID" Type="int" Nullable="false" />
+          <Property Name="QuestionSentAmount" Type="int" Nullable="false" />
+          <Property Name="QuestionAnswerAmount" Type="int" Nullable="false" />
+          <Property Name="InsertedDate" Type="datetime" Nullable="false" />
+          <Property Name="UpdatedDate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="QuestionNotificationConfiguration">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="QuestionAnswerCountMinRange" Type="int" Nullable="false" />
+          <Property Name="QuestionAnswerCountMaxRange" Type="int" Nullable="false" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+          <Property Name="InsertedDate" Type="datetime" Nullable="false" />
+          <Property Name="UpdatedDate" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="QuestPeopleScore">
           <Key>
@@ -1293,6 +1315,8 @@
           <EntitySet Name="Quest" EntityType="Self.Quest" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Question" EntityType="Self.Question" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="QuestionAction" EntityType="Self.QuestionAction" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="QuestionNotification" EntityType="Self.QuestionNotification" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="QuestionNotificationConfiguration" EntityType="Self.QuestionNotificationConfiguration" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="QuestPeopleScore" EntityType="Self.QuestPeopleScore" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="QuestQuestions" EntityType="Self.QuestQuestions" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="QuestQuestionsAnswer" EntityType="Self.QuestQuestionsAnswer" Schema="dbo" store:Type="Tables" />
@@ -1534,7 +1558,8 @@
             <End Role="WatchedAd" EntitySet="WatchedAd" />
           </AssociationSet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="Falcon.DbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -1594,6 +1619,8 @@
           <EntitySet Name="Quests" EntityType="Falcon.DbModel.Quest" />
           <EntitySet Name="Questions" EntityType="Falcon.DbModel.Question" />
           <EntitySet Name="QuestionActions" EntityType="Falcon.DbModel.QuestionAction" />
+          <EntitySet Name="QuestionNotifications" EntityType="Falcon.DbModel.QuestionNotification" />
+          <EntitySet Name="QuestionNotificationConfigurations" EntityType="Falcon.DbModel.QuestionNotificationConfiguration" />
           <EntitySet Name="QuestPeopleScores" EntityType="Falcon.DbModel.QuestPeopleScore" />
           <EntitySet Name="QuestQuestions" EntityType="Falcon.DbModel.QuestQuestion" />
           <EntitySet Name="QuestScores" EntityType="Falcon.DbModel.QuestScore" />
@@ -1832,7 +1859,7 @@
             <End Role="WatchAdProvider" EntitySet="WatchAdProviders" />
             <End Role="WatchedAd" EntitySet="WatchedAds" />
           </AssociationSet>
-          </EntityContainer>
+        </EntityContainer>
         <ComplexType Name="sp_helpdiagramdefinition_Result">
           <Property Type="Int32" Name="version" Nullable="true" />
           <Property Type="Binary" Name="definition" Nullable="true" />
@@ -1858,7 +1885,7 @@
           <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="Question" Relationship="Falcon.DbModel.FK_QuestQuestionsAnswer_Question" FromRole="QuestQuestionsAnswer" ToRole="Question" />
           <NavigationProperty Name="User" Relationship="Falcon.DbModel.FK_QuestQuestionsAnswer_User" FromRole="QuestQuestionsAnswer" ToRole="User" />
-          </EntityType>
+        </EntityType>
         <EntityType Name="QuestQuestionType">
           <Key>
             <PropertyRef Name="ID" />
@@ -2178,6 +2205,28 @@
           <Property Name="AppStoreUri" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Questions" Relationship="Falcon.DbModel.FK_Question_QuestionAction" FromRole="QuestionAction" ToRole="Question" />
         </EntityType>
+        <EntityType Name="QuestionNotification">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="QuestionID" Type="Int32" Nullable="false" />
+          <Property Name="QuestionSentAmount" Type="Int32" Nullable="false" />
+          <Property Name="QuestionAnswerAmount" Type="Int32" Nullable="false" />
+          <Property Name="InsertedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UpdatedDate" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="QuestionNotificationConfiguration">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="QuestionAnswerCountMinRange" Type="Int32" Nullable="false" />
+          <Property Name="QuestionAnswerCountMaxRange" Type="Int32" Nullable="false" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <Property Name="InsertedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UpdatedDate" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
         <EntityType Name="QuestPeopleScore">
           <Key>
             <PropertyRef Name="ID" />
@@ -2425,7 +2474,7 @@
           <Property Name="APILevel" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Device" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Model" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="RowVersion" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="RowVersion" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" ConcurrencyMode="Fixed" />
           <Property Name="IPAddress" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="AvatarImagePath" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="Activated" Type="Boolean" Nullable="false" />
@@ -3218,7 +3267,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        </Schema>
+      </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -3534,6 +3583,30 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="QuestionNotifications">
+            <EntityTypeMapping TypeName="Falcon.DbModel.QuestionNotification">
+              <MappingFragment StoreEntitySet="QuestionNotification">
+                <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
+                <ScalarProperty Name="InsertedDate" ColumnName="InsertedDate" />
+                <ScalarProperty Name="QuestionAnswerAmount" ColumnName="QuestionAnswerAmount" />
+                <ScalarProperty Name="QuestionSentAmount" ColumnName="QuestionSentAmount" />
+                <ScalarProperty Name="QuestionID" ColumnName="QuestionID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="QuestionNotificationConfigurations">
+            <EntityTypeMapping TypeName="Falcon.DbModel.QuestionNotificationConfiguration">
+              <MappingFragment StoreEntitySet="QuestionNotificationConfiguration">
+                <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
+                <ScalarProperty Name="InsertedDate" ColumnName="InsertedDate" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="QuestionAnswerCountMaxRange" ColumnName="QuestionAnswerCountMaxRange" />
+                <ScalarProperty Name="QuestionAnswerCountMinRange" ColumnName="QuestionAnswerCountMinRange" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="QuestPeopleScores">
             <EntityTypeMapping TypeName="Falcon.DbModel.QuestPeopleScore">
               <MappingFragment StoreEntitySet="QuestPeopleScore">
@@ -3833,7 +3906,7 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          </EntityContainerMapping>
+        </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
   </edmx:Runtime>

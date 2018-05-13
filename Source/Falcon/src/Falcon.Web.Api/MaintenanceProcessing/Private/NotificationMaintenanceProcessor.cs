@@ -137,7 +137,7 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
             var notification = new SClientNotificationData()
             {
 
-                InboxQuestion = new System.Collections.Generic.List<SInboxQuestion>()
+                InboxQuestion = new List<SInboxQuestion>()
                 {
                     new SInboxQuestion
                     {
@@ -195,6 +195,36 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
             mJobManager.Enqueue(() => mNotificationSystem.SendRequest( notification, Info , null , includeSegments));
 
             return Task.FromResult(true);
+        }
+
+        public async Task<bool> SendQuestionState(int[] FrinedIds, int AnswerAmount)
+        {
+            var friendNotificationIDs = await mUserQuery.GetNotificationIDs(FrinedIds);
+            var message = $"سوالت {AnswerAmount} پاسخ گرفته؛ بیا ببین مردم چی گفتن!!!";
+
+            var notification = new SClientNotificationData()
+            {                
+                QuestionState = new List<SQuestionStateNotification>()
+                {
+                    new SQuestionStateNotification
+                    {
+                        Message = message
+                    }
+                },
+                ServerDate = mDateTime.Now,
+                Type = NotificationType.QuestionState
+            };
+
+            RequestCommonInfo Info = new RequestCommonInfo
+            {
+                Title = Constants.CommonStrings.Default,
+                Descrption = Constants.CommonStrings.Default,
+                ImageUrl = Constants.CommonStrings.Default,
+            };
+
+            mJobManager.Enqueue(() => mNotificationSystem.SendRequest(notification, Info, friendNotificationIDs, null));
+
+            return true;
         }
     }
 }
