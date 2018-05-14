@@ -73,14 +73,15 @@ namespace Falcon.Web.Api.Controllers.V2
         {
             var purchased = await mQuestMaintenace.PurchaseQuest(QuestNumber);
 
-            if(purchased)
+            if(purchased != -1)
             {
                 var questions = await mQuestInqiury.GetQuestQuestions(QuestNumber);
 
                 var response = new SQuestPurchase()
                 {
                     Contents = questions,
-                    Purchased = purchased
+                    TotalCoin = purchased,
+                    Purchased = true,
                 };
 
                 return response;

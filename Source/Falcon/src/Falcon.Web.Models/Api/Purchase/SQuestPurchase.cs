@@ -18,9 +18,7 @@
                 mContents = value;
             }
         }
-
-        
-
+       
         public bool Purchased
         {
             get

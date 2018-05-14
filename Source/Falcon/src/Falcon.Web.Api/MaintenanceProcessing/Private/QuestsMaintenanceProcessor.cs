@@ -180,7 +180,7 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
             return false;
         }
 
-        public async Task<bool> PurchaseQuest(int QuestNumber)
+        public async Task<int> PurchaseQuest(int QuestNumber)
         {
             var quest = mQuestInMemory.GetQuestByQuestNumber(QuestNumber);
             if(quest != null)
@@ -201,16 +201,17 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
                         await mQuestsQueryProcessor.Purchase(QuestNumber);
                         await mUserQuery.SetQuest(QuestNumber , true);
 
-                        return true;
+                        return totalCoin;
                     }
                     else
                     {
-                        return false;   
+                        return -1;   
                     }    
                 }
-                return true;
+                var coinAmount = await mUserQuery.GetTotalCoin();
+                return coinAmount;
             }
-            return false;
+            return -1;
         }
     }
 }

@@ -8,6 +8,6 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Public
         Task<bool> AddScore(int QuestionID , int CurrentUserQuestNumber, bool IsYes);
         Task<bool> TakeSnapshot(int QuestNumber);
         Task<bool> SaveQuestQuestionAnswer(SQuestAnswer Answer);
-        Task<bool> PurchaseQuest(int QuestNumber);
+        Task<int> PurchaseQuest(int QuestNumber);
     }
 }
