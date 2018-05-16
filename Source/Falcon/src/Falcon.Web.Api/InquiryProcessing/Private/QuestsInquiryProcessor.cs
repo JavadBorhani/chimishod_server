@@ -127,7 +127,6 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
 
                 return response.Length > 0 ? response : null;
             }
-
             return null;
         }
 

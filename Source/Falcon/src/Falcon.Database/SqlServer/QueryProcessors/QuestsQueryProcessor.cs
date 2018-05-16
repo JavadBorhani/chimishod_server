@@ -95,9 +95,13 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             var questions = await mDb.Set<QuestQuestion>()
                 .AsNoTracking()
                 .Where(q => q.QuestNumber == QuestNumber)
-                .OrderBy(q => q.Priority)
-                .Select(q => q.QuestionID)
-                .Join(mDb.Set<Question>(), QuestionID => QuestionID, Question => Question.ID, (QuestionID, Question) => Question)
+                .Join(mDb.Set<Question>(), QuestQuestion => QuestQuestion.QuestionID , Question => Question.ID, (QuestQuestion, Question) => new
+                {
+                    Priority = QuestQuestion.Priority,
+                    Question = Question
+                })
+                .OrderBy( u => u.Priority)
+                .Select( u => u.Question)
                 .Include(s => s.QuestionAction)
                 .ToArrayAsync();
 

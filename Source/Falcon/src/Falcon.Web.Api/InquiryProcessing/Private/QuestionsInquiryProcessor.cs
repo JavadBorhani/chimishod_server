@@ -82,6 +82,7 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
             config.FunQuestionsPercent = (int)(((float)Config.FunQuestionsPercent / 100) * Config.TotalNumberOfQuestions);
             config.HighQualityQuestionsPercent = (int)(((float)Config.HighQualityQuestionsPercent / 100) * Config.TotalNumberOfQuestions);
 
+
             return config;
         }
 
