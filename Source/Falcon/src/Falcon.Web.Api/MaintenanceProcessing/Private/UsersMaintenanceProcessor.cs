@@ -67,7 +67,6 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
 
                 if (info.LevelUpMode != LevelUpMode.NotLeveledUp)
                 {
-                    //var levelPrize = await mUserQuery.GetLevelPrize(info.LevelUpNumber);
                     var levelPrize = mQuestAndLevelInMemory.GetLevelPrize(info.LevelUpNumber);
 
                     if (levelPrize >= 0)

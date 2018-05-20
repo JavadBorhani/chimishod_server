@@ -235,7 +235,7 @@ namespace Falcon.Web.Api
 
 
             //telegram manager
-            container.Bind<ITelegramManager>().To<TelegramManager>().InRequestScope();
+            //container.Bind<ITelegramManager>().To<TelegramManager>().InRequestScope();
 
             container.Bind<IDateTime>().To<DateTimeAdapter>().InSingletonScope();
             container.Bind<IJsonManager>().To<JsonManager>().InSingletonScope();
