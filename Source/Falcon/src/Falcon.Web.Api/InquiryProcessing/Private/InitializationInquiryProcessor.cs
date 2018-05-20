@@ -19,7 +19,7 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
         private readonly IServerInquiryProcessor mServerInquiry;
         private readonly IMapper mMapper;
         private readonly IDateTime mDateTime;
-        private readonly IQuestInMemory mQuestInMemroy;
+        private readonly IQuestAndLevelInMemory mQuestInMemroy;
 
         public InitializationInquiryProcessor
             (
@@ -30,7 +30,7 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
             INotificationData Notification,
             IMapper Mapper , 
             IDateTime DateTime, 
-            IQuestInMemory QuestInMemory
+            IQuestAndLevelInMemory QuestInMemory
             )
         {
             mUsersQuery = UsersQuery;

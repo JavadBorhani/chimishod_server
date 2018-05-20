@@ -210,7 +210,7 @@ namespace Falcon.Web.Api
         private void InMemory(IKernel container)
         {
             //Quest Data in Memory -> should update whenever data is changed in database 
-            container.Bind<IQuestInMemory>().To<QuestInMemory>().InSingletonScope();
+            container.Bind<IQuestAndLevelInMemory>().To<QuestAndLevelInMemory>().InSingletonScope();
 
             //Report In Memory
             container.Bind<IReportInMemory>().To<ReportInMemory>().InSingletonScope();

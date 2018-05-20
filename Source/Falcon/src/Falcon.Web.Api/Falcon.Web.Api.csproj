@@ -251,7 +251,7 @@
     <Compile Include="InMemory\Private\ReportInMemory.cs" />
     <Compile Include="InMemory\Private\TelegramConfigurationInMemory.cs" />
     <Compile Include="InMemory\Public\IQuestionNotifyConfigInMemory.cs" />
-    <Compile Include="InMemory\Public\IQuestInMemory.cs" />
+    <Compile Include="InMemory\Public\IQuestAndLevelInMemory.cs" />
     <Compile Include="InMemory\Public\IReportInMemory.cs" />
     <Compile Include="InMemory\Public\ITelegramConfigurationInMemory.cs" />
     <Compile Include="InquiryProcessing\Private\AchievementInquiryProcessor.cs" />
@@ -270,7 +270,7 @@
     <Compile Include="InquiryProcessing\Private\LevelInMemoryProcessor.cs" />
     <Compile Include="InquiryProcessing\Private\LevelInquiryProcessor.cs" />
     <Compile Include="InquiryProcessing\Private\PollingInquiryProcessor.cs" />
-    <Compile Include="InMemory\Private\QuestInMemory.cs" />
+    <Compile Include="InMemory\Private\QuestAndLevelInMemory.cs" />
     <Compile Include="InquiryProcessing\Private\QuestionReportInquiryProcessor.cs" />
     <Compile Include="InquiryProcessing\Private\QuestionsInquiryProcessor.cs" />
     <Compile Include="InquiryProcessing\Private\QuestsInquiryProcessor.cs" />

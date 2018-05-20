@@ -23,7 +23,7 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
         private readonly IGameConfig mGameConfig;
         private readonly IMemoryStore mMemory;
         private readonly IUsersInMemory mUserInMemory;
-        private readonly IQuestInMemory mQuestInMemory;
+        private readonly IQuestAndLevelInMemory mQuestAndLevelInMemory;
         private readonly IUserSession mUserSession;
         private readonly IQuestionsQueryProcessor mQuestionQuery;
 
@@ -36,7 +36,7 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
             IGameConfig GameConfig , 
             IMemoryStore Memory , 
             IUsersInMemory UserInMemory , 
-            IQuestInMemory QuestInMemory , 
+            IQuestAndLevelInMemory QuestInMemory , 
             IUserSession UserSession , 
             IQuestionsQueryProcessor QuestionQuery)
         {
@@ -47,7 +47,7 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
             mGameConfig = GameConfig;
             mMemory = Memory;
             mUserInMemory = UserInMemory;
-            mQuestInMemory = QuestInMemory;
+            mQuestAndLevelInMemory = QuestInMemory;
             mUserSession = UserSession;
             mQuestionQuery = QuestionQuery; 
         }
@@ -63,11 +63,12 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
             SLevelUpInfo info;
             do
             {
-                info = await mUserQuery.UpdateLevel(Prize , mQuestInMemory.GetLastLevel());
+                info = await mUserQuery.UpdateLevel(Prize , mQuestAndLevelInMemory.GetLastLevel());
 
                 if (info.LevelUpMode != LevelUpMode.NotLeveledUp)
                 {
-                    var levelPrize = await mUserQuery.GetLevelPrize(info.LevelUpNumber);
+                    //var levelPrize = await mUserQuery.GetLevelPrize(info.LevelUpNumber);
+                    var levelPrize = mQuestAndLevelInMemory.GetLevelPrize(info.LevelUpNumber);
 
                     if (levelPrize >= 0)
                     {
@@ -139,7 +140,7 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
             SQuestUpInfo info;
             do
             {
-                info = await mUserQuery.UpdateQuest(Prize, mQuestInMemory.GetLastQuest());
+                info = await mUserQuery.UpdateQuest(Prize, mQuestAndLevelInMemory.GetLastQuest());
 
             } while (info.QuestUpMode == QuestUpMode.QuestUppedAndNeedAnother);
 

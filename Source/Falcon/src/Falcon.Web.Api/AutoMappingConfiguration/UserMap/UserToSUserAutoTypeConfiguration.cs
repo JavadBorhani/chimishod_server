@@ -8,11 +8,11 @@ namespace Falcon.Web.Api.AutoMappingConfiguration.UserMap
 {
     public class UserToSUserAutoTypeConfiguration : Profile
     {
-        public virtual IQuestInMemory QuestInMemory
+        public virtual IQuestAndLevelInMemory QuestInMemory
         {
             get
             {
-                return WebContainerManager.Get<IQuestInMemory>();
+                return WebContainerManager.Get<IQuestAndLevelInMemory>();
             }
         }
 

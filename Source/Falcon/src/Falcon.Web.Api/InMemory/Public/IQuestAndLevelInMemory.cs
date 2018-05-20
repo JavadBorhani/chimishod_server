@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace Falcon.Web.Api.InMemory.Public
 {
-    public interface IQuestInMemory : IInMemory<ConcurrentDictionary<int , SQuest>>
+    public interface IQuestAndLevelInMemory : IInMemory<ConcurrentDictionary<int , SQuest>>
     {
         SQuest GetQuestByQuestNumber(int QuestNumber);
         int GetLastLevel();
@@ -19,5 +19,6 @@ namespace Falcon.Web.Api.InMemory.Public
         List<int> GetAllBarretTypes();
         List<SQuest> GetAllQuestItems();
         int GetLevelWatchVideoMultiplier(int LevelNumber);
+        int GetLevelPrize(int LevelNumber);
     }
 }

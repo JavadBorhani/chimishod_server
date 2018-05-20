@@ -18,7 +18,7 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
     {
         private readonly IQuestsQueryProcessor mQuestQuery;
         private readonly IMapper mMapper;
-        private readonly IQuestInMemory mQuestInMemory;
+        private readonly IQuestAndLevelInMemory mQuestInMemory;
         private readonly IUserQueryProcessor mUserQuery;
         private readonly IUserSession mUserSession; 
 
@@ -26,7 +26,7 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
         public QuestsInquiryProcessor(
             IQuestsQueryProcessor QuestQueryProcessor , 
             IMapper Mapper , 
-            IQuestInMemory QuestInMemory , 
+            IQuestAndLevelInMemory QuestInMemory , 
             IUserQueryProcessor UserQueryProcessor ,
             IUserSession UserSession)
         {

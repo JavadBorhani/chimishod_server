@@ -21,13 +21,13 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
         private readonly IMapper mMapper;
         private readonly IWebUserSession mUserSession;
         private readonly IFriendsInquiryProcessor mFriendsInquiry;
-        private readonly IQuestInMemory mQuestInMemory;
+        private readonly IQuestAndLevelInMemory mQuestInMemory;
 
         public UsersInquiryProcessor(IUserQueryProcessor UserQueryProcessor ,
             IMapper Mapper ,
             IWebUserSession UserSession , 
             IFriendsInquiryProcessor FriendsInquiry , 
-            IQuestInMemory QuestInMemory)
+            IQuestAndLevelInMemory QuestInMemory)
         {
             mUserSession = UserSession;
             mUserQueryProcessor = UserQueryProcessor;

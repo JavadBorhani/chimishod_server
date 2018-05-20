@@ -17,7 +17,7 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
         private readonly IQuestsQueryProcessor mQuestsQueryProcessor;
         private readonly IUserQuestAnswerQueryProcessor mUserQuestAnswer;
         private readonly IUserSession mUserSession;
-        private readonly IQuestInMemory mQuestInMemory;
+        private readonly IQuestAndLevelInMemory mQuestInMemory;
         private readonly IUserQueryProcessor mUserQuery;
         private readonly IMemoryStore mMemory;
         private readonly IQuestSnapshotQueryProcessor mQuestSnapshot;
@@ -27,7 +27,7 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
         public QuestsMaintenanceProcessor(IQuestsQueryProcessor QuestsQueryProcessor , 
             IUserQuestAnswerQueryProcessor UserQuestAnswer , 
             IUserSession UserSession , 
-            IQuestInMemory QuestInMemory , 
+            IQuestAndLevelInMemory QuestInMemory , 
             IUserQueryProcessor UserQuery , 
             IQuestSnapshotQueryProcessor QuestSnapshot,
             IMemoryStore Memory , 

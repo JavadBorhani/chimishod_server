@@ -233,12 +233,14 @@ namespace Falcon.Database.SqlServer.QueryProcessors
                 if (NextLevelNumber > LastLevel)
                     return info;
 
+                var currentLevelNumber = User.LevelNumber;
+
                 User.LevelNumber = NextLevelNumber;
                 int remained = (User.LevelProgress + Prize) - LevelCeil;
                 User.LevelProgress = remained;
 
                 info.LevelUpMode = LevelUpMode.LeveledUp;
-                info.LevelUpNumber = NextLevelNumber;
+                info.LevelUpNumber = currentLevelNumber;
             }
             else
             {

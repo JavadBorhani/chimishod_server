@@ -48,7 +48,7 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
                         suggestionId = WatchAdValidation.WatchAdId,
                     });
 
-                    if(!result.valid)
+                    if(result.valid)
                     {
                         await mWatchAdQueryProcessor.AddWatchedInfo(new SWatchedAd
                         {
@@ -86,7 +86,7 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
                             suggestionId = WatchAdValidation.WatchAdId,
                         });
 
-                    if (!result.valid)
+                    if (result.valid)
                     {
                         await mWatchAdQueryProcessor.AddWatchedInfo(new SWatchedAd
                         {

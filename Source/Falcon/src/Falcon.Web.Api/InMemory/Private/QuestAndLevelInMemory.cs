@@ -12,7 +12,7 @@ using System.Linq;
 
 namespace Falcon.Web.Api.InMemory.Private
 {
-    public class QuestInMemory : IQuestInMemory
+    public class QuestAndLevelInMemory : IQuestAndLevelInMemory
     {
         private ConcurrentDictionary<int, SQuest> mQuests = new ConcurrentDictionary<int, SQuest>();
         private ConcurrentDictionary<int, SLevel> mLevels = new ConcurrentDictionary<int, SLevel>();
@@ -174,7 +174,8 @@ namespace Falcon.Web.Api.InMemory.Private
                 {
                     LevelNumber = levels[i].LevelNumber,
                     CoinPrize = levels[i].CoinPrize,
-                    ScoreCeil = levels[i].ScoreCeil
+                    ScoreCeil = levels[i].ScoreCeil,
+                    LevelWatchVideoMultiplier = levels[i].LevelWatchVideoMultiplier                    
                 };
 
                 var levelNumber = levels[i].LevelNumber;
@@ -243,6 +244,15 @@ namespace Falcon.Web.Api.InMemory.Private
             if (mLevels.ContainsKey(LevelNumber))
             {
                 return mLevels[LevelNumber].LevelWatchVideoMultiplier;
+            }
+            return -1;
+        }
+
+        public int GetLevelPrize(int LevelNumber)
+        {
+            if (mLevels.ContainsKey(LevelNumber))
+            {
+                return mLevels[LevelNumber].CoinPrize;
             }
             return -1;
         }

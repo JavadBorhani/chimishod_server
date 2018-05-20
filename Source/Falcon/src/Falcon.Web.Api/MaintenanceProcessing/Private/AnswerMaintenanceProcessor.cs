@@ -20,7 +20,7 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
         private readonly IUserQuestAnswerQueryProcessor mUserQuestAnswer;
         private readonly IQuestsMaintenanceProcessor mQuestsMaintenance;
         private readonly IWatchAdMaintenanceProcessor mWatchAdMaintenanceProcessor;
-        private readonly IQuestInMemory mQuestInMemory;
+        private readonly IQuestAndLevelInMemory mQuestInMemory;
 
         public AnswerMaintenanceProcessor
             (
@@ -33,7 +33,7 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
             IUserQuestAnswerQueryProcessor UserQuestAnswer,
             IQuestsMaintenanceProcessor QuestsMaintenance,
             IWatchAdMaintenanceProcessor WatchAdMaintenanceProcessor,
-            IQuestInMemory QuestInMemory
+            IQuestAndLevelInMemory QuestInMemory
             )
         {
             mUserSession = UserSession;
@@ -107,7 +107,11 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
 
                             if(validateVideo)
                             {
-                                watchedAdMultiplier = mQuestInMemory.GetLevelWatchVideoMultiplier(Answer.WatchedAd.LevelNumber);
+                                var amount = mQuestInMemory.GetLevelWatchVideoMultiplier(Answer.WatchedAd.LevelNumber);
+                                if(amount != -1 )
+                                {
+                                    watchedAdMultiplier = amount;
+                                }
                             }
                         }
 
