@@ -14,7 +14,7 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
         private readonly INotificationData mNotificationData;
         private readonly IUsersInMemory mUserInMemory;
         private readonly IReportInMemory mReportInMemory;
-        private readonly ITelegramConfigurationInMemory mTelegramConfiguration;
+        //private readonly ITelegramConfigurationInMemory mTelegramConfiguration;
         private readonly IQuestionNotifyConfigInMemory mQuestionNotifyConfig;
 
         public ServerInquiryProcessor(
@@ -35,7 +35,7 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
             mQuestProcessor = QuestsInMemoryProcessor;
             mUserInMemory = UserInMemory;
             mReportInMemory = ReportInMemory;
-            mTelegramConfiguration = TelegramConfiguration;
+            //mTelegramConfiguration = TelegramConfiguration;
             mQuestionNotifyConfig = QuestionNotifyConfig;
         }
         public bool ReadConfigurationFilesFromServer()
@@ -47,10 +47,15 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
             mNotificationData.ReadStateFromDatabase();
             mUserInMemory.ReadStateFromDatabase();
             mReportInMemory.ReadStateFromDatabase();
-            mTelegramConfiguration.ReadStateFromDatabase();
+            //mTelegramConfiguration.ReadStateFromDatabase();
             mQuestionNotifyConfig.ReadStateFromDatabase();
 
             return true;
+        }
+
+        public bool AddWarmUpConfiguration()
+        {
+            return false;
         }
     }
 }

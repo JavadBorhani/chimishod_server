@@ -20,12 +20,12 @@ namespace Falcon.Web.Api.AutoMappingConfiguration.BarretType
 
                     FinaleDescription[] description = new FinaleDescription[splitter.Length / 2];
 
-                    for (int i = 0; i < description.Length; ++i)
+                    for (int i = 0 , j = 0 ; i < description.Length; i++ , j = j + 2 )
                     {
                         description[i] = new FinaleDescription
                         {
-                            Title = splitter[i].Trim(),
-                            Description = splitter[i + 1].Trim()
+                            Title = splitter[j].Trim(),
+                            Description = splitter[j + 1].Trim()
                         };
                     }
 

@@ -304,11 +304,11 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             var items = await mDb.Set<BarrettUserScore>()
                 .AsNoTracking()
                 .Where(u => u.UserID == UserID && BarrettTypes.Contains(u.BarrettID))
-                .Select( u => new SBarrettUserScore
+                .Select(u => new SBarrettUserScore
                 {
                     BarrettID = u.BarrettID,
                     UserID = u.UserID,
-                    Score  =u.Score
+                    Score = u.Score
                 })
                 .ToListAsync();
 

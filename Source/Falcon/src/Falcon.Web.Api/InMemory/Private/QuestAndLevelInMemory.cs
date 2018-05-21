@@ -210,7 +210,11 @@ namespace Falcon.Web.Api.InMemory.Private
 
         public SFinaleQuest GetBarrettType(int BarrettType)
         {
-            throw new NotImplementedException();
+            if(mBarretts[BarrettType].Item1 != null )
+            {
+                return mBarretts[BarrettType].Item1;
+            }
+            return null;
         }
 
         public HashSet<int> GetParentQuestNumbers(List<int> QuestNumbers)

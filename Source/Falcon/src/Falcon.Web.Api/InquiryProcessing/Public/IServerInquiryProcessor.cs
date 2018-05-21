@@ -3,5 +3,6 @@
     public interface IServerInquiryProcessor
     {
         bool ReadConfigurationFilesFromServer();
+        bool AddWarmUpConfiguration(); // add first time data to tables 
     }
 }

@@ -267,7 +267,15 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
                 var userFinaleScores = await mQuestQuery.RetrieveUserBarrettSnapshot(mUserSession.ID, allBarrets);
 
                 if (userFinaleScores != null && userFinaleScores.Count > 0)
+                {
+                    //TODO : Refactor this shit ;
+                    for(int i = 0; i < userFinaleScores.Count; ++i)
+                    {
+                        userFinaleScores[i].Title = mQuestInMemory.GetBarrettType(userFinaleScores[i].BarrettID).Title;
+                    }
                     return userFinaleScores;
+                }
+                    
 
                 var quests = new List<int>();
 
@@ -296,7 +304,7 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
             for (int i = 0; i < Items.Count; ++i)
             {
                 if (Items[i].Score > itemID)
-                    itemID = (int)Items[i].Score;
+                    itemID = (int)Items[i].BarrettID;
             }
             var item = await mQuestQuery.GetFinaleQuestDescription(itemID);
             return item;
@@ -313,6 +321,7 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
                 scores.Add(new SBarrettUserScore
                 {
                     BarrettID = barrett.Item1.ID,
+                    Title = barrett.Item1.Title,
                     UserID = mUserSession.ID,
                     Score = 0
                 });
