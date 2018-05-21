@@ -258,7 +258,7 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
         {
             var finale = mQuestInMemory.GetFinaleQuest();
 
-            var userQuest = (await mUserQuery.GetUserCurrentQuestNumber()) + 1;
+            var userQuest = (await mUserQuery.GetUserCurrentQuestNumber()); //TODO: Checkout this : used to be added with +1 ; 
             var allBarrets = mQuestInMemory.GetAllBarretTypes();
 
             if (userQuest == finale.QuestNumber)

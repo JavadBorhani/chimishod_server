@@ -484,9 +484,10 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             var userQuestNumber = userStat.QuestNumber ?? -1;
             var questProgress = userStat.QuestProgress;
 
-            //don't let to purchase the last quest  , because already is in the last 
-            if (userQuestNumber == LastQuestNumber)
-                return false;
+            //TODO : Check out this 
+            ////don't let to purchase the last quest  , because already is in the last 
+            //if (userQuestNumber == LastQuestNumber)
+            //    return true;
 
             int itemToPurchase = -1;
 
