@@ -127,6 +127,7 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
 
                 return response.Length > 0 ? response : null;
             }
+
             return null;
         }
 
@@ -155,7 +156,7 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
                 parentQuestNumber = quest.ParentID ?? 0;
             }
 
-            var questDetails = await mQuestQuery.GetLiveQuestDetailWithPeopleStatus(Inquiry.QuestNumber , questNumbers); //TODO : Checkout the logic
+            var questDetails = await mQuestQuery.GetLiveQuestDetailWithPeopleStatus(Inquiry.QuestNumber , questNumbers);
 
             if (questDetails.Count > 0)
             {

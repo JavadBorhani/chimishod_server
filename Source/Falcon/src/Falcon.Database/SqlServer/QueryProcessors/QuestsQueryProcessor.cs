@@ -146,43 +146,54 @@ namespace Falcon.Database.SqlServer.QueryProcessors
         public async Task<List<SQuestDetail>> GetQuestDetailWithPeopleStatus(int LevelNumber, List<int> QuestNumbers)
         {
 
-            var scores = mDb.Set<QuestPeopleScore>()
+            var userScores = mDb.Set<QuestScoreSnapshot>()
                 .AsNoTracking()
-                .Where(u => u.LevelNumber == LevelNumber && QuestNumbers.Contains(u.QuestNumber));
+                .Where(m => m.UserID == mUserSession.ID && m.UserLevelNumber == LevelNumber && QuestNumbers.Contains(m.QuestNumber));
 
-            var userScores = await mDb.Set<QuestScoreSnapshot>()
+            var scores = await mDb.Set<QuestPeopleScore>()
                 .AsNoTracking()
-                .Where(m => m.UserID == mUserSession.ID && m.UserLevelNumber == LevelNumber && QuestNumbers.Contains(m.QuestNumber))
-                .Join(scores, m => m.QuestNumber, u => u.QuestNumber, (scoreSnapshot, peopleScore) => new SQuestDetail
+                .Where(u => u.LevelNumber == LevelNumber && QuestNumbers.Contains(u.QuestNumber))
+                .GroupJoin(userScores, m => m.QuestNumber, u => u.QuestNumber, (peopleScore, scoreSnapshot) => new 
+                {   
+                    PeopleScore = peopleScore,
+                    ScoreSnapshot = scoreSnapshot
+                })
+                .SelectMany(temp => temp.ScoreSnapshot.DefaultIfEmpty() , (joinData , questScoreSnapshot) => new SQuestDetail
                 {
-                    QuestNumber = scoreSnapshot.QuestNumber,
-                    UserScore = scoreSnapshot.ScorePoint,
-                    PeopleScore = peopleScore.MeanScorePoint,
+                    QuestNumber = joinData.PeopleScore.QuestNumber,
+                    UserScoreNullable = questScoreSnapshot.ScorePoint,
+                    PeopleScore = joinData.PeopleScore.MeanScorePoint
                 })
                 .ToListAsync();
-
-
-            return userScores;
+            
+            return scores;
         }
 
         public async Task<List<SQuestDetail>> GetLiveQuestDetailWithPeopleStatus(int LevelNumber, List<int> QuestNumbers)
         {
-            var scores = mDb.Set<QuestPeopleScore>()
-                .AsNoTracking()
-                .Where(u => u.LevelNumber == LevelNumber && QuestNumbers.Contains(u.QuestNumber));
 
-            var userScores = await mDb.Set<QuestScore>()
+            var userScores = mDb.Set<QuestScore>()
+             .AsNoTracking()
+             .Where(m => m.UserID == mUserSession.ID && QuestNumbers.Contains(m.QuestNumber));
+
+            var scores = await mDb.Set<QuestPeopleScore>()
                 .AsNoTracking()
-                .Where(m => m.UserID == mUserSession.ID && QuestNumbers.Contains(m.QuestNumber))
-                .Join(scores, m => m.QuestNumber, u => u.QuestNumber, (liveScore, peopleScore) => new SQuestDetail
+                .Where(u => u.LevelNumber == LevelNumber && QuestNumbers.Contains(u.QuestNumber))
+                .GroupJoin(userScores, m => m.QuestNumber, u => u.QuestNumber, (peopleScore, scoreSnapshot) => new
                 {
-                    QuestNumber = liveScore.QuestNumber,
-                    UserScore = liveScore.Score,
-                    PeopleScore = peopleScore.MeanScorePoint,
+                    PeopleScore = peopleScore,
+                    ScoreSnapshot = scoreSnapshot
+                })
+                .SelectMany(temp => temp.ScoreSnapshot.DefaultIfEmpty(), (joinData, questScoreSnapshot) => new SQuestDetail
+                {
+                    QuestNumber = joinData.PeopleScore.QuestNumber,
+                    UserScoreNullable = questScoreSnapshot.Score,
+                    PeopleScore = joinData.PeopleScore.MeanScorePoint
                 })
                 .ToListAsync();
 
-            return userScores;
+            return scores;
+
         }
 
         public async Task<bool> IsPurchased(int QuestNumber)
