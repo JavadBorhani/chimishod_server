@@ -268,7 +268,7 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
 
                 if (userFinaleScores != null && userFinaleScores.Count > 0)
                 {
-                    //TODO : Refactor this shit ;
+                    //TODO : Refactor this
                     for(int i = 0; i < userFinaleScores.Count; ++i)
                     {
                         userFinaleScores[i].Title = mQuestInMemory.GetBarrettType(userFinaleScores[i].BarrettID).Title;

@@ -12,7 +12,7 @@ namespace Falcon.Web.Models.Api
     public class SActionQuestion
     {
         public int? ActionCoin { get; set; }
-        public int? ActionId { get; set; }
+        public int? ActionNumber { get; set; }
         public int? ActionNavigationPageNumber { get; set; }
         public string MarketPackageName { get; set; }
         public string MarketIntentString { get; set; }

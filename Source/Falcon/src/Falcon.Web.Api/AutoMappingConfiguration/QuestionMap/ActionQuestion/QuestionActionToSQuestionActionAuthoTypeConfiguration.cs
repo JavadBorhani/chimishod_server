@@ -10,7 +10,7 @@ namespace Falcon.Web.Api.AutoMappingConfiguration.QuestionMap.ActionQuestion
         {
             CreateMap<QuestionAction, SActionQuestion>()
                 .ForMember(s => s.ActionCoin, m => m.MapFrom( u => u.Coin))
-                .ForMember(s => s.ActionId, m => m.MapFrom(u => u.ID))
+                .ForMember(s => s.ActionNumber, m => m.MapFrom(u => u.ActionNumber))
                 .ForMember(s => s.ActionNavigationPageNumber, m => m.MapFrom(u => u.ActionNavigationNumber))
                 .ForMember(s => s.MarketPackageName, m => m.MapFrom(u => u.MarketPackageName))
                 .ForMember(s => s.MarketIntentString, m => m.MapFrom(u => u.MarketIntentString))
