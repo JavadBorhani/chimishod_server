@@ -43,6 +43,14 @@ namespace Falcon.Web.Api.JobSystem.Private.Jobs
 
         private int CalculateSystem()
         {
+            // Algorithm 
+            // foreach item of question notification configuration 
+            // catch data from question table 
+            // left join with table question notification
+            // checkout if current item is in the range of configuration 
+            // then add it to the list of items to send
+            // first send notification then store items in table 
+            // then continue the foreach loop 
 
             return 1;
         }
