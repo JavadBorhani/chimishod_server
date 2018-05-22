@@ -3,7 +3,6 @@ using Falcon.Web.Api.InquiryProcessing.Public;
 using Falcon.Web.Api.JobSystem.Public;
 using Falcon.Web.Api.Security.Private;
 using Falcon.Web.Api.Security.Public;
-using Falcon.Web.Api.Telegram.Public;
 using Falcon.Web.Common;
 using Microsoft.AspNet.WebApi.Extensions.Compression.Server;
 using System.Net.Http.Extensions.Compression.Core.Compressors;
@@ -24,7 +23,7 @@ namespace Falcon.Web.Api
         }
         protected void Application_End()
         {
-            WebContainerManager.Get<ITelegramService>().Dispose();
+            //WebContainerManager.Get<ITelegramService>().Dispose();
         }
 
         private void RegisterHandlers()
