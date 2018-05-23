@@ -89,7 +89,7 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
                 return null;
 
 
-            var userInfoIsDuplicate = await mUserQuery.DeactivePreviousUser(RegistrationForm);
+            var deactiveUsers = await DeactivePreviousUser(RegistrationForm);
 
 
             RegistrationForm.IPAddress = mNetworkUtils.GetRequestNetworkIP();
@@ -100,7 +100,12 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
 
             if (created)
             {
-                mUserInMemory.AddItem(user.ID, new SUserDetail() { UserName = RegistrationForm.UserName });
+                mUserInMemory.AddItem(user.ID, new SUserDetail()
+                {
+                    UserName = RegistrationForm.UserName ,
+                    NotificationID = RegistrationForm.NotificationID.ToString() ,
+                    UUID =  RegistrationForm.UUID
+                });
 
                 return RegistrationForm.UUID;
             }
@@ -109,6 +114,23 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
                 return null;
             }
                 
+        }
+
+
+        private async Task<bool> DeactivePreviousUser(SUserRegistrationForm RegistrationForm)
+        {
+            var userInfoIsDuplicate = await mUserQuery.DeactivePreviousUser(RegistrationForm);
+
+            if (userInfoIsDuplicate != null)
+            {
+                for (int i = 0; i < userInfoIsDuplicate.Count; ++i)
+                {
+                    mUserInMemory.RemoveUser(userInfoIsDuplicate[i]);
+                }
+                return true;
+            }
+
+            return false;   
         }
 
         public async Task<bool> SaveImageUrl(string ImageRelativePath)
@@ -120,7 +142,13 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
 
         public async Task<bool> UpdateNotificationID(SNotificationID Notification)
         {
-            var response = await mUserQuery.UpdateUserNotificationID(mUserSession.ID, Notification.UUID.ToString());
+            var notificationID = Notification.UUID.ToString();
+
+            var response = await mUserQuery.UpdateUserNotificationID(mUserSession.ID, notificationID);
+
+            if (response)
+                mUserInMemory.UpdateNotificationID(mUserSession.ID, notificationID);
+
             return response;
         }
 

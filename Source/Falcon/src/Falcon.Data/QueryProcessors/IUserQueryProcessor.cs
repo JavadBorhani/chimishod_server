@@ -4,6 +4,7 @@ using Falcon.Web.Models.Api.Config;
 using Falcon.Web.Models.Api.Level;
 using Falcon.Web.Models.Api.Quest;
 using Falcon.Web.Models.Api.User;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Falcon.Data.QueryProcessors
@@ -36,7 +37,7 @@ namespace Falcon.Data.QueryProcessors
         Task<string> GetNotificationID(int friendID);
         Task<string[]> GetNotificationIDs(int[] friendID);
         Task<User> GetUserByID(int UserID);
-        Task<bool> DeactivePreviousUser(SUserRegistrationForm registrationForm);
+        Task<List<int>> DeactivePreviousUser(SUserRegistrationForm registrationForm);
         Task<int> GetUserCurrentQuestNumber();
         Task<bool> SaveUserImageUrl(string ImageRelativePath);
         Task<bool> BanUser(int ID);

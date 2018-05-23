@@ -44,9 +44,11 @@ namespace Falcon.Web.Api
         
         private void InitializeSystems()
         {
+        
             WebContainerManager.Get<IServerInquiryProcessor>().ReadConfigurationFilesFromServer();
             WebContainerManager.Get<IActionTransactionHelper>().CloseSession();
             //WebContainerManager.Get<ITelegramService>();
+
         }
         private void RegisterJobs()
         {

@@ -83,6 +83,7 @@ namespace Falcon.Web.Api.Security.Private
             var authHeader = request.Headers.Authorization;
             if(authHeader == null)
             {
+                //TODO : Refactor this
                 if(request.RequestUri.PathAndQuery.Contains("TelegramController"))
                 {
                     authHeader = new AuthenticationHeaderValue("Basic" , "NmUxMWYyYzgtNWFhMC00MjFhLWEwODEtMTY5ZGJjZGIwM2Fh");

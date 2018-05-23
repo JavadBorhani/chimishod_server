@@ -12,6 +12,7 @@ using Falcon.Web.Models.Api.Quest;
 using Falcon.Web.Models.Api.User;
 using log4net;
 using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
@@ -408,20 +409,23 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             return user;
         }
 
-        public async Task<bool> DeactivePreviousUser(SUserRegistrationForm RegisterationForm)
+        public async Task<List<int>> DeactivePreviousUser(SUserRegistrationForm RegisterationForm)
         {
-            var user = await mDb.Set<User>().Where(u => u.NotificationID == RegisterationForm.NotificationID.ToString() && u.Activated == true).ToArrayAsync();
+            var user = await mDb.Set<User>()
+                .Where(u => u.NotificationID == RegisterationForm.NotificationID.ToString() && u.Activated == true)
+                .ToArrayAsync();
 
             if(user == null)
-            {
-                return false;
-            }
+                return null;
+
+            var items = new List<int>(user.Length);
 
             for(int i = 0; i < user.Length; ++i )
             {
                 if (user[i].Model == RegisterationForm.Model && user[i].Device == RegisterationForm.Device)
                 {
                     user[i].Activated = false;
+                    items.Add(user[i].ID);
                 }
                 else
                 {
@@ -430,7 +434,8 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             }
 
             await mDb.SaveChangesAsync();
-            return true;
+
+            return items;
             
         }
 

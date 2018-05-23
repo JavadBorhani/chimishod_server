@@ -5,6 +5,7 @@ using Falcon.Data.QueryProcessors;
 using Falcon.EFCommonContext.DbModel;
 using Falcon.Web.Api.InMemory.Public;
 using Falcon.Web.Api.InquiryProcessing.Public;
+using Falcon.Web.Api.MaintenanceProcessing.Public;
 using Falcon.Web.Models;
 using Falcon.Web.Models.Api;
 using Falcon.Web.Models.Api.Friend;
@@ -22,18 +23,21 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
         private readonly IWebUserSession mUserSession;
         private readonly IFriendsInquiryProcessor mFriendsInquiry;
         private readonly IQuestAndLevelInMemory mQuestInMemory;
+        private readonly IUsersInMemory mUsersInMemory;
 
         public UsersInquiryProcessor(IUserQueryProcessor UserQueryProcessor ,
             IMapper Mapper ,
             IWebUserSession UserSession , 
             IFriendsInquiryProcessor FriendsInquiry , 
-            IQuestAndLevelInMemory QuestInMemory)
+            IQuestAndLevelInMemory QuestInMemory ,
+            IUsersInMemory UsersInMemory)
         {
             mUserSession = UserSession;
             mUserQueryProcessor = UserQueryProcessor;
             mMapper = Mapper;
             mFriendsInquiry = FriendsInquiry;
             mQuestInMemory = QuestInMemory;
+            mUsersInMemory = UsersInMemory;
         }
         public async Task<int> GetTotalCoin()
         {
@@ -63,6 +67,12 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
             if(user != null)
             {
                 var result = await mUserQueryProcessor.UpdateUserNotificationID(user.ID,UserInfo.NotificationID.ToString());
+
+                if(result)
+                {
+                    mUsersInMemory.UpdateNotificationID(user.ID, UserInfo.NotificationID.ToString());
+                }
+
                 return user.UUID;
             }
             else
