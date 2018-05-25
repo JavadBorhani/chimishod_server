@@ -103,6 +103,7 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
             {
                 mUserInMemory.AddItem(user.ID, new SUserDetail()
                 {
+                    ID = user.ID,
                     UserName = RegistrationForm.UserName ,
                     NotificationID = RegistrationForm.NotificationID.ToString() ,
                     UUID =  RegistrationForm.UUID

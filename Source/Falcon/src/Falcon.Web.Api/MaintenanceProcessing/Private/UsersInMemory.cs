@@ -65,7 +65,7 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
                     ID = data[i].ID,
                     ImagePath = data[i].AvatarImagePath,
                     UserName = data[i].UserName,
-                    UUID = data[i].UserName,
+                    UUID = data[i].UUID,
                     NotificationID = data[i].NotificationID
                 };
 
