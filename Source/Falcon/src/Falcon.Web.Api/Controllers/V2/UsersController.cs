@@ -65,7 +65,7 @@ namespace Falcon.Web.Api.Controllers.V2
                 return Response(HttpStatusCode.Unauthorized);
 
 
-            var result = await mUsersInquiry.RecoverUser(UserInfo);
+            var result = await mUsersMaintenance.RecoverUser(UserInfo);
 
             if (string.IsNullOrEmpty(result))
                 return Response(HttpStatusCode.Unauthorized);

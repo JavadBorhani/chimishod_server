@@ -60,26 +60,6 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
             return exists;   
         }
 
-        public async Task<string> RecoverUser(SUserInfo UserInfo)
-        {
-            var user = await mUserQueryProcessor.ReteriveUserByUserPass(UserInfo);
-
-            if(user != null)
-            {
-                var result = await mUserQueryProcessor.UpdateUserNotificationID(user.ID,UserInfo.NotificationID.ToString());
-
-                if(result)
-                {
-                    mUsersInMemory.UpdateNotificationID(user.ID, UserInfo.NotificationID.ToString());
-                }
-
-                return user.UUID;
-            }
-            else
-            {
-                return null;
-            }
-        }
 
         public async Task<SUser> GetUserInfo()
         {

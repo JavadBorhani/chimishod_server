@@ -1,4 +1,5 @@
-﻿using Falcon.Web.Models.Api.Notification;
+﻿using Falcon.Web.Models.Api;
+using Falcon.Web.Models.Api.Notification;
 using Falcon.Web.Models.Api.User;
 using System.Threading.Tasks;
 
@@ -18,6 +19,8 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Public
         Task<bool> SaveImageUrl(string ImageRelativePath);
 
         Task<bool> UpdateNotificationID(SNotificationID notificationID);
+
+        Task<string> RecoverUser(SUserInfo UserInfo);
 
         Task<bool> BanUserByQuestionID(int QuestionID);
 

@@ -12,7 +12,7 @@ namespace Falcon.Web.Api.InquiryProcessing.Public
         Task<int> GetTotalCoin();
         Task<bool> LevelExist(int LevelNumber);
         //Task<SUserCount> GetUserCountInfo(int UserID);
-        Task<string> RecoverUser(SUserInfo UserInfo);
+      
         Task<SUser> GetUserInfo();
         Task<PagedDataInquiryResponse<SFriend>> SearchUsersByExpression(PagedDataRequest RequestInfo, string Expression);
     }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Falcon.Web.Models.Api.User;
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace Falcon.Web.Models.Api
@@ -21,5 +22,17 @@ namespace Falcon.Web.Models.Api
         public Guid NotificationID { get; set; }
 
         public bool HasRegistered { get; set; }
+
+        [Required]
+        public string APILevel { get; set; }
+
+        [Required]
+        public string Device { get; set; }
+
+        [Required]
+        public string Model { get; set; }
+
+        [Required]
+        public PlatformType Platform { get; set; }
     }
 }

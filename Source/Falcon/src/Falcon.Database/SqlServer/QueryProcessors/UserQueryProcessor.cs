@@ -326,18 +326,36 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             return user;
         }
 
-        public async Task<bool> UpdateUserNotificationID(int UserID , string UUID)
+        public async Task<bool> UpdateUserLoginInfo(int UserID , SUserInfo UserInfo)
         {
             var user = await mDb.Set<User>().FindAsync(UserID);
 
             if(user != null)
             {
-                user.NotificationID = UUID;
+                user.NotificationID = UserInfo.APILevel;
+                user.Device = UserInfo.Device;
+                user.Model = UserInfo.Model;
+                user.Platform = (int)UserInfo.Platform;
+                user.APILevel = UserInfo.APILevel;
+                user.Activated = true;
                 await mDb.SaveChangesAsync();
                 return true;
             }
             return false;
 
+        }
+        public async Task<bool> UpdateUserNotificationID(int UserID, string UUID)
+        {
+            var user = await mDb.Set<User>().FindAsync(UserID);
+
+            if (user != null)
+            {
+                user.NotificationID = UUID;
+
+                await mDb.SaveChangesAsync();
+                return true;
+            }
+            return false;
         }
 
         public async Task<bool> Exists(string UserName)
@@ -566,5 +584,7 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             }
             return -1;   
         }
+
+      
     }
 }   

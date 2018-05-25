@@ -31,6 +31,7 @@ namespace Falcon.Data.QueryProcessors
         Task<User> CreateNewUser(SUserRegistrationForm UserRegisterationData , SGameConfig GameConfig);
         Task<User> GetUserByUUIDAsNoTracking(string UUID);
         Task<User> ReteriveUserByUserPass(SUserInfo userInfo);
+        Task<bool> UpdateUserLoginInfo(int UserID, SUserInfo UserInfo);
         Task<bool> UpdateUserNotificationID(int UserID, string UUID);
         Task<bool> Exists(string UserName);
         Task<QueryResult<User>> SearchUserNames(PagedDataRequest RequestInfo , string Expression , int[] Excepts =  null);

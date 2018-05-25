@@ -6,6 +6,7 @@ using Falcon.Web.Api.InquiryProcessing.Public;
 using Falcon.Web.Api.MaintenanceProcessing.Public;
 using Falcon.Web.Api.Utilities;
 using Falcon.Web.Common.Memmory;
+using Falcon.Web.Models.Api;
 using Falcon.Web.Models.Api.Level;
 using Falcon.Web.Models.Api.Notification;
 using Falcon.Web.Models.Api.Quest;
@@ -172,6 +173,39 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
             } while (info.QuestUpMode == QuestUpMode.QuestUppedAndNeedAnother);
 
             return -1; 
+        }
+
+        public async Task<string> RecoverUser(SUserInfo UserInfo)
+        {
+            var user = await mUserQuery.ReteriveUserByUserPass(UserInfo);
+
+            if (user != null)
+            {
+                var result = await mUserQuery.UpdateUserLoginInfo(user.ID, UserInfo);
+
+                if (result)
+                {
+                    var changed = mUserInMemory.UpdateNotificationID(user.ID, UserInfo.NotificationID.ToString());
+
+                    if(!changed)
+                    {
+                        mUserInMemory.AddItem(user.ID, new SUserDetail
+                        {
+                            ID = user.ID,
+                            ImagePath = user.AvatarImagePath,
+                            NotificationID = user.NotificationID,
+                            UserName = user.UserName,
+                            UUID = user.UUID
+                        });
+                    }
+                }
+
+                return user.UUID;
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 }

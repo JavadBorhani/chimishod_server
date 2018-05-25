@@ -51,6 +51,7 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
         public void ReadStateFromDatabase()
         {
             mUsers.Clear();
+            mUUIDUsers.Clear();
 
             var data = mDB.Set<User>().AsNoTracking()
                 .Where(u => u.Activated)
@@ -137,6 +138,8 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
         {
             SUserDetail item;
             mUsers.TryGetValue(UserID, out item);
+            if (item == null)
+                return false;
             return mUsers.TryUpdate(UserID, new SUserDetail
             {
                 ID = item.ID,
