@@ -22,15 +22,21 @@ namespace Falcon.Web.Api.Controllers.V1
             mDb = Db;
         }
 
-        [Route("v2/TestController/{UserID}")]
+        [Route("v2/TestController/")]
         [HttpPost]
-        public async Task<IHttpActionResult> GetInfo(int UserID)
+        public async Task<IHttpActionResult> GetInfo()
+        {
+            return null;
+        }
+
+
+        private async Task<bool> System()
         {
             var questions = await mDb.Set<QuestQuestion>().ToArrayAsync();
 
             var user = await mDb.Set<User>().ToListAsync();
 
-            for(int i = 0; i < user.Count; ++i)
+            for (int i = 0; i < user.Count; ++i)
             {
                 var questNumber = user[i].QuestNumber ?? 1;
 
@@ -48,7 +54,7 @@ namespace Falcon.Web.Api.Controllers.V1
                     if (questNumberfinal > 24)
                         continue;
 
-                    user[i].QuestNumber = questNumberfinal; 
+                    user[i].QuestNumber = questNumberfinal;
                     user[i].QuestProgress = 0;
                     user[i].QuestPurchased = false;
                 }
@@ -59,7 +65,7 @@ namespace Falcon.Web.Api.Controllers.V1
             }
 
             await mDb.SaveChangesAsync();
-            return Ok();
+            return true;
         }
     }
 }
