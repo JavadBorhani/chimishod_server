@@ -1,4 +1,4 @@
-﻿using System;
+﻿using Falcon.Web.Models.Validation;
 using System.ComponentModel.DataAnnotations;
 
 namespace Falcon.Web.Models.Api.User
@@ -50,7 +50,8 @@ namespace Falcon.Web.Models.Api.User
         [Required]
         public PlatformType Platform { get; set; }
 
-        public Guid NotificationID { get; set; }
+        [Guid]
+        public string NotificationID { get; set; }
         
         public string IPAddress { get; set; }
     }

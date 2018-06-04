@@ -8,5 +8,7 @@ namespace Falcon.Web.Api.Utilities
         HttpStatusCode Response { set; }
 
         bool IsIpInternal();
+
+        bool IsValidUUID(string UUID);
     }
 }

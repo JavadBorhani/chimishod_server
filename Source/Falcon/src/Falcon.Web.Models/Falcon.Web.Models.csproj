@@ -186,6 +186,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Api\Question\SQuestion.cs" />
     <Compile Include="Api\SUser.cs" />
+    <Compile Include="Validation\GuidAttribute.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Dashboard\" />

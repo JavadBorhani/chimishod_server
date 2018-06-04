@@ -65,7 +65,6 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
                 return null;
             }
             
-
             // find quest 
              if(Inquiry.Alive)
             {

@@ -291,14 +291,13 @@ namespace Falcon.Database.SqlServer.QueryProcessors
 
         public async Task<User> CreateNewUser(SUserRegistrationForm UserRegisterationData , SGameConfig GameConfig)
         {
-            //todo => change default datas to something valid 
             var user = mDb.Set<User>().Add(new User
             {
                 IPAddress = UserRegisterationData.IPAddress,
                 UUID = UserRegisterationData.UUID,
                 UserName = UserRegisterationData.UserName,
                 IsMale = Convert.ToBoolean(UserRegisterationData.Gender),
-                NotificationID = UserRegisterationData.NotificationID.ToString(),
+                NotificationID = UserRegisterationData.NotificationID,
                 Platform = (int)UserRegisterationData.Platform,
                 LevelNumber = GameConfig.DefaultUserLevelNumber,
                 LevelProgress = GameConfig.DefaultUserLevelProgress ,
@@ -430,7 +429,7 @@ namespace Falcon.Database.SqlServer.QueryProcessors
         public async Task<List<int>> DeactivePreviousUser(SUserRegistrationForm RegisterationForm)
         {
             var user = await mDb.Set<User>()
-                .Where(u => u.NotificationID == RegisterationForm.NotificationID.ToString() && u.Activated == true)
+                .Where(u => u.NotificationID == RegisterationForm.NotificationID && u.Activated == true)
                 .ToArrayAsync();
 
             if(user == null)
@@ -457,6 +456,28 @@ namespace Falcon.Database.SqlServer.QueryProcessors
 
             return items;
             
+        }
+        public async Task<List<int>> DeactivePreviousUser(string NotificationID)
+        {
+            var user = await mDb.Set<User>()
+               .Where(u => u.NotificationID == NotificationID && u.Activated == true)
+               .ToArrayAsync();
+
+            if (user == null)
+                return null;
+
+            var items = new List<int>(user.Length);
+
+            for (int i = 0; i < user.Length; ++i)
+            {
+
+                user[i].Activated = false;
+                items.Add(user[i].ID);
+            }
+
+            await mDb.SaveChangesAsync();
+
+            return items;
         }
 
         public async Task<int> GetUserCurrentQuestNumber()
@@ -585,6 +606,6 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             return -1;   
         }
 
-      
+       
     }
 }   

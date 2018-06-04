@@ -105,19 +105,16 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
                 {
                     ID = user.ID,
                     UserName = RegistrationForm.UserName ,
-                    NotificationID = RegistrationForm.NotificationID.ToString() ,
+                    NotificationID = RegistrationForm.NotificationID ,
                     UUID =  RegistrationForm.UUID
                 });
 
                 return RegistrationForm.UUID;
             }
-            else
-            {
-                return null;
-            }
+
+            throw new BusinessRuleViolationException("User Creation Process Shouldn't be here");
                 
         }
-
 
         private async Task<bool> DeactivePreviousUser(SUserRegistrationForm RegistrationForm)
         {
@@ -134,6 +131,21 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
 
             return false;   
         }
+        private async Task<bool> DeactivePreviousUser(string NotificationID)
+        {
+            var userInfoIsDuplicate = await mUserQuery.DeactivePreviousUser(NotificationID);
+
+            if (userInfoIsDuplicate != null)
+            {
+                for (int i = 0; i < userInfoIsDuplicate.Count; ++i)
+                {
+                    mUserInMemory.RemoveUser(userInfoIsDuplicate[i]);
+                }
+                return true;
+            }
+
+            return false;
+        }
 
         public async Task<bool> SaveImageUrl(string ImageRelativePath)
         {
@@ -145,6 +157,8 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
         public async Task<bool> UpdateNotificationID(SNotificationID Notification)
         {
             var notificationID = Notification.UUID.ToString();
+
+            var deactivePreviousUsers = await DeactivePreviousUser(notificationID);
 
             var response = await mUserQuery.UpdateUserNotificationID(mUserSession.ID, notificationID);
 

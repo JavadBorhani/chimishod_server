@@ -39,6 +39,13 @@ namespace Falcon.Web.Api.Utilities
 
             return false;
         }
+
+        public bool IsValidUUID(string UUID)
+        {
+            Guid item;
+            var isValid = Guid.TryParse(UUID, out item);
+            return isValid;
+        }
     }
 
 }

@@ -42,14 +42,15 @@ namespace Falcon.Web.Api.Controllers.V2
         [ResponseType(typeof(string))]
         [Route("v2/User")] //// should ignore authentication
         [HttpPost]
-        public async Task<string> SignInUser([FromBody] SUserRegistrationForm Info)
+        public async Task<IHttpActionResult> SignInUser([FromBody] SUserRegistrationForm Info)
         {
             if(!ModelState.IsValid)
             {
-                return null;
+                return BadRequest();
             }
-            var user = await mUsersMaintenance.CreateNewUser(Info);
-            return user;
+
+            var userUUID = await mUsersMaintenance.CreateNewUser(Info);
+            return Ok(userUUID);
         }
 
 
