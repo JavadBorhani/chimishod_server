@@ -131,6 +131,7 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
 
             return false;   
         }
+
         private async Task<bool> DeactivePreviousUser(string NotificationID)
         {
             var userInfoIsDuplicate = await mUserQuery.DeactivePreviousUser(NotificationID);
