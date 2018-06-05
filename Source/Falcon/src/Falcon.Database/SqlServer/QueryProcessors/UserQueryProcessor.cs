@@ -440,15 +440,12 @@ namespace Falcon.Database.SqlServer.QueryProcessors
             for(int i = 0; i < user.Length; ++i )
             {
 
-                //TODO: Consider This
-                if (user[i].Model == RegisterationForm.Model && user[i].Device == RegisterationForm.Device)
+                user[i].Activated = false;
+                items.Add(user[i].ID);
+
+                if (user[i].Model != RegisterationForm.Model || user[i].Device != RegisterationForm.Device)
                 {
-                    user[i].Activated = false;
-                    items.Add(user[i].ID);
-                }
-                else
-                {
-                    throw new BusinessRuleViolationException("Same Notification but different device , kind of a cheat ");
+                    mLogger.Error($"UserID : {user[i].ID} disabled , new model: {RegisterationForm.Model} , new device : {RegisterationForm.Device}");
                 }
             }
 
