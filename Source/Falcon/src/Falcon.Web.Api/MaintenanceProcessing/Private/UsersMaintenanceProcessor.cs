@@ -118,6 +118,9 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
 
         private async Task<bool> DeactivePreviousUser(SUserRegistrationForm RegistrationForm)
         {
+            if (string.IsNullOrWhiteSpace(RegistrationForm.NotificationID))
+                return false;
+
             var userInfoIsDuplicate = await mUserQuery.DeactivePreviousUser(RegistrationForm);
 
             if (userInfoIsDuplicate != null)
@@ -134,6 +137,8 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
 
         private async Task<bool> DeactivePreviousUser(string NotificationID)
         {
+            if (string.IsNullOrWhiteSpace(NotificationID))
+                return false;
             var userInfoIsDuplicate = await mUserQuery.DeactivePreviousUser(NotificationID);
 
             if (userInfoIsDuplicate != null)
