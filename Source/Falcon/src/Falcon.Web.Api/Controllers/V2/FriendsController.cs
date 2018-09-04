@@ -55,6 +55,15 @@ namespace Falcon.Web.Api.Controllers.V2
         }
 
 
+        [ResponseType(typeof(SFriend))]
+        [Route("v2/Friends/{FriendID}")]
+        [HttpPost]
+        public async Task<SFriend> GetFriendInfo([FromUri] int FriendID)
+        {
+            var friend = await mFriendsInquiry.GetFriend(FriendID);
+            return friend;  
+        }
+
         [ResponseType(typeof(DataWithServerTime<SFriend>))]
         [Route("v2/Friends/Create/{FriendID}")]
         [HttpPost]

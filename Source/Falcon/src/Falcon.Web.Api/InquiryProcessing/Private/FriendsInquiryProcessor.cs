@@ -27,15 +27,18 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
         private readonly SApplicationState mServerAppState;
         private readonly IUserSession mUserSession;
         private readonly UserDictionary mUserInMemory;
+        private readonly IUserQueryProcessor mUserQueryProcessor;
+
 
         public FriendsInquiryProcessor(
-            IFriendsQueryProcessor FriendQuery , 
-            IQuestionsQueryProcessor QuestionsQuery , 
-            IMapper Mapper , 
-            IAnswerQueryProcessor AnswerQuery , 
+            IFriendsQueryProcessor FriendQuery,
+            IQuestionsQueryProcessor QuestionsQuery,
+            IMapper Mapper,
+            IAnswerQueryProcessor AnswerQuery,
             IGlobalApplicationState AppState,
-            IUserSession UserSession , 
-            IUsersInMemory UserInMemory)
+            IUserSession UserSession,
+            IUsersInMemory UserInMemory,
+            IUserQueryProcessor UserQueryProcessor)
         {
             mAnswerQuery = AnswerQuery;
             mFriendQuery = FriendQuery;
@@ -44,6 +47,7 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
             mServerAppState = AppState.GetState();
             mUserSession = UserSession;
             mUserInMemory = UserInMemory.GetState();
+            mUserQueryProcessor = UserQueryProcessor;
         }
 
         public async Task<int[]> GetAllFriendIds()
@@ -186,6 +190,39 @@ namespace Falcon.Web.Api.InquiryProcessing.Private
             }
 
             return items;
+        }
+
+        public async Task<SFriend> GetFriend(int FriendID)
+        {
+           
+            var user = await mUserQueryProcessor.LoadUser(FriendID);
+
+            if(user != null)
+            {
+                SFriend result = new SFriend();
+
+                //TODO : Refactor this to use auto mapper 
+                result.UserID = user.ID;
+                result.UserName = user.UserName;
+                result.UserPictureUrl = user.AvatarImagePath;
+                result.GenderIsMale = user.IsMale;
+                result.RelationOperatorIsMe = false;
+                result.Status = RelationStatus.None;
+
+                var relation = await mFriendQuery.GetFriendRelationshipAsNoTracking(FriendID);
+
+                if(relation != null)
+                {  
+                    result.RelationOperatorIsMe = (relation.OperatedByID == mUserSession.ID ? true : false);
+                    result.Status = (RelationStatus)relation.RelationStatus;
+                    result.UpdatedDate = relation.UpdatedDate;
+                }
+
+                return result;
+            }
+
+            return null;
+            
         }
     }
 }
