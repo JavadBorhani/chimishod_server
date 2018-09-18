@@ -41,45 +41,57 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
             var exists = await mWatchAdQueryProcessor.IsExists(WatchAdValidation.WatchAdId);
             if(!exists)
             {
-                if(WatchAdValidation.ProviderID == WatchAdProvider.TapSell) //TODO: If new provider added , change the logic 
+                switch ((WatchAdProvider)WatchAdValidation.ProviderID)
                 {
-                    ResponseToken result = null;
-                    try
-                    {
-                        result = await mWatchAdValidator.ValidateWatchAd(Constants.WatchAdVerfierAddress.TapSellLink,
-                        new RequestToken
+                    case WatchAdProvider.TapSell:
+                        ResponseToken result = null;
+                        try
                         {
-                            suggestionId = WatchAdValidation.WatchAdId,
-                        });
+                            result = await mWatchAdValidator.ValidateWatchAd(Constants.WatchAdVerfierAddress.TapSellLink,
+                            new RequestToken
+                            {
+                                suggestionId = WatchAdValidation.WatchAdId,
+                            });
 
-                    }
-                    catch
-                    {
-                        result = new ResponseToken
+                        }
+                        catch
                         {
-                            valid = false
-                        };
-                    }
-                   
-                    if(result != null)
-                    {
-                        await mWatchAdQueryProcessor.AddWatchedInfo(new SWatchedAd
+                            result = new ResponseToken
+                            {
+                                valid = false
+                            };
+                        }
+
+                        if (result != null)
                         {
-                            UserID = mUserSession.ID,
-                            WatchAdId = WatchAdValidation.WatchAdId,
-                            WatchAdProviderId = (int)WatchAdProvider.TapSell,
-                            IsLevel = false,
-                            LevelNumber = 0,
-                            Consumed = result.valid,
-                            InsertDate = mDateTime.Now,
-                            UpdatedDate = mDateTime.Now
-                        });
+                            await mWatchAdQueryProcessor.AddWatchedInfo(new SWatchedAd
+                            {
+                                UserID = mUserSession.ID,
+                                WatchAdId = WatchAdValidation.WatchAdId,
+                                WatchAdProviderId = (int)WatchAdProvider.TapSell,
+                                IsLevel = false,
+                                LevelNumber = 0,
+                                Consumed = result.valid,
+                                InsertDate = mDateTime.Now,
+                                UpdatedDate = mDateTime.Now
+                            });
 
-                        var totalCoin = await mUserQueryProcessor.IncreaseCoin(mAppState.State().WatchAdCoin);
+                            var totalCoin = await mUserQueryProcessor.IncreaseCoin(mAppState.State().WatchAdCoin);
 
-                        return totalCoin;
-                    }
+                            return totalCoin;
+                        }
+
+                        break;
+
+                    case WatchAdProvider.Tapligh:
+
+                        break;
+
+                    case WatchAdProvider.UnityAds:
+
+                        break;
                 }
+                
             }
 
             var currentTotalCoin = await mUserQueryProcessor.GetTotalCoin();

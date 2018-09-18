@@ -4,7 +4,9 @@ namespace Falcon.Web.Models.Api
 {
     public enum WatchAdProvider
     {
-        TapSell = 1
+        TapSell  = 1,
+        Tapligh  = 2,
+        UnityAds = 3,
     };
 
     public class SWatchAdValidation
