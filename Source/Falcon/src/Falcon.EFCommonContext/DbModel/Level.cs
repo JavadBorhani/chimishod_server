@@ -25,9 +25,9 @@ namespace Falcon.EFCommonContext.DbModel
         public int LevelNumber { get; set; }
         public int CoinPrize { get; set; }
         public int ScoreCeil { get; set; }
-        public int LevelWatchVideoMultiplier { get; set; }
         public System.DateTime CreatedDate { get; set; }
         public System.DateTime UpdatedDate { get; set; }
+        public int LevelWatchVideoMultiplier { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<QuestPeopleScore> QuestPeopleScores { get; set; }

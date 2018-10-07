@@ -17,6 +17,7 @@ namespace Falcon.EFCommonContext.DbModel
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public WatchAdProvider()
         {
+            this.ClientApplicationStates = new HashSet<ClientApplicationState>();
             this.WatchedAds = new HashSet<WatchedAd>();
         }
     
@@ -25,6 +26,8 @@ namespace Falcon.EFCommonContext.DbModel
         public string ProviderValidationLink { get; set; }
         public bool IsActive { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ClientApplicationState> ClientApplicationStates { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<WatchedAd> WatchedAds { get; set; }
     }

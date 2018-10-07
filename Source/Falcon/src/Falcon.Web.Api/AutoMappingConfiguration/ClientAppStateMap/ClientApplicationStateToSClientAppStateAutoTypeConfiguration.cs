@@ -20,7 +20,8 @@ namespace Falcon.Web.Api.AutoMappingConfiguration.ClientAppStateMap
                 .ForMember(s => s.XPLevelFactor,                m => m.MapFrom(c => c.XPLevelFactor))
                 .ForMember(s => s.XPQuestFactor ,               m => m.MapFrom(c=>  c.XPQuestFactor))
                 .ForMember(s => s.ForwardPricePerFriend ,       m => m.MapFrom(c => c.ForwardPricePerFriend))
-                .ForMember(s => s.ServerTime ,                  m => m.UseValue(DateTime.Now)); //should do it in proper way 
+                .ForMember(s => s.ActiveAdsProvider,            m => m.MapFrom(c => c.ActiveAdsProvider)) 
+                .ForMember(s => s.ServerTime ,                  m => m.UseValue(DateTime.Now));//should do it in proper way 
         }
     }
 }

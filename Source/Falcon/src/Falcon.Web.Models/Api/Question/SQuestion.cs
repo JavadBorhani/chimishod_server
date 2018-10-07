@@ -1,6 +1,8 @@
 ﻿// Flapp Copyright 2017-2018
 
 
+using Falcon.Web.Models.Api.User;
+
 namespace Falcon.Web.Models.Api
 {
     public enum HashTagID : int
@@ -23,6 +25,7 @@ namespace Falcon.Web.Models.Api
         public int ID { get; set; }
         public int AuthorID { get; set; }
         public string AuthorUserName { get; set; }
+        public Gender Gender { get; set; }
         public string What_if { get; set; }
         public string But { get; set; }
         public int Yes_Count { get; set; }

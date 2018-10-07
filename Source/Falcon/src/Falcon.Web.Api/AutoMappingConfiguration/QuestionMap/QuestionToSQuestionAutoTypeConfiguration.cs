@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Falcon.EFCommonContext.DbModel;
 using Falcon.Web.Models.Api;
+using Falcon.Web.Models.Api.User;
 
 namespace Falcon.Web.Api.AutoMappingConfiguration.QuestionMap
 {
@@ -18,6 +19,7 @@ namespace Falcon.Web.Api.AutoMappingConfiguration.QuestionMap
                 .ForMember(q => q.Like_Count, m => m.MapFrom(s => s.Like_Count))
                 .ForMember(q => q.Dislike_Count, m => m.MapFrom(s => s.Dislike_Count))
                 .ForMember(q => q.AuthorUserName, m => m.MapFrom(s => s.User.UserName))
+                .ForMember(q => q.Gender , m => m.MapFrom( s => s.User.IsMale ? Gender.Man : Gender.Woman))
                 .ForMember(q => q.ActionInfo , m => m.MapFrom(s => s.QuestionAction));
         }
 

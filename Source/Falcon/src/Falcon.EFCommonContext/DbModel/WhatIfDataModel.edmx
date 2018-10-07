@@ -56,11 +56,12 @@
           <Property Name="CreateQuestionPrice" Type="int" Nullable="false" />
           <Property Name="WatchAdCoin" Type="int" Nullable="false" />
           <Property Name="LevelVersionCode" Type="int" Nullable="false" />
-          <Property Name="QuestVersionCode" Type="int" Nullable="false" />
           <Property Name="XPLevelFactor" Type="int" Nullable="false" />
-          <Property Name="XPQuestFactor" Type="int" Nullable="false" />
           <Property Name="PollingIntervalTimeInSeconds" Type="int" Nullable="false" />
           <Property Name="ForwardPricePerFriend" Type="int" Nullable="false" />
+          <Property Name="QuestVersionCode" Type="int" Nullable="false" />
+          <Property Name="XPQuestFactor" Type="int" Nullable="false" />
+          <Property Name="ActiveAdsProvider" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="CodeGift">
           <Key>
@@ -126,9 +127,9 @@
           <Property Name="LevelNumber" Type="int" Nullable="false" />
           <Property Name="CoinPrize" Type="int" Nullable="false" />
           <Property Name="ScoreCeil" Type="int" Nullable="false" />
-          <Property Name="LevelWatchVideoMultiplier" Type="int" Nullable="false" />
           <Property Name="CreatedDate" Type="datetime" Nullable="false" />
           <Property Name="UpdatedDate" Type="datetime" Nullable="false" />
+          <Property Name="LevelWatchVideoMultiplier" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="MarketInfo">
           <Key>
@@ -249,13 +250,13 @@
           <Property Name="Weight" Type="float" Nullable="false" />
           <Property Name="CommentCount" Type="int" Nullable="false" />
           <Property Name="ReportCount" Type="int" Nullable="false" />
-          <Property Name="AnswerCount" Type="int" Nullable="false" />
           <Property Name="Active" Type="bit" Nullable="false" />
           <Property Name="RemovedByCreator" Type="bit" Nullable="false" />
           <Property Name="IsPublic" Type="bit" Nullable="false" />
           <Property Name="IsOurAuthor" Type="bit" Nullable="false" />
           <Property Name="CreatedDate" Type="datetime" Nullable="false" />
           <Property Name="UpdateDate" Type="datetime" Nullable="false" />
+          <Property Name="AnswerCount" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="QuestionAction">
           <Key>
@@ -308,13 +309,13 @@
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="QuestionID" Type="int" Nullable="false" />
-          <Property Name="QuestionType" Type="int" Nullable="false" />
-          <Property Name="QuestNumber" Type="int" Nullable="false" />
-          <Property Name="Priority" Type="int" Nullable="false" />
           <Property Name="YesQuestNumber" Type="int" />
           <Property Name="NoQuestNumber" Type="int" />
           <Property Name="YesScore" Type="int" Nullable="false" />
           <Property Name="NoScore" Type="int" Nullable="false" />
+          <Property Name="QuestNumber" Type="int" Nullable="false" />
+          <Property Name="QuestionType" Type="int" Nullable="false" />
+          <Property Name="Priority" Type="int" Nullable="false" />
           <Property Name="CreatedDate" Type="datetime" Nullable="false" />
           <Property Name="UpdatedDate" Type="datetime" Nullable="false" />
         </EntityType>
@@ -520,9 +521,6 @@
           <Property Name="UserTypeID" Type="int" />
           <Property Name="LevelProgress" Type="int" Nullable="false" />
           <Property Name="LevelNumber" Type="int" Nullable="false" />
-          <Property Name="QuestNumber" Type="int" />
-          <Property Name="QuestProgress" Type="int" Nullable="false" />
-          <Property Name="QuestPurchased" Type="bit" Nullable="false" />
           <Property Name="TotalCoin" Type="int" Nullable="false" />
           <Property Name="IsMale" Type="bit" Nullable="false" />
           <Property Name="UUID" Type="varchar" MaxLength="36" Nullable="false" />
@@ -535,6 +533,9 @@
           <Property Name="IPAddress" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="AvatarImagePath" Type="nvarchar" MaxLength="100" />
           <Property Name="Activated" Type="bit" Nullable="false" />
+          <Property Name="QuestNumber" Type="int" />
+          <Property Name="QuestProgress" Type="int" Nullable="false" />
+          <Property Name="QuestPurchased" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="UserInfo">
           <Key>
@@ -668,6 +669,18 @@
             </Principal>
             <Dependent Role="BarrettUserScore">
               <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ClientApplicationState_WatchAdProvider">
+          <End Role="WatchAdProvider" Type="Self.WatchAdProvider" Multiplicity="1" />
+          <End Role="ClientApplicationState" Type="Self.ClientApplicationState" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WatchAdProvider">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="ClientApplicationState">
+              <PropertyRef Name="ActiveAdsProvider" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -836,6 +849,18 @@
             </Principal>
             <Dependent Role="Question">
               <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_QuestionNotification_Question">
+          <End Role="Question" Type="Self.Question" Multiplicity="1" />
+          <End Role="QuestionNotification" Type="Self.QuestionNotification" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Question">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="QuestionNotification">
+              <PropertyRef Name="QuestionID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1365,6 +1390,10 @@
             <End Role="User" EntitySet="User" />
             <End Role="BarrettUserScore" EntitySet="BarrettUserScore" />
           </AssociationSet>
+          <AssociationSet Name="FK_ClientApplicationState_WatchAdProvider" Association="Self.FK_ClientApplicationState_WatchAdProvider">
+            <End Role="WatchAdProvider" EntitySet="WatchAdProvider" />
+            <End Role="ClientApplicationState" EntitySet="ClientApplicationState" />
+          </AssociationSet>
           <AssociationSet Name="FK_Feedback_FeedbackTypes" Association="Self.FK_Feedback_FeedbackTypes">
             <End Role="FeedbackTypes" EntitySet="FeedbackTypes" />
             <End Role="Feedback" EntitySet="Feedback" />
@@ -1416,6 +1445,10 @@
           <AssociationSet Name="FK_Question_User" Association="Self.FK_Question_User">
             <End Role="User" EntitySet="User" />
             <End Role="Question" EntitySet="Question" />
+          </AssociationSet>
+          <AssociationSet Name="FK_QuestionNotification_Question" Association="Self.FK_QuestionNotification_Question">
+            <End Role="Question" EntitySet="Question" />
+            <End Role="QuestionNotification" EntitySet="QuestionNotification" />
           </AssociationSet>
           <AssociationSet Name="FK_QuestPeopleScore_Level" Association="Self.FK_QuestPeopleScore_Level">
             <End Role="Level" EntitySet="Level" />
@@ -1671,6 +1704,10 @@
             <End Role="User" EntitySet="Users" />
             <End Role="BarrettUserScore" EntitySet="BarrettUserScores" />
           </AssociationSet>
+          <AssociationSet Name="FK_ClientApplicationState_WatchAdProvider" Association="Falcon.DbModel.FK_ClientApplicationState_WatchAdProvider">
+            <End Role="WatchAdProvider" EntitySet="WatchAdProviders" />
+            <End Role="ClientApplicationState" EntitySet="ClientApplicationStates" />
+          </AssociationSet>
           <AssociationSet Name="FK_Feedback_FeedbackTypes" Association="Falcon.DbModel.FK_Feedback_FeedbackTypes">
             <End Role="FeedbackType" EntitySet="FeedbackTypes" />
             <End Role="Feedback" EntitySet="Feedbacks" />
@@ -1762,6 +1799,10 @@
           <AssociationSet Name="FK_Question_User" Association="Falcon.DbModel.FK_Question_User">
             <End Role="User" EntitySet="Users" />
             <End Role="Question" EntitySet="Questions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_QuestionNotification_Question" Association="Falcon.DbModel.FK_QuestionNotification_Question">
+            <End Role="Question" EntitySet="Questions" />
+            <End Role="QuestionNotification" EntitySet="QuestionNotifications" />
           </AssociationSet>
           <AssociationSet Name="FK_QuestQuestions_Question" Association="Falcon.DbModel.FK_QuestQuestions_Question">
             <End Role="Question" EntitySet="Questions" />
@@ -1954,11 +1995,13 @@
           <Property Name="CreateQuestionPrice" Type="Int32" Nullable="false" />
           <Property Name="WatchAdCoin" Type="Int32" Nullable="false" />
           <Property Name="LevelVersionCode" Type="Int32" Nullable="false" />
-          <Property Name="QuestVersionCode" Type="Int32" Nullable="false" />
           <Property Name="XPLevelFactor" Type="Int32" Nullable="false" />
-          <Property Name="XPQuestFactor" Type="Int32" Nullable="false" />
           <Property Name="PollingIntervalTimeInSeconds" Type="Int32" Nullable="false" />
           <Property Name="ForwardPricePerFriend" Type="Int32" Nullable="false" />
+          <Property Name="QuestVersionCode" Type="Int32" Nullable="false" />
+          <Property Name="XPQuestFactor" Type="Int32" Nullable="false" />
+          <Property Name="ActiveAdsProvider" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="WatchAdProvider" Relationship="Falcon.DbModel.FK_ClientApplicationState_WatchAdProvider" FromRole="ClientApplicationState" ToRole="WatchAdProvider" />
         </EntityType>
         <EntityType Name="CodeGift">
           <Key>
@@ -2029,9 +2072,9 @@
           <Property Name="LevelNumber" Type="Int32" Nullable="false" />
           <Property Name="CoinPrize" Type="Int32" Nullable="false" />
           <Property Name="ScoreCeil" Type="Int32" Nullable="false" />
-          <Property Name="LevelWatchVideoMultiplier" Type="Int32" Nullable="false" />
           <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="UpdatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="LevelWatchVideoMultiplier" Type="Int32" Nullable="false" />
           <NavigationProperty Name="QuestPeopleScores" Relationship="Falcon.DbModel.FK_QuestPeopleScore_Level" FromRole="Level" ToRole="QuestPeopleScore" />
           <NavigationProperty Name="QuestScoreSnapshots" Relationship="Falcon.DbModel.FK_QuestScoreSnapshot_Level" FromRole="Level" ToRole="QuestScoreSnapshot" />
           <NavigationProperty Name="Users" Relationship="Falcon.DbModel.FK_User_Level" FromRole="Level" ToRole="User" />
@@ -2173,17 +2216,18 @@
           <Property Name="Weight" Type="Double" Nullable="false" />
           <Property Name="CommentCount" Type="Int32" Nullable="false" />
           <Property Name="ReportCount" Type="Int32" Nullable="false" />
-          <Property Name="AnswerCount" Type="Int32" Nullable="false" />
           <Property Name="Active" Type="Boolean" Nullable="false" />
           <Property Name="RemovedByCreator" Type="Boolean" Nullable="false" />
           <Property Name="IsPublic" Type="Boolean" Nullable="false" />
           <Property Name="IsOurAuthor" Type="Boolean" Nullable="false" />
           <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="UpdateDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="AnswerCount" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Answers" Relationship="Falcon.DbModel.FK_Answer_Question" FromRole="Question" ToRole="Answer" />
           <NavigationProperty Name="HashTag" Relationship="Falcon.DbModel.FK_Question_HashTag" FromRole="Question" ToRole="HashTag" />
           <NavigationProperty Name="QuestionAction" Relationship="Falcon.DbModel.FK_Question_QuestionAction" FromRole="Question" ToRole="QuestionAction" />
           <NavigationProperty Name="User" Relationship="Falcon.DbModel.FK_Question_User" FromRole="Question" ToRole="User" />
+          <NavigationProperty Name="QuestionNotifications" Relationship="Falcon.DbModel.FK_QuestionNotification_Question" FromRole="Question" ToRole="QuestionNotification" />
           <NavigationProperty Name="QuestQuestions" Relationship="Falcon.DbModel.FK_QuestQuestions_Question" FromRole="Question" ToRole="QuestQuestion" />
           <NavigationProperty Name="QuestQuestionsAnswers" Relationship="Falcon.DbModel.FK_QuestQuestionsAnswer_Question" FromRole="Question" ToRole="QuestQuestionsAnswer" />
           <NavigationProperty Name="ReportedQuestions" Relationship="Falcon.DbModel.FK_ReportedQuestions_Question" FromRole="Question" ToRole="ReportedQuestion" />
@@ -2215,6 +2259,7 @@
           <Property Name="QuestionAnswerAmount" Type="Int32" Nullable="false" />
           <Property Name="InsertedDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="UpdatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Question" Relationship="Falcon.DbModel.FK_QuestionNotification_Question" FromRole="QuestionNotification" ToRole="Question" />
         </EntityType>
         <EntityType Name="QuestionNotificationConfiguration">
           <Key>
@@ -2244,13 +2289,13 @@
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="QuestionID" Type="Int32" Nullable="false" />
-          <Property Name="QuestionType" Type="Int32" Nullable="false" />
-          <Property Name="QuestNumber" Type="Int32" Nullable="false" />
-          <Property Name="Priority" Type="Int32" Nullable="false" />
           <Property Name="YesQuestNumber" Type="Int32" />
           <Property Name="NoQuestNumber" Type="Int32" />
           <Property Name="YesScore" Type="Int32" Nullable="false" />
           <Property Name="NoScore" Type="Int32" Nullable="false" />
+          <Property Name="QuestNumber" Type="Int32" Nullable="false" />
+          <Property Name="QuestionType" Type="Int32" Nullable="false" />
+          <Property Name="Priority" Type="Int32" Nullable="false" />
           <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="UpdatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="Quest" Relationship="Falcon.DbModel.FK_QuestQuestions_Quest" FromRole="QuestQuestion" ToRole="Quest" />
@@ -2463,9 +2508,6 @@
           <Property Name="UserTypeID" Type="Int32" />
           <Property Name="LevelProgress" Type="Int32" Nullable="false" />
           <Property Name="LevelNumber" Type="Int32" Nullable="false" />
-          <Property Name="QuestNumber" Type="Int32" />
-          <Property Name="QuestProgress" Type="Int32" Nullable="false" />
-          <Property Name="QuestPurchased" Type="Boolean" Nullable="false" />
           <Property Name="TotalCoin" Type="Int32" Nullable="false" />
           <Property Name="IsMale" Type="Boolean" Nullable="false" />
           <Property Name="UUID" Type="String" Nullable="false" MaxLength="36" FixedLength="false" Unicode="false" />
@@ -2478,6 +2520,9 @@
           <Property Name="IPAddress" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="AvatarImagePath" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="Activated" Type="Boolean" Nullable="false" />
+          <Property Name="QuestNumber" Type="Int32" />
+          <Property Name="QuestProgress" Type="Int32" Nullable="false" />
+          <Property Name="QuestPurchased" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="AchievedCodeGifts" Relationship="Falcon.DbModel.FK_AchievedCodeGift_User" FromRole="User" ToRole="AchievedCodeGift" />
           <NavigationProperty Name="Answers" Relationship="Falcon.DbModel.FK_Answer_User" FromRole="User" ToRole="Answer" />
           <NavigationProperty Name="BarrettUserScores" Relationship="Falcon.DbModel.FK_BarrettUserScore_User" FromRole="User" ToRole="BarrettUserScore" />
@@ -2547,6 +2592,7 @@
           <Property Name="ProviderName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="ProviderValidationLink" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="ClientApplicationStates" Relationship="Falcon.DbModel.FK_ClientApplicationState_WatchAdProvider" FromRole="WatchAdProvider" ToRole="ClientApplicationState" />
           <NavigationProperty Name="WatchedAds" Relationship="Falcon.DbModel.FK_WatchedAd_WatchAdProvider" FromRole="WatchAdProvider" ToRole="WatchedAd" />
         </EntityType>
         <EntityType Name="WatchedAd">
@@ -2654,6 +2700,18 @@
             </Principal>
             <Dependent Role="BarrettUserScore">
               <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ClientApplicationState_WatchAdProvider">
+          <End Type="Falcon.DbModel.WatchAdProvider" Role="WatchAdProvider" Multiplicity="1" />
+          <End Type="Falcon.DbModel.ClientApplicationState" Role="ClientApplicationState" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WatchAdProvider">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="ClientApplicationState">
+              <PropertyRef Name="ActiveAdsProvider" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2950,6 +3008,18 @@
             </Principal>
             <Dependent Role="Question">
               <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_QuestionNotification_Question">
+          <End Type="Falcon.DbModel.Question" Role="Question" Multiplicity="1" />
+          <End Type="Falcon.DbModel.QuestionNotification" Role="QuestionNotification" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Question">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="QuestionNotification">
+              <PropertyRef Name="QuestionID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -3345,11 +3415,12 @@
           <EntitySetMapping Name="ClientApplicationStates">
             <EntityTypeMapping TypeName="Falcon.DbModel.ClientApplicationState">
               <MappingFragment StoreEntitySet="ClientApplicationState">
+                <ScalarProperty Name="ActiveAdsProvider" ColumnName="ActiveAdsProvider" />
+                <ScalarProperty Name="XPQuestFactor" ColumnName="XPQuestFactor" />
+                <ScalarProperty Name="QuestVersionCode" ColumnName="QuestVersionCode" />
                 <ScalarProperty Name="ForwardPricePerFriend" ColumnName="ForwardPricePerFriend" />
                 <ScalarProperty Name="PollingIntervalTimeInSeconds" ColumnName="PollingIntervalTimeInSeconds" />
-                <ScalarProperty Name="XPQuestFactor" ColumnName="XPQuestFactor" />
                 <ScalarProperty Name="XPLevelFactor" ColumnName="XPLevelFactor" />
-                <ScalarProperty Name="QuestVersionCode" ColumnName="QuestVersionCode" />
                 <ScalarProperty Name="LevelVersionCode" ColumnName="LevelVersionCode" />
                 <ScalarProperty Name="WatchAdCoin" ColumnName="WatchAdCoin" />
                 <ScalarProperty Name="CreateQuestionPrice" ColumnName="CreateQuestionPrice" />
@@ -3424,9 +3495,9 @@
           <EntitySetMapping Name="Levels">
             <EntityTypeMapping TypeName="Falcon.DbModel.Level">
               <MappingFragment StoreEntitySet="Level">
+                <ScalarProperty Name="LevelWatchVideoMultiplier" ColumnName="LevelWatchVideoMultiplier" />
                 <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-                <ScalarProperty Name="LevelWatchVideoMultiplier" ColumnName="LevelWatchVideoMultiplier" />
                 <ScalarProperty Name="ScoreCeil" ColumnName="ScoreCeil" />
                 <ScalarProperty Name="CoinPrize" ColumnName="CoinPrize" />
                 <ScalarProperty Name="LevelNumber" ColumnName="LevelNumber" />
@@ -3545,13 +3616,13 @@
           <EntitySetMapping Name="Questions">
             <EntityTypeMapping TypeName="Falcon.DbModel.Question">
               <MappingFragment StoreEntitySet="Question">
+                <ScalarProperty Name="AnswerCount" ColumnName="AnswerCount" />
                 <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
                 <ScalarProperty Name="IsOurAuthor" ColumnName="IsOurAuthor" />
                 <ScalarProperty Name="IsPublic" ColumnName="IsPublic" />
                 <ScalarProperty Name="RemovedByCreator" ColumnName="RemovedByCreator" />
                 <ScalarProperty Name="Active" ColumnName="Active" />
-                <ScalarProperty Name="AnswerCount" ColumnName="AnswerCount" />
                 <ScalarProperty Name="ReportCount" ColumnName="ReportCount" />
                 <ScalarProperty Name="CommentCount" ColumnName="CommentCount" />
                 <ScalarProperty Name="Weight" ColumnName="Weight" />
@@ -3622,13 +3693,13 @@
               <MappingFragment StoreEntitySet="QuestQuestions">
                 <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="Priority" ColumnName="Priority" />
+                <ScalarProperty Name="QuestionType" ColumnName="QuestionType" />
+                <ScalarProperty Name="QuestNumber" ColumnName="QuestNumber" />
                 <ScalarProperty Name="NoScore" ColumnName="NoScore" />
                 <ScalarProperty Name="YesScore" ColumnName="YesScore" />
                 <ScalarProperty Name="NoQuestNumber" ColumnName="NoQuestNumber" />
                 <ScalarProperty Name="YesQuestNumber" ColumnName="YesQuestNumber" />
-                <ScalarProperty Name="Priority" ColumnName="Priority" />
-                <ScalarProperty Name="QuestNumber" ColumnName="QuestNumber" />
-                <ScalarProperty Name="QuestionType" ColumnName="QuestionType" />
                 <ScalarProperty Name="QuestionID" ColumnName="QuestionID" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
@@ -3823,6 +3894,9 @@
           <EntitySetMapping Name="Users">
             <EntityTypeMapping TypeName="Falcon.DbModel.User">
               <MappingFragment StoreEntitySet="User">
+                <ScalarProperty Name="QuestPurchased" ColumnName="QuestPurchased" />
+                <ScalarProperty Name="QuestProgress" ColumnName="QuestProgress" />
+                <ScalarProperty Name="QuestNumber" ColumnName="QuestNumber" />
                 <ScalarProperty Name="Activated" ColumnName="Activated" />
                 <ScalarProperty Name="AvatarImagePath" ColumnName="AvatarImagePath" />
                 <ScalarProperty Name="IPAddress" ColumnName="IPAddress" />
@@ -3835,9 +3909,6 @@
                 <ScalarProperty Name="UUID" ColumnName="UUID" />
                 <ScalarProperty Name="IsMale" ColumnName="IsMale" />
                 <ScalarProperty Name="TotalCoin" ColumnName="TotalCoin" />
-                <ScalarProperty Name="QuestPurchased" ColumnName="QuestPurchased" />
-                <ScalarProperty Name="QuestProgress" ColumnName="QuestProgress" />
-                <ScalarProperty Name="QuestNumber" ColumnName="QuestNumber" />
                 <ScalarProperty Name="LevelNumber" ColumnName="LevelNumber" />
                 <ScalarProperty Name="LevelProgress" ColumnName="LevelProgress" />
                 <ScalarProperty Name="UserTypeID" ColumnName="UserTypeID" />

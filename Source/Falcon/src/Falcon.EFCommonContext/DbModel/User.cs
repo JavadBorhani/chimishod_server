@@ -44,9 +44,6 @@ namespace Falcon.EFCommonContext.DbModel
         public Nullable<int> UserTypeID { get; set; }
         public int LevelProgress { get; set; }
         public int LevelNumber { get; set; }
-        public Nullable<int> QuestNumber { get; set; }
-        public int QuestProgress { get; set; }
-        public bool QuestPurchased { get; set; }
         public int TotalCoin { get; set; }
         public bool IsMale { get; set; }
         public string UUID { get; set; }
@@ -59,6 +56,9 @@ namespace Falcon.EFCommonContext.DbModel
         public string IPAddress { get; set; }
         public string AvatarImagePath { get; set; }
         public bool Activated { get; set; }
+        public Nullable<int> QuestNumber { get; set; }
+        public int QuestProgress { get; set; }
+        public bool QuestPurchased { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<AchievedCodeGift> AchievedCodeGifts { get; set; }

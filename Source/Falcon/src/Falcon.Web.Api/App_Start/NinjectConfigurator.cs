@@ -232,6 +232,8 @@ namespace Falcon.Web.Api
             container.Bind<IMarketVerificationProcessor>().To<MarketVerificationProcessor>().InRequestScope();
             container.Bind<IMarketManager>().To<MarketManager>().InRequestScope();
             container.Bind<IWatchAdValidator>().To<WatchAdValidator>().InRequestScope();
+            container.Bind<IWatchAdManager>().To<WatchAdManager>().InRequestScope(); //handling watch ad validator
+
 
 
             //telegram manager

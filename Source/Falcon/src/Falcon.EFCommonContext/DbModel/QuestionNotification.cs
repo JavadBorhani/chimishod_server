@@ -20,5 +20,7 @@ namespace Falcon.EFCommonContext.DbModel
         public int QuestionAnswerAmount { get; set; }
         public System.DateTime InsertedDate { get; set; }
         public System.DateTime UpdatedDate { get; set; }
+    
+        public virtual Question Question { get; set; }
     }
 }

@@ -14,7 +14,7 @@ namespace Falcon.Web.Models.Api
         [Required]
         public WatchAdProvider ProviderID { get; set;}
 
-        [Required(AllowEmptyStrings =false)]
+        [Required(AllowEmptyStrings =true)]
         public string WatchAdId { get; set; }
         public bool IsLevel { get; set; }
         public int LevelNumber { get; set; }

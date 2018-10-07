@@ -329,6 +329,7 @@
     <Compile Include="MaintenanceProcessing\Private\AvatarsMaintenanceProcessor.cs" />
     <Compile Include="MaintenanceProcessing\Private\CategoriesMaintenanceProcessor.cs" />
     <Compile Include="MaintenanceProcessing\Private\CharacteristicsMaintenanceProcessor.cs" />
+    <Compile Include="MaintenanceProcessing\Private\WatchAdManager.cs" />
     <Compile Include="MaintenanceProcessing\Private\ClientApplicationState.cs" />
     <Compile Include="MaintenanceProcessing\Private\CodeGiftsMaintenanceProcessor.cs" />
     <Compile Include="MaintenanceProcessing\Private\CreatedQuestionsMaintenanceProcessor.cs" />
@@ -381,6 +382,7 @@
     <Compile Include="MaintenanceProcessing\Public\IUsersMaintenanceProcessor.cs" />
     <Compile Include="MaintenanceProcessing\Public\IUserStatsMaintenanceProcessor.cs" />
     <Compile Include="MaintenanceProcessing\Public\IWatchAdMaintenanceProcessor.cs" />
+    <Compile Include="MaintenanceProcessing\Public\IWatchAdManager.cs" />
     <Compile Include="Notification\Private\ErrorToken.cs" />
     <Compile Include="Notification\Private\NotificationData.cs" />
     <Compile Include="Notification\Private\NotificationSystem.cs" />

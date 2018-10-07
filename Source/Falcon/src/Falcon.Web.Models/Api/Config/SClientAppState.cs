@@ -14,6 +14,7 @@ namespace Falcon.Web.Models.Api.Config
         public int XPQuestFactor { get; set; }
         public int PollingIntervalTimeInSeconds { get; set; }
         public DateTime ServerTime { get; set; }
+        public int ActiveAdsProvider { get; set;}
         public int ForwardPricePerFriend { get; set; }
     }
 }

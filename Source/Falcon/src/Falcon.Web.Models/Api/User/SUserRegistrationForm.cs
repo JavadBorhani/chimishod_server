@@ -8,7 +8,7 @@ namespace Falcon.Web.Models.Api.User
         Android = 0 ,
         IOS = 1 ,
     }
-    public enum Gender
+    public enum Gender 
     {
         Man = 0,
         Woman = 1 ,
