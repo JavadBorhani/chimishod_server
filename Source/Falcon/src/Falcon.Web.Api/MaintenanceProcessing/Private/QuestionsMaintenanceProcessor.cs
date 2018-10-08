@@ -76,7 +76,7 @@ namespace Falcon.Web.Api.MaintenanceProcessing.Private
                 if(friendIdsExists)
                 {
                     var stored = await mSentMaintenance
-                        .SavePublicQuestionToFriends(mUserSession.ID, createdQuestion.ID ,storedMessageGroupID , CreateQuestion.FriendForwardList);
+                        .SavePublicQuestionToFriends(mUserSession.ID, createdQuestion.ID , storedMessageGroupID , CreateQuestion.FriendForwardList);
 
                     var notified = await mNotificationManager
                         .InboxQuestionToFriends(CreateQuestion.FriendForwardList, mMapper.Map<SQuestion>(createdQuestion));

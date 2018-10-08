@@ -5,6 +5,13 @@ using Falcon.Web.Models.Api.Quest;
 
 namespace Falcon.Web.Models.Api
 {
+    public enum UserTypes
+    {
+        None = -1,
+        Admin = 1,  
+        Local = 2
+    };
+
     public class SUser
     {
         public int ID { get; set; }
